@@ -148,3 +148,8 @@
 - Caddy üzerinden `http://localhost:8080/` adresinden HTTP 200 yanıtı alındı.
 - Docker kullanım komutları kök `README.md` dosyasına ve teknik karar notuna eklendi.
 - Kullanıcı `https://github.com/furkantoplu/Portfolio.git` deposunu hedef remote olarak bildirdi ve push yetkisi verdi.
+- Docker temel altyapısı `2f9f056` kimliği ve `chore: add docker deployment foundation` mesajıyla commit edildi.
+- Uzak GitHub deposunun boş olduğu `git ls-remote` ile doğrulandı; mevcut bir uzak geçmişin üzerine yazılmadı.
+- Yerel dal `master` adından `main` adına taşındı.
+- `origin` remote'u `https://github.com/furkantoplu/Portfolio.git` adresine eklendi.
+- Tüm yerel commit geçmişi `origin/main` dalına başarıyla push edildi ve upstream takibi kuruldu.
