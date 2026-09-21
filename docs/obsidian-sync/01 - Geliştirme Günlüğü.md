@@ -126,3 +126,25 @@
 - Bilgi Köşesi paketi `2f17d78` kimliğiyle yerel Git deposuna kaydedildi.
 - Commit mesajı: `feat: add blog preview section`.
 - GitHub remote eklenmedi ve push yapılmadı.
+
+### Docker temel altyapısı ve GitHub geçişi
+
+- Kullanıcının talebiyle projenin sunucuya aktarımını kolaylaştıracak Docker temeli arayüz aşamasında hazırlandı.
+- Frontend için iki aşamalı `frontend/Dockerfile` oluşturuldu:
+  - İlk aşama bağımlılıkları kurup production build alıyor.
+  - İkinci aşama yalnızca derleme çıktısını ve sabitlenmiş Wrangler çalışma ortamını içeriyor.
+  - Runtime root kullanıcısı yerine `node` kullanıcısıyla çalışıyor.
+- Docker build bağlamından `node_modules`, build çıktıları, yerel ayarlar ve `.env` dosyalarını çıkaran `.dockerignore` eklendi.
+- Proje köküne `compose.yaml` eklendi.
+- Compose içinde mevcut iki servis tanımlandı:
+  - `frontend`: Vinext uygulaması, dahili 3000 portu ve sağlık kontrolü.
+  - `proxy`: Caddy 2.10, varsayılan olarak host üzerindeki 8080 portu.
+- `deploy/Caddyfile` ile gzip/zstd sıkıştırma, temel güvenlik başlıkları ve frontend reverse proxy ayarlandı.
+- Gizli `.env` dosyaları, yedek klasörleri ve loglar kök `.gitignore` içine alındı.
+- İlk container testinde root olmayan kullanıcının Wrangler geçici klasörüne yazamadığı belirlendi.
+- Docker imajında yalnızca gerekli çalışma klasörleri `node` kullanıcısına verilerek sorun giderildi; container root kullanıcısına alınmadı.
+- `docker compose up -d --build` başarıyla tamamlandı.
+- Frontend container sağlık kontrolü `healthy` durumuna geçti.
+- Caddy üzerinden `http://localhost:8080/` adresinden HTTP 200 yanıtı alındı.
+- Docker kullanım komutları kök `README.md` dosyasına ve teknik karar notuna eklendi.
+- Kullanıcı `https://github.com/furkantoplu/Portfolio.git` deposunu hedef remote olarak bildirdi ve push yetkisi verdi.

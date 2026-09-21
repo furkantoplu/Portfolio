@@ -1,0 +1,35 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: fizyoterapist-frontend:local
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      NODE_ENV: production
+      WRANGLER_SEND_METRICS: "false"
+      WRANGLER_WRITE_LOGS: "false"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+
+  proxy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    depends_on:
+      frontend:
+        condition: service_healthy
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+

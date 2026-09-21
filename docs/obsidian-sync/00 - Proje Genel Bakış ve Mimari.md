@@ -6,7 +6,7 @@ Türkiye'de hizmet veren bireysel bir fizyoterapist için güven veren, sade ve 
 
 ## Geliştirme yaklaşımı
 
-Proje tek seferde tamamlanmayacak. Önce küçük arayüz paketleri hazırlanacak ve her paket görsel olarak kontrol edilecek. Arayüz kesinleşmeden backend, veritabanı, yönetim paneli ve production Docker kurulumu yapılmayacak.
+Proje tek seferde tamamlanmayacak. Önce küçük arayüz paketleri hazırlanacak ve her paket görsel olarak kontrol edilecek. Backend, veritabanı ve yönetim paneli arayüz kesinleşmeden başlamayacak. Dağıtımı en baştan tekrarlanabilir tutmak için frontend ve reverse proxy Docker temeli arayüz aşamasında hazırlandı.
 
 Planlanan sıra:
 
@@ -18,7 +18,7 @@ Planlanan sıra:
 6. İç sayfalar ve responsive son kontroller
 7. Directus ve PostgreSQL
 8. Yönetici girişi ve TOTP
-9. Docker production kurulumu
+9. Docker yapısına Directus, PostgreSQL ve yedek servislerinin eklenmesi
 10. VPS, Cloudflare ve domain bağlantısı
 
 ## Sayfa yapısı
@@ -79,6 +79,8 @@ database        PostgreSQL
 backup          Zamanlanmış yedek görevi
 ```
 
+Mevcut durumda `frontend` ve `proxy` servisleri uygulanmıştır. Frontend imajı çok aşamalı build kullanır; Caddy container'ı dış istekleri frontend'e yönlendirir. Yerel Docker erişimi varsayılan olarak `http://localhost:8080/` adresindedir. CMS, veritabanı ve yedek servisleri backend aşamasında eklenecektir.
+
 Cloudflare görevleri:
 
 - DNS yönetimi
@@ -135,4 +137,3 @@ Cloudflare görevleri:
 ## Sahiplik ilkesi
 
 Domain, VPS, Cloudflare ve gerekli servis hesapları mümkünse müşteri adına açılacak. Geliştirici teknik kullanıcı olarak eklenecek. Böylece alan adı, ödeme ve hesap sahipliği konusunda ileride bağımlılık oluşmayacak.
-

@@ -28,9 +28,9 @@ Uygulama, CMS, veritabanı, reverse proxy ve yedek görevi Docker Compose ile y�
 
 Alan adının DNS yönetimi Cloudflare üzerinden yapılacak. TLS modu Full (strict) olacak. Yönetim yolları önbellek dışında tutulacak ve uygun güvenlik kurallarıyla korunacak.
 
-## Karar 008 — Yerel Git
+## Karar 008 — GitHub deposu
 
-Git yalnızca yerel sürüm kontrolü için kullanılacak. Kullanıcı haber verene kadar GitHub remote eklenmeyecek ve push yapılmayacak.
+İlk arayüz paketlerinde Git yalnızca yerel sürüm kontrolü için kullanıldı. 21 Eylül 2026 tarihinde kullanıcı `https://github.com/furkantoplu/Portfolio.git` deposunu bildirdi ve push yetkisi verdi. Bundan sonraki sürüm kontrolü bu remote üzerinden de sürdürülebilir.
 
 ## Karar 009 — Obsidian ile ortak dokümantasyon
 
@@ -74,6 +74,30 @@ Production build kontrolü:
 ```powershell
 node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" run build
 ```
+
+## Docker ile çalıştırma
+
+Docker Desktop açıkken proje kökünde:
+
+```powershell
+cd C:\Users\Lenovo\OneDrive\Desktop\fizyoterapi
+docker compose up -d --build
+```
+
+Docker üzerinden site `http://localhost:8080/` adresinde açılır.
+
+```powershell
+docker compose ps
+docker compose logs -f
+docker compose down
+```
+
+- `frontend` servisi internete doğrudan port açmaz; yalnızca Compose ağı içinde 3000 portunu kullanır.
+- `proxy` servisi Caddy'dir ve varsayılan olarak host 8080 portunu yayınlar.
+- Port değiştirmek için PowerShell'de `$env:HTTP_PORT=8081` ayarlanabilir.
+- Production domain ve TLS ayarları domain belli olduğunda Caddy ve Cloudflare için ayrıca düzenlenecek.
+- Directus, PostgreSQL ve yedekleme servisleri backend aşamasında aynı Compose dosyasına eklenecek.
+- Parolalar, TOTP secret, Directus key/secret ve PostgreSQL parolası Git'e commit edilmeyecek.
 
 ## Güncelleme kontrol listesi
 
