@@ -2,6 +2,7 @@ import Image from "next/image";
 import {
   Activity,
   ArrowUpRight,
+  BookOpenText,
   CalendarDays,
   Dumbbell,
   HeartPulse,
@@ -72,6 +73,33 @@ const practiceAreas = [
     description:
       "Günlük alışkanlıkların ve hareket örüntülerinin bütüncül olarak değerlendirilmesi.",
     icon: PersonStanding,
+  },
+];
+
+const blogPosts = [
+  {
+    category: "Günlük Yaşam",
+    title: "Masa başında geçen günlerde hareket molaları neden önemli?",
+    summary:
+      "Uzun süre aynı pozisyonda kalmak yerine güne küçük ve sürdürülebilir hareket araları eklemek üzerine kısa bir rehber.",
+    date: "18 Eylül 2026",
+    readTime: "4 dk okuma",
+  },
+  {
+    category: "Hareket Bilgisi",
+    title: "Egzersizde düzeni korumayı kolaylaştıran üç küçük adım",
+    summary:
+      "Yoğun günlerde bile hareket alışkanlığını gerçekçi hedeflerle sürdürmeye yardımcı olabilecek temel öneriler.",
+    date: "10 Eylül 2026",
+    readTime: "5 dk okuma",
+  },
+  {
+    category: "Süreç Rehberi",
+    title: "İlk fizyoterapi görüşmesinde sizi neler bekler?",
+    summary:
+      "İlk değerlendirme öncesinde merak edilenleri ve görüşmenin genel akışını sade bir dille ele alıyoruz.",
+    date: "2 Eylül 2026",
+    readTime: "3 dk okuma",
   },
 ];
 
@@ -305,6 +333,63 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="blog-section" id="blog" aria-labelledby="blog-title">
+        <div className="blog-section__heading">
+          <div>
+            <p className="section-kicker">Bilgi Köşesi</p>
+            <h2 id="blog-title">
+              Hareketi anlamak için
+              <em> sade ve güvenilir bilgiler.</em>
+            </h2>
+          </div>
+          <div className="blog-section__intro">
+            <p>
+              Günlük yaşamda hareket sağlığını destekleyen, kolay anlaşılır ve
+              kaynak odaklı içerikler.
+            </p>
+            <a href="#blog-yazilari">
+              Tüm yazıları görün
+              <ArrowUpRight aria-hidden="true" size={18} />
+            </a>
+          </div>
+        </div>
+
+        <div className="blog-grid" id="blog-yazilari">
+          {blogPosts.map((post, index) => (
+            <article
+              className={`blog-card${index === 0 ? " blog-card--featured" : ""}`}
+              key={post.title}
+            >
+              <div className="blog-card__meta">
+                <span>{post.category}</span>
+                <span>{post.readTime}</span>
+              </div>
+              <div className="blog-card__content">
+                {index === 0 && (
+                  <span className="blog-card__icon" aria-hidden="true">
+                    <BookOpenText size={28} strokeWidth={1.4} />
+                  </span>
+                )}
+                <h3>{post.title}</h3>
+                <p>{post.summary}</p>
+              </div>
+              <div className="blog-card__footer">
+                <time>{post.date}</time>
+                <a href="#" aria-label={`${post.title} yazısını okuyun`}>
+                  Yazıyı okuyun
+                  <ArrowUpRight aria-hidden="true" size={17} />
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p className="blog-section__note">
+          Bilgi Köşesi içerikleri genel bilgilendirme amaçlıdır; tanı veya kişisel
+          tedavi önerisi yerine geçmez.
+        </p>
       </section>
     </main>
   );

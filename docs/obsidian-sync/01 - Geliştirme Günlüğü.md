@@ -84,3 +84,25 @@
 - Navigasyondaki Hakkımda ve Çalışma Alanları bağlantıları gerçek bölüm kimliklerine bağlandı.
 - Mobil görünümde portre, değerler ve süreç adımları tek sütun yapısına dönüştürüldü.
 - Production build başarıyla tamamlandı.
+
+### Paket 3 — Git kontrol noktası
+
+- Hakkımda ve yaklaşım paketi `14f51c0` kimliğiyle yerel Git deposuna kaydedildi.
+- Commit mesajı: `feat: add about and care approach section`.
+- GitHub remote eklenmedi ve herhangi bir uzak depoya push yapılmadı.
+
+### Paket 4 — Bilgi Köşesi blog önizlemesi
+
+- Ana sayfaya `#blog` kimliğini kullanan Bilgi Köşesi bölümü eklendi.
+- Navigasyondaki Blog bağlantısı yeni bölüme bağlandı.
+- İleride Directus üzerinden gelecek blog kayıtlarına benzer bir veri yapısı hazırlandı: kategori, başlık, özet, yayın tarihi ve tahmini okuma süresi.
+- Üç örnek içerik kartı oluşturuldu:
+  - Masa başında geçen günlerde hareket molaları neden önemli?
+  - Egzersizde düzeni korumayı kolaylaştıran üç küçük adım
+  - İlk fizyoterapi görüşmesinde sizi neler bekler?
+- İlk yazı koyu yeşil vurgulu kartla öne çıkarıldı; diğer iki yazı açık editoryal kartlarla sunuldu.
+- Bölüm yeni bir fotoğraf eklenmeden, tipografi ve sade geometrik detaylarla hazırlandı. Böylece son sitedeki görsel sayısı kontrollü tutuldu.
+- İçeriklerin genel bilgilendirme amaçlı olduğu ve kişisel tanı veya tedavi önerisi yerine geçmediği belirtildi.
+- Kart düzeni masaüstünde üç sütun, tablette iki sütun ve mobilde tek sütun olarak ayarlandı.
+- Yerel önizleme `http://localhost:5173/#blog` adresinde HTTP 200 yanıtıyla ve görsel kontrolle doğrulandı.
+- Production build başarıyla tamamlandı.
