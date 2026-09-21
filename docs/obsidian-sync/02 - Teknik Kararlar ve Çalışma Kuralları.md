@@ -47,6 +47,34 @@ AI ile üretilen görseller arayüz yönünü belirlemek için kullanılabilir. 
 - Örnek: `feat: add physiotherapy practice areas section`
 - Backend başlamadan önce arayüz için ayrı bir dönüm noktası etiketi değerlendirilebilir.
 
+## Yerel çalıştırma komutları
+
+Proje klasörü:
+
+```powershell
+cd C:\Users\Lenovo\OneDrive\Desktop\fizyoterapi\frontend
+```
+
+Bu bilgisayarda doğrulanan geliştirme sunucusu komutu:
+
+```powershell
+node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" run dev
+```
+
+Sunucu başladıktan sonra site `http://localhost:5173/` adresinden açılır. Sunucuyu durdurmak için komutun çalıştığı terminalde `Ctrl+C` kullanılır.
+
+Normal npm komutu ortamda doğru çalışıyorsa kısa biçimi de kullanılabilir:
+
+```powershell
+npm run dev
+```
+
+Production build kontrolü:
+
+```powershell
+node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" run build
+```
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:
@@ -57,4 +85,3 @@ Her paket sonunda:
 4. Geliştirme günlüğü güncellenir.
 5. Obsidian notları eşitlenir.
 6. Yerel Git commit'i oluşturulur.
-

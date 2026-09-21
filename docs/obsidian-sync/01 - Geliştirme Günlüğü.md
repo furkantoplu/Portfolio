@@ -64,6 +64,20 @@
 
 - Proje kökünde yerel Git deposu oluşturuldu.
 - GitHub remote eklenmedi ve push yapılmadı.
+
+### Paket 5 — İletişim ve alt bilgi
+
+- Ana sayfaya `#iletisim` kimliğini kullanan iletişim bölümü eklendi.
+- Ziyaretçinin doğrudan ulaşabilmesi için telefon, WhatsApp ve e-posta seçenekleri tasarlandı.
+- Sağlık verisi toplayabilecek bir iletişim formu özellikle eklenmedi.
+- Görüşme konumu, çalışma günleri ve çalışma saatleri için ayrı bilgi alanları oluşturuldu.
+- Telefon, e-posta, adres ve sosyal medya bilgileri müşteri verileri gelene kadar sunum amaçlı örnek değerlerle dolduruldu.
+- Alt bilgi bölümüne marka alanı, sayfa navigasyonu, Instagram bağlantısı, genel bilgilendirme notu ve yasal metin bağlantıları eklendi.
+- Masaüstü, tablet ve mobil kırılımlar için iletişim kartları ve footer yerleşimi ayrı ayrı düzenlendi.
+- Yerel geliştirme sunucusu yeniden başlatıldı ve `http://localhost:5173/#iletisim` adresi HTTP 200 yanıtıyla doğrulandı.
+- Masaüstü iletişim ve footer görünümü tarayıcıda görsel olarak kontrol edildi.
+- İlk derlemede mevcut ikon paketinde Instagram ikonu bulunmadığı görüldü; bağımlılık eklemek yerine uyumlu metin işareti kullanıldı.
+- Düzeltme sonrasında production build başarıyla tamamlandı.
 - İlk kontrol noktası `f5eeab4` kimliğiyle oluşturuldu.
 - İlk commit mesajı: `feat: establish physiotherapy site foundation`.
 - Bu commit; mimari notlarını, ilk mockupı, frontend temelini, hero bölümünü ve çalışma alanları paketini kapsıyor.

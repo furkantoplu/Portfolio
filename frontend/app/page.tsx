@@ -4,12 +4,16 @@ import {
   ArrowUpRight,
   BookOpenText,
   CalendarDays,
+  Clock3,
   Dumbbell,
   HeartPulse,
   ListChecks,
+  Mail,
+  MapPin,
   Menu,
   MessageCircleMore,
   PersonStanding,
+  Phone,
   Route,
 } from "lucide-react";
 
@@ -391,6 +395,105 @@ export default function Home() {
           tedavi önerisi yerine geçmez.
         </p>
       </section>
+
+      <section className="contact-section" id="iletisim" aria-labelledby="contact-title">
+        <div className="contact-section__main">
+          <div className="contact-section__copy">
+            <p className="section-kicker">İletişim</p>
+            <h2 id="contact-title">
+              İlk adımı birlikte
+              <em> sakin ve net atalım.</em>
+            </h2>
+            <p>
+              Görüşme süreci, uygun saatler veya çalışma alanları hakkında bilgi
+              almak için size uygun iletişim kanalını kullanabilirsiniz.
+            </p>
+          </div>
+
+          <div className="contact-section__actions" aria-label="İletişim seçenekleri">
+            <a className="contact-action contact-action--primary" href="tel:+905551234567">
+              <Phone aria-hidden="true" size={22} strokeWidth={1.6} />
+              <span>
+                <small>Telefon</small>
+                <strong>+90 555 123 45 67</strong>
+              </span>
+              <ArrowUpRight aria-hidden="true" size={19} />
+            </a>
+            <a
+              className="contact-action"
+              href="https://wa.me/905551234567"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MessageCircleMore aria-hidden="true" size={22} strokeWidth={1.6} />
+              <span>
+                <small>WhatsApp</small>
+                <strong>Mesaj gönderin</strong>
+              </span>
+              <ArrowUpRight aria-hidden="true" size={19} />
+            </a>
+            <a className="contact-action" href="mailto:merhaba@denizyilmaz.com">
+              <Mail aria-hidden="true" size={22} strokeWidth={1.6} />
+              <span>
+                <small>E-posta</small>
+                <strong>merhaba@denizyilmaz.com</strong>
+              </span>
+              <ArrowUpRight aria-hidden="true" size={19} />
+            </a>
+          </div>
+        </div>
+
+        <div className="contact-details">
+          <article>
+            <MapPin aria-hidden="true" size={24} strokeWidth={1.5} />
+            <div>
+              <span>Görüşme adresi</span>
+              <strong>Kadıköy / İstanbul</strong>
+              <p>Detaylı adres randevu oluşturulduktan sonra paylaşılır.</p>
+            </div>
+          </article>
+          <article>
+            <Clock3 aria-hidden="true" size={24} strokeWidth={1.5} />
+            <div>
+              <span>Çalışma saatleri</span>
+              <strong>Pazartesi — Cumartesi</strong>
+              <p>09.00 — 19.00 · Yalnızca randevu ile</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <footer className="site-footer">
+        <div className="site-footer__top">
+          <a className="brand brand--footer" href="#" aria-label="Ana sayfaya dön">
+            <BrandMark />
+            <span className="brand__copy">
+              <strong>Fzt. Deniz Yılmaz</strong>
+              <span>Harekete alan açın</span>
+            </span>
+          </a>
+
+          <nav className="site-footer__nav" aria-label="Alt menü">
+            {navItems.slice(1).map((item) => (
+              <a href={item.href} key={item.label}>{item.label}</a>
+            ))}
+          </nav>
+
+          <a className="site-footer__social" href="#" aria-label="Instagram profili">
+            <span aria-hidden="true">@</span>
+            Instagram
+          </a>
+        </div>
+
+        <div className="site-footer__bottom">
+          <p>© 2026 Fzt. Deniz Yılmaz. Tüm hakları saklıdır.</p>
+          <p>Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.</p>
+          <div>
+            <a href="#">KVKK Aydınlatma Metni</a>
+            <a href="#">Gizlilik</a>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
