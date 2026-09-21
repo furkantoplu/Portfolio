@@ -179,3 +179,5 @@
 - Docker imajı yeniden oluşturuldu ve frontend container sağlık kontrolünden geçti.
 - `http://localhost:8080/` ve `http://localhost:8080/calisma-alanlari/bel-ve-boyun-sagligi` rotalarının ikisi de HTTP 200 yanıtıyla doğrulandı.
 - Detay sayfasının ilk görünümü ve kaydırma sonrasında sabit navbar davranışı tarayıcıda görsel olarak kontrol edildi.
+- Paket `518e625` kimliği ve `feat: add fixed navigation and practice detail page` mesajıyla commit edildi.
+- Commit `origin/main` dalına başarıyla push edildi.
