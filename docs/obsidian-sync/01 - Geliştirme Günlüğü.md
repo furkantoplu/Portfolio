@@ -78,6 +78,9 @@
 - Masaüstü iletişim ve footer görünümü tarayıcıda görsel olarak kontrol edildi.
 - İlk derlemede mevcut ikon paketinde Instagram ikonu bulunmadığı görüldü; bağımlılık eklemek yerine uyumlu metin işareti kullanıldı.
 - Düzeltme sonrasında production build başarıyla tamamlandı.
+- İletişim ve alt bilgi paketi `7aabaab` kimliğiyle yerel Git deposuna kaydedildi.
+- Commit mesajı: `feat: add contact and footer sections`.
+- GitHub remote eklenmedi ve push yapılmadı.
 - İlk kontrol noktası `f5eeab4` kimliğiyle oluşturuldu.
 - İlk commit mesajı: `feat: establish physiotherapy site foundation`.
 - Bu commit; mimari notlarını, ilk mockupı, frontend temelini, hero bölümünü ve çalışma alanları paketini kapsıyor.
