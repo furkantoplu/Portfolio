@@ -154,3 +154,28 @@
 - `origin` remote'u `https://github.com/furkantoplu/Portfolio.git` adresine eklendi.
 - Tüm yerel commit geçmişi `origin/main` dalına başarıyla push edildi ve upstream takibi kuruldu.
 - Docker doğrulaması sonrasında daha önce açık bırakılan `localhost:5173` geliştirme sunucusu durduruldu; çalışan sunum ortamı Docker üzerinden `http://localhost:8080/` olarak bırakıldı.
+
+### Paket 6 — Sabit navbar ve ilk çalışma alanı detay sayfası
+
+- Mevcut tema ve görsel yön korunarak iç sayfa tasarımlarına geçildi.
+- Header içeriği tekrar kullanılabilir `app/components/site-header.tsx` bileşenine taşındı.
+- Navigasyon ana sayfa ve detay sayfasında aynı ortak bileşeni kullanacak şekilde düzenlendi.
+- Navbar `position: fixed` yapısına geçirildi; sayfa kaydırılırken ekrandan bağımsız biçimde üstte kalması sağlandı.
+- Sabit menüye yarı saydam arka plan, blur, ince sınır ve hafif gölge eklendi.
+- Sayfa içeriklerine navbar yüksekliği kadar üst boşluk verildi; bölüm bağlantılarının menünün altında kalmaması için `scroll-margin-top` tanımlandı.
+- Mobil görünümde navbar yüksekliği ve sayfa üst boşluğu 78 piksele uyarlandı.
+- Ana sayfadaki `Bel ve Boyun Sağlığı` kartı `/calisma-alanlari/bel-ve-boyun-sagligi` rotasına bağlandı.
+- Bel ve Boyun Sağlığı detay sayfasına özel başlık ve açıklama metadata'sı eklendi.
+- Detay sayfasında şu bölümler tasarlandı:
+  - Çalışma alanlarına dönüş bağlantısı ve görsel hero alanı
+  - Genel değerlendirme yaklaşımı ve örnek değerlendirme başlıkları
+  - Üç aşamalı süreç anlatımı
+  - İlk görüşme öncesi kısa soru ve cevaplar
+  - İletişim yönlendirmesi ve sade alt bilgi
+- Sağlık reklamı sınırları korunarak garanti, kesin sonuç veya tanı dili kullanılmadı.
+- Sayfada içeriklerin genel bilgilendirme amaçlı olduğuna ilişkin görünür uyarı kullanıldı.
+- Yeni sayfa için ek görsel üretilmedi; mevcut fizyoterapi görseli farklı kırpma ile tekrar kullanıldı.
+- Production build ana sayfa ve yeni detay rotasıyla başarıyla tamamlandı.
+- Docker imajı yeniden oluşturuldu ve frontend container sağlık kontrolünden geçti.
+- `http://localhost:8080/` ve `http://localhost:8080/calisma-alanlari/bel-ve-boyun-sagligi` rotalarının ikisi de HTTP 200 yanıtıyla doğrulandı.
+- Detay sayfasının ilk görünümü ve kaydırma sonrasında sabit navbar davranışı tarayıcıda görsel olarak kontrol edildi.

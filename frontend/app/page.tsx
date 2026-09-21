@@ -1,29 +1,20 @@
 import Image from "next/image";
+import { BrandMark, navItems, SiteHeader } from "./components/site-header";
 import {
   Activity,
   ArrowUpRight,
   BookOpenText,
-  CalendarDays,
   Clock3,
   Dumbbell,
   HeartPulse,
   ListChecks,
   Mail,
   MapPin,
-  Menu,
   MessageCircleMore,
   PersonStanding,
   Phone,
   Route,
 } from "lucide-react";
-
-const navItems = [
-  { label: "Ana Sayfa", href: "#" },
-  { label: "Hakkımda", href: "#hakkimda" },
-  { label: "Çalışma Alanları", href: "#calisma-alanlari" },
-  { label: "Blog", href: "#blog" },
-  { label: "İletişim", href: "#iletisim" },
-];
 
 const approachSteps = [
   {
@@ -56,6 +47,7 @@ const practiceAreas = [
     description:
       "Günlük yaşamı etkileyen hareket kısıtlılıklarına yönelik değerlendirme odaklı yaklaşım.",
     icon: Activity,
+    href: "/calisma-alanlari/bel-ve-boyun-sagligi",
   },
   {
     number: "02",
@@ -63,6 +55,7 @@ const practiceAreas = [
     description:
       "Spora güvenli dönüş sürecini hareket analizi ve kişiye özel planlamayla destekleme.",
     icon: Dumbbell,
+    href: "#calisma-alanlari",
   },
   {
     number: "03",
@@ -70,6 +63,7 @@ const practiceAreas = [
     description:
       "Hekim yönlendirmesi doğrultusunda hareket kapasitesinin yeniden kazanılmasına destek.",
     icon: HeartPulse,
+    href: "#calisma-alanlari",
   },
   {
     number: "04",
@@ -77,6 +71,7 @@ const practiceAreas = [
     description:
       "Günlük alışkanlıkların ve hareket örüntülerinin bütüncül olarak değerlendirilmesi.",
     icon: PersonStanding,
+    href: "#calisma-alanlari",
   },
 ];
 
@@ -107,49 +102,10 @@ const blogPosts = [
   },
 ];
 
-function BrandMark() {
-  return (
-    <span aria-hidden="true" className="brand-mark">
-      <span className="brand-mark__leaf brand-mark__leaf--left" />
-      <span className="brand-mark__leaf brand-mark__leaf--right" />
-      <span className="brand-mark__stem" />
-    </span>
-  );
-}
-
 export default function Home() {
   return (
     <main className="site-shell">
-      <header className="site-header">
-        <a className="brand" href="#" aria-label="Ana sayfa">
-          <BrandMark />
-          <span className="brand__copy">
-            <strong>Fzt. Deniz Yılmaz</strong>
-            <span>Harekete alan açın</span>
-          </span>
-        </a>
-
-        <nav className="desktop-nav" aria-label="Ana menü">
-          {navItems.map((item, index) => (
-            <a
-              href={item.href}
-              className={index === 0 ? "is-active" : undefined}
-              key={item.label}
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
-
-        <a className="header-cta" href="#iletisim">
-          <CalendarDays aria-hidden="true" size={18} strokeWidth={1.8} />
-          <span>Randevu Bilgisi</span>
-        </a>
-
-        <button className="mobile-menu" type="button" aria-label="Menüyü aç">
-          <Menu aria-hidden="true" size={24} />
-        </button>
-      </header>
+      <SiteHeader active="home" />
 
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero__content">
@@ -242,7 +198,7 @@ export default function Home() {
         </div>
 
         <div className="practice-grid">
-          {practiceAreas.map(({ number, title, description, icon: Icon }, index) => (
+          {practiceAreas.map(({ number, title, description, href, icon: Icon }, index) => (
             <article
               className={`practice-card${index === 0 ? " practice-card--featured" : ""}`}
               key={title}
@@ -255,8 +211,8 @@ export default function Home() {
                 <h3>{title}</h3>
                 <p>{description}</p>
               </div>
-              <a href="#" aria-label={`${title} hakkında bilgi`}>
-                Alanı inceleyin
+              <a href={href} aria-label={`${title} hakkında bilgi`}>
+                Detayı inceleyin
                 <ArrowUpRight aria-hidden="true" size={17} />
               </a>
             </article>

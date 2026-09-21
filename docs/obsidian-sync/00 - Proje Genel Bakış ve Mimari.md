@@ -21,6 +21,8 @@ Planlanan sıra:
 9. Docker yapısına Directus, PostgreSQL ve yedek servislerinin eklenmesi
 10. VPS, Cloudflare ve domain bağlantısı
 
+İç sayfa tasarımlarına `Bel ve Boyun Sağlığı` çalışma alanı ile başlandı. Kullanılan rota: `/calisma-alanlari/bel-ve-boyun-sagligi`.
+
 ## Sayfa yapısı
 
 - Ana Sayfa
