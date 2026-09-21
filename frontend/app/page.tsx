@@ -5,11 +5,44 @@ import {
   CalendarDays,
   Dumbbell,
   HeartPulse,
+  ListChecks,
   Menu,
+  MessageCircleMore,
   PersonStanding,
+  Route,
 } from "lucide-react";
 
-const navItems = ["Ana Sayfa", "Hakkımda", "Çalışma Alanları", "Blog", "İletişim"];
+const navItems = [
+  { label: "Ana Sayfa", href: "#" },
+  { label: "Hakkımda", href: "#hakkimda" },
+  { label: "Çalışma Alanları", href: "#calisma-alanlari" },
+  { label: "Blog", href: "#blog" },
+  { label: "İletişim", href: "#iletisim" },
+];
+
+const approachSteps = [
+  {
+    number: "01",
+    title: "Sizi dinleyerek başlarız",
+    description:
+      "Beklentilerinizi, günlük yaşamınızı ve hareketle ilgili ihtiyaçlarınızı birlikte ele alırız.",
+    icon: MessageCircleMore,
+  },
+  {
+    number: "02",
+    title: "Yol haritasını netleştiririz",
+    description:
+      "Değerlendirme sonrasında anlaşılır ve kişiye özel bir süreç planı oluştururuz.",
+    icon: ListChecks,
+  },
+  {
+    number: "03",
+    title: "Süreci birlikte izleriz",
+    description:
+      "İlerlemeyi düzenli olarak gözden geçirir, ihtiyaçlara göre planı yeniden şekillendiririz.",
+    icon: Route,
+  },
+];
 
 const practiceAreas = [
   {
@@ -67,11 +100,11 @@ export default function Home() {
         <nav className="desktop-nav" aria-label="Ana menü">
           {navItems.map((item, index) => (
             <a
-              href={index === 0 ? "#" : `#${item.toLocaleLowerCase("tr-TR").replaceAll(" ", "-")}`}
+              href={item.href}
               className={index === 0 ? "is-active" : undefined}
-              key={item}
+              key={item.label}
             >
-              {item}
+              {item.label}
             </a>
           ))}
         </nav>
@@ -202,6 +235,76 @@ export default function Home() {
           Buradaki içerikler genel bilgilendirme amaçlıdır; kişisel değerlendirme
           yerine geçmez.
         </p>
+      </section>
+
+      <section className="about-section" id="hakkimda" aria-labelledby="about-title">
+        <div className="about-section__portrait">
+          <div className="about-section__image">
+            <Image
+              src="/about-physiotherapist-v1.png"
+              alt="Klinikte duran fizyoterapist portresi"
+              fill
+              sizes="(max-width: 860px) 100vw, 43vw"
+            />
+          </div>
+          <div className="about-section__caption">
+            <span>Fizyoterapist</span>
+            <strong>Deniz Yılmaz</strong>
+          </div>
+        </div>
+
+        <div className="about-section__content">
+          <p className="section-kicker section-kicker--light">Hakkımda</p>
+          <h2 id="about-title">
+            Hareketin her insanda
+            <em> farklı bir hikâyesi var.</em>
+          </h2>
+          <p className="about-section__lead">
+            Her bireyin ihtiyaçlarının, günlük yaşamının ve hedeflerinin farklı
+            olduğuna inanıyorum. Bu nedenle sürece hazır kalıplarla değil,
+            dinleyerek ve değerlendirerek başlıyorum.
+          </p>
+          <p className="about-section__body">
+            Amacım; karmaşık görünen süreci anlaşılır hale getirmek, hareketle
+            ilgili hedefleri birlikte belirlemek ve her adımda açık bir iletişim
+            kurmak.
+          </p>
+
+          <div className="about-values" aria-label="Yaklaşım değerleri">
+            <div>
+              <span>01</span>
+              <strong>Dinlemek</strong>
+            </div>
+            <div>
+              <span>02</span>
+              <strong>Anlamak</strong>
+            </div>
+            <div>
+              <span>03</span>
+              <strong>Birlikte ilerlemek</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className="approach-panel" aria-labelledby="approach-title">
+          <div className="approach-panel__heading">
+            <p className="section-kicker section-kicker--light">Yaklaşımım</p>
+            <h3 id="approach-title">Sade, anlaşılır ve takip edilebilir bir süreç.</h3>
+          </div>
+
+          <div className="approach-steps">
+            {approachSteps.map(({ number, title, description, icon: Icon }) => (
+              <article className="approach-step" key={title}>
+                <div className="approach-step__icon">
+                  <Icon aria-hidden="true" size={25} strokeWidth={1.5} />
+                </div>
+                <span>{number}</span>
+                <h4>{title}</h4>
+                <p>{description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
     </main>
   );

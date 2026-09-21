@@ -60,8 +60,27 @@
 - Push işlemleri kullanıcı GitHub reposunu açtığını bildirdikten sonra yapılacak.
 - Her anlamlı arayüz paketi yerel bir commit ile işaretlenecek.
 
+### Yerel Git başlangıcı
+
+- Proje kökünde yerel Git deposu oluşturuldu.
+- GitHub remote eklenmedi ve push yapılmadı.
+- İlk kontrol noktası `f5eeab4` kimliğiyle oluşturuldu.
+- İlk commit mesajı: `feat: establish physiotherapy site foundation`.
+- Bu commit; mimari notlarını, ilk mockupı, frontend temelini, hero bölümünü ve çalışma alanları paketini kapsıyor.
+
 ### Dokümantasyon kararı
 
 - Projedeki mimari, teknik kararlar ve günlük gelişmeler Obsidian notlarıyla birlikte ilerleyecek.
 - Kanonik notların proje içindeki aynası `docs/obsidian-sync/` altında tutulacak.
 - Aynı notlar Obsidian kasasındaki `cybersecurity/fizyoterapist` klasörüne eşitlenecek.
+
+### Paket 3 — Hakkımda ve yaklaşım
+
+- Ana sayfaya Hakkımda bölümü eklendi.
+- Gerçek müşteri fotoğrafları gelene kadar kullanılmak üzere bağımsız bir fizyoterapist portresi üretildi.
+- Geçici portre `frontend/public/about-physiotherapist-v1.png` olarak kaydedildi.
+- Bölümde kişisel yaklaşımı anlatan iki kısa metin ve üç temel değer kullanıldı: dinlemek, anlamak ve birlikte ilerlemek.
+- Süreç; dinleme, yol haritası oluşturma ve takip olmak üzere üç adımda görselleştirildi.
+- Navigasyondaki Hakkımda ve Çalışma Alanları bağlantıları gerçek bölüm kimliklerine bağlandı.
+- Mobil görünümde portre, değerler ve süreç adımları tek sütun yapısına dönüştürüldü.
+- Production build başarıyla tamamlandı.
