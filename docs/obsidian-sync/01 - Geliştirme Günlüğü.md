@@ -153,3 +153,4 @@
 - Yerel dal `master` adından `main` adına taşındı.
 - `origin` remote'u `https://github.com/furkantoplu/Portfolio.git` adresine eklendi.
 - Tüm yerel commit geçmişi `origin/main` dalına başarıyla push edildi ve upstream takibi kuruldu.
+- Docker doğrulaması sonrasında daha önce açık bırakılan `localhost:5173` geliştirme sunucusu durduruldu; çalışan sunum ortamı Docker üzerinden `http://localhost:8080/` olarak bırakıldı.
