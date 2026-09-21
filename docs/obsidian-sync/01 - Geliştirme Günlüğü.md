@@ -106,3 +106,6 @@
 - Kart düzeni masaüstünde üç sütun, tablette iki sütun ve mobilde tek sütun olarak ayarlandı.
 - Yerel önizleme `http://localhost:5173/#blog` adresinde HTTP 200 yanıtıyla ve görsel kontrolle doğrulandı.
 - Production build başarıyla tamamlandı.
+- Bilgi Köşesi paketi `2f17d78` kimliğiyle yerel Git deposuna kaydedildi.
+- Commit mesajı: `feat: add blog preview section`.
+- GitHub remote eklenmedi ve push yapılmadı.
