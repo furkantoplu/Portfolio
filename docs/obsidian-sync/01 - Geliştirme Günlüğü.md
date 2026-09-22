@@ -252,3 +252,5 @@
 - Docker imajı yeniden oluşturuldu ve frontend container `healthy` durumuna geçti.
 - Beş rotanın tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
 - Yeni sayfa masaüstü ve 390 × 844 piksel mobil görünümde görsel olarak kontrol edildi.
+- Paket `6082811` kimliği ve `feat: add reusable practice detail pages` mesajıyla commit edildi.
+- Commit `origin/main` dalına başarıyla push edildi.
