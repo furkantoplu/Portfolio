@@ -283,3 +283,5 @@
 - Sekiz rotanın tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
 - Çalışma alanları dizini masaüstü ve 390 × 844 piksel mobil görünümde kontrol edildi.
 - Duruş ve Hareket Analizi detay sayfasının hero alanı ile detay sayfalarının çapraz yönlendirme bölümü görsel olarak kontrol edildi.
+- Paket `a39dfe7` kimliği ve `feat: complete practice areas frontend` mesajıyla commit edildi.
+- Commit `origin/main` dalına başarıyla push edildi.
