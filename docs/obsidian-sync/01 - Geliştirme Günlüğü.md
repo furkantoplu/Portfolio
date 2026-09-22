@@ -212,3 +212,5 @@
 - Docker imajı yeniden oluşturuldu ve frontend container `healthy` durumuna geçti.
 - Dört rotanın tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
 - Blog liste sayfası ve ilk yazı detay sayfası tarayıcıda görsel olarak kontrol edildi.
+- Paket `e36e7cd` kimliği ve `feat: add blog listing and article design` mesajıyla commit edildi.
+- Commit `origin/main` dalına başarıyla push edildi.
