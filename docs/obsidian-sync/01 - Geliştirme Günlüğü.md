@@ -312,3 +312,5 @@
 - Docker imajı yeniden oluşturuldu ve frontend container `healthy` durumuna geçti.
 - On iki rotanın tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
 - Hakkımda ve İletişim sayfaları masaüstünde; İletişim ve KVKK sayfaları 390 × 844 piksel mobil görünümde görsel olarak kontrol edildi.
+- Paket `2f4a5b5` kimliği ve `feat: add about contact and legal pages` mesajıyla commit edildi.
+- Commit `origin/main` dalına başarıyla push edildi.
