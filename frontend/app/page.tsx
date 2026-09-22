@@ -56,7 +56,7 @@ const practiceAreas = [
     description:
       "Spora güvenli dönüş sürecini hareket analizi ve kişiye özel planlamayla destekleme.",
     icon: Dumbbell,
-    href: "#calisma-alanlari",
+    href: "/calisma-alanlari/sporcu-rehabilitasyonu",
   },
   {
     number: "03",

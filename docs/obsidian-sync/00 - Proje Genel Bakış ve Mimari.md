@@ -21,7 +21,9 @@ Planlanan sıra:
 9. Docker yapısına Directus, PostgreSQL ve yedek servislerinin eklenmesi
 10. VPS, Cloudflare ve domain bağlantısı
 
-İç sayfa tasarımlarına `Bel ve Boyun Sağlığı` çalışma alanı ile başlandı. Kullanılan rota: `/calisma-alanlari/bel-ve-boyun-sagligi`.
+İç sayfa tasarımlarına `Bel ve Boyun Sağlığı` çalışma alanı ile başlandı. Kullanılan rota: `/calisma-alanlari/bel-ve-boyun-sagligi`. İkinci örnek olarak `/calisma-alanlari/sporcu-rehabilitasyonu` hazırlandı.
+
+Her çalışma alanı ziyaretçi açısından kendine ait `/calisma-alanlari/[slug]` adresine sahip olacak. Arayüz kodunda sayfalar ortak `PracticeDetail` şablonunu kullanır; yalnızca metadata, başlık, açıklamalar, değerlendirme başlıkları, süreç adımları ve SSS verileri değişir. Directus aşamasında aynı şablon korunacak ve bu veriler CMS kayıtlarından alınacak.
 
 Blog arayüzünde liste sayfası `/blog`, ilk örnek yazı ise `/blog/masa-basinda-hareket-molalari` rotasında hazırlandı. Directus entegrasyonunda blog slug yapısı aynı URL düzenini koruyacak.
 

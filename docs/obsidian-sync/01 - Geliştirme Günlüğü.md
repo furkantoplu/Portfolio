@@ -235,3 +235,20 @@
 - 390 × 844 piksel mobil görünümde kapalı ve açık menü görsel olarak kontrol edildi; panelin ekrana sığdığı ve Escape ile kapandığı doğrulandı.
 - Paket `c7a3f34` kimliği ve `feat: add responsive mobile navigation` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+### Paket 9 — Ortak çalışma alanı şablonu ve Sporcu Rehabilitasyonu
+
+- Çalışma alanlarının ziyaretçi açısından ayrı sayfa ve ayrı URL kullanmasına karar verildi.
+- Sayfaların kopyala-yapıştır kodlarla çoğaltılmaması için tekrar kullanılabilir `PracticeDetail` bileşeni oluşturuldu.
+- Ortak şablon hero, değerlendirme alanı, üç aşamalı süreç, SSS, iletişim yönlendirmesi ve alt bilgi bölümlerini içeriyor.
+- Şablonun içerik modeli; sıra numarası, başlık, vurgulu başlık, giriş metni, görsel, genel değerlendirme metni, değerlendirme maddeleri, süreç adımları ve sorulardan oluşuyor.
+- Mevcut `/calisma-alanlari/bel-ve-boyun-sagligi` sayfası görünümü değiştirilmeden ortak şablona taşındı.
+- `/calisma-alanlari/sporcu-rehabilitasyonu` adresinde ikinci çalışma alanı detay sayfası oluşturuldu.
+- Sporcu Rehabilitasyonu sayfasına özel SEO başlığı ve açıklaması eklendi.
+- İçerikte spor dalının gereksinimleri, hareket kapasitesi, kademeli yüklenme, spora dönüş hedefleri ve sık sorulan sorular ele alındı.
+- Kesin iyileşme veya kesin spora dönüş süresi vaadi kullanılmadı; içerik genel bilgilendirme sınırında tutuldu.
+- Ana sayfadaki Sporcu Rehabilitasyonu kartı yeni detay rotasına bağlandı.
+- Production build beş rota ile başarıyla tamamlandı.
+- Docker imajı yeniden oluşturuldu ve frontend container `healthy` durumuna geçti.
+- Beş rotanın tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
+- Yeni sayfa masaüstü ve 390 × 844 piksel mobil görünümde görsel olarak kontrol edildi.
