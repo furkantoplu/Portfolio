@@ -48,6 +48,14 @@ Ana sayfa ve iç sayfalar aynı header bileşenini kullanacak. Navigasyon viewpo
 
 Çalışma alanı detayları `/calisma-alanlari/[slug]` düzeninde ilerleyecek. İlk örnek rota `/calisma-alanlari/bel-ve-boyun-sagligi` olarak oluşturuldu. Directus entegrasyonunda aynı slug yapısı korunacak.
 
+## Karar 013 — Blog URL ve yayın durumu
+
+Blog liste sayfası `/blog`, yazı detayları `/blog/[slug]` yapısını kullanacak. Arayüz aşamasında yalnızca detay görünümü tamamlanan yazılar aktif bağlantı alacak. Diğer örnek içerikler bozuk bağlantı üretmek yerine “Yakında” durumuyla gösterilecek. Directus entegrasyonunda yalnızca `status = published` kayıtları ziyaretçiye açık olacak.
+
+## Karar 014 — Ortak footer
+
+Ana sayfa ve içerik sayfalarında footer tekrar yazılmayacak. Marka, alt navigasyon, sosyal bağlantı ve yasal bağlantılar ortak `SiteFooter` bileşeni üzerinden yönetilecek.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

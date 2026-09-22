@@ -181,3 +181,34 @@
 - Detay sayfasının ilk görünümü ve kaydırma sonrasında sabit navbar davranışı tarayıcıda görsel olarak kontrol edildi.
 - Paket `518e625` kimliği ve `feat: add fixed navigation and practice detail page` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+## 22 Eylül 2026
+
+### Paket 7 — Blog liste ve ilk yazı detay tasarımı
+
+- Frontend geliştirmesine blog deneyimiyle devam edildi.
+- Navbar içindeki Blog bağlantısı ana sayfa bölümünden bağımsız `/blog` rotasına taşındı.
+- Ana sayfadaki “Tüm yazıları görün” bağlantısı yeni blog liste sayfasına bağlandı.
+- Ana sayfadaki ilk blog kartı `/blog/masa-basinda-hareket-molalari` yazı detayına bağlandı.
+- Tekrarlanan footer yapısı `app/components/site-footer.tsx` bileşenine taşındı.
+- Ana sayfa, blog listesi ve blog yazısı aynı footer bileşenini kullanacak şekilde düzenlendi.
+- `/blog` sayfasında şu alanlar tasarlandı:
+  - Koyu yeşil editoryal giriş alanı
+  - Görselli öne çıkan yazı
+  - Kategori, tarih ve tahmini okuma süresi bilgileri
+  - Bilgi arşivi kartları
+  - Genel bilgilendirme uyarısı
+- Henüz detay sayfası hazırlanmayan iki örnek içerik “Yakında” durumuyla gösterildi; bozuk sayfa bağlantısı oluşturulmadı.
+- `/blog/masa-basinda-hareket-molalari` rotasında ilk yazı detay tasarımı oluşturuldu.
+- Yazı detayına özel metadata başlığı ve açıklaması tanımlandı.
+- Yazı sayfasında içerik özeti, geniş kapak görseli, masaüstünde sabit içerik dizini, metin bölümleri, vurgulu alıntı, uygulanabilir adım kartları ve iletişim yönlendirmesi yer aldı.
+- İçerik dili genel bilgilendirme sınırında tutuldu; kişisel egzersiz, tanı veya tedavi önerisi verilmedi.
+- Yeni görsel üretilmedi; mevcut fizyoterapi görseli editoryal kırpma ile tekrar kullanıldı.
+- Production build dört rota ile başarıyla tamamlandı:
+  - `/`
+  - `/blog`
+  - `/blog/masa-basinda-hareket-molalari`
+  - `/calisma-alanlari/bel-ve-boyun-sagligi`
+- Docker imajı yeniden oluşturuldu ve frontend container `healthy` durumuna geçti.
+- Dört rotanın tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
+- Blog liste sayfası ve ilk yazı detay sayfası tarayıcıda görsel olarak kontrol edildi.

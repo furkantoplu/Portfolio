@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { BrandMark, navItems, SiteHeader } from "./components/site-header";
+import { SiteFooter } from "./components/site-footer";
+import { SiteHeader } from "./components/site-header";
 import {
   Activity,
   ArrowUpRight,
@@ -83,6 +84,7 @@ const blogPosts = [
       "Uzun süre aynı pozisyonda kalmak yerine güne küçük ve sürdürülebilir hareket araları eklemek üzerine kısa bir rehber.",
     date: "18 Eylül 2026",
     readTime: "4 dk okuma",
+    href: "/blog/masa-basinda-hareket-molalari",
   },
   {
     category: "Hareket Bilgisi",
@@ -91,6 +93,7 @@ const blogPosts = [
       "Yoğun günlerde bile hareket alışkanlığını gerçekçi hedeflerle sürdürmeye yardımcı olabilecek temel öneriler.",
     date: "10 Eylül 2026",
     readTime: "5 dk okuma",
+    href: "/blog",
   },
   {
     category: "Süreç Rehberi",
@@ -99,6 +102,7 @@ const blogPosts = [
       "İlk değerlendirme öncesinde merak edilenleri ve görüşmenin genel akışını sade bir dille ele alıyoruz.",
     date: "2 Eylül 2026",
     readTime: "3 dk okuma",
+    href: "/blog",
   },
 ];
 
@@ -309,7 +313,7 @@ export default function Home() {
               Günlük yaşamda hareket sağlığını destekleyen, kolay anlaşılır ve
               kaynak odaklı içerikler.
             </p>
-            <a href="#blog-yazilari">
+            <a href="/blog">
               Tüm yazıları görün
               <ArrowUpRight aria-hidden="true" size={18} />
             </a>
@@ -337,7 +341,7 @@ export default function Home() {
               </div>
               <div className="blog-card__footer">
                 <time>{post.date}</time>
-                <a href="#" aria-label={`${post.title} yazısını okuyun`}>
+                <a href={post.href} aria-label={`${post.title} yazısını okuyun`}>
                   Yazıyı okuyun
                   <ArrowUpRight aria-hidden="true" size={17} />
                 </a>
@@ -419,37 +423,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="site-footer">
-        <div className="site-footer__top">
-          <a className="brand brand--footer" href="#" aria-label="Ana sayfaya dön">
-            <BrandMark />
-            <span className="brand__copy">
-              <strong>Fzt. Deniz Yılmaz</strong>
-              <span>Harekete alan açın</span>
-            </span>
-          </a>
-
-          <nav className="site-footer__nav" aria-label="Alt menü">
-            {navItems.slice(1).map((item) => (
-              <a href={item.href} key={item.label}>{item.label}</a>
-            ))}
-          </nav>
-
-          <a className="site-footer__social" href="#" aria-label="Instagram profili">
-            <span aria-hidden="true">@</span>
-            Instagram
-          </a>
-        </div>
-
-        <div className="site-footer__bottom">
-          <p>© 2026 Fzt. Deniz Yılmaz. Tüm hakları saklıdır.</p>
-          <p>Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.</p>
-          <div>
-            <a href="#">KVKK Aydınlatma Metni</a>
-            <a href="#">Gizlilik</a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

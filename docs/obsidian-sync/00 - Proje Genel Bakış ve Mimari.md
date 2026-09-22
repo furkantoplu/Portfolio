@@ -23,6 +23,8 @@ Planlanan sıra:
 
 İç sayfa tasarımlarına `Bel ve Boyun Sağlığı` çalışma alanı ile başlandı. Kullanılan rota: `/calisma-alanlari/bel-ve-boyun-sagligi`.
 
+Blog arayüzünde liste sayfası `/blog`, ilk örnek yazı ise `/blog/masa-basinda-hareket-molalari` rotasında hazırlandı. Directus entegrasyonunda blog slug yapısı aynı URL düzenini koruyacak.
+
 ## Sayfa yapısı
 
 - Ana Sayfa
