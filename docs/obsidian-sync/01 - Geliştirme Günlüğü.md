@@ -214,3 +214,22 @@
 - Blog liste sayfası ve ilk yazı detay sayfası tarayıcıda görsel olarak kontrol edildi.
 - Paket `e36e7cd` kimliği ve `feat: add blog listing and article design` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+### Paket 8 — İşlevsel mobil navigasyon
+
+- Tablet ve mobil görünümde daha önce yalnızca görsel olan menü düğmesi işlevsel hale getirildi.
+- Ortak header etkileşimli bir istemci bileşeni olarak düzenlendi.
+- 1120 piksel ve altındaki ekranlarda sağdan açılan koyu yeşil navigasyon paneli tasarlandı.
+- Panelde numaralandırılmış ana sayfa, hakkımda, çalışma alanları, blog ve iletişim bağlantıları gösterildi.
+- Mevcut rota panel içinde görsel olarak vurgulandı.
+- Mobil randevu yönlendirmesi panelin alt bölümüne yerleştirildi.
+- Menü düğmesinin açık/kapalı durumuna uygun menü ve çarpı ikonları eklendi.
+- Menü; düğmeye yeniden basıldığında, panel dışına dokunulduğunda, bağlantı seçildiğinde ve Escape tuşuna basıldığında kapanacak şekilde hazırlandı.
+- Panel açıkken arka sayfanın kaydırılması durduruldu; panel kapandığında body kaydırma ayarı temizleniyor.
+- `aria-expanded`, `aria-controls`, durumla değişen erişilebilir etiketler ve kapalı panel bağlantıları için odak kontrolü eklendi.
+- Marka işareti ve navigasyon verisi ayrı ortak modüllere taşındı. Böylece istemci bileşeni sınırı footer'a taşınmadı ve header/footer aynı bağlantı kaynağını kullanmaya devam etti.
+- İlk Docker denemesinde istemci bileşeni sınırı nedeniyle ana sayfanın HTTP 500 verdiği tespit edildi. Ortak veri ve marka bileşeni ayrıştırılarak sorun giderildi.
+- Production build dört rota ile başarıyla tamamlandı.
+- Docker imajı yeniden oluşturuldu ve frontend container `healthy` durumuna geçti.
+- `/`, `/blog`, `/blog/masa-basinda-hareket-molalari` ve `/calisma-alanlari/bel-ve-boyun-sagligi` rotalarının tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
+- 390 × 844 piksel mobil görünümde kapalı ve açık menü görsel olarak kontrol edildi; panelin ekrana sığdığı ve Escape ile kapandığı doğrulandı.

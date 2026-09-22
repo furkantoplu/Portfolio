@@ -1,4 +1,5 @@
-import { BrandMark, navItems } from "./site-header";
+import { BrandMark } from "./brand-mark";
+import { navItems } from "./navigation";
 
 export function SiteFooter() {
   return (

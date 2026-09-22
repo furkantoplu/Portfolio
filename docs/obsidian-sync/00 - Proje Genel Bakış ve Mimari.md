@@ -25,6 +25,8 @@ Planlanan sıra:
 
 Blog arayüzünde liste sayfası `/blog`, ilk örnek yazı ise `/blog/masa-basinda-hareket-molalari` rotasında hazırlandı. Directus entegrasyonunda blog slug yapısı aynı URL düzenini koruyacak.
 
+Ortak navigasyon masaüstünde yatay, 1120 piksel ve altındaki ekranlarda açılır panel olarak çalışır. Mobil panel; aktif sayfa vurgusu, arka alana dokunarak kapatma, Escape tuşuyla kapatma ve açıkken arka sayfa kaymasını durdurma davranışlarını içerir. Menü verileri tek bir ortak kaynaktan hem header hem footer tarafından kullanılır.
+
 ## Sayfa yapısı
 
 - Ana Sayfa
