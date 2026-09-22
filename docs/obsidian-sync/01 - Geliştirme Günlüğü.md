@@ -254,3 +254,32 @@
 - Yeni sayfa masaüstü ve 390 × 844 piksel mobil görünümde görsel olarak kontrol edildi.
 - Paket `6082811` kimliği ve `feat: add reusable practice detail pages` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+### Paket 10 — Çalışma alanları frontend bütününün tamamlanması
+
+- Kullanıcının onayıyla önceki küçük paketlerden daha geniş kapsamlı bir frontend paketi hazırlandı.
+- `/calisma-alanlari` adresinde dört çalışma alanını tek yerde sunan bağımsız bir dizin sayfası oluşturuldu.
+- Dizin sayfasında editoryal giriş alanı, dört büyük çalışma alanı kartı, yaklaşım uyarısı, iletişim yönlendirmesi ve ortak footer kullanıldı.
+- Masaüstünde iki sütun, mobilde tek sütun kart düzeni hazırlandı.
+- Header ve footer içindeki “Çalışma Alanları” bağlantısı ana sayfa içi bağlantı yerine yeni dizin sayfasına yönlendirildi.
+- Ana sayfadaki hero ve bölüm içi bağlantılar, ziyaretçiyi aynı sayfadaki çalışma alanı bölümüne götürmeye devam ediyor.
+- Dört çalışma alanının temel katalog verileri `app/components/practice-catalog.ts` dosyasında merkezileştirildi:
+  - Sıra numarası
+  - Slug
+  - Başlık
+  - Kısa açıklama
+  - Detay URL'si
+- Ana sayfa kartları ve çalışma alanı dizini aynı katalog verisini kullanacak şekilde düzenlendi.
+- `/calisma-alanlari/ameliyat-sonrasi-surec` detay sayfası oluşturuldu.
+- Ameliyat sonrası içerikte hekim yönlendirmesinin esas olduğu açıkça belirtildi; kesin başlangıç zamanı veya sonuç vaadi kullanılmadı.
+- `/calisma-alanlari/durus-ve-hareket-analizi` detay sayfası oluşturuldu.
+- Duruş içeriğinde tek bir “doğru duruş” iddiası yerine hareket çeşitliliği, günlük bağlam ve kişisel değerlendirme yaklaşımı kullanıldı.
+- İki yeni sayfaya özgü SEO başlıkları ve açıklamaları eklendi.
+- `PracticeDetail` içerik modeline slug bilgisi eklendi.
+- Her detay sayfasının sonuna mevcut sayfa dışındaki üç çalışma alanını gösteren çapraz yönlendirme bölümü eklendi.
+- Böylece ziyaretçi bir detay sayfasından diğer çalışma alanlarına veya genel çalışma alanı dizinine doğrudan geçebiliyor.
+- Production build sekiz rotayla başarıyla tamamlandı.
+- Docker imajı yeniden oluşturuldu ve frontend container `healthy` durumuna geçti.
+- Sekiz rotanın tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
+- Çalışma alanları dizini masaüstü ve 390 × 844 piksel mobil görünümde kontrol edildi.
+- Duruş ve Hareket Analizi detay sayfasının hero alanı ile detay sayfalarının çapraz yönlendirme bölümü görsel olarak kontrol edildi.

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { practiceAreas } from "./components/practice-catalog";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import {
@@ -41,40 +42,7 @@ const approachSteps = [
   },
 ];
 
-const practiceAreas = [
-  {
-    number: "01",
-    title: "Bel ve Boyun Sağlığı",
-    description:
-      "Günlük yaşamı etkileyen hareket kısıtlılıklarına yönelik değerlendirme odaklı yaklaşım.",
-    icon: Activity,
-    href: "/calisma-alanlari/bel-ve-boyun-sagligi",
-  },
-  {
-    number: "02",
-    title: "Sporcu Rehabilitasyonu",
-    description:
-      "Spora güvenli dönüş sürecini hareket analizi ve kişiye özel planlamayla destekleme.",
-    icon: Dumbbell,
-    href: "/calisma-alanlari/sporcu-rehabilitasyonu",
-  },
-  {
-    number: "03",
-    title: "Ameliyat Sonrası Süreç",
-    description:
-      "Hekim yönlendirmesi doğrultusunda hareket kapasitesinin yeniden kazanılmasına destek.",
-    icon: HeartPulse,
-    href: "#calisma-alanlari",
-  },
-  {
-    number: "04",
-    title: "Duruş ve Hareket Analizi",
-    description:
-      "Günlük alışkanlıkların ve hareket örüntülerinin bütüncül olarak değerlendirilmesi.",
-    icon: PersonStanding,
-    href: "#calisma-alanlari",
-  },
-];
+const practiceIcons = [Activity, Dumbbell, HeartPulse, PersonStanding];
 
 const blogPosts = [
   {
@@ -202,25 +170,28 @@ export default function Home() {
         </div>
 
         <div className="practice-grid">
-          {practiceAreas.map(({ number, title, description, href, icon: Icon }, index) => (
-            <article
-              className={`practice-card${index === 0 ? " practice-card--featured" : ""}`}
-              key={title}
-            >
-              <div className="practice-card__topline">
-                <span>{number}</span>
-                <Icon aria-hidden="true" size={26} strokeWidth={1.45} />
-              </div>
-              <div>
-                <h3>{title}</h3>
-                <p>{description}</p>
-              </div>
-              <a href={href} aria-label={`${title} hakkında bilgi`}>
-                Detayı inceleyin
-                <ArrowUpRight aria-hidden="true" size={17} />
-              </a>
-            </article>
-          ))}
+          {practiceAreas.map(({ number, title, description, href }, index) => {
+            const Icon = practiceIcons[index];
+            return (
+              <article
+                className={`practice-card${index === 0 ? " practice-card--featured" : ""}`}
+                key={title}
+              >
+                <div className="practice-card__topline">
+                  <span>{number}</span>
+                  <Icon aria-hidden="true" size={26} strokeWidth={1.45} />
+                </div>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </div>
+                <a href={href} aria-label={`${title} hakkında bilgi`}>
+                  Detayı inceleyin
+                  <ArrowUpRight aria-hidden="true" size={17} />
+                </a>
+              </article>
+            );
+          })}
         </div>
 
         <p className="practice-section__footnote">

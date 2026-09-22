@@ -8,6 +8,7 @@ import {
   Route,
 } from "lucide-react";
 import { SiteHeader } from "./site-header";
+import { practiceAreas } from "./practice-catalog";
 
 type ProcessStep = {
   title: string;
@@ -20,6 +21,7 @@ type Question = {
 };
 
 export type PracticeDetailContent = {
+  slug: string;
   index: string;
   title: string;
   titleAccent: string;
@@ -144,6 +146,24 @@ export function PracticeDetail({ content }: { content: PracticeDetailContent }) 
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="detail-related" aria-labelledby="related-title">
+        <div className="detail-related__heading">
+          <p className="section-kicker">Diğer Çalışma Alanları</p>
+          <h2 id="related-title">İhtiyacınıza yakın diğer başlıkları inceleyin.</h2>
+        </div>
+        <div className="detail-related__grid">
+          {practiceAreas
+            .filter((area) => area.slug !== content.slug)
+            .map((area) => (
+              <a href={area.href} key={area.slug}>
+                <span>{area.number}</span>
+                <strong>{area.title}</strong>
+                <ArrowUpRight aria-hidden="true" size={18} />
+              </a>
+            ))}
         </div>
       </section>
 

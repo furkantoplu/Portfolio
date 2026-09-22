@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 const content: PracticeDetailContent = {
+  slug: "bel-ve-boyun-sagligi",
   index: "01",
   title: "Bel ve boyun sağlığına",
   titleAccent: "hareket odaklı yaklaşım.",

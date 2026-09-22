@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 const content: PracticeDetailContent = {
+  slug: "sporcu-rehabilitasyonu",
   index: "02",
   title: "Spora dönüşte",
   titleAccent: "planlı ve ölçülü ilerleme.",

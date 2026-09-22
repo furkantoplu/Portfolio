@@ -25,6 +25,15 @@ Planlanan sıra:
 
 Her çalışma alanı ziyaretçi açısından kendine ait `/calisma-alanlari/[slug]` adresine sahip olacak. Arayüz kodunda sayfalar ortak `PracticeDetail` şablonunu kullanır; yalnızca metadata, başlık, açıklamalar, değerlendirme başlıkları, süreç adımları ve SSS verileri değişir. Directus aşamasında aynı şablon korunacak ve bu veriler CMS kayıtlarından alınacak.
 
+Çalışma alanlarının tamamını sunan `/calisma-alanlari` dizin sayfası oluşturuldu. Dört alanın kartlarda ve detay sayfalarındaki çapraz bağlantılarda kullanılan temel başlık, slug, özet ve URL bilgileri ortak `practice-catalog.ts` kaynağında tutuluyor.
+
+Mevcut çalışma alanı rotaları:
+
+- `/calisma-alanlari/bel-ve-boyun-sagligi`
+- `/calisma-alanlari/sporcu-rehabilitasyonu`
+- `/calisma-alanlari/ameliyat-sonrasi-surec`
+- `/calisma-alanlari/durus-ve-hareket-analizi`
+
 Blog arayüzünde liste sayfası `/blog`, ilk örnek yazı ise `/blog/masa-basinda-hareket-molalari` rotasında hazırlandı. Directus entegrasyonunda blog slug yapısı aynı URL düzenini koruyacak.
 
 Ortak navigasyon masaüstünde yatay, 1120 piksel ve altındaki ekranlarda açılır panel olarak çalışır. Mobil panel; aktif sayfa vurgusu, arka alana dokunarak kapatma, Escape tuşuyla kapatma ve açıkken arka sayfa kaymasını durdurma davranışlarını içerir. Menü verileri tek bir ortak kaynaktan hem header hem footer tarafından kullanılır.

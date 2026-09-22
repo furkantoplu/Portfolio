@@ -66,10 +66,20 @@ Navigasyon bağlantıları `components/navigation.ts`, marka işareti `component
 
 Her çalışma alanı `/calisma-alanlari/[slug]` düzeninde ayrı ve paylaşılabilir bir URL kullanacak. Tasarım ve bölüm yapısı `PracticeDetail` bileşeninde ortak tutulacak; her rota yalnızca kendine ait içerik nesnesini ve metadata bilgisini sağlayacak. Bu sayede görsel tutarlılık korunacak, düzeltmeler tek yerden uygulanacak ve Directus entegrasyonunda içerik nesneleri CMS verileriyle değiştirilebilecek.
 
-Arayüz onayı süresince rotalar küçük paketlerle eklenecek. Mevcut iki rota:
+Arayüz onayı süresince rotalar paketler halinde eklenecek. Mevcut rotalar:
 
 - `/calisma-alanlari/bel-ve-boyun-sagligi`
 - `/calisma-alanlari/sporcu-rehabilitasyonu`
+- `/calisma-alanlari/ameliyat-sonrasi-surec`
+- `/calisma-alanlari/durus-ve-hareket-analizi`
+
+## Karar 017 — Çalışma alanı dizini ve ortak katalog
+
+Tüm çalışma alanları `/calisma-alanlari` dizin sayfasında listelenecek. Üst ve alt navigasyondaki ana “Çalışma Alanları” bağlantısı bu dizine gidecek; ana sayfanın kendi bölüm içi çağrı bağlantıları ise `/#calisma-alanlari` davranışını koruyacak.
+
+Kartlarda ve detay sayfaları arasındaki çapraz yönlendirmelerde gerekli temel bilgiler `components/practice-catalog.ts` içinde tek kaynak olarak tutulacak. Detay sayfasına özgü uzun metinler rota dosyasında kalacak. Directus entegrasyonunda her iki veri grubu tek `practice_areas` koleksiyonundan üretilecek.
+
+Çalışma alanı detaylarında mevcut detay dışındaki üç alan görünür bağlantılarla sunulacak. Böylece içerik keşfi yalnızca tarayıcının geri tuşuna veya ana sayfaya bağlı kalmayacak.
 
 ## Git commit yaklaşımı
 
