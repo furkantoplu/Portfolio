@@ -72,7 +72,7 @@ export default function PracticeAreasPage() {
           Kişisel ihtiyaçlar ve sürecin uygunluğu ancak bireysel görüşme ve
           değerlendirme sonrasında ele alınabilir.
         </p>
-        <a href="/#iletisim">İletişim bilgilerine gidin <ArrowUpRight aria-hidden="true" size={18} /></a>
+        <a href="/iletisim">İletişim bilgilerine gidin <ArrowUpRight aria-hidden="true" size={18} /></a>
       </section>
 
       <SiteFooter />

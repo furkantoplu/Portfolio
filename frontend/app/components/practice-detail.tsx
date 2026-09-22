@@ -58,7 +58,7 @@ export function PracticeDetail({ content }: { content: PracticeDetailContent }) 
             <em> {content.titleAccent}</em>
           </h1>
           <p className="detail-hero__lead">{content.lead}</p>
-          <a className="primary-button" href="/#iletisim">
+          <a className="primary-button" href="/iletisim">
             Görüşme hakkında bilgi alın
             <ArrowUpRight aria-hidden="true" size={18} />
           </a>
@@ -172,7 +172,7 @@ export function PracticeDetail({ content }: { content: PracticeDetailContent }) 
           <p className="section-kicker section-kicker--light">İletişim</p>
           <h2 id="detail-cta-title">Sürecin sizin için uygunluğunu birlikte konuşalım.</h2>
         </div>
-        <a href="/#iletisim">
+        <a href="/iletisim">
           İletişim bilgilerine gidin
           <ArrowUpRight aria-hidden="true" size={19} />
         </a>

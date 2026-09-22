@@ -53,7 +53,7 @@ export function SiteHeader({ active = "home" }: SiteHeaderProps) {
           ))}
         </nav>
 
-        <a className="header-cta" href="/#iletisim">
+        <a className="header-cta" href="/iletisim">
           <CalendarDays aria-hidden="true" size={18} strokeWidth={1.8} />
           <span>Randevu Bilgisi</span>
         </a>
@@ -114,7 +114,7 @@ export function SiteHeader({ active = "home" }: SiteHeaderProps) {
 
           <a
             className="mobile-nav__cta"
-            href="/#iletisim"
+            href="/iletisim"
             tabIndex={isMenuOpen ? 0 : -1}
             onClick={closeMenu}
           >

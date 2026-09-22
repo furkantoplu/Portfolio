@@ -102,7 +102,7 @@ export default function Home() {
               Çalışma Alanlarını İncele
               <ArrowUpRight aria-hidden="true" size={18} />
             </a>
-            <a className="text-link" href="#hakkimda">
+            <a className="text-link" href="/hakkimda">
               Yaklaşımımı Tanıyın
               <span aria-hidden="true">→</span>
             </a>

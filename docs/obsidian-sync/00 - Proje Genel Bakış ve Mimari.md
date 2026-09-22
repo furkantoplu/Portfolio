@@ -41,15 +41,19 @@ Ortak navigasyon masaüstünde yatay, 1120 piksel ve altındaki ekranlarda açı
 ## Sayfa yapısı
 
 - Ana Sayfa
-- Hakkımda
-- Çalışma Alanları
+- Hakkımda: `/hakkimda`
+- Çalışma Alanları: `/calisma-alanlari`
 - Çalışma Alanı Detayı
-- Blog
+- Blog: `/blog`
 - Blog Yazısı
-- İletişim
-- KVKK Aydınlatma Metni
-- Gizlilik ve Çerez Politikası
+- İletişim: `/iletisim`
+- KVKK Aydınlatma Metni: `/kvkk-aydinlatma-metni`
+- Gizlilik Bilgilendirmesi: `/gizlilik`
 - Özel yönetim yolu: örnek olarak `/bakir`
+
+Hakkımda ve İletişim bölümleri ana sayfada kısa özet olarak kalır; navigasyon bağlantıları ziyaretçiyi ayrıntılı bağımsız sayfalara götürür. İlk sürümde iletişim formu bulunmaz. Telefon, WhatsApp ve e-posta bağlantıları kullanılır; ziyaretçiden site üzerinden sağlık verisi toplanmaz.
+
+KVKK ve gizlilik sayfaları arayüz taslağı olarak hazırlanmıştır. Veri sorumlusu kimliği, hukuki sebepler, aktarım tarafları, saklama süreleri ve production hizmet sağlayıcıları gerçek veri işleme envanteri kesinleştiğinde doldurulacak; yayın öncesinde hukuk uzmanı kontrolü yapılacaktır.
 
 ## Teknoloji mimarisi
 

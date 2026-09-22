@@ -285,3 +285,30 @@
 - Duruş ve Hareket Analizi detay sayfasının hero alanı ile detay sayfalarının çapraz yönlendirme bölümü görsel olarak kontrol edildi.
 - Paket `a39dfe7` kimliği ve `feat: complete practice areas frontend` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+### Paket 11 — Hakkımda, İletişim ve yasal taslak sayfaları
+
+- Büyük frontend paketi kapsamında kurumsal ve yasal sayfa tasarımları tamamlandı.
+- `/hakkimda` adresinde bağımsız Hakkımda sayfası oluşturuldu.
+- Hakkımda sayfasında portreli hero, mesleki yaklaşım, çalışma ilkeleri ve çalışma alanlarına yönlendirme bölümleri hazırlandı.
+- Müşteriden henüz alınmayan diploma, eğitim ve sertifika bilgileri uydurulmadı; gerçek içerik bekleyen alan açık bir notla belirtildi.
+- `/iletisim` adresinde bağımsız İletişim sayfası oluşturuldu.
+- Telefon, WhatsApp ve e-posta seçenekleri büyük erişilebilir bağlantı kartları olarak tasarlandı.
+- Görüşme adresi, çalışma saatleri ve iletişimden ilk görüşmeye kadar üç adımlı süreç bölümü eklendi.
+- İlk iletişimde sağlık raporu veya ayrıntılı sağlık verisi gönderilmemesi gerektiği görünür biçimde belirtildi.
+- Bilinçli veri minimizasyonu kararıyla ilk sürüme iletişim formu eklenmedi.
+- `/kvkk-aydinlatma-metni` ve `/gizlilik` rotaları oluşturuldu.
+- İki yasal sayfanın ortak düzeni `LegalDocument` bileşeninde merkezileştirildi.
+- KVKK taslağında veri sorumlusu kimliği, işlenebilecek veriler, işleme amaçları, aktarım/yöntem/hukuki sebep ile ilgili kişi hakları ayrı bölümlerde sunuldu.
+- Gizlilik taslağında site kapsamı, harici iletişim bağlantıları, teknik kayıtlar, çerez/ölçüm araçları ve güncelleme bilgileri yer aldı.
+- Yasal metinlerin gerçek veri işleme envanteri ve production sağlayıcıları kesinleşmeden nihai olmadığı açıkça gösterildi.
+- Taslak oluşturulurken Kişisel Verileri Koruma Kurumunun resmî aydınlatma yükümlülüğü sayfası ve kamuoyu duyurusu kontrol edildi:
+  - https://www.kvkk.gov.tr/Icerik/2033/Aydinlatma-Yukumlulugu-
+  - https://www.kvkk.gov.tr/Icerik/6765/AYDINLATMA-YUKUMLULUGUNUN-YERINE-GETIRILMESI-HAKKINDA-KAMUOYU-DUYURUSU
+- Navbar içindeki Hakkımda ve İletişim bağlantıları bağımsız sayfalara taşındı.
+- Header randevu butonları ve site genelindeki iletişim çağrıları `/iletisim` rotasına bağlandı.
+- Footer içindeki KVKK ve Gizlilik bağlantıları gerçek rotalara bağlandı.
+- Production build on iki rota ile başarıyla tamamlandı.
+- Docker imajı yeniden oluşturuldu ve frontend container `healthy` durumuna geçti.
+- On iki rotanın tamamı Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
+- Hakkımda ve İletişim sayfaları masaüstünde; İletişim ve KVKK sayfaları 390 × 844 piksel mobil görünümde görsel olarak kontrol edildi.

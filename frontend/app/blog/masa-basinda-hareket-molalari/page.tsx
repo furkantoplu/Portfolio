@@ -132,7 +132,7 @@ export default function MovementBreaksArticlePage() {
                 <ArrowLeft aria-hidden="true" size={17} />
                 Tüm yazılara dön
               </a>
-              <a href="/#iletisim">
+              <a href="/iletisim">
                 Görüşme hakkında bilgi alın
                 <ArrowUpRight aria-hidden="true" size={18} />
               </a>

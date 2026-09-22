@@ -29,8 +29,8 @@ export function SiteFooter() {
         <p>© 2026 Fzt. Deniz Yılmaz. Tüm hakları saklıdır.</p>
         <p>Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.</p>
         <div>
-          <a href="#">KVKK Aydınlatma Metni</a>
-          <a href="#">Gizlilik</a>
+          <a href="/kvkk-aydinlatma-metni">KVKK Aydınlatma Metni</a>
+          <a href="/gizlilik">Gizlilik</a>
         </div>
       </div>
     </footer>
