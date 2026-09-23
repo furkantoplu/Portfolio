@@ -361,3 +361,5 @@
 - Kurulum betiği ikinci kez çalıştırıldı; koleksiyonun ve dört kaydın çoğaltılmadığı doğrulandı.
 - Veritabanında dört kaydın sırası, başlığı, slug değeri ve yayın durumu doğrudan kontrol edildi.
 - Bu paket henüz public API izni veya frontend veri bağlantısı açmaz. Sonraki paket yalnızca yayınlanmış kayıtların okunmasını sağlayacak ve liste/detay sayfalarını Directus verisine bağlayacaktır.
+- Paket `03d1652` kimliği ve `feat: add manageable practice areas schema` mesajıyla commit edildi.
+- Commit `origin/main` dalına başarıyla push edildi.
