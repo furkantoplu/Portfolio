@@ -23,9 +23,9 @@ Planlanan sıra:
 
 İç sayfa tasarımlarına `Bel ve Boyun Sağlığı` çalışma alanı ile başlandı. Kullanılan rota: `/calisma-alanlari/bel-ve-boyun-sagligi`. İkinci örnek olarak `/calisma-alanlari/sporcu-rehabilitasyonu` hazırlandı.
 
-Her çalışma alanı ziyaretçi açısından kendine ait `/calisma-alanlari/[slug]` adresine sahip olacak. Arayüz kodunda sayfalar ortak `PracticeDetail` şablonunu kullanır; yalnızca metadata, başlık, açıklamalar, değerlendirme başlıkları, süreç adımları ve SSS verileri değişir. Directus aşamasında aynı şablon korunacak ve bu veriler CMS kayıtlarından alınacak.
+Her çalışma alanı ziyaretçi açısından kendine ait `/calisma-alanlari/[slug]` adresine sahiptir. Tek dinamik rota ortak `PracticeDetail` şablonunu kullanır; metadata, başlık, açıklamalar, değerlendirme başlıkları, süreç adımları ve SSS verileri Directus kaydından alınır.
 
-Çalışma alanlarının tamamını sunan `/calisma-alanlari` dizin sayfası oluşturuldu. Dört alanın kartlarda ve detay sayfalarındaki çapraz bağlantılarda kullanılan temel başlık, slug, özet ve URL bilgileri ortak `practice-catalog.ts` kaynağında tutuluyor.
+Çalışma alanlarının tamamını sunan `/calisma-alanlari` dizin sayfası oluşturuldu. Kartlar, detay sayfaları ve çapraz bağlantılarda kullanılan başlık, slug, özet ve sıralama bilgileri Directus `practice_areas` koleksiyonundan dinamik olarak alınıyor.
 
 Mevcut çalışma alanı rotaları:
 
@@ -140,6 +140,8 @@ Cloudflare görevleri:
 - SEO başlığı ve açıklaması
 
 Çalışma alanları kodda sabit bir sayıyla sınırlandırılmayacak. Yaklaşık 15 alan veya daha fazlası Directus panelinden eklenebilir. `status = published` kayıtları çalışma alanları dizininde ve kendi detay URL'lerinde gösterilir. `status = hidden` kayıtları silinmeden ziyaretçiden saklanır. `show_on_homepage = true` yalnızca ana sayfadaki sınırlı kart seçimini belirler; böylece tüm alanlar dizinde kalırken ana sayfa kalabalıklaşmaz.
+
+Frontend çalışma alanlarını `directus-extension-website-content` adlı salt-okunur Directus endpoint eklentisinden alır. Eklenti yalnızca `status = published` kayıtlarını ve frontend için izin verilen alanları döndürür. Standart Directus koleksiyon API'si anonim erişime kapalıdır. Ana sayfa endpoint'e ayrıca `homepage=true` parametresi göndererek yalnızca `show_on_homepage = true` kayıtları ister. Liste ve detay sayfaları her istekte güncel veriyi alır; gizlenen bir kayıt hem listeden kalkar hem de detay URL'sinde 404 üretir.
 
 ### Site ayarları
 

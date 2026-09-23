@@ -40,7 +40,7 @@ services:
       WEBSOCKETS_ENABLED: "true"
     volumes:
       - directus_uploads:/directus/uploads
-      - directus_extensions:/directus/extensions
+      - ./directus/extensions:/directus/extensions:ro
     healthcheck:
       test:
         - CMD
@@ -58,12 +58,16 @@ services:
       dockerfile: Dockerfile
     image: fizyoterapist-frontend:local
     restart: unless-stopped
+    depends_on:
+      directus:
+        condition: service_healthy
     expose:
       - "3000"
     environment:
       NODE_ENV: production
       WRANGLER_SEND_METRICS: "false"
       WRANGLER_WRITE_LOGS: "false"
+      DIRECTUS_URL: http://directus:8055
     healthcheck:
       test:
         - CMD
@@ -89,4 +93,3 @@ services:
 volumes:
   postgres_data:
   directus_uploads:
-  directus_extensions:

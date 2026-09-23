@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { practiceAreas } from "./components/practice-catalog";
+import { getPracticeAreas } from "./lib/directus";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import {
@@ -74,7 +74,8 @@ const blogPosts = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const practiceAreas = await getPracticeAreas({ homepage: true });
   return (
     <main className="site-shell">
       <SiteHeader active="home" />
@@ -170,8 +171,10 @@ export default function Home() {
         </div>
 
         <div className="practice-grid">
-          {practiceAreas.map(({ number, title, description, href }, index) => {
-            const Icon = practiceIcons[index];
+          {practiceAreas.map(({ title, summary, slug }, index) => {
+            const Icon = practiceIcons[index % practiceIcons.length];
+            const number = String(index + 1).padStart(2, "0");
+            const href = `/calisma-alanlari/${slug}`;
             return (
               <article
                 className={`practice-card${index === 0 ? " practice-card--featured" : ""}`}
@@ -183,7 +186,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h3>{title}</h3>
-                  <p>{description}</p>
+                  <p>{summary}</p>
                 </div>
                 <a href={href} aria-label={`${title} hakkında bilgi`}>
                   Detayları incele

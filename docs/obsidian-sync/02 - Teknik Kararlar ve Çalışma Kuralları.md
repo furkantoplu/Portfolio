@@ -77,7 +77,7 @@ Arayüz onayı süresince rotalar paketler halinde eklenecek. Mevcut rotalar:
 
 Tüm çalışma alanları `/calisma-alanlari` dizin sayfasında listelenecek. Üst ve alt navigasyondaki ana “Çalışma Alanları” bağlantısı bu dizine gidecek; ana sayfanın kendi bölüm içi çağrı bağlantıları ise `/#calisma-alanlari` davranışını koruyacak.
 
-Kartlarda ve detay sayfaları arasındaki çapraz yönlendirmelerde gerekli temel bilgiler `components/practice-catalog.ts` içinde tek kaynak olarak tutulacak. Detay sayfasına özgü uzun metinler rota dosyasında kalacak. Directus entegrasyonunda her iki veri grubu tek `practice_areas` koleksiyonundan üretilecek.
+Kartlarda, detay sayfalarında ve çapraz yönlendirmelerde gerekli tüm bilgiler Directus `practice_areas` koleksiyonunda tek kaynak olarak tutulur. Eski `components/practice-catalog.ts` dosyası ve dört sabit detay rota dosyası kaldırılmış; liste ve detaylar dinamik veri katmanına taşınmıştır.
 
 Çalışma alanı detaylarında mevcut detay dışındaki üç alan görünür bağlantılarla sunulacak. Böylece içerik keşfi yalnızca tarayıcının geri tuşuna veya ana sayfaya bağlı kalmayacak.
 
@@ -105,7 +105,7 @@ Resmî referanslar:
 - CMS imajı tekrar üretilebilir kurulum için `directus/directus:12.4.0` sürümüne sabitlendi.
 - Veritabanı `postgres:16-alpine` üzerinde çalışır ve host sistemine port yayınlamaz.
 - Directus geliştirme portu yalnızca loopback adresine (`127.0.0.1`) bağlanır. Production ortamında doğrudan 8055 portu internete açılmayacak; erişim reverse proxy ve özel yönetim yolu üzerinden sağlanacaktır.
-- `postgres_data`, `directus_uploads` ve `directus_extensions` named volume'ları container yeniden oluşturulsa bile veriyi korur.
+- `postgres_data` ve `directus_uploads` named volume'ları container yeniden oluşturulsa bile veriyi korur. Directus eklentileri proje içindeki `directus/extensions` klasöründen salt-okunur bind mount ile yüklenir ve Git ile sürümlenir.
 - Örnek değişken adları `.env.example` içinde tutulur. Gerçek parola, secret ve yönetici bilgileri `.env` içinde kalır ve Git'e girmez.
 - Yerel yönetici hesabı `admin@furkantoplu.com` adresiyle oluşturulmuştur. Parola dokümanlarda tutulmaz.
 - İlk backend paketi yalnızca çalışma altyapısını kapsar. İçerik şeması, editör rolü, alan bazlı yetkiler, TOTP, `/bakir`, yedekleme ve production sertleştirmesi ayrı paketlerde ele alınacaktır.
@@ -119,6 +119,16 @@ Resmî referanslar:
 - `/calisma-alanlari` sayfası tüm yayınlanmış kayıtları `sort` alanına göre sıralar; ana sayfa yayınlanmış ve `show_on_homepage = true` kayıtları kullanır.
 - `slug` benzersizdir ve public URL'nin kalıcı parçasıdır. Yayına çıktıktan sonra değiştirilmesi yönlendirme gerektireceği için panelde açıklama gösterilir.
 - Kurulum ve başlangıç verileri `scripts/bootstrap-directus.mjs` ile idempotent biçimde uygulanır. Betik `.env` içindeki yönetici bilgilerini kullanır ve gizli değerleri loglamaz.
+
+## Karar 023 — Public içerik endpoint'i ve Directus 12 lisans sınırı
+
+- Directus 12.4.0 ücretsiz kurulumunda satır bazlı özel permission kuralları lisans kısıtına tabidir. Proje bu ücretli özelliğe bağımlı olmayacaktır.
+- Standart `items/practice_areas` koleksiyon API'sine anonim okuma izni verilmez; bu endpoint HTTP 403 döndürür.
+- Public site içeriği, proje içinde sürümlenen `directus-extension-website-content` endpoint eklentisinden okunur.
+- Eklenti SQL sorgusunda zorunlu `status = published` koşulu uygular, yalnızca açıkça belirlenmiş alanları seçer ve yazma işlemi sunmaz.
+- Detay sorgusunda slug Knex parametre bağlama sistemi üzerinden uygulanır; doğrudan SQL birleştirmesi yapılmaz.
+- Directus production ortamında doğrudan internete port açmayacak; frontend Compose servis adı üzerinden iç ağdan erişecektir. Yönetim yolu ayrıca reverse proxy/Cloudflare kurallarıyla korunacaktır.
+- Vinext Worker ortamı normal container değişkenlerini otomatik devralmadığı için `DIRECTUS_URL`, Vite Cloudflare binding yapılandırmasına eklenir. Docker build varsayılanı `http://directus:8055`, yerel geliştirme varsayılanı `http://localhost:8055` olur.
 
 ## Git commit yaklaşımı
 

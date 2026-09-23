@@ -7,7 +7,7 @@ import {
   HeartPulse,
   PersonStanding,
 } from "lucide-react";
-import { practiceAreas } from "../components/practice-catalog";
+import { getPracticeAreas } from "../lib/directus";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 
@@ -19,7 +19,9 @@ export const metadata: Metadata = {
 
 const icons = [Activity, Dumbbell, HeartPulse, PersonStanding];
 
-export default function PracticeAreasPage() {
+export default async function PracticeAreasPage() {
+  const practiceAreas = await getPracticeAreas();
+
   return (
     <main className="site-shell practice-directory-page">
       <SiteHeader active="areas" />
@@ -38,22 +40,23 @@ export default function PracticeAreasPage() {
             Aynı başlık altında görünen ihtiyaçlar bile her kişide farklı bir
             hikâyeye sahip olabilir. Süreç, dinleme ve değerlendirmeyle başlar.
           </p>
-          <span>04 çalışma alanı · Kişiye özel değerlendirme</span>
+          <span>{String(practiceAreas.length).padStart(2, "0")} çalışma alanı · Kişiye özel değerlendirme</span>
         </div>
       </section>
 
       <section className="practice-directory-grid" aria-label="Çalışma alanı listesi">
         {practiceAreas.map((area, index) => {
-          const Icon = icons[index];
+          const Icon = icons[index % icons.length];
+          const number = String(index + 1).padStart(2, "0");
           return (
             <article key={area.slug}>
               <div className="practice-directory-card__topline">
-                <span>{area.number}</span>
+                <span>{number}</span>
                 <Icon aria-hidden="true" size={29} strokeWidth={1.35} />
               </div>
               <h2>{area.title}</h2>
-              <p>{area.description}</p>
-              <a href={area.href} aria-label={`${area.title} detayını inceleyin`}>
+              <p>{area.summary}</p>
+              <a href={`/calisma-alanlari/${area.slug}`} aria-label={`${area.title} detayını inceleyin`}>
                 Detay sayfasını açın
                 <ArrowUpRight aria-hidden="true" size={18} />
               </a>

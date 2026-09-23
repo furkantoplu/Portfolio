@@ -363,3 +363,28 @@
 - Bu paket henüz public API izni veya frontend veri bağlantısı açmaz. Sonraki paket yalnızca yayınlanmış kayıtların okunmasını sağlayacak ve liste/detay sayfalarını Directus verisine bağlayacaktır.
 - Paket `03d1652` kimliği ve `feat: add manageable practice areas schema` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+### Paket 14 — Directus–frontend çalışma alanları bağlantısı
+
+- Mevcut dört detay sayfasındaki tüm başlık, açıklama, değerlendirme maddesi, süreç adımı, SSS ve SEO içeriği Directus kayıtlarına aktarıldı.
+- `practice_areas` koleksiyonuna detay hero başlıkları, vurgu başlıkları, giriş metni, görsel yolu/alternatif metni ve değerlendirme başlıkları için eksik alanlar eklendi.
+- Kurulum betiği mevcut yönetici düzenlemelerini ezmemek için yalnızca boş alanları tamamlayacak şekilde geliştirildi.
+- Directus 12.4.0 ücretsiz kurulumunda özel satır bazlı permission kuralının `custom_permission_rules_enabled` lisans kısıtına takıldığı kurulum sırasında tespit edildi.
+- Gizli kayıtları standart public API ile açmamak için anonim `items/practice_areas` erişimi kapalı bırakıldı.
+- `directus-extension-website-content` adlı salt-okunur endpoint eklentisi oluşturuldu ve Docker içindeki Directus extensions dizinine koddan bağlandı.
+- Eklenti yalnızca `status = published` kayıtlarını ve frontend için açıkça listelenen alanları döndürür.
+- Liste endpoint'i sıralamayı `sort` alanına göre yapar; `homepage=true` parametresi yalnızca ana sayfada gösterilecek kayıtları seçer.
+- Detay endpoint'i yalnızca yayınlanmış ve slug değeri eşleşen tek kaydı döndürür; taslak, gizli veya bilinmeyen slug için 404 üretir.
+- Directus loglarında `directus-extension-website-content` eklentisinin başarıyla yüklendiği doğrulandı.
+- Standart anonim koleksiyon API'sinin HTTP 403 vermeye devam ettiği; özel yayın endpoint'inin HTTP 200 ile dört kayıt döndürdüğü doğrulandı.
+- Frontend için `app/lib/directus.ts` sunucu tarafı veri katmanı oluşturuldu.
+- Ana sayfa yalnızca yayınlanmış ve `Ana sayfada göster` işaretli kayıtları Directus'tan almaya başladı.
+- `/calisma-alanlari` sayfası yayınlanmış kayıt sayısını, sıralamasını, başlığını ve kart açıklamasını Directus'tan alacak şekilde dönüştürüldü.
+- Dört ayrı sabit rota tek `/calisma-alanlari/[slug]` dinamik rotasında birleştirildi.
+- Dinamik rota metadata, detay içeriği, SSS ve diğer çalışma alanı bağlantılarını Directus verisinden üretir.
+- Yeni eklenen çalışma alanları için boş bırakılabilen detay alanlarında güvenli varsayılan metin ve görsel davranışı tanımlandı.
+- Vinext/Wrangler Worker ortamına `DIRECTUS_URL` binding'i eklendi; geliştirmede localhost, Docker'da `http://directus:8055` kullanılır.
+- Production build başarılı oldu ve dinamik çalışma alanı rotası build çıktısında doğrulandı.
+- Docker imajı yeniden oluşturuldu; database, Directus ve frontend servisleri `healthy` durumuna geçti.
+- Ana sayfa, çalışma alanları dizini ve mevcut dört detay rotası HTTP 200; bilinmeyen slug HTTP 404 verdi.
+- Duruş ve Hareket Analizi kaydı kısa süreliğine `Gizli` yapılarak listeden çıktığı ve detay URL'sinin 404 döndürdüğü doğrulandı; test sonunda kayıt yeniden `Yayında` durumuna alındı.

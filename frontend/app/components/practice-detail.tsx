@@ -8,7 +8,6 @@ import {
   Route,
 } from "lucide-react";
 import { SiteHeader } from "./site-header";
-import { practiceAreas } from "./practice-catalog";
 
 type ProcessStep = {
   title: string;
@@ -32,13 +31,26 @@ export type PracticeDetailContent = {
   overviewAccent: string;
   overviewDescription: string;
   evaluationTopics: string[];
-  processSteps: [ProcessStep, ProcessStep, ProcessStep];
+  processSteps: ProcessStep[];
   questions: Question[];
+};
+
+type RelatedPracticeArea = {
+  slug: string;
+  number: string;
+  title: string;
+  href: string;
 };
 
 const processIcons = [MessageCircleMore, ClipboardCheck, Route];
 
-export function PracticeDetail({ content }: { content: PracticeDetailContent }) {
+export function PracticeDetail({
+  content,
+  relatedAreas,
+}: {
+  content: PracticeDetailContent;
+  relatedAreas: RelatedPracticeArea[];
+}) {
   return (
     <main className="site-shell detail-page">
       <SiteHeader active="areas" />
@@ -112,7 +124,7 @@ export function PracticeDetail({ content }: { content: PracticeDetailContent }) 
         </div>
         <div className="detail-process__grid">
           {content.processSteps.map((step, index) => {
-            const Icon = processIcons[index];
+            const Icon = processIcons[index % processIcons.length];
             return (
               <article key={step.title}>
                 <div className="detail-process__topline">
@@ -155,9 +167,7 @@ export function PracticeDetail({ content }: { content: PracticeDetailContent }) 
           <h2 id="related-title">İhtiyacınıza yakın diğer başlıkları inceleyin.</h2>
         </div>
         <div className="detail-related__grid">
-          {practiceAreas
-            .filter((area) => area.slug !== content.slug)
-            .map((area) => (
+          {relatedAreas.map((area) => (
               <a href={area.href} key={area.slug}>
                 <span>{area.number}</span>
                 <strong>{area.title}</strong>
