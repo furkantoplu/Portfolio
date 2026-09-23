@@ -5,7 +5,7 @@ import {
 } from "../../components/practice-detail";
 
 export const metadata: Metadata = {
-  title: "Bel ve Boyun Sağlığı | Fzt. Deniz Yılmaz",
+  title: "Bel ve Boyun Sağlığı | Fzt. Furkan Toplu",
   description:
     "Bel ve boyun hareketlerini etkileyen durumlara yönelik değerlendirme ve fizyoterapi yaklaşımı hakkında genel bilgi.",
 };

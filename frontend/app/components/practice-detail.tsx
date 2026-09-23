@@ -179,7 +179,7 @@ export function PracticeDetail({ content }: { content: PracticeDetailContent }) 
       </section>
 
       <footer className="detail-footer">
-        <p>© 2026 Fzt. Deniz Yılmaz</p>
+        <p>© 2026 Fzt. Furkan Toplu</p>
         <a href="/">Ana sayfaya dön</a>
       </footer>
     </main>

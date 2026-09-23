@@ -303,7 +303,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   z-index: 1;
   margin: 24px 0 0;
   color: rgba(224, 232, 227, 0.58);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.55;
 }
 

@@ -314,3 +314,32 @@
 - Hakkımda ve İletişim sayfaları masaüstünde; İletişim ve KVKK sayfaları 390 × 844 piksel mobil görünümde görsel olarak kontrol edildi.
 - Paket `2f4a5b5` kimliği ve `feat: add about contact and legal pages` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+## 23 Eylül 2026
+
+### Paket 12 — Furkan Toplu kişiselleştirmesi ve backend temeli
+
+- Site genelindeki örnek fizyoterapist adı `Furkan Toplu` olarak güncellendi.
+- Sayfa metadata'ları, header, footer, ana sayfa, kurumsal sayfalar, çalışma alanları, blog ve yasal taslaklarda aynı isim kullanıldı.
+- Örnek iletişim e-postası `merhaba@furkantoplu.com` olarak düzenlendi.
+- Ana sayfadaki dört çalışma alanı kartının bağlantı metni `Detayları incele` yapıldı.
+- Kart bağlantılarının yazı boyutu 12 pikselden 13 piksele yükseltildi.
+- Backend'e ilk kontrollü geçiş paketi hazırlandı.
+- Docker Compose'a `postgres:16-alpine` tabanlı `database` servisi eklendi.
+- PostgreSQL dışarıya port açmadan yalnızca Docker ağı içinde çalışacak şekilde yapılandırıldı.
+- Veritabanı verileri `postgres_data` adlı kalıcı volume'a bağlandı ve `pg_isready` sağlık kontrolü eklendi.
+- Docker Compose'a sürümü açıkça sabitlenmiş `directus/directus:12.4.0` servisi eklendi.
+- Directus, PostgreSQL sağlık kontrolü başarılı olduktan sonra başlayacak şekilde bağımlı hale getirildi.
+- Directus yönetim portu geliştirme ortamında yalnızca `127.0.0.1:8055` adresine açıldı; yerel ağdan veya internetten doğrudan erişim engellendi.
+- Directus yüklemeleri ve eklentileri `directus_uploads` ve `directus_extensions` kalıcı volume'larına bağlandı.
+- Directus telemetrisi kapatıldı, WebSocket desteği etkinleştirildi ve yönetim arayüzü üzerinden container sağlık kontrolü eklendi.
+- Gizli olmayan ortam değişkeni şablonu `.env.example` dosyasına eklendi.
+- Gerçek yerel parolalar ve Directus secret değeri yalnızca Git tarafından yok sayılan `.env` dosyasında tutuldu.
+- İlk bootstrap sırasında `.local` uzantılı yönetici e-postasının Directus tarafından geçerli kabul edilmediği görüldü; adres `admin@furkantoplu.com` olarak düzeltildi.
+- Veritabanı ilk denemede kurulmuş olduğundan yönetici hesabı Directus CLI ile güvenli biçimde oluşturuldu.
+- Yönetici oturum açma isteği HTTP 200 yanıtıyla doğrulandı; parola terminal çıktısına veya dokümana yazılmadı.
+- Directus 12'de anonim `/server/health` isteğinin 403 döndürdüğü belirlendi; container sağlık kontrolü başarılı yanıt veren `/admin/` rotasına taşındı.
+- `database`, `directus` ve `frontend` container'larının `healthy`, Caddy `proxy` servisinin çalışır durumda olduğu doğrulandı.
+- Site `http://localhost:8080/`, yönetim arayüzü `http://localhost:8055/admin/` üzerinden HTTP 200 yanıtıyla kontrol edildi.
+- Tarayıcı kontrolünde sayfa başlığının `Fzt. Furkan Toplu | Fizyoterapi` olduğu ve dört kart bağlantısının `Detayları incele` metnini 13 piksel boyutunda gösterdiği doğrulandı.
+- Bu paket yalnızca backend çalışma temelini kurdu; içerik koleksiyonları, roller/izinler, TOTP, production `/bakir` yönlendirmesi ve yedekleme sıradaki backend paketlerine bırakıldı.

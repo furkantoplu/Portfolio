@@ -2,7 +2,7 @@
 
 ## Karar 001 — Önce arayüz
 
-Backend ve veritabanı geliştirmesi arayüz kesinleşmeden başlamayacak. Bunun nedeni müşteri tarafında en fazla geri bildirimin görsel tasarım üzerinden gelmesinin beklenmesi.
+Backend ve veritabanı geliştirmesine ana frontend bütünü hazırlandıktan sonra kontrollü paketlerle geçilecek. Bunun nedeni müşteri tarafında en fazla geri bildirimin görsel tasarım üzerinden gelmesinin beklenmesi. 23 Eylül 2026 tarihinde arayüzü bozmadan Directus ve PostgreSQL çalışma temeli kurulmuştur.
 
 ## Karar 002 — Küçük paketler
 
@@ -100,6 +100,16 @@ Resmî referanslar:
 - https://www.kvkk.gov.tr/Icerik/2033/Aydinlatma-Yukumlulugu-
 - https://www.kvkk.gov.tr/Icerik/4132/aydinlatma-yukumlulugunun-yerine-getirilmesinde-uyulacak-usul-ve-esaslar-hakkinda-teblig
 
+## Karar 021 — Backend container ve gizli değer sınırları
+
+- CMS imajı tekrar üretilebilir kurulum için `directus/directus:12.4.0` sürümüne sabitlendi.
+- Veritabanı `postgres:16-alpine` üzerinde çalışır ve host sistemine port yayınlamaz.
+- Directus geliştirme portu yalnızca loopback adresine (`127.0.0.1`) bağlanır. Production ortamında doğrudan 8055 portu internete açılmayacak; erişim reverse proxy ve özel yönetim yolu üzerinden sağlanacaktır.
+- `postgres_data`, `directus_uploads` ve `directus_extensions` named volume'ları container yeniden oluşturulsa bile veriyi korur.
+- Örnek değişken adları `.env.example` içinde tutulur. Gerçek parola, secret ve yönetici bilgileri `.env` içinde kalır ve Git'e girmez.
+- Yerel yönetici hesabı `admin@furkantoplu.com` adresiyle oluşturulmuştur. Parola dokümanlarda tutulmaz.
+- İlk backend paketi yalnızca çalışma altyapısını kapsar. İçerik şeması, editör rolü, alan bazlı yetkiler, TOTP, `/bakir`, yedekleme ve production sertleştirmesi ayrı paketlerde ele alınacaktır.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.
@@ -156,7 +166,8 @@ docker compose down
 - `proxy` servisi Caddy'dir ve varsayılan olarak host 8080 portunu yayınlar.
 - Port değiştirmek için PowerShell'de `$env:HTTP_PORT=8081` ayarlanabilir.
 - Production domain ve TLS ayarları domain belli olduğunda Caddy ve Cloudflare için ayrıca düzenlenecek.
-- Directus, PostgreSQL ve yedekleme servisleri backend aşamasında aynı Compose dosyasına eklenecek.
+- Directus ve PostgreSQL aynı Compose dosyasına eklenmiştir. Directus yerelde `http://localhost:8055/admin/` adresindedir; PostgreSQL dışarı port açmaz.
+- Yedekleme servisi backend aşamasının sonraki paketinde eklenecektir.
 - Parolalar, TOTP secret, Directus key/secret ve PostgreSQL parolası Git'e commit edilmeyecek.
 
 ## Güncelleme kontrol listesi

@@ -12,7 +12,7 @@ import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 
 export const metadata: Metadata = {
-  title: "Çalışma Alanları | Fzt. Deniz Yılmaz",
+  title: "Çalışma Alanları | Fzt. Furkan Toplu",
   description:
     "Bel ve boyun sağlığı, sporcu rehabilitasyonu, ameliyat sonrası süreç ile duruş ve hareket analizi çalışma alanlarını inceleyin.",
 };

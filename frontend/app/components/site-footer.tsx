@@ -8,7 +8,7 @@ export function SiteFooter() {
         <a className="brand brand--footer" href="/" aria-label="Ana sayfaya dön">
           <BrandMark />
           <span className="brand__copy">
-            <strong>Fzt. Deniz Yılmaz</strong>
+            <strong>Fzt. Furkan Toplu</strong>
             <span>Harekete alan açın</span>
           </span>
         </a>
@@ -26,7 +26,7 @@ export function SiteFooter() {
       </div>
 
       <div className="site-footer__bottom">
-        <p>© 2026 Fzt. Deniz Yılmaz. Tüm hakları saklıdır.</p>
+        <p>© 2026 Fzt. Furkan Toplu. Tüm hakları saklıdır.</p>
         <p>Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.</p>
         <div>
           <a href="/kvkk-aydinlatma-metni">KVKK Aydınlatma Metni</a>

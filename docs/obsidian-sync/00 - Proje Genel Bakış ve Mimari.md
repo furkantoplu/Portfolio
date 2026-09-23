@@ -2,11 +2,11 @@
 
 ## Projenin amacı
 
-Türkiye'de hizmet veren bireysel bir fizyoterapist için güven veren, sade ve içerik odaklı bir portföy sitesi hazırlanıyor. Site ziyaretçileri için üyelik sistemi bulunmayacak. Site sahibi; blog yazılarını, çalışma alanlarını, görselleri ve temel iletişim bilgilerini kod görmeden yönetebilecek.
+Furkan Toplu için güven veren, sade ve içerik odaklı bir fizyoterapist portföy sitesi hazırlanıyor. Site ziyaretçileri için üyelik sistemi bulunmayacak. Site sahibi; blog yazılarını, çalışma alanlarını, görselleri ve temel iletişim bilgilerini kod görmeden yönetebilecek.
 
 ## Geliştirme yaklaşımı
 
-Proje tek seferde tamamlanmayacak. Önce küçük arayüz paketleri hazırlanacak ve her paket görsel olarak kontrol edilecek. Backend, veritabanı ve yönetim paneli arayüz kesinleşmeden başlamayacak. Dağıtımı en baştan tekrarlanabilir tutmak için frontend ve reverse proxy Docker temeli arayüz aşamasında hazırlandı.
+Proje tek seferde tamamlanmayacak. Önce küçük arayüz paketleri hazırlanacak ve her paket görsel olarak kontrol edilecek. Backend, veritabanı ve yönetim paneline ana frontend bütünü tamamlandıktan sonra kontrollü paketlerle geçilecek. Dağıtımı tekrarlanabilir tutmak için frontend, reverse proxy, Directus ve PostgreSQL aynı Docker Compose mimarisine alındı.
 
 Planlanan sıra:
 
@@ -16,9 +16,9 @@ Planlanan sıra:
 4. Blog ön izlemesi
 5. İletişim, konum ve footer
 6. İç sayfalar ve responsive son kontroller
-7. Directus ve PostgreSQL
+7. Directus ve PostgreSQL temeli (23 Eylül 2026'da tamamlandı)
 8. Yönetici girişi ve TOTP
-9. Docker yapısına Directus, PostgreSQL ve yedek servislerinin eklenmesi
+9. Zamanlanmış veritabanı ve dosya yedek servisinin eklenmesi
 10. VPS, Cloudflare ve domain bağlantısı
 
 İç sayfa tasarımlarına `Bel ve Boyun Sağlığı` çalışma alanı ile başlandı. Kullanılan rota: `/calisma-alanlari/bel-ve-boyun-sagligi`. İkinci örnek olarak `/calisma-alanlari/sporcu-rehabilitasyonu` hazırlandı.
@@ -100,7 +100,7 @@ database        PostgreSQL
 backup          Zamanlanmış yedek görevi
 ```
 
-Mevcut durumda `frontend` ve `proxy` servisleri uygulanmıştır. Frontend imajı çok aşamalı build kullanır; Caddy container'ı dış istekleri frontend'e yönlendirir. Yerel Docker erişimi varsayılan olarak `http://localhost:8080/` adresindedir. CMS, veritabanı ve yedek servisleri backend aşamasında eklenecektir.
+Mevcut durumda `frontend`, `proxy`, `directus` ve `database` servisleri uygulanmıştır. Frontend imajı çok aşamalı build kullanır; Caddy container'ı dış istekleri frontend'e yönlendirir. Yerel site varsayılan olarak `http://localhost:8080/`, Directus yönetim arayüzü ise yalnızca bu bilgisayardan erişilecek şekilde `http://localhost:8055/admin/` adresindedir. PostgreSQL host portu açmaz ve yalnızca Compose ağı üzerinden Directus tarafından erişilir. Veritabanı, yüklenen dosyalar ve Directus eklentileri ayrı kalıcı volume'larda tutulur. Zamanlanmış yedek servisi sonraki backend paketinde eklenecektir.
 
 Cloudflare görevleri:
 

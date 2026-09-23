@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PracticeDetail, type PracticeDetailContent } from "../../components/practice-detail";
 
 export const metadata: Metadata = {
-  title: "Duruş ve Hareket Analizi | Fzt. Deniz Yılmaz",
+  title: "Duruş ve Hareket Analizi | Fzt. Furkan Toplu",
   description:
     "Günlük alışkanlıkların, çalışma düzeninin ve hareket örüntülerinin bütüncül değerlendirilmesi hakkında genel bilgi.",
 };

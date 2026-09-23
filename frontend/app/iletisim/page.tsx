@@ -4,14 +4,14 @@ import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 
 export const metadata: Metadata = {
-  title: "İletişim | Fzt. Deniz Yılmaz",
+  title: "İletişim | Fzt. Furkan Toplu",
   description: "Görüşme süreci, çalışma saatleri ve iletişim kanalları hakkında bilgi alın.",
 };
 
 const methods = [
   { icon: Phone, label: "Telefon", value: "+90 555 123 45 67", note: "Pazartesi — Cumartesi", href: "tel:+905551234567" },
   { icon: MessageCircleMore, label: "WhatsApp", value: "Mesaj gönderin", note: "Uygun olduğunda dönüş yapılır", href: "https://wa.me/905551234567" },
-  { icon: Mail, label: "E-posta", value: "merhaba@denizyilmaz.com", note: "Genel bilgi talepleri için", href: "mailto:merhaba@denizyilmaz.com" },
+  { icon: Mail, label: "E-posta", value: "merhaba@furkantoplu.com", note: "Genel bilgi talepleri için", href: "mailto:merhaba@furkantoplu.com" },
 ];
 
 export default function ContactPage() {

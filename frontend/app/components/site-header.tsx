@@ -36,7 +36,7 @@ export function SiteHeader({ active = "home" }: SiteHeaderProps) {
         <a className="brand" href="/" aria-label="Ana sayfa">
           <BrandMark />
           <span className="brand__copy">
-            <strong>Fzt. Deniz Yılmaz</strong>
+            <strong>Fzt. Furkan Toplu</strong>
             <span>Harekete alan açın</span>
           </span>
         </a>
@@ -93,7 +93,7 @@ export function SiteHeader({ active = "home" }: SiteHeaderProps) {
         >
           <div className="mobile-nav__eyebrow">
             <span>Menü</span>
-            <span>Fzt. Deniz Yılmaz</span>
+            <span>Fzt. Furkan Toplu</span>
           </div>
 
           <div className="mobile-nav__links">

@@ -5,9 +5,9 @@ import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 
 export const metadata: Metadata = {
-  title: "Hakkımda | Fzt. Deniz Yılmaz",
+  title: "Hakkımda | Fzt. Furkan Toplu",
   description:
-    "Fizyoterapist Deniz Yılmaz'ın değerlendirme yaklaşımı, çalışma ilkeleri ve danışan iletişimi hakkında bilgi.",
+    "Fizyoterapist Furkan Toplu'nun değerlendirme yaklaşımı, çalışma ilkeleri ve danışan iletişimi hakkında bilgi.",
 };
 
 const principles = [
@@ -33,8 +33,8 @@ export default function AboutPage() {
           <a className="primary-button" href="/iletisim">İletişim bilgilerini görün <ArrowUpRight aria-hidden="true" size={18} /></a>
         </div>
         <div className="about-page-hero__portrait">
-          <Image src="/about-physiotherapist-v1.png" alt="Klinik ortamında fizyoterapist Deniz Yılmaz" fill priority sizes="(max-width: 860px) 100vw, 48vw" />
-          <div><span>Fizyoterapist</span><strong>Deniz Yılmaz</strong></div>
+          <Image src="/about-physiotherapist-v1.png" alt="Klinik ortamında fizyoterapist Furkan Toplu" fill priority sizes="(max-width: 860px) 100vw, 48vw" />
+          <div><span>Fizyoterapist</span><strong>Furkan Toplu</strong></div>
         </div>
       </section>
 

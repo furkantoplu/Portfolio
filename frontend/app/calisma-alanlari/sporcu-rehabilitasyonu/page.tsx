@@ -5,7 +5,7 @@ import {
 } from "../../components/practice-detail";
 
 export const metadata: Metadata = {
-  title: "Sporcu Rehabilitasyonu | Fzt. Deniz Yılmaz",
+  title: "Sporcu Rehabilitasyonu | Fzt. Furkan Toplu",
   description:
     "Spora dönüş sürecinde hareket kapasitesi, yük yönetimi ve kişisel hedeflere yönelik fizyoterapi yaklaşımı hakkında genel bilgi.",
 };

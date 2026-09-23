@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalDocument, type LegalSection } from "../components/legal-document";
 
 export const metadata: Metadata = {
-  title: "KVKK Aydınlatma Metni | Fzt. Deniz Yılmaz",
+  title: "KVKK Aydınlatma Metni | Fzt. Furkan Toplu",
   description: "Kişisel verilerin işlenmesine ilişkin taslak aydınlatma metni.",
 };
 

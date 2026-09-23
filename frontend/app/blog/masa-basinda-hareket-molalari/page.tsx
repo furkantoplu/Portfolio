@@ -5,7 +5,7 @@ import { SiteFooter } from "../../components/site-footer";
 import { SiteHeader } from "../../components/site-header";
 
 export const metadata: Metadata = {
-  title: "Masa Başında Hareket Molaları | Fzt. Deniz Yılmaz",
+  title: "Masa Başında Hareket Molaları | Fzt. Furkan Toplu",
   description:
     "Masa başında geçen günlerde küçük ve sürdürülebilir hareket molaları oluşturmak hakkında genel bilgilendirici yazı.",
 };

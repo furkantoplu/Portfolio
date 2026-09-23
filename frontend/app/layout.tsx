@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Fzt. Deniz Yılmaz | Fizyoterapi",
+  title: "Fzt. Furkan Toplu | Fizyoterapi",
   description:
     "Kişiye özel değerlendirme ve bilimsel yaklaşımla fizyoterapi süreci.",
   other: {

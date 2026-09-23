@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalDocument, type LegalSection } from "../components/legal-document";
 
 export const metadata: Metadata = {
-  title: "Gizlilik | Fzt. Deniz Yılmaz",
+  title: "Gizlilik | Fzt. Furkan Toplu",
   description: "Web sitesinin gizlilik ve teknik veri kullanımı hakkında taslak bilgilendirme.",
 };
 

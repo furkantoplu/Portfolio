@@ -186,7 +186,7 @@ export default function Home() {
                   <p>{description}</p>
                 </div>
                 <a href={href} aria-label={`${title} hakkında bilgi`}>
-                  Detayı inceleyin
+                  Detayları incele
                   <ArrowUpRight aria-hidden="true" size={17} />
                 </a>
               </article>
@@ -212,7 +212,7 @@ export default function Home() {
           </div>
           <div className="about-section__caption">
             <span>Fizyoterapist</span>
-            <strong>Deniz Yılmaz</strong>
+            <strong>Furkan Toplu</strong>
           </div>
         </div>
 
@@ -363,11 +363,11 @@ export default function Home() {
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
             </a>
-            <a className="contact-action" href="mailto:merhaba@denizyilmaz.com">
+            <a className="contact-action" href="mailto:merhaba@furkantoplu.com">
               <Mail aria-hidden="true" size={22} strokeWidth={1.6} />
               <span>
                 <small>E-posta</small>
-                <strong>merhaba@denizyilmaz.com</strong>
+                <strong>merhaba@furkantoplu.com</strong>
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
             </a>

@@ -5,7 +5,7 @@ import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 
 export const metadata: Metadata = {
-  title: "Bilgi Köşesi | Fzt. Deniz Yılmaz",
+  title: "Bilgi Köşesi | Fzt. Furkan Toplu",
   description:
     "Hareket, günlük yaşam ve fizyoterapi süreci hakkında sade ve genel bilgilendirici yazılar.",
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PracticeDetail, type PracticeDetailContent } from "../../components/practice-detail";
 
 export const metadata: Metadata = {
-  title: "Ameliyat Sonrası Süreç | Fzt. Deniz Yılmaz",
+  title: "Ameliyat Sonrası Süreç | Fzt. Furkan Toplu",
   description:
     "Hekim yönlendirmesi sonrasında hareket kapasitesinin yeniden kazanılmasına yönelik fizyoterapi süreci hakkında genel bilgi.",
 };
