@@ -388,3 +388,5 @@
 - Docker imajı yeniden oluşturuldu; database, Directus ve frontend servisleri `healthy` durumuna geçti.
 - Ana sayfa, çalışma alanları dizini ve mevcut dört detay rotası HTTP 200; bilinmeyen slug HTTP 404 verdi.
 - Duruş ve Hareket Analizi kaydı kısa süreliğine `Gizli` yapılarak listeden çıktığı ve detay URL'sinin 404 döndürdüğü doğrulandı; test sonunda kayıt yeniden `Yayında` durumuna alındı.
+- Paket `e2699ea` kimliği ve `feat: connect practice areas to directus` mesajıyla commit edildi.
+- Commit `origin/main` dalına başarıyla push edildi.
