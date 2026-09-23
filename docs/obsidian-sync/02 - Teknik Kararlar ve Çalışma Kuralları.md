@@ -110,6 +110,16 @@ Resmî referanslar:
 - Yerel yönetici hesabı `admin@furkantoplu.com` adresiyle oluşturulmuştur. Parola dokümanlarda tutulmaz.
 - İlk backend paketi yalnızca çalışma altyapısını kapsar. İçerik şeması, editör rolü, alan bazlı yetkiler, TOTP, `/bakir`, yedekleme ve production sertleştirmesi ayrı paketlerde ele alınacaktır.
 
+## Karar 022 — Çalışma alanı yayın ve görünürlük modeli
+
+- Çalışma alanları `practice_areas` Directus koleksiyonunda tutulur; sayıları frontend koduyla sınırlandırılmaz.
+- `status` alanı `draft`, `published` veya `hidden` değerini alır. Public frontend yalnızca `published` kayıtları okuyacaktır.
+- `hidden` kayıtlar silinmez; listelerde gösterilmez ve doğrudan slug isteğinde bulunamaz/404 davranışı üretir.
+- `show_on_homepage` yalnızca ana sayfa seçkisidir. Bir kaydın bu değeri açık olsa bile `status` değeri `published` değilse ziyaretçiye gösterilmez.
+- `/calisma-alanlari` sayfası tüm yayınlanmış kayıtları `sort` alanına göre sıralar; ana sayfa yayınlanmış ve `show_on_homepage = true` kayıtları kullanır.
+- `slug` benzersizdir ve public URL'nin kalıcı parçasıdır. Yayına çıktıktan sonra değiştirilmesi yönlendirme gerektireceği için panelde açıklama gösterilir.
+- Kurulum ve başlangıç verileri `scripts/bootstrap-directus.mjs` ile idempotent biçimde uygulanır. Betik `.env` içindeki yönetici bilgilerini kullanır ve gizli değerleri loglamaz.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

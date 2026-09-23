@@ -16,6 +16,14 @@ Directus yönetim arayüzü: `http://localhost:8055/`
 
 İlk çalıştırmadan önce `.env.example` dosyasını `.env` adıyla kopyalayın ve örnek parolaları değiştirin. Bu depodaki yerel `.env` Git tarafından yok sayılır.
 
+Directus çalışma alanları koleksiyonunu ve başlangıç kayıtlarını idempotent biçimde kurmak için servisler başladıktan sonra:
+
+```powershell
+node scripts/bootstrap-directus.mjs
+```
+
+Komut mevcut koleksiyonu veya kayıtları silmez; yalnızca eksik şema alanlarını ve başlangıç kayıtlarını ekler.
+
 Durumu görüntüleme:
 
 ```powershell

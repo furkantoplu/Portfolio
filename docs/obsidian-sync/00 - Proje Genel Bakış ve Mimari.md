@@ -133,8 +133,13 @@ Cloudflare görevleri:
 - Detaylı genel bilgilendirme
 - Görsel ve alternatif metni
 - Sıralama
-- Aktif/pasif durumu
+- Yayın durumu: taslak, yayında veya gizli
+- Ana sayfada göster seçeneği
+- Değerlendirme başlıkları ve süreç adımları
 - Sık sorulan sorular
+- SEO başlığı ve açıklaması
+
+Çalışma alanları kodda sabit bir sayıyla sınırlandırılmayacak. Yaklaşık 15 alan veya daha fazlası Directus panelinden eklenebilir. `status = published` kayıtları çalışma alanları dizininde ve kendi detay URL'lerinde gösterilir. `status = hidden` kayıtları silinmeden ziyaretçiden saklanır. `show_on_homepage = true` yalnızca ana sayfadaki sınırlı kart seçimini belirler; böylece tüm alanlar dizinde kalırken ana sayfa kalabalıklaşmaz.
 
 ### Site ayarları
 

@@ -345,3 +345,19 @@
 - Bu paket yalnızca backend çalışma temelini kurdu; içerik koleksiyonları, roller/izinler, TOTP, production `/bakir` yönlendirmesi ve yedekleme sıradaki backend paketlerine bırakıldı.
 - Paket `ed68940` kimliği ve `feat: add backend foundation and personalize site` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+### Paket 13 — Yönetilebilir çalışma alanları şeması
+
+- Çalışma alanlarının sayısının yaklaşık 15'e ve ileride daha fazlasına çıkabileceği gereksinimi mimariye eklendi.
+- Çalışma alanlarının koda sabit sayfalar olarak eklenmesi yerine Directus `practice_areas` koleksiyonundan yönetilmesine karar verildi.
+- Tekrar çalıştırıldığında mevcut veri veya şemayı silmeyen `scripts/bootstrap-directus.mjs` kurulum betiği oluşturuldu.
+- Betik yönetici bilgilerini Git'e kapalı `.env` dosyasından okur; parola veya erişim anahtarını çıktıya yazmaz.
+- `practice_areas` koleksiyonuna yayın durumu, sıralama, ana sayfada gösterme, başlık, slug, kart açıklaması, giriş, detay metni, değerlendirme maddeleri, süreç adımları, SSS ve SEO alanları eklendi.
+- Yayın durumu için `Taslak`, `Yayında` ve `Gizli` seçenekleri tanımlandı.
+- `Gizli` durumundaki kayıtların silinmeden yayından kaldırılması; `Ana sayfada göster` seçeneğinin ise genel yayından bağımsız olarak ana sayfa kartlarını sınırlandırması kararlaştırıldı.
+- Slug alanına benzersizlik kuralı eklendi; iki çalışma alanının aynı URL'yi üretmesi engellendi.
+- Directus alanları Türkçe etiketler ve açıklamalarla panelde anlaşılır hale getirildi.
+- Mevcut dört çalışma alanı başlangıç verisi olarak `Yayında` ve `Ana sayfada göster` durumunda eklendi.
+- Kurulum betiği ikinci kez çalıştırıldı; koleksiyonun ve dört kaydın çoğaltılmadığı doğrulandı.
+- Veritabanında dört kaydın sırası, başlığı, slug değeri ve yayın durumu doğrudan kontrol edildi.
+- Bu paket henüz public API izni veya frontend veri bağlantısı açmaz. Sonraki paket yalnızca yayınlanmış kayıtların okunmasını sağlayacak ve liste/detay sayfalarını Directus verisine bağlayacaktır.
