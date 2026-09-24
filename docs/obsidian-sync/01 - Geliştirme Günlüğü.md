@@ -425,3 +425,5 @@
 - Böylece yeni kurulumlarda ve VPS dağıtımında proje sahibi bilgisi toplama varsayılan olarak kapalı olacak; yöneticiye bu modal gösterilmeyecek.
 - `.env.example` dosyasına `DIRECTUS_PROJECT_OWNER_ENABLED=false` örnek değeri ve açıklaması eklendi.
 - Yapılandırmanın Directus lisans koşullarını değiştirmediği, yalnızca sahip bilgisi toplama ve senkronizasyonunu kapattığı README ve teknik karar notlarında açıkça kaydedildi.
+- Directus servisi yeniden oluşturuldu; API'nin `project_owner_enabled: false` döndürdüğü, Directus ve frontend container'larının sağlıklı olduğu, site ile yönetim panelinin HTTP 200 verdiği doğrulandı.
+- Düzeltme `59b84a9` kimliği ve `fix: disable directus owner prompt` mesajıyla commit edilerek `origin/main` dalına başarıyla push edildi.
