@@ -414,4 +414,4 @@
 - `/`, `/blog` ve yayınlanmış örnek yazı Docker/Caddy üzerinden HTTP 200 yanıtı verdi.
 - Taslak yazı slug'ı ve bilinmeyen blog slug'ı HTTP 404 verdi; taslak içeriğin public siteye sızmadığı doğrulandı.
 - Paket `cf90022` kimliği ve `feat: connect blog content to directus` mesajıyla commit edildi.
-- Commit `origin/main` dalına push edilmek üzere hazırlandı.
+- Kod ve dokümantasyon commitleri `origin/main` dalına başarıyla push edildi.
