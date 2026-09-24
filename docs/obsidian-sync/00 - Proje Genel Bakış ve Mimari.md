@@ -17,9 +17,10 @@ Planlanan sıra:
 5. İletişim, konum ve footer
 6. İç sayfalar ve responsive son kontroller
 7. Directus ve PostgreSQL temeli (23 Eylül 2026'da tamamlandı)
-8. Yönetici girişi ve TOTP
-9. Zamanlanmış veritabanı ve dosya yedek servisinin eklenmesi
-10. VPS, Cloudflare ve domain bağlantısı
+8. Çalışma alanları ve blogun Directus bağlantısı (24 Eylül 2026'da tamamlandı)
+9. Yönetici girişi ve TOTP
+10. Zamanlanmış veritabanı ve dosya yedek servisinin eklenmesi
+11. VPS, Cloudflare ve domain bağlantısı
 
 İç sayfa tasarımlarına `Bel ve Boyun Sağlığı` çalışma alanı ile başlandı. Kullanılan rota: `/calisma-alanlari/bel-ve-boyun-sagligi`. İkinci örnek olarak `/calisma-alanlari/sporcu-rehabilitasyonu` hazırlandı.
 
@@ -34,7 +35,7 @@ Mevcut çalışma alanı rotaları:
 - `/calisma-alanlari/ameliyat-sonrasi-surec`
 - `/calisma-alanlari/durus-ve-hareket-analizi`
 
-Blog arayüzünde liste sayfası `/blog`, ilk örnek yazı ise `/blog/masa-basinda-hareket-molalari` rotasında hazırlandı. Directus entegrasyonunda blog slug yapısı aynı URL düzenini koruyacak.
+Blog liste sayfası `/blog`, yazı detayları `/blog/[slug]` düzenini kullanır. Ana sayfa, blog listesi ve yazı detayları Directus `blog_posts` koleksiyonundan dinamik okunur. İlk yayınlanmış örnek yazı `/blog/masa-basinda-hareket-molalari` rotasındadır; taslak ve gizli yazılar listelenmez ve doğrudan adreslerinde 404 döndürür.
 
 Ortak navigasyon masaüstünde yatay, 1120 piksel ve altındaki ekranlarda açılır panel olarak çalışır. Mobil panel; aktif sayfa vurgusu, arka alana dokunarak kapatma, Escape tuşuyla kapatma ve açıkken arka sayfa kaymasını durdurma davranışlarını içerir. Menü verileri tek bir ortak kaynaktan hem header hem footer tarafından kullanılır.
 
@@ -114,16 +115,20 @@ Cloudflare görevleri:
 
 ### Blog yazısı
 
+- Yayın durumu: taslak, yayında veya gizli
+- Sıralama ve öne çıkan yazı seçimi
 - Başlık
 - Slug
 - Kısa özet
 - Kapak görseli ve alternatif metni
-- İçerik
+- Giriş, paragraflar, vurgulu alıntı ve uygulanabilir adımlar
 - Kategori
-- Yazar
-- Yayın tarihi ve güncelleme tarihi
-- Taslak/yayında durumu
+- Yayın tarihi ve okuma süresi
 - SEO başlığı ve açıklaması
+
+Blog yazıları `scripts/bootstrap-blog.mjs` ile oluşturulan `blog_posts` koleksiyonunda tutulur. `status = published` kayıtları ana sayfa ve blog listesinde gösterilir; `draft` veya `hidden` kayıtları public endpoint tarafından döndürülmez. `featured` seçeneği öne çıkan yazı sırasını, `sort` ise aynı gruptaki sıralamayı belirler. Başlangıçta bir yayınlanmış ve iki taslak kayıt eklenmiştir.
+
+Frontend blog içeriğini çalışma alanlarıyla aynı `directus-extension-website-content` salt-okunur eklentisinden alır. Eklenti `/blog-posts` ve `/blog-posts/:slug` endpoint'lerinde yalnızca izin verilen alanları ve yayınlanmış kayıtları döndürür. Yapılandırılmış paragraflar ve öneriler HTML olarak çalıştırılmadan React metni şeklinde render edilir.
 
 ### Çalışma alanı
 

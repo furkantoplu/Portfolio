@@ -390,3 +390,26 @@
 - Duruş ve Hareket Analizi kaydı kısa süreliğine `Gizli` yapılarak listeden çıktığı ve detay URL'sinin 404 döndürdüğü doğrulandı; test sonunda kayıt yeniden `Yayında` durumuna alındı.
 - Paket `e2699ea` kimliği ve `feat: connect practice areas to directus` mesajıyla commit edildi.
 - Commit `origin/main` dalına başarıyla push edildi.
+
+## 24 Eylül 2026
+
+### Paket 15 — Directus–frontend blog bağlantısı
+
+- Kullanıcının isteği doğrultusunda çalışma alanlarına yeni kayıt eklenmedi; sonraki backend paketi blog yönetimine ayrıldı.
+- Directus içinde `blog_posts` koleksiyonunu ve alanlarını idempotent biçimde oluşturan `scripts/bootstrap-blog.mjs` betiği eklendi.
+- Blog modeline yayın durumu, sıralama, öne çıkarma, kategori, başlık, benzersiz slug, kart özeti, yayın tarihi, okuma süresi, kapak bilgileri, giriş, paragraflar, vurgulu alıntı, uygulanabilir adımlar, kapanış ve SEO alanları eklendi.
+- Yayın durumu için `Taslak`, `Yayında` ve `Gizli` seçenekleri tanımlandı.
+- Bir yayınlanmış örnek yazı ile gelecekte düzenlenebilmesi için iki taslak yazı başlangıç verisi olarak eklendi.
+- Bootstrap betiği tekrar çalıştırıldı; mevcut koleksiyon ve kayıtların çoğaltılmadığı doğrulandı.
+- `directus-extension-website-content` eklentisine `/blog-posts` ve `/blog-posts/:slug` salt-okunur endpoint'leri eklendi.
+- Public endpoint yalnızca `status = published` kayıtlarını ve açıkça izin verilen alanları döndürecek şekilde sınırlandı.
+- Ana sayfa en fazla üç yayınlanmış blog kaydını Directus'tan alacak şekilde güncellendi.
+- `/blog` liste sayfası yayınlanmış kayıtları öne çıkan, yayın tarihi ve sıralama bilgilerine göre dinamik gösterecek şekilde dönüştürüldü.
+- Eski sabit yazı rota dosyası kaldırıldı ve bütün yazılar için `/blog/[slug]` dinamik rotası oluşturuldu.
+- Dinamik yazı sayfası metadata, kapak, paragraflar, alıntı, öneriler, kapanış ve okuma bilgilerini CMS kaydından üretir.
+- Yapılandırılmış metin alanları ham HTML olarak çalıştırılmadan React metni şeklinde render edilir.
+- Directus'un tarih alanını tam ISO zaman damgası olarak döndürdüğü görüldü; tarih biçimlendirici hem `YYYY-MM-DD` hem ISO değerlerini güvenli işleyecek şekilde düzeltildi.
+- Yerel production build ve Docker içi production build başarıyla tamamlandı.
+- Database, Directus ve frontend container'larının `healthy`, Caddy proxy servisinin çalışır durumda olduğu doğrulandı.
+- `/`, `/blog` ve yayınlanmış örnek yazı Docker/Caddy üzerinden HTTP 200 yanıtı verdi.
+- Taslak yazı slug'ı ve bilinmeyen blog slug'ı HTTP 404 verdi; taslak içeriğin public siteye sızmadığı doğrulandı.

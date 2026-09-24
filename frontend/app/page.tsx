@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getPracticeAreas } from "./lib/directus";
+import { formatTurkishDate, getBlogPosts, getPracticeAreas } from "./lib/directus";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import {
@@ -44,38 +44,11 @@ const approachSteps = [
 
 const practiceIcons = [Activity, Dumbbell, HeartPulse, PersonStanding];
 
-const blogPosts = [
-  {
-    category: "Günlük Yaşam",
-    title: "Masa başında geçen günlerde hareket molaları neden önemli?",
-    summary:
-      "Uzun süre aynı pozisyonda kalmak yerine güne küçük ve sürdürülebilir hareket araları eklemek üzerine kısa bir rehber.",
-    date: "18 Eylül 2026",
-    readTime: "4 dk okuma",
-    href: "/blog/masa-basinda-hareket-molalari",
-  },
-  {
-    category: "Hareket Bilgisi",
-    title: "Egzersizde düzeni korumayı kolaylaştıran üç küçük adım",
-    summary:
-      "Yoğun günlerde bile hareket alışkanlığını gerçekçi hedeflerle sürdürmeye yardımcı olabilecek temel öneriler.",
-    date: "10 Eylül 2026",
-    readTime: "5 dk okuma",
-    href: "/blog",
-  },
-  {
-    category: "Süreç Rehberi",
-    title: "İlk fizyoterapi görüşmesinde sizi neler bekler?",
-    summary:
-      "İlk değerlendirme öncesinde merak edilenleri ve görüşmenin genel akışını sade bir dille ele alıyoruz.",
-    date: "2 Eylül 2026",
-    readTime: "3 dk okuma",
-    href: "/blog",
-  },
-];
-
 export default async function Home() {
-  const practiceAreas = await getPracticeAreas({ homepage: true });
+  const [practiceAreas, blogPosts] = await Promise.all([
+    getPracticeAreas({ homepage: true }),
+    getBlogPosts({ homepage: true }),
+  ]);
   return (
     <main className="site-shell">
       <SiteHeader active="home" />
@@ -302,7 +275,7 @@ export default async function Home() {
             >
               <div className="blog-card__meta">
                 <span>{post.category}</span>
-                <span>{post.readTime}</span>
+                <span>{post.reading_minutes} dk okuma</span>
               </div>
               <div className="blog-card__content">
                 {index === 0 && (
@@ -314,8 +287,8 @@ export default async function Home() {
                 <p>{post.summary}</p>
               </div>
               <div className="blog-card__footer">
-                <time>{post.date}</time>
-                <a href={post.href} aria-label={`${post.title} yazısını okuyun`}>
+                <time>{formatTurkishDate(post.published_at)}</time>
+                <a href={`/blog/${post.slug}`} aria-label={`${post.title} yazısını okuyun`}>
                   Yazıyı okuyun
                   <ArrowUpRight aria-hidden="true" size={17} />
                 </a>

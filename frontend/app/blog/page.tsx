@@ -3,47 +3,15 @@ import Image from "next/image";
 import { ArrowUpRight, BookOpenText, Clock3 } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { formatTurkishDate, getBlogPosts } from "../lib/directus";
 
 export const metadata: Metadata = {
   title: "Bilgi Köşesi | Fzt. Furkan Toplu",
-  description:
-    "Hareket, günlük yaşam ve fizyoterapi süreci hakkında sade ve genel bilgilendirici yazılar.",
+  description: "Hareket, günlük yaşam ve fizyoterapi süreci hakkında sade ve genel bilgilendirici yazılar.",
 };
 
-const posts = [
-  {
-    category: "Günlük Yaşam",
-    title: "Masa başında geçen günlerde hareket molaları neden önemli?",
-    summary:
-      "Uzun süre aynı pozisyonda kalmak yerine güne küçük ve sürdürülebilir hareket araları eklemek üzerine kısa bir rehber.",
-    date: "18 Eylül 2026",
-    readTime: "4 dk okuma",
-    href: "/blog/masa-basinda-hareket-molalari",
-    published: true,
-  },
-  {
-    category: "Hareket Bilgisi",
-    title: "Egzersizde düzeni korumayı kolaylaştıran üç küçük adım",
-    summary:
-      "Yoğun günlerde bile hareket alışkanlığını gerçekçi hedeflerle sürdürmeye yardımcı olabilecek temel öneriler.",
-    date: "10 Eylül 2026",
-    readTime: "5 dk okuma",
-    href: "#",
-    published: false,
-  },
-  {
-    category: "Süreç Rehberi",
-    title: "İlk fizyoterapi görüşmesinde sizi neler bekler?",
-    summary:
-      "İlk değerlendirme öncesinde merak edilenleri ve görüşmenin genel akışını sade bir dille ele alıyoruz.",
-    date: "2 Eylül 2026",
-    readTime: "3 dk okuma",
-    href: "#",
-    published: false,
-  },
-];
-
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await getBlogPosts();
   const [featuredPost, ...otherPosts] = posts;
 
   return (
@@ -53,85 +21,60 @@ export default function BlogPage() {
       <section className="editorial-hero" aria-labelledby="editorial-title">
         <div className="editorial-hero__heading">
           <p className="section-kicker">Bilgi Köşesi</p>
-          <h1 id="editorial-title">
-            Hareketi anlamak için
-            <em> sade ve güvenilir bilgiler.</em>
-          </h1>
+          <h1 id="editorial-title">Hareketi anlamak için<em> sade ve güvenilir bilgiler.</em></h1>
         </div>
         <div className="editorial-hero__intro">
           <BookOpenText aria-hidden="true" size={30} strokeWidth={1.35} />
-          <p>
-            Günlük yaşamda hareket sağlığını destekleyen konuları, karmaşık
-            ifadelerden uzak ve anlaşılır bir dille ele alıyoruz.
-          </p>
+          <p>Günlük yaşamda hareket sağlığını destekleyen konuları, karmaşık ifadelerden uzak ve anlaşılır bir dille ele alıyoruz.</p>
         </div>
       </section>
 
-      <section className="featured-article" aria-labelledby="featured-title">
-        <a className="featured-article__image" href={featuredPost.href}>
-          <Image
-            src="/hero-physiotherapy-v1.png"
-            alt="Fizyoterapist eşliğinde kontrollü hareket yapan danışan"
-            fill
-            priority
-            sizes="(max-width: 860px) 100vw, 50vw"
-          />
-        </a>
-        <article className="featured-article__content">
-          <div className="article-meta">
-            <span>{featuredPost.category}</span>
-            <span><Clock3 aria-hidden="true" size={15} />{featuredPost.readTime}</span>
-          </div>
-          <p className="featured-article__label">Öne çıkan yazı</p>
-          <h2 id="featured-title">{featuredPost.title}</h2>
-          <p>{featuredPost.summary}</p>
-          <div className="featured-article__footer">
-            <time>{featuredPost.date}</time>
-            <a href={featuredPost.href}>
-              Yazıyı okuyun
-              <ArrowUpRight aria-hidden="true" size={18} />
-            </a>
-          </div>
-        </article>
-      </section>
+      {featuredPost ? (
+        <section className="featured-article" aria-labelledby="featured-title">
+          <a className="featured-article__image" href={`/blog/${featuredPost.slug}`}>
+            <Image src={featuredPost.cover_path || "/hero-physiotherapy-v1.png"} alt={featuredPost.cover_alt || featuredPost.title} fill priority sizes="(max-width: 860px) 100vw, 50vw" />
+          </a>
+          <article className="featured-article__content">
+            <div className="article-meta">
+              <span>{featuredPost.category}</span>
+              <span><Clock3 aria-hidden="true" size={15} />{featuredPost.reading_minutes} dk okuma</span>
+            </div>
+            <p className="featured-article__label">Öne çıkan yazı</p>
+            <h2 id="featured-title">{featuredPost.title}</h2>
+            <p>{featuredPost.summary}</p>
+            <div className="featured-article__footer">
+              <time>{formatTurkishDate(featuredPost.published_at)}</time>
+              <a href={`/blog/${featuredPost.slug}`}>Yazıyı okuyun <ArrowUpRight aria-hidden="true" size={18} /></a>
+            </div>
+          </article>
+        </section>
+      ) : (
+        <section className="article-archive" aria-label="Henüz yayınlanmış yazı yok">
+          <p className="article-archive__note">Yeni bilgi yazıları hazırlandığında burada yayınlanacak.</p>
+        </section>
+      )}
 
-      <section className="article-archive" aria-labelledby="archive-title">
-        <div className="article-archive__heading">
-          <div>
-            <p className="section-kicker">Son Yazılar</p>
-            <h2 id="archive-title">Bilgi arşivi</h2>
+      {otherPosts.length > 0 && (
+        <section className="article-archive" aria-labelledby="archive-title">
+          <div className="article-archive__heading">
+            <div><p className="section-kicker">Son Yazılar</p><h2 id="archive-title">Bilgi arşivi</h2></div>
+            <p>Yeni içerikler yayınlandıkça bu alan otomatik olarak genişleyecek.</p>
           </div>
-          <p>Yeni içerikler yayınlandıkça bu alan otomatik olarak genişleyecek.</p>
-        </div>
-
-        <div className="article-archive__grid">
-          {otherPosts.map((post, index) => (
-            <article className="archive-card" key={post.title}>
-              <div className="archive-card__topline">
-                <span>0{index + 2}</span>
-                <span>{post.category}</span>
-              </div>
-              <div>
-                <h3>{post.title}</h3>
-                <p>{post.summary}</p>
-              </div>
-              <div className="archive-card__footer">
-                <span>{post.date} · {post.readTime}</span>
-                {post.published ? (
-                  <a href={post.href}>Okuyun <ArrowUpRight size={16} /></a>
-                ) : (
-                  <span className="archive-card__status">Yakında</span>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <p className="article-archive__note">
-          Bu içerikler genel bilgilendirme amaçlıdır; tanı, tedavi veya kişisel
-          değerlendirme yerine geçmez.
-        </p>
-      </section>
+          <div className="article-archive__grid">
+            {otherPosts.map((post, index) => (
+              <article className="archive-card" key={post.slug}>
+                <div className="archive-card__topline"><span>{String(index + 2).padStart(2, "0")}</span><span>{post.category}</span></div>
+                <div><h3>{post.title}</h3><p>{post.summary}</p></div>
+                <div className="archive-card__footer">
+                  <span>{formatTurkishDate(post.published_at)} · {post.reading_minutes} dk okuma</span>
+                  <a href={`/blog/${post.slug}`}>Okuyun <ArrowUpRight size={16} /></a>
+                </div>
+              </article>
+            ))}
+          </div>
+          <p className="article-archive__note">Bu içerikler genel bilgilendirme amaçlıdır; tanı, tedavi veya kişisel değerlendirme yerine geçmez.</p>
+        </section>
+      )}
 
       <SiteFooter />
     </main>

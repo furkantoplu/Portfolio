@@ -130,6 +130,18 @@ Resmî referanslar:
 - Directus production ortamında doğrudan internete port açmayacak; frontend Compose servis adı üzerinden iç ağdan erişecektir. Yönetim yolu ayrıca reverse proxy/Cloudflare kurallarıyla korunacaktır.
 - Vinext Worker ortamı normal container değişkenlerini otomatik devralmadığı için `DIRECTUS_URL`, Vite Cloudflare binding yapılandırmasına eklenir. Docker build varsayılanı `http://directus:8055`, yerel geliştirme varsayılanı `http://localhost:8055` olur.
 
+## Karar 024 — Blog içerik ve yayın modeli
+
+- Blog kayıtları Directus `blog_posts` koleksiyonunda tutulur ve `scripts/bootstrap-blog.mjs` ile idempotent biçimde hazırlanır.
+- `status` alanı `draft`, `published` veya `hidden` değerini alır. Public frontend yalnızca `published` kayıtları görebilir; diğer durumlar listeye girmez ve detay isteğinde 404 üretir.
+- Blog liste adresi `/blog`, kalıcı detay adresi `/blog/[slug]` olur. `slug` benzersizdir ve yayınlandıktan sonra değiştirilmesi gerekiyorsa yönlendirme planlanmalıdır.
+- `featured` alanı öne çıkan yazıyı, `sort` alanı sıralamayı belirler. Ana sayfa en fazla üç yayınlanmış yazı ister; blog sayfası bütün yayınlanmış yazıları gösterir.
+- Frontend blog verisini standart anonim koleksiyon API'sinden değil, `directus-extension-website-content` içindeki `/blog-posts` ve `/blog-posts/:slug` salt-okunur endpoint'lerinden alır.
+- Public endpoint zorunlu `status = published` filtresi uygular ve yalnızca açıkça seçilmiş alanları döndürür. Yazma işlemi sunmaz.
+- Blog gövdesi kontrolsüz zengin HTML yerine yapılandırılmış JSON paragrafları ve öneri nesneleriyle tutulur. Frontend bu değerleri React metni olarak render ederek kayıt içinden script veya ham HTML çalıştırmaz.
+- SEO başlığı ve açıklaması kayıt bazında girilebilir; boş bırakılırsa başlık ve kart özeti güvenli varsayılan olarak kullanılır.
+- Tarih biçimlendirici Directus'tan gelebilecek yalın tarih ve tam ISO zaman damgası biçimlerini destekler; geçersiz değerde sayfayı çökertmek yerine nötr bir tarih metni gösterir.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

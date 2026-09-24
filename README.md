@@ -20,13 +20,16 @@ Directus çalışma alanları koleksiyonunu ve başlangıç kayıtlarını idemp
 
 ```powershell
 node scripts/bootstrap-directus.mjs
+node scripts/bootstrap-blog.mjs
 ```
 
 Komut mevcut koleksiyonu veya kayıtları silmez; yalnızca eksik şema alanlarını ve başlangıç kayıtlarını ekler.
 
 Çalışma alanları artık Directus'tan dinamik okunur. Ana sayfa yalnızca `Yayında` ve `Ana sayfada göster` işaretli kayıtları; `/calisma-alanlari` ise tüm `Yayında` kayıtları sıralama alanına göre gösterir. `Taslak` veya `Gizli` kayıtlar listelenmez ve detay URL'leri 404 döndürür.
 
-Frontend içeriği standart Directus koleksiyon API'sinden değil, `directus/extensions/directus-extension-website-content` altındaki salt-okunur endpoint'ten alır. Bu endpoint yalnızca yayınlanmış kayıtları ve izin verilen alanları döndürür. Standart `items/practice_areas` API'si anonim erişime kapalı kalır.
+Blog içerikleri de Directus `blog_posts` koleksiyonundan yönetilir. Ana sayfa en fazla üç yayınlanmış yazıyı, `/blog` bütün yayınlanmış yazıları gösterir; her kayıt `/blog/[slug]` adresinde açılır. `Taslak` ve `Gizli` yazılar ziyaretçiye gösterilmez ve doğrudan URL istekleri 404 döndürür.
+
+Frontend içeriği standart Directus koleksiyon API'sinden değil, `directus/extensions/directus-extension-website-content` altındaki salt-okunur endpoint'ten alır. Bu endpoint yalnızca yayınlanmış kayıtları ve izin verilen alanları döndürür. Standart `items/practice_areas` ve `items/blog_posts` API'leri anonim erişime kapalı kalır.
 
 Durumu görüntüleme:
 
