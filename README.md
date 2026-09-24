@@ -79,3 +79,5 @@ node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" run dev
 - `directus`: Sabitlenmiş Directus 12.4.0 imajıyla içerik yönetim arayüzü ve API sağlar.
 
 PostgreSQL host sistemine port açmaz. Directus geliştirme aşamasında yalnızca `127.0.0.1:8055` adresine bağlanır. Production `/bakir` yönlendirmesi, TOTP, yedekleme ve TLS ayarları sonraki backend/güvenlik paketlerinde eklenecek. Parolalar ve diğer gizli değerler Git deposuna yazılmayacak.
+
+Directus 12'nin yönetim panelinde gösterdiği proje sahibi e-posta toplama penceresi, resmî `PROJECT_OWNER_ENABLED=false` yapılandırmasıyla kapalıdır. Bu ayar yalnızca sahip bilgisi toplama ve senkronizasyonunu devre dışı bırakır; kullanılan Directus sürümünün lisans koşullarını değiştirmez.

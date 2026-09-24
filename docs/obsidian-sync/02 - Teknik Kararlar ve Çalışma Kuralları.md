@@ -142,6 +142,13 @@ Resmî referanslar:
 - SEO başlığı ve açıklaması kayıt bazında girilebilir; boş bırakılırsa başlık ve kart özeti güvenli varsayılan olarak kullanılır.
 - Tarih biçimlendirici Directus'tan gelebilecek yalın tarih ve tam ISO zaman damgası biçimlerini destekler; geçersiz değerde sayfayı çökertmek yerine nötr bir tarih metni gösterir.
 
+## Karar 025 — Directus proje sahibi bilgisi toplama
+
+- Directus 12 yönetim panelindeki proje sahibi e-posta modalı müşteri içerik yönetimi deneyiminde gösterilmeyecektir.
+- Directus'un desteklediği `PROJECT_OWNER_ENABLED=false` ortam ayarı Docker Compose içinde varsayılan olarak uygulanır.
+- Ayar sahibi bilgisi toplama ve senkronizasyonunu kapatır; lisans denetimini atlatmak, yazılımı yamalamak veya lisans koşullarını değiştirmek amacıyla kullanılmaz.
+- Directus sürümünün lisans şartları dağıtım öncesinde ayrıca kontrol edilir. Müşteri veya müşteri kuruluşu güncel ücretsiz kullanım sınırlarını karşılamıyorsa uygun lisans ayrıca temin edilir.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

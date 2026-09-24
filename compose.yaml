@@ -36,6 +36,7 @@ services:
       ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@furkantoplu.com}
       ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:?DIRECTUS_ADMIN_PASSWORD must be set}
       PUBLIC_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
+      PROJECT_OWNER_ENABLED: ${DIRECTUS_PROJECT_OWNER_ENABLED:-false}
       TELEMETRY: "false"
       WEBSOCKETS_ENABLED: "true"
     volumes:

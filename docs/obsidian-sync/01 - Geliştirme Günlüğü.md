@@ -415,3 +415,13 @@
 - Taslak yazı slug'ı ve bilinmeyen blog slug'ı HTTP 404 verdi; taslak içeriğin public siteye sızmadığı doğrulandı.
 - Paket `cf90022` kimliği ve `feat: connect blog content to directus` mesajıyla commit edildi.
 - Kod ve dokümantasyon commitleri `origin/main` dalına başarıyla push edildi.
+
+### Paket 16 — Directus proje sahibi uyarısının kaldırılması
+
+- Directus yönetim panelinde “You have not set a project owner” başlıklı modalın açıldığı kullanıcı ekran görüntüsüyle tespit edildi.
+- Pencerenin site ziyaretçi arayüzüne ait olmadığı; Directus 12'nin lisans uyumluluğu kapsamında yönetim panelinden proje sahibi e-postası toplama akışı olduğu doğrulandı.
+- Directus'un resmî sürüm notlarında sahip bilgisi toplama ve senkronizasyonunu kapatmak için `PROJECT_OWNER_ENABLED` ortam değişkeninin desteklendiği kontrol edildi.
+- `compose.yaml` içindeki Directus servisine `PROJECT_OWNER_ENABLED: ${DIRECTUS_PROJECT_OWNER_ENABLED:-false}` eklendi.
+- Böylece yeni kurulumlarda ve VPS dağıtımında proje sahibi bilgisi toplama varsayılan olarak kapalı olacak; yöneticiye bu modal gösterilmeyecek.
+- `.env.example` dosyasına `DIRECTUS_PROJECT_OWNER_ENABLED=false` örnek değeri ve açıklaması eklendi.
+- Yapılandırmanın Directus lisans koşullarını değiştirmediği, yalnızca sahip bilgisi toplama ve senkronizasyonunu kapattığı README ve teknik karar notlarında açıkça kaydedildi.
