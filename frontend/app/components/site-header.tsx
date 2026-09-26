@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { ArrowUpRight, CalendarDays, Menu, X } from "lucide-react";
 import { BrandMark } from "./brand-mark";
 import { navItems, type NavigationKey } from "./navigation";
@@ -9,7 +10,7 @@ type SiteHeaderProps = {
   active?: NavigationKey;
 };
 
-export function SiteHeader({ active = "home" }: SiteHeaderProps) {
+export function SiteHeader({ active }: SiteHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -33,30 +34,31 @@ export function SiteHeader({ active = "home" }: SiteHeaderProps) {
   return (
     <>
       <header className="site-header">
-        <a className="brand" href="/" aria-label="Ana sayfa">
+        <Link className="brand" href="/" prefetch={false} aria-label="Ana sayfa">
           <BrandMark />
           <span className="brand__copy">
             <strong>Fzt. Furkan Toplu</strong>
             <span>Harekete alan açın</span>
           </span>
-        </a>
+        </Link>
 
         <nav className="desktop-nav" aria-label="Ana menü">
           {navItems.map((item) => (
-            <a
+            <Link
               href={item.href}
+              prefetch={false}
               className={item.key === active ? "is-active" : undefined}
               key={item.key}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
-        <a className="header-cta" href="/iletisim">
+        <Link className="header-cta" href="/iletisim" prefetch={false}>
           <CalendarDays aria-hidden="true" size={18} strokeWidth={1.8} />
           <span>Randevu Bilgisi</span>
-        </a>
+        </Link>
 
         <button
           className={`mobile-menu${isMenuOpen ? " is-open" : ""}`}
@@ -98,8 +100,9 @@ export function SiteHeader({ active = "home" }: SiteHeaderProps) {
 
           <div className="mobile-nav__links">
             {navItems.map((item, index) => (
-              <a
+              <Link
                 href={item.href}
+                prefetch={false}
                 className={item.key === active ? "is-active" : undefined}
                 key={item.key}
                 tabIndex={isMenuOpen ? 0 : -1}
@@ -108,20 +111,21 @@ export function SiteHeader({ active = "home" }: SiteHeaderProps) {
                 <span>0{index + 1}</span>
                 <strong>{item.label}</strong>
                 <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.6} />
-              </a>
+              </Link>
             ))}
           </div>
 
-          <a
+          <Link
             className="mobile-nav__cta"
             href="/iletisim"
+            prefetch={false}
             tabIndex={isMenuOpen ? 0 : -1}
             onClick={closeMenu}
           >
             <CalendarDays aria-hidden="true" size={18} strokeWidth={1.8} />
             Randevu bilgisi alın
             <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.7} />
-          </a>
+          </Link>
 
           <p className="mobile-nav__meta">İstanbul · Yüz yüze görüşme</p>
         </nav>
