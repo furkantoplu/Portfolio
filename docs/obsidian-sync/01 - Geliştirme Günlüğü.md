@@ -466,3 +466,4 @@
 - Özel hesap ve ekip endpoint'lerinin oturumsuz istekleri HTTP 401 ile reddettiği Docker/Caddy üzerinden doğrulandı.
 - Directus eklentisinin yeniden yüklendiği, frontend hedefli ESLint kontrolünün geçtiği ve Docker production build'inin başarıyla tamamlandığı doğrulandı.
 - Tarayıcıda giriş ekranı yeniden kontrol edildi. Etkin durum ve ekip ekranının gerçek oturum doğrulaması, güvenlik gereği yönetici parolası/TOTP kodu otomasyona alınmadan kullanıcının bir sonraki girişiyle tamamlanacaktır.
+- Uygulama paketi `38f7272` kimliği ve `feat: support account-aware two-factor auth` mesajıyla commit edildi.
