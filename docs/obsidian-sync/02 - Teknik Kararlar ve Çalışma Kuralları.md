@@ -149,6 +149,18 @@ Resmî referanslar:
 - Ayar sahibi bilgisi toplama ve senkronizasyonunu kapatır; lisans denetimini atlatmak, yazılımı yamalamak veya lisans koşullarını değiştirmek amacıyla kullanılmaz.
 - Directus sürümünün lisans şartları dağıtım öncesinde ayrıca kontrol edilir. Müşteri veya müşteri kuruluşu güncel ücretsiz kullanım sınırlarını karşılamıyorsa uygun lisans ayrıca temin edilir.
 
+## Karar 026 — Özel yönetim yüzeyi ve güvenli oturum modeli
+
+- Site sahibinin günlük yönetim adresi `/bakir` olur. Directus Studio yalnızca teknik geliştirme ve bakım amacıyla loopback adresinde kalır.
+- `/bakir` bir güvenlik sırrı değildir. Yetkilendirme Directus hesabı, güçlü parola, giriş denemesi sınırı ve Google Authenticator uyumlu TOTP ile sağlanır.
+- Tarayıcı Directus'a doğrudan farklı origin üzerinden bağlanmaz. Caddy `/bakir-api/*` yolunu Directus'a reverse proxy eder ve yol ön ekini kaldırır.
+- Girişte Directus `mode: session` kullanılır. Oturum `httpOnly`, `SameSite=Lax` çerezde tutulur; erişim belirteci localStorage veya frontend state içine yazılmaz.
+- Yerel geliştirme HTTP olduğu için `DIRECTUS_SESSION_COOKIE_SECURE=false` kullanılır. VPS'te Caddy/Cloudflare üzerinden HTTPS hazır olduğunda değer `true` yapılmadan production teslimi tamamlanmış sayılmaz.
+- `/bakir` HTML yanıtları `Cache-Control: no-store` ve `X-Robots-Tag: noindex, nofollow, noarchive` başlıklarını taşır. Sayfa metadata'sı da aynı indeksleme yasağını uygular.
+- TOTP kurulumu otomasyonla tamamlanmaz. Yönetici mevcut parolasını girdikten sonra oluşan gizli anahtarı kendi Authenticator uygulamasına kaydeder ve canlı 6 haneli kodla etkinleştirir.
+- TOTP gizli anahtarı, yönetici parolası ve oturum çerezleri loglara, Git deposuna veya Obsidian notlarına yazılmaz.
+- İlk özel panel paketi yalnızca giriş, çıkış, içerik özeti ve TOTP kurulumunu kapsar. İçerik CRUD ekranları küçük paketlerle ayrıca geliştirilecektir.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

@@ -12,7 +12,9 @@ docker compose up -d --build
 
 Site: `http://localhost:8080/`
 
-Directus yönetim arayüzü: `http://localhost:8055/`
+Özel yönetim girişi: `http://localhost:8080/bakir`
+
+Directus teknik yönetim arayüzü geliştirme sırasında yalnızca bu bilgisayardan `http://localhost:8055/` adresinde erişilebilir.
 
 İlk çalıştırmadan önce `.env.example` dosyasını `.env` adıyla kopyalayın ve örnek parolaları değiştirin. Bu depodaki yerel `.env` Git tarafından yok sayılır.
 
@@ -21,9 +23,14 @@ Directus çalışma alanları koleksiyonunu ve başlangıç kayıtlarını idemp
 ```powershell
 node scripts/bootstrap-directus.mjs
 node scripts/bootstrap-blog.mjs
+node scripts/bootstrap-security.mjs
 ```
 
 Komut mevcut koleksiyonu veya kayıtları silmez; yalnızca eksik şema alanlarını ve başlangıç kayıtlarını ekler.
+
+`/bakir` ekranı site sahibinin günlük kullanımına ayrılmış özel yönetim yüzeyidir. Giriş, Directus'a Caddy üzerinden aynı origin altında iletilir ve oturum JavaScript'in okuyamadığı `httpOnly` çerezde tutulur. Panel, e-posta ve parola girişinin yanında Google Authenticator uyumlu 6 haneli TOTP kodunu destekler. İlk TOTP kurulumu yönetici oturumu açıldıktan sonra ekrandaki güvenlik bölümünden, telefon sahibinin bizzat doğrulamasıyla tamamlanır.
+
+Yerel HTTP geliştirmesinde `DIRECTUS_SESSION_COOKIE_SECURE=false` kullanılır. VPS üzerinde HTTPS etkinleştirildiğinde bu değer mutlaka `true` yapılmalıdır. `/bakir` yanıtları `noindex`, `nofollow`, `noarchive` ve `no-store` başlıklarıyla korunur; özel adres tek başına güvenlik önlemi sayılmaz.
 
 Çalışma alanları artık Directus'tan dinamik okunur. Ana sayfa yalnızca `Yayında` ve `Ana sayfada göster` işaretli kayıtları; `/calisma-alanlari` ise tüm `Yayında` kayıtları sıralama alanına göre gösterir. `Taslak` veya `Gizli` kayıtlar listelenmez ve detay URL'leri 404 döndürür.
 
@@ -78,6 +85,6 @@ node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" run dev
 - `database`: PostgreSQL 16 üzerinde Directus ve site içeriklerini kalıcı volume içinde saklar.
 - `directus`: Sabitlenmiş Directus 12.4.0 imajıyla içerik yönetim arayüzü ve API sağlar.
 
-PostgreSQL host sistemine port açmaz. Directus geliştirme aşamasında yalnızca `127.0.0.1:8055` adresine bağlanır. Production `/bakir` yönlendirmesi, TOTP, yedekleme ve TLS ayarları sonraki backend/güvenlik paketlerinde eklenecek. Parolalar ve diğer gizli değerler Git deposuna yazılmayacak.
+PostgreSQL host sistemine port açmaz. Directus geliştirme aşamasında yalnızca `127.0.0.1:8055` adresine bağlanır. Özel `/bakir` girişi, TOTP kurulum akışı ve güvenli oturum temeli uygulanmıştır. Blog ve çalışma alanı düzenleme formları, zamanlanmış yedekleme ve production TLS/Cloudflare sertleştirmesi sonraki backend paketlerinde eklenecek. Parolalar ve diğer gizli değerler Git deposuna yazılmayacak.
 
 Directus 12'nin yönetim panelinde gösterdiği proje sahibi e-posta toplama penceresi, resmî `PROJECT_OWNER_ENABLED=false` yapılandırmasıyla kapalıdır. Bu ayar yalnızca sahip bilgisi toplama ve senkronizasyonunu devre dışı bırakır; kullanılan Directus sürümünün lisans koşullarını değiştirmez.

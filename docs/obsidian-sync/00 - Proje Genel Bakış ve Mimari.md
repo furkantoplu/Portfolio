@@ -89,6 +89,8 @@ KVKK ve gizlilik sayfaları arayüz taslağı olarak hazırlanmıştır. Veri so
 - Giriş denemesi sınırı ve güvenli oturum çerezleri kullanılacak.
 - Özel URL tek başına güvenlik önlemi kabul edilmeyecek.
 
+Bu temel artık `/bakir` rotasında uygulanmıştır. Site sahibine Directus Studio yerine projeye özel sade bir giriş ve özet ekranı gösterilir. Caddy, tarayıcıdan gelen `/bakir-api/*` isteklerini aynı origin altında Directus'a iletir; Directus oturumu `httpOnly`, `SameSite=Lax` çerezle yönetilir. Yerel HTTP ortamında Secure bayrağı kapalıdır, production HTTPS ortamında açılacaktır. Ekran Google Authenticator uyumlu TOTP kurulumunu destekler; kurulum anahtarı yalnızca oturum sahibine gösterilir ve etkinleştirme telefondaki güncel kodla tamamlanır. İçerik ekleme/düzenleme formları bir sonraki yönetim paketi olacaktır.
+
 ### Production altyapısı
 
 Docker Compose servisleri:
@@ -101,7 +103,7 @@ database        PostgreSQL
 backup          Zamanlanmış yedek görevi
 ```
 
-Mevcut durumda `frontend`, `proxy`, `directus` ve `database` servisleri uygulanmıştır. Frontend imajı çok aşamalı build kullanır; Caddy container'ı dış istekleri frontend'e yönlendirir. Yerel site varsayılan olarak `http://localhost:8080/`, Directus yönetim arayüzü ise yalnızca bu bilgisayardan erişilecek şekilde `http://localhost:8055/admin/` adresindedir. PostgreSQL host portu açmaz ve yalnızca Compose ağı üzerinden Directus tarafından erişilir. Veritabanı, yüklenen dosyalar ve Directus eklentileri ayrı kalıcı volume'larda tutulur. Zamanlanmış yedek servisi sonraki backend paketinde eklenecektir.
+Mevcut durumda `frontend`, `proxy`, `directus` ve `database` servisleri uygulanmıştır. Frontend imajı çok aşamalı build kullanır; Caddy container'ı dış istekleri frontend'e ve `/bakir-api/*` isteklerini Directus'a yönlendirir. Yerel site varsayılan olarak `http://localhost:8080/`, özel yönetim girişi `http://localhost:8080/bakir`, Directus teknik arayüzü ise yalnızca bu bilgisayardan erişilecek şekilde `http://localhost:8055/admin/` adresindedir. PostgreSQL host portu açmaz ve yalnızca Compose ağı üzerinden Directus tarafından erişilir. Veritabanı, yüklenen dosyalar ve Directus eklentileri ayrı kalıcı volume'larda tutulur. Zamanlanmış yedek servisi sonraki backend paketinde eklenecektir.
 
 Cloudflare görevleri:
 

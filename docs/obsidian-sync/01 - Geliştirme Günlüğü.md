@@ -427,3 +427,23 @@
 - Yapılandırmanın Directus lisans koşullarını değiştirmediği, yalnızca sahip bilgisi toplama ve senkronizasyonunu kapattığı README ve teknik karar notlarında açıkça kaydedildi.
 - Directus servisi yeniden oluşturuldu; API'nin `project_owner_enabled: false` döndürdüğü, Directus ve frontend container'larının sağlıklı olduğu, site ile yönetim panelinin HTTP 200 verdiği doğrulandı.
 - Düzeltme `59b84a9` kimliği ve `fix: disable directus owner prompt` mesajıyla commit edilerek `origin/main` dalına başarıyla push edildi.
+
+## 26 Eylül 2026
+
+### Paket 17 — Özel `/bakir` yönetim girişi ve TOTP temeli
+
+- Deneme yayını sırasında görülen `Failed to fetch` hatasının uygulama kodundan değil, Docker Desktop'ın yanlışlıkla kapatılmış olmasından kaynaklandığı netleştirildi. Servisler açılınca API erişimi normale döndü.
+- Site sahibinin günlük kullanımda Directus Studio'yu görmemesi için `/bakir` adresinde projeye özel yönetim arayüzü oluşturuldu.
+- Arayüze e-posta, parola ve etkinse Google Authenticator'dan alınan 6 haneli TOTP koduyla giriş eklendi.
+- Directus `mode: session` oturum modeli kullanıldı; oturum belirteci frontend JavaScript'ine verilmeden `httpOnly`, `SameSite=Lax` çerezle tutuldu.
+- Caddy'ye `/bakir-api/*` ters proxy yolu eklendi. Böylece tarayıcı yönetim API'sine aynı origin üzerinden bağlanır ve ayrı CORS yapılandırmasına ihtiyaç duymaz.
+- `/bakir` sayfasına hem metadata hem HTTP başlığı düzeyinde `noindex`, `nofollow`, `noarchive`; ayrıca `Cache-Control: no-store` koruması eklendi.
+- Giriş sonrası yönetici adı, blog yazısı sayıları, çalışma alanı sayıları ve yayın/taslak/gizli özetleri gösterilen başlangıç panosu hazırlandı.
+- Google Authenticator kurulumu için mevcut parolayla kurulum anahtarı üretme ve telefondaki güncel kodla TOTP'yi etkinleştirme akışı eklendi.
+- TOTP gizli anahtarı otomatik etkinleştirilmedi, terminale veya dokümana yazılmadı. Gerçek kurulum site sahibinin telefonu elindeyken tamamlanacak.
+- Directus ayarlarını idempotent uygulayan `scripts/bootstrap-security.mjs` oluşturuldu. Proje adı, Türkçe dil, en fazla beş başarısız giriş denemesi, güçlü parola politikası ve kapalı public kayıt ayarları uygulandı.
+- Yerel HTTP ortamı için `DIRECTUS_SESSION_COOKIE_SECURE=false`, production HTTPS ortamı için `true` kullanılması `.env.example` ve README içinde belgelendi.
+- Masaüstü ve 390 × 844 mobil giriş görünümü tarayıcıda görsel olarak kontrol edildi.
+- Yeni `/bakir` dosyaları hedefli ESLint kontrolünden geçti; production build hem yerelde hem Docker imajı içinde başarıyla tamamlandı.
+- Docker üzerinden `/bakir` HTTP 200, güvenlik başlıkları ve hatalı giriş HTTP 401 davranışı doğrulandı; tüm bağımlı servisler sağlıklı çalıştı.
+- Bu paket güvenli giriş ve TOTP temelini tamamlar. Blog ve çalışma alanı ekleme/düzenleme/gizleme ekranları sıradaki yönetim paketinde hazırlanacaktır.

@@ -8,5 +8,18 @@
     -Server
   }
 
-  reverse_proxy frontend:3000
+  @privateAdmin path /bakir /bakir/*
+  header @privateAdmin {
+    Cache-Control "no-store"
+    X-Robots-Tag "noindex, nofollow, noarchive"
+  }
+
+  handle_path /bakir-api/* {
+    header Cache-Control "no-store"
+    reverse_proxy directus:8055
+  }
+
+  handle {
+    reverse_proxy frontend:3000
+  }
 }
