@@ -2,6 +2,7 @@ const publicFields = ["id", "sort", "show_on_homepage", "title", "slug", "summar
 const publishedPracticeAreas = (database) => database("practice_areas").select(publicFields).where("status", "published");
 const publicBlogFields = ["id", "sort", "featured", "category", "title", "slug", "summary", "published_at", "reading_minutes", "cover_path", "cover_alt", "cover_caption", "lead", "body_paragraphs", "quote", "tips_title", "tips", "closing_title", "closing_body", "seo_title", "seo_description"];
 const publishedBlogPosts = (database) => database("blog_posts").select(publicBlogFields).where("status", "published");
+const sitePage = (database, pageKey) => database("site_pages").select("page_key", "content", "seo_title", "seo_description").where("page_key", pageKey).first();
 const adminAccount = async (database, userId) => {
   if (!userId) return null;
   const account = await database("directus_users as users").leftJoin("directus_roles as roles", "users.role", "roles.id").select("users.id", "users.email", "users.first_name", "users.last_name", "users.status", "users.role", "users.tfa_secret", "roles.name as role_name").where("users.id", userId).first();
@@ -72,6 +73,17 @@ export default {
         const item = await publishedBlogPosts(database).where("slug", request.params.slug).first();
         if (!item) return response.status(404).json({ errors: [{ message: "Blog yazısı bulunamadı." }] });
         response.json({ data: item });
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    router.get("/pages/:pageKey", async (request, response, next) => {
+      try {
+        if (!new Set(["about", "contact"]).has(request.params.pageKey)) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
+        const page = await sitePage(database, request.params.pageKey);
+        if (!page) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
+        response.json({ data: page });
       } catch (error) {
         next(error);
       }

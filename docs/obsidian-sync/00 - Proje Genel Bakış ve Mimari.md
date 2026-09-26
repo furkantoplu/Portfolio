@@ -167,6 +167,8 @@ Frontend çalışma alanlarını `directus-extension-website-content` adlı salt
 - Ana sayfa metinleri
 - SEO ayarları
 
+Hakkımda ve İletişim sayfaları `site_pages` koleksiyonunda `about` ve `contact` anahtarlı iki kayıt olarak tutulur. Sayfaya özgü alanlar güvenli JSON `content` nesnesinde, SEO başlığı ve açıklaması ayrı alanlarda saklanır. Public frontend `/website-content/pages/:pageKey` salt-okunur endpoint'ini kullanır; endpoint yalnızca izin verilen iki sayfa anahtarını kabul eder. Yönetici `/bakir` içindeki Sayfa içerikleri ekranında Hakkımda ve İletişim sekmeleri arasında geçerek bu değerleri kod görmeden düzenler.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

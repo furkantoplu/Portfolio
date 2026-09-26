@@ -44,6 +44,13 @@ export type BlogPost = {
   seo_description: string | null;
 };
 
+export type SitePage<T> = {
+  page_key: "about" | "contact";
+  content: T;
+  seo_title: string | null;
+  seo_description: string | null;
+};
+
 type DirectusResponse<T> = {
   data: T;
 };
@@ -83,6 +90,10 @@ export async function getPracticeArea(slug: string) {
 export function getBlogPosts(options: { homepage?: boolean } = {}) {
   const query = options.homepage ? "?homepage=true" : "";
   return fetchDirectus<BlogPost[]>(`/blog-posts${query}`);
+}
+
+export function getSitePage<T>(pageKey: "about" | "contact") {
+  return fetchDirectus<SitePage<T>>(`/pages/${pageKey}`);
 }
 
 export async function getBlogPost(slug: string) {

@@ -153,6 +153,9 @@ body {
 .admin-post-editor__footer p.is-visible { color: #735342; }
 .admin-post-editor__footer button { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 17px; border: 0; border-radius: 6px; background: #b86748; color: #fff; font: inherit; font-size: 12px; font-weight: 750; cursor: pointer; }
 .admin-post-editor__footer button:disabled { cursor: wait; opacity: 0.65; }
+.admin-page-tabs { display: inline-flex; gap: 5px; margin: 32px 0 16px; padding: 5px; border-radius: 8px; background: #e8e6de; }
+.admin-page-tabs button { min-height: 38px; padding: 0 18px; border: 0; border-radius: 6px; background: transparent; color: #687a73; font: inherit; font-size: 11px; font-weight: 750; cursor: pointer; }
+.admin-page-tabs button.is-active { background: #174f43; color: #fff; box-shadow: 0 6px 16px rgba(23, 79, 67, 0.14); }
 .admin-security { display: grid; grid-template-columns: minmax(300px, 0.7fr) minmax(420px, 1fr); gap: 70px; margin-top: 28px; padding: clamp(30px, 4.5vw, 58px); border-radius: 8px 42px 8px 42px; background: #123f36; color: #fff; }
 .admin-security h2 { margin: 0; font-family: Georgia, serif; font-size: clamp(32px, 3.5vw, 46px); font-weight: 500; letter-spacing: -0.035em; }
 .admin-security__copy > p:last-child { margin: 20px 0 0; color: rgba(255, 255, 255, 0.62); font-size: 13px; line-height: 1.7; }

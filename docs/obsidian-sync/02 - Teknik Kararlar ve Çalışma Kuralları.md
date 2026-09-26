@@ -203,6 +203,16 @@ Resmî referanslar:
 - Yeni başlıktan Türkçe karakterleri dönüştüren slug önerilir; benzersizlik veritabanında da korunur.
 - Görsel yükleme bu paketin kapsamında değildir. Yeni kayıtlar frontend'in varsayılan görsel davranışını kullanır; mevcut kayıtların görsel alanları editör payload'ı tarafından değiştirilmez.
 
+## Karar 031 — Kurumsal sayfa içerik modeli
+
+- Hakkımda ve İletişim içerikleri frontend kodunda sabit tutulmaz; `site_pages` koleksiyonunda yönetilir.
+- Her sayfa `page_key` ile benzersiz tanımlanır. Public endpoint yalnızca allowlist içindeki `about` ve `contact` değerlerini kabul eder.
+- Sayfaya özgü değişken yapı `content` JSON alanında, arama motoru metadata'sı ayrı `seo_title` ve `seo_description` alanlarında tutulur.
+- Public frontend standart anonim item API'sine erişmez; proje eklentisindeki salt-okunur `/pages/:pageKey` endpoint'ini kullanır.
+- Yönetici teknik JSON görmez. Hakkımda paragrafları satır, ilkeler ve iletişim adımları `Başlık | Açıklama` biçiminde düzenlenir; istemci kayıt sırasında JSON nesnelerine dönüştürür.
+- Telefon bağlantısı yalnızca `+` ve rakam, WhatsApp değeri yalnızca rakam kabul edecek şekilde istemcide normalize edilir.
+- TOTP aktif yöneticiyle otomasyon betiği çalıştırmak için 2FA devre dışı bırakılmaz. Gerektiğinde rastgele geçici statik token yalnızca işlem süresince atanır ve `finally` ile temizlenir; kalıcı token oluşturulmaz.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

@@ -23,6 +23,7 @@ Directus çalışma alanları koleksiyonunu ve başlangıç kayıtlarını idemp
 ```powershell
 node scripts/bootstrap-directus.mjs
 node scripts/bootstrap-blog.mjs
+node scripts/bootstrap-site-pages.mjs
 node scripts/bootstrap-security.mjs
 ```
 
@@ -37,6 +38,8 @@ Blog yazıları da doğrudan `/bakir` panelinden yönetilir. Yönetici yeni tasl
 Yönetim paneli tek uzun sayfa değildir. Masaüstünde sabit sol sidebar; tablet ve mobilde üstte yatay kaydırılabilir bölüm menüsü kullanır. Genel bakış, blog yazıları, çalışma alanları, yöneticiler ve hesap güvenliği birbirinden ayrı çalışma ekranları olarak açılır. Böylece yeni modüller eklendiğinde kullanıcı sayfanın altına inmek zorunda kalmaz.
 
 Çalışma alanları `/bakir` içindeki kendi bölümünden eklenir ve düzenlenir. Yönetici alanı taslakta tutabilir, yayınlayabilir, silmeden gizleyebilir ve ana sayfa kartlarında gösterilip gösterilmeyeceğini seçebilir. Kart metni, detay başlıkları, genel bilgilendirme, değerlendirme maddeleri, süreç adımları, sık sorulan sorular ve SEO metinleri kod düzenlemeden girilir.
+
+Hakkımda ve İletişim sayfaları da `/bakir → Sayfa içerikleri` bölümünden yönetilir. Hakkımda sayfasının ana metinleri, mesleki yaklaşımı ve çalışma ilkeleri; İletişim sayfasının telefon, WhatsApp, e-posta, adres, çalışma saatleri ve süreç metinleri ayrı sekmelerden düzenlenir. Public sayfalar veriyi salt-okunur özel endpoint üzerinden alır.
 
 Yerel HTTP geliştirmesinde `DIRECTUS_SESSION_COOKIE_SECURE=false` kullanılır. VPS üzerinde HTTPS etkinleştirildiğinde bu değer mutlaka `true` yapılmalıdır. `/bakir` yanıtları `noindex`, `nofollow`, `noarchive` ve `no-store` başlıklarıyla korunur; özel adres tek başına güvenlik önlemi sayılmaz.
 

@@ -524,3 +524,24 @@
 - Form payload'ındaki metin ve JSON alanları PostgreSQL transaction içinde geçici kayıtla doğrulandı; `ROLLBACK` sonrasında test kaydı kalmadığı kontrol edildi.
 - Hedefli ESLint kontrolü ve Docker production build başarıyla tamamlandı; bütün container'lar `healthy`, `/bakir` HTTP 200 durumunda doğrulandı.
 - Uygulama paketi `7d52ceb` kimliği ve `feat: add practice area management workspace` mesajıyla commit edildi.
+
+### Paket 22 — Hakkımda ve İletişim sayfası içerik yönetimi
+
+- Hakkımda ve İletişim sayfalarının metin ve iletişim bilgilerinin de özel panelden yönetilmesi gereksinimi eklendi.
+- `scripts/bootstrap-site-pages.mjs` betiği oluşturuldu ve `site_pages` Directus koleksiyonu idempotent biçimde hazırlandı.
+- Koleksiyona benzersiz `page_key`, JSON `content`, SEO başlığı ve SEO açıklaması alanları eklendi.
+- Mevcut hardcoded Hakkımda ve İletişim içerikleri `about` ve `contact` başlangıç kayıtlarına taşındı; geçiş sırasında public sayfaların boş kalması engellendi.
+- Yönetici hesabında TOTP aktif olduğu için bootstrap sırasında 2FA kapatılmadı. Veritabanına yalnızca işlem süresince rastgele statik token verildi, betik tamamlanınca `finally` bloğunda temizlendi.
+- Geçici token terminal çıktısına veya dosyaya yazılmadı; işlem sonunda kullanıcı token alanının tekrar boş olduğu doğrulandı.
+- Directus özel eklentisine yalnızca `about` ve `contact` anahtarlarını kabul eden `/pages/:pageKey` salt-okunur endpoint'i eklendi.
+- Frontend veri katmanına tipli `getSitePage` fonksiyonu eklendi.
+- `/hakkimda` sayfası hero, yaklaşım paragrafları, mesleki not, çalışma ilkeleri ve SEO metadata'sını CMS kaydından üretmeye başladı.
+- `/iletisim` sayfası hero, uyarı, telefon, WhatsApp, e-posta, adres, çalışma saatleri, süreç adımları ve SEO metadata'sını CMS kaydından üretmeye başladı.
+- Admin navigasyonuna `Sayfa içerikleri` bölümü eklendi.
+- Yönetim ekranında Hakkımda ve İletişim için iki sekmeli form hazırlandı.
+- Hakkımda formu başlıkları, açıklamaları, yaklaşım paragraflarını, mesleki notu, çalışma ilkelerini ve SEO değerlerini yönetir.
+- İletişim formu telefon görünümü/bağlantısı, WhatsApp, e-posta, adres, çalışma günleri/saatleri, gizlilik uyarısı, iletişim adımları ve SEO değerlerini yönetir.
+- Tekrarlanan paragraflar ve adımlar sade satır biçiminden güvenli JSON listelerine dönüştürülür.
+- Directus eklentisi yeniden yüklendi; hedefli lint ve Docker production build başarıyla tamamlandı.
+- `/hakkimda`, `/iletisim`, `/website-content/pages/about` ve `/website-content/pages/contact` Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
+- Database, Directus ve frontend container'larının `healthy`, Caddy proxy'nin çalışır durumda olduğu doğrulandı.

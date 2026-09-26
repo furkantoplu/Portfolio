@@ -1,22 +1,27 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight, Eye, MessageCircleMore, Route, Sparkles } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { getSitePage } from "../lib/directus";
 
-export const metadata: Metadata = {
-  title: "Hakkımda | Fzt. Furkan Toplu",
-  description:
-    "Fizyoterapist Furkan Toplu'nun değerlendirme yaklaşımı, çalışma ilkeleri ve danışan iletişimi hakkında bilgi.",
+type AboutContent = {
+  hero_title: string; hero_accent: string; hero_description: string;
+  story_title: string; story_accent: string; story_lead: string;
+  story_paragraphs: Array<{ text: string }>; professional_note: string;
+  principles_title: string; principles: Array<{ title: string; text: string }>;
 };
 
-const principles = [
-  { icon: MessageCircleMore, number: "01", title: "Dinlemek", text: "Süreci kişinin günlük yaşamını, beklentilerini ve ihtiyaçlarını anlayarak başlatmak." },
-  { icon: Eye, number: "02", title: "Bütünü görmek", text: "Tek bir bölge yerine hareketi, alışkanlıkları ve çevresel koşulları birlikte değerlendirmek." },
-  { icon: Route, number: "03", title: "Yolu açıklamak", text: "Değerlendirme ve takip adımlarını sade, anlaşılır ve şeffaf biçimde paylaşmak." },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getSitePage<AboutContent>("about");
+  return { title: page.seo_title || "Hakkımda | Fzt. Furkan Toplu", description: page.seo_description || undefined };
+}
 
-export default function AboutPage() {
+const principleIcons = [MessageCircleMore, Eye, Route];
+
+export default async function AboutPage() {
+  const { content } = await getSitePage<AboutContent>("about");
   return (
     <main className="site-shell about-page">
       <SiteHeader active="about" />
@@ -24,13 +29,9 @@ export default function AboutPage() {
       <section className="about-page-hero" aria-labelledby="about-page-title">
         <div className="about-page-hero__copy">
           <p className="eyebrow"><span aria-hidden="true" />Hakkımda</p>
-          <h1 id="about-page-title">Hareketi anlamak,<em> önce insanı dinlemekle başlar.</em></h1>
-          <p>
-            Her bireyin günlük yaşamı, hareket deneyimi ve hedefleri farklıdır.
-            Bu nedenle süreci hazır kalıplarla değil; dinleyerek, değerlendirerek
-            ve anlaşılır bir yol haritası oluşturarak ele alıyorum.
-          </p>
-          <a className="primary-button" href="/iletisim">İletişim bilgilerini görün <ArrowUpRight aria-hidden="true" size={18} /></a>
+          <h1 id="about-page-title">{content.hero_title}<em> {content.hero_accent}</em></h1>
+          <p>{content.hero_description}</p>
+          <Link className="primary-button" href="/iletisim">İletişim bilgilerini görün <ArrowUpRight aria-hidden="true" size={18} /></Link>
         </div>
         <div className="about-page-hero__portrait">
           <Image src="/about-physiotherapist-v1.png" alt="Klinik ortamında fizyoterapist Furkan Toplu" fill priority sizes="(max-width: 860px) 100vw, 48vw" />
@@ -41,35 +42,36 @@ export default function AboutPage() {
       <section className="about-story" aria-labelledby="about-story-title">
         <div>
           <p className="section-kicker">Mesleki Yaklaşım</p>
-          <h2 id="about-story-title">Bilimsel bilgiyi,<em> günlük yaşama uyarlanabilir hale getirmek.</em></h2>
+          <h2 id="about-story-title">{content.story_title}<em> {content.story_accent}</em></h2>
         </div>
         <div className="about-story__body">
-          <p className="about-story__lead">Fizyoterapi sürecinin yalnızca görüşme sırasında yapılanlardan ibaret olmadığına inanıyorum.</p>
-          <p>Değerlendirmede kişinin hareket kapasitesini, günlük alışkanlıklarını, çalışma koşullarını ve kendi hedeflerini birlikte ele alıyorum. Amaç; karmaşık görünen bilgileri sadeleştirmek ve kişinin sürece aktif olarak katılabileceği açık bir çerçeve oluşturmaktır.</p>
-          <p>Her adımda neyin, neden ele alındığını paylaşmaya; ilerlemeyi düzenli olarak gözden geçirmeye ve gerektiğinde planı yeniden şekillendirmeye önem veriyorum.</p>
-          <div className="about-story__note"><Sparkles aria-hidden="true" size={20} /><span>Diploma, eğitim ve sertifika bilgileri müşteriden alınacak gerçek içerikle yayın öncesinde bu alana eklenecektir.</span></div>
+          <p className="about-story__lead">{content.story_lead}</p>
+          {content.story_paragraphs.map((paragraph, index) => <p key={index}>{paragraph.text}</p>)}
+          <div className="about-story__note"><Sparkles aria-hidden="true" size={20} /><span>{content.professional_note}</span></div>
         </div>
       </section>
 
       <section className="about-principles" aria-labelledby="principles-title">
         <div className="about-principles__heading">
           <p className="section-kicker section-kicker--light">Çalışma İlkeleri</p>
-          <h2 id="principles-title">Sade, şeffaf ve kişiye göre şekillenen bir süreç.</h2>
+          <h2 id="principles-title">{content.principles_title}</h2>
         </div>
         <div className="about-principles__grid">
-          {principles.map(({ icon: Icon, number, title, text }) => (
+          {content.principles.map(({ title, text }, index) => {
+            const Icon = principleIcons[index] || Sparkles;
+            return (
             <article key={title}>
-              <div><span>{number}</span><Icon aria-hidden="true" size={28} strokeWidth={1.4} /></div>
+              <div><span>{String(index + 1).padStart(2, "0")}</span><Icon aria-hidden="true" size={28} strokeWidth={1.4} /></div>
               <h3>{title}</h3>
               <p>{text}</p>
             </article>
-          ))}
+          );})}
         </div>
       </section>
 
       <section className="about-page-cta">
         <p>Çalışma alanlarını ve süreç yaklaşımını daha ayrıntılı inceleyin.</p>
-        <a href="/calisma-alanlari">Çalışma alanlarına gidin <ArrowUpRight aria-hidden="true" size={18} /></a>
+        <Link href="/calisma-alanlari">Çalışma alanlarına gidin <ArrowUpRight aria-hidden="true" size={18} /></Link>
       </section>
 
       <SiteFooter />

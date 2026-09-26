@@ -56,6 +56,10 @@ function publishedBlogPosts(database) {
     .where("status", "published");
 }
 
+function sitePage(database, pageKey) {
+  return database("site_pages").select("page_key", "content", "seo_title", "seo_description").where("page_key", pageKey).first();
+}
+
 async function adminAccount(database, userId) {
   if (!userId) return null;
 
@@ -190,6 +194,17 @@ export default {
         }
 
         response.json({ data: item });
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    router.get("/pages/:pageKey", async (request, response, next) => {
+      try {
+        if (!new Set(["about", "contact"]).has(request.params.pageKey)) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
+        const page = await sitePage(database, request.params.pageKey);
+        if (!page) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
+        response.json({ data: page });
       } catch (error) {
         next(error);
       }

@@ -2,19 +2,27 @@ import type { Metadata } from "next";
 import { ArrowUpRight, Clock3, Mail, MapPin, MessageCircleMore, Phone, ShieldCheck } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { getSitePage } from "../lib/directus";
 
-export const metadata: Metadata = {
-  title: "İletişim | Fzt. Furkan Toplu",
-  description: "Görüşme süreci, çalışma saatleri ve iletişim kanalları hakkında bilgi alın.",
+type ContactContent = {
+  hero_title: string; hero_accent: string; intro: string; privacy_note: string;
+  phone_display: string; phone_value: string; whatsapp_value: string; email: string;
+  address_title: string; address_note: string; working_days: string; working_hours: string;
+  flow_title: string; flow_steps: Array<{ title: string; text: string }>;
 };
 
-const methods = [
-  { icon: Phone, label: "Telefon", value: "+90 555 123 45 67", note: "Pazartesi — Cumartesi", href: "tel:+905551234567" },
-  { icon: MessageCircleMore, label: "WhatsApp", value: "Mesaj gönderin", note: "Uygun olduğunda dönüş yapılır", href: "https://wa.me/905551234567" },
-  { icon: Mail, label: "E-posta", value: "merhaba@furkantoplu.com", note: "Genel bilgi talepleri için", href: "mailto:merhaba@furkantoplu.com" },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getSitePage<ContactContent>("contact");
+  return { title: page.seo_title || "İletişim | Fzt. Furkan Toplu", description: page.seo_description || undefined };
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const { content } = await getSitePage<ContactContent>("contact");
+  const methods = [
+    { icon: Phone, label: "Telefon", value: content.phone_display, note: content.working_days, href: `tel:${content.phone_value}` },
+    { icon: MessageCircleMore, label: "WhatsApp", value: "Mesaj gönderin", note: "Uygun olduğunda dönüş yapılır", href: `https://wa.me/${content.whatsapp_value}` },
+    { icon: Mail, label: "E-posta", value: content.email, note: "Genel bilgi talepleri için", href: `mailto:${content.email}` },
+  ];
   return (
     <main className="site-shell contact-page">
       <SiteHeader active="contact" />
@@ -22,11 +30,11 @@ export default function ContactPage() {
       <section className="contact-page-hero" aria-labelledby="contact-page-title">
         <div>
           <p className="eyebrow"><span aria-hidden="true" />İletişim</p>
-          <h1 id="contact-page-title">İlk adımı<em> sakin ve net</em> atalım.</h1>
+          <h1 id="contact-page-title">{content.hero_title}<em> {content.hero_accent}</em></h1>
         </div>
         <div className="contact-page-hero__intro">
-          <p>Görüşme süreci, uygun saatler veya çalışma alanları hakkında genel bilgi almak için size uygun kanalı kullanabilirsiniz.</p>
-          <div><ShieldCheck aria-hidden="true" size={19} /><span>İlk iletişimde sağlık raporu veya ayrıntılı sağlık verisi göndermeyin.</span></div>
+          <p>{content.intro}</p>
+          <div><ShieldCheck aria-hidden="true" size={19} /><span>{content.privacy_note}</span></div>
         </div>
       </section>
 
@@ -45,17 +53,15 @@ export default function ContactPage() {
           <h2 id="visit-title">Görüşme öncesinde bilmeniz gerekenler.</h2>
         </div>
         <div className="contact-details__cards">
-          <article><MapPin aria-hidden="true" size={24} /><span>Görüşme adresi</span><h3>Kadıköy / İstanbul</h3><p>Detaylı adres, görüşme oluşturulduktan sonra paylaşılır.</p></article>
-          <article><Clock3 aria-hidden="true" size={24} /><span>Çalışma saatleri</span><h3>Pazartesi — Cumartesi</h3><p>09.00 — 19.00 · Yalnızca randevu ile</p></article>
+          <article><MapPin aria-hidden="true" size={24} /><span>Görüşme adresi</span><h3>{content.address_title}</h3><p>{content.address_note}</p></article>
+          <article><Clock3 aria-hidden="true" size={24} /><span>Çalışma saatleri</span><h3>{content.working_days}</h3><p>{content.working_hours}</p></article>
         </div>
       </section>
 
       <section className="contact-flow" aria-labelledby="contact-flow-title">
-        <div><p className="section-kicker section-kicker--light">Kısa Süreç</p><h2 id="contact-flow-title">İletişimden ilk görüşmeye üç sade adım.</h2></div>
+        <div><p className="section-kicker section-kicker--light">Kısa Süreç</p><h2 id="contact-flow-title">{content.flow_title}</h2></div>
         <ol>
-          <li><span>01</span><div><strong>Uygun kanaldan ulaşın</strong><p>İletişim tercihinizi ve genel bilgi talebinizi paylaşın.</p></div></li>
-          <li><span>02</span><div><strong>Saat ve kapsam netleşsin</strong><p>Uygun zaman ile ilk görüşmenin genel çerçevesi konuşulsun.</p></div></li>
-          <li><span>03</span><div><strong>İlk değerlendirme yapılsın</strong><p>Kişisel ihtiyaçlar ancak görüşme sırasında ayrıntılı biçimde ele alınsın.</p></div></li>
+          {content.flow_steps.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{step.title}</strong><p>{step.text}</p></div></li>)}
         </ol>
       </section>
 
