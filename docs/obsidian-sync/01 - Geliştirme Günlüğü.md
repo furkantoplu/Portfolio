@@ -523,3 +523,4 @@
 - Çalışma alanları sorgusu panel için gereken tüm alanları ve belirlenmiş sıralamayı döndürecek şekilde genişletildi.
 - Form payload'ındaki metin ve JSON alanları PostgreSQL transaction içinde geçici kayıtla doğrulandı; `ROLLBACK` sonrasında test kaydı kalmadığı kontrol edildi.
 - Hedefli ESLint kontrolü ve Docker production build başarıyla tamamlandı; bütün container'lar `healthy`, `/bakir` HTTP 200 durumunda doğrulandı.
+- Uygulama paketi `7d52ceb` kimliği ve `feat: add practice area management workspace` mesajıyla commit edildi.
