@@ -486,3 +486,4 @@
 - Hedefli ESLint kontrolü, yerel production build ve Docker production build başarıyla tamamlandı.
 - Docker servislerinin tamamı `healthy`, `/bakir` rotası HTTP 200 durumunda doğrulandı.
 - Tarayıcı paneli oturum kapalı durumda bulundu; parola ve TOTP bilgilerine otomasyonla müdahale edilmedi. Editörün gerçek oturumdaki son kullanıcı görsel kontrolü bir sonraki manuel girişte yapılacaktır.
+- Uygulama paketi `df9b1a9` kimliği ve `feat: add blog management workspace` mesajıyla commit edildi.
