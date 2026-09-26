@@ -30,6 +30,8 @@ Komut mevcut koleksiyonu veya kayıtları silmez; yalnızca eksik şema alanlar�
 
 `/bakir` ekranı site sahibinin günlük kullanımına ayrılmış özel yönetim yüzeyidir. Giriş, Directus'a Caddy üzerinden aynı origin altında iletilir ve oturum JavaScript'in okuyamadığı `httpOnly` çerezde tutulur. Panel, e-posta ve parola girişinin yanında Google Authenticator uyumlu 6 haneli TOTP kodunu destekler. İlk TOTP kurulumu yönetici oturumu açıldıktan sonra ekrandaki güvenlik bölümünden, telefon sahibinin bizzat doğrulamasıyla tamamlanır.
 
+Panel birden fazla yöneticiyi destekler. Tam yetkili bir yönetici `/bakir` içindeki ekip bölümünden ayrı e-posta ve geçici parolayla yeni yönetici hesabı oluşturabilir. Ortak hesap kullanılmaz; her yönetici ilk girişinden sonra kendi telefonuyla ayrı TOTP kurulumu yapar. Panel TOTP durumunu kullanıcı bazında okur ve etkin hesapta kurulum formu yerine `2FA aktif` durumunu gösterir. Gizli TOTP anahtarları hiçbir liste endpoint'inden tarayıcıya gönderilmez.
+
 Yerel HTTP geliştirmesinde `DIRECTUS_SESSION_COOKIE_SECURE=false` kullanılır. VPS üzerinde HTTPS etkinleştirildiğinde bu değer mutlaka `true` yapılmalıdır. `/bakir` yanıtları `noindex`, `nofollow`, `noarchive` ve `no-store` başlıklarıyla korunur; özel adres tek başına güvenlik önlemi sayılmaz.
 
 Çalışma alanları artık Directus'tan dinamik okunur. Ana sayfa yalnızca `Yayında` ve `Ana sayfada göster` işaretli kayıtları; `/calisma-alanlari` ise tüm `Yayında` kayıtları sıralama alanına göre gösterir. `Taslak` veya `Gizli` kayıtlar listelenmez ve detay URL'leri 404 döndürür.

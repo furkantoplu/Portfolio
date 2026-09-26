@@ -448,3 +448,21 @@
 - Docker üzerinden `/bakir` HTTP 200, güvenlik başlıkları ve hatalı giriş HTTP 401 davranışı doğrulandı; tüm bağımlı servisler sağlıklı çalıştı.
 - Bu paket güvenli giriş ve TOTP temelini tamamlar. Blog ve çalışma alanı ekleme/düzenleme/gizleme ekranları sıradaki yönetim paketinde hazırlanacaktır.
 - Uygulama paketi `1fb0494` kimliği ve `feat: add secure custom admin access` mesajıyla commit edildi.
+
+### Paket 18 — TOTP durum düzeltmesi ve çoklu yönetici desteği
+
+- Kullanıcının Google Authenticator kurulumunu başarıyla tamamlamasına rağmen panelin kurulum formunu göstermeye devam ettiği bildirildi.
+- Veritabanında mevcut yönetici hesabının `tfa_secret` değerinin dolu olduğu yalnızca boolean sonuçla doğrulandı; TOTP gizli anahtarı okunabilir çıktıya veya dokümana alınmadı.
+- Hatanın TOTP kaydında değil, ilk panel sürümünün hesap güvenlik durumunu hiç sorgulamamasında olduğu belirlendi.
+- Directus özel endpoint eklentisine kimliği doğrulanmış kullanıcıya ait güvenli `/admin-account` endpoint'i eklendi.
+- Endpoint Directus oturumundan kullanıcıyı belirler, TOTP gizli anahtarını yanıttan çıkarır ve yalnızca `tfa_enabled` boolean bilgisini döndürür.
+- `/bakir` paneli etkin hesaplarda kurulum formunu kaldırıp `İki adımlı doğrulama aktif` durumunu gösterecek şekilde güncellendi.
+- TOTP yeni etkinleştirildiğinde panel durumu sayfa yenilemeden güncellenir.
+- Çoklu yönetici için `/admin-team` endpoint'i eklendi. Endpoint yalnızca Directus `admin_access` politikasına sahip hesaplar tarafından kullanılabilir ve ekip üyelerinin gizli anahtarları yerine yalnızca 2FA açık/kapalı durumlarını döndürür.
+- Yönetim paneline mevcut yöneticileri ve hesap bazında `2FA aktif` / `2FA bekliyor` durumunu gösteren ekip bölümü eklendi.
+- Tam yetkili yöneticinin ad, soyad, e-posta ve geçici güçlü parolayla yeni yönetici oluşturabileceği form eklendi.
+- Yeni hesap mevcut yönetici rolüne atanır; ortak hesap yerine her yönetici ayrı e-posta, parola, oturum ve Authenticator kurulumu kullanır.
+- Yeni yönetici oluşturma testi sırasında gereksiz deneme hesabı bırakılmadı.
+- Özel hesap ve ekip endpoint'lerinin oturumsuz istekleri HTTP 401 ile reddettiği Docker/Caddy üzerinden doğrulandı.
+- Directus eklentisinin yeniden yüklendiği, frontend hedefli ESLint kontrolünün geçtiği ve Docker production build'inin başarıyla tamamlandığı doğrulandı.
+- Tarayıcıda giriş ekranı yeniden kontrol edildi. Etkin durum ve ekip ekranının gerçek oturum doğrulaması, güvenlik gereği yönetici parolası/TOTP kodu otomasyona alınmadan kullanıcının bir sonraki girişiyle tamamlanacaktır.

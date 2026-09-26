@@ -161,6 +161,16 @@ Resmî referanslar:
 - TOTP gizli anahtarı, yönetici parolası ve oturum çerezleri loglara, Git deposuna veya Obsidian notlarına yazılmaz.
 - İlk özel panel paketi yalnızca giriş, çıkış, içerik özeti ve TOTP kurulumunu kapsar. İçerik CRUD ekranları küçük paketlerle ayrıca geliştirilecektir.
 
+## Karar 027 — Hesap bazlı TOTP ve çoklu yönetici modeli
+
+- Yönetim için ortak kullanıcı hesabı paylaşılmaz. Her yönetici benzersiz e-posta, güçlü parola, ayrı oturum ve kendi telefonuna bağlı TOTP kullanır.
+- Panelin TOTP durumu React state tahminiyle değil, Directus veritabanındaki oturum kullanıcısından türetilir.
+- `website-content/admin-account` yalnızca kimliği doğrulanmış oturum kullanıcısını döndürür. `tfa_secret` API yanıtından daima çıkarılır; istemciye yalnızca `tfa_enabled` boolean değeri gönderilir.
+- `website-content/admin-team` yalnızca `admin_access=true` politikasıyla bağlı kullanıcı veya rollere açıktır. Ekip listesi parola, token veya TOTP gizli anahtarı içermez.
+- Yeni yönetici hesabı Directus'un standart kullanıcı servisi üzerinden oluşturulur. Böylece parola hashleme, parola politikası ve aktivite kaydı Directus tarafından uygulanır.
+- İlk yönetici yeni hesap için geçici güçlü parola belirler. Yeni yönetici giriş yaptıktan sonra kendi TOTP kurulumunu tamamlar; gizli anahtar başka yöneticiyle paylaşılmaz.
+- Yönetici kaldırma veya yetki düşürme işlemi yanlışlıkla erişim kaybı yaratabileceği için bu pakette özel panele eklenmez; teknik Directus arayüzünde kontrollü olarak yapılır ve ileride ayrıca güvenli akış tasarlanır.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

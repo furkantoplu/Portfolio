@@ -13,6 +13,8 @@ import {
   LogOut,
   ShieldCheck,
   Stethoscope,
+  UserPlus,
+  Users,
 } from "lucide-react";
 import { BrandMark } from "../components/brand-mark";
 
@@ -21,7 +23,14 @@ type AdminUser = {
   email: string;
   first_name: string | null;
   last_name: string | null;
+  status: string;
+  role: string;
+  role_name: string | null;
+  tfa_enabled: boolean;
+  is_admin: boolean;
 };
+
+type AdminMember = Omit<AdminUser, "is_admin">;
 
 type ContentItem = { status: "draft" | "published" | "hidden" };
 
@@ -66,6 +75,7 @@ export function BakirAdmin() {
   const [sessionState, setSessionState] = useState<"checking" | "signed-out" | "signed-in">("checking");
   const [user, setUser] = useState<AdminUser | null>(null);
   const [summary, setSummary] = useState<ContentSummary | null>(null);
+  const [team, setTeam] = useState<AdminMember[]>([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
@@ -77,15 +87,20 @@ export function BakirAdmin() {
   const [tfaOtp, setTfaOtp] = useState("");
   const [tfaMessage, setTfaMessage] = useState<string | null>(null);
   const [tfaBusy, setTfaBusy] = useState(false);
+  const [newAdmin, setNewAdmin] = useState({ first_name: "", last_name: "", email: "", password: "" });
+  const [teamBusy, setTeamBusy] = useState(false);
+  const [teamMessage, setTeamMessage] = useState<string | null>(null);
 
   const loadDashboard = useCallback(async () => {
-    const [{ data: currentUser }, { data: blog }, { data: practices }] = await Promise.all([
-      directusRequest<{ data: AdminUser }>("/users/me?fields=id,email,first_name,last_name"),
+    const [{ data: currentUser }, { data: members }, { data: blog }, { data: practices }] = await Promise.all([
+      directusRequest<{ data: AdminUser }>("/website-content/admin-account"),
+      directusRequest<{ data: AdminMember[] }>("/website-content/admin-team"),
       directusRequest<{ data: ContentItem[] }>("/items/blog_posts?fields=status&limit=-1"),
       directusRequest<{ data: ContentItem[] }>("/items/practice_areas?fields=status&limit=-1"),
     ]);
 
     setUser(currentUser);
+    setTeam(members);
     setSummary({ blog, practices });
     setSessionState("signed-in");
   }, []);
@@ -190,11 +205,40 @@ export function BakirAdmin() {
       });
       setTfaSecret(null);
       setTfaOtp("");
+      setUser((current) => current ? { ...current, tfa_enabled: true } : current);
       setTfaMessage("İki adımlı doğrulama etkinleştirildi. Bundan sonraki girişlerde 6 haneli kod istenecek.");
     } catch {
       setTfaMessage("Kod doğrulanamadı. Uygulamadaki yeni kodla tekrar deneyin.");
     } finally {
       setTfaBusy(false);
+    }
+  }
+
+  async function createAdmin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!user?.is_admin || !user.role) return;
+
+    setTeamBusy(true);
+    setTeamMessage(null);
+    try {
+      await directusRequest("/users", {
+        method: "POST",
+        body: JSON.stringify({
+          ...newAdmin,
+          email: newAdmin.email.trim(),
+          role: user.role,
+          status: "active",
+        }),
+      });
+      const { data } = await directusRequest<{ data: AdminMember[] }>("/website-content/admin-team");
+      setTeam(data);
+      setNewAdmin({ first_name: "", last_name: "", email: "", password: "" });
+      setTeamMessage("Yeni yönetici oluşturuldu. İlk girişinden sonra kendi Authenticator kurulumunu yapabilir.");
+    } catch (error) {
+      const code = error instanceof Error ? error.name : "";
+      setTeamMessage(code === "RECORD_NOT_UNIQUE" ? "Bu e-posta adresiyle zaten bir hesap var." : "Yönetici oluşturulamadı. Bilgileri ve parola kurallarını kontrol edin.");
+    } finally {
+      setTeamBusy(false);
     }
   }
 
@@ -285,7 +329,7 @@ export function BakirAdmin() {
         <section className="admin-welcome">
           <p className="admin-eyebrow"><CheckCircle2 size={17} /> Güvenli oturum açık</p>
           <h1>İçerikleriniz<br /><em>kontrolünüz altında.</em></h1>
-          <p>Bu ilk yönetim paketinde güvenli giriş ve iki adımlı doğrulama hazırlandı. İçerik düzenleme ekranları sıradaki pakette bu alana eklenecek.</p>
+          <p>Güvenli giriş, hesap bazlı iki adımlı doğrulama ve yönetici ekibi hazır. İçerik düzenleme ekranları sıradaki pakette bu alana eklenecek.</p>
         </section>
 
         <section className="admin-stat-grid" aria-label="İçerik özeti">
@@ -301,15 +345,20 @@ export function BakirAdmin() {
           </article>
         </section>
 
-        <section className="admin-security" aria-labelledby="tfa-title">
+        <section className={`admin-security${user?.tfa_enabled ? " admin-security--enabled" : ""}`} aria-labelledby="tfa-title">
           <div className="admin-security__copy">
             <p className="admin-eyebrow"><ShieldCheck size={17} /> Hesap güvenliği</p>
-            <h2 id="tfa-title">Google Authenticator kurulumu</h2>
-            <p>Kurulum tamamlandığında e-posta ve parolaya ek olarak, her girişte telefonunuzdaki 6 haneli kod gerekir.</p>
+            <h2 id="tfa-title">{user?.tfa_enabled ? "İki adımlı doğrulama aktif" : "Google Authenticator kurulumu"}</h2>
+            <p>{user?.tfa_enabled ? `${user.email} hesabı her girişte telefonunuzdaki 6 haneli kodla korunuyor.` : "Kurulum tamamlandığında e-posta ve parolaya ek olarak, her girişte telefonunuzdaki 6 haneli kod gerekir."}</p>
           </div>
 
           <div className="admin-security__form">
-            {!tfaSecret ? (
+            {user?.tfa_enabled ? (
+              <div className="admin-security__active">
+                <CheckCircle2 size={34} aria-hidden="true" />
+                <div><strong>Authenticator bağlı</strong><span>Her yönetici bu güvenliği kendi hesabı ve kendi telefonu için ayrı kurar.</span></div>
+              </div>
+            ) : !tfaSecret ? (
               <>
                 <label><span>Mevcut parola</span><input type="password" value={setupPassword} onChange={(event) => setSetupPassword(event.target.value)} autoComplete="current-password" placeholder="Kurulumu doğrulamak için" /></label>
                 <button type="button" onClick={generateTfa} disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <KeyRound size={18} />} Kurulum anahtarı oluştur</button>
@@ -324,6 +373,42 @@ export function BakirAdmin() {
             {tfaMessage && <p className="admin-security__message" role="status">{tfaMessage}</p>}
           </div>
         </section>
+
+        {user?.is_admin && (
+          <section className="admin-team" aria-labelledby="admin-team-title">
+            <div className="admin-team__heading">
+              <div>
+                <p className="admin-eyebrow"><Users size={17} /> Yönetici ekibi</p>
+                <h2 id="admin-team-title">Birden fazla yönetici,<br /><em>ayrı ve güvenli hesaplar.</em></h2>
+              </div>
+              <p>Ortak parola kullanılmaz. Her yönetici kendi e-postası, parolası ve Authenticator kurulumu ile giriş yapar; işlemler hesabına göre kaydedilir.</p>
+            </div>
+
+            <div className="admin-team__layout">
+              <div className="admin-team__members">
+                {team.map((member) => (
+                  <article key={member.id}>
+                    <div className="admin-team__avatar">{(member.first_name?.[0] || member.email[0]).toLocaleUpperCase("tr-TR")}</div>
+                    <div><strong>{[member.first_name, member.last_name].filter(Boolean).join(" ") || "Yönetici"}</strong><span>{member.email}</span></div>
+                    <span className={member.tfa_enabled ? "is-secure" : "is-pending"}>{member.tfa_enabled ? "2FA aktif" : "2FA bekliyor"}</span>
+                  </article>
+                ))}
+              </div>
+
+              <form className="admin-team__form" onSubmit={createAdmin}>
+                <div><UserPlus size={20} /><strong>Yeni yönetici ekle</strong></div>
+                <div className="admin-team__names">
+                  <label><span>Ad</span><input value={newAdmin.first_name} onChange={(event) => setNewAdmin((current) => ({ ...current, first_name: event.target.value }))} required /></label>
+                  <label><span>Soyad</span><input value={newAdmin.last_name} onChange={(event) => setNewAdmin((current) => ({ ...current, last_name: event.target.value }))} required /></label>
+                </div>
+                <label><span>E-posta</span><input type="email" value={newAdmin.email} onChange={(event) => setNewAdmin((current) => ({ ...current, email: event.target.value }))} autoComplete="off" required /></label>
+                <label><span>Geçici parola</span><input type="password" value={newAdmin.password} onChange={(event) => setNewAdmin((current) => ({ ...current, password: event.target.value }))} minLength={10} autoComplete="new-password" required /><small>En az 10 karakter; büyük/küçük harf, rakam ve sembol içermeli.</small></label>
+                <button type="submit" disabled={teamBusy}>{teamBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <UserPlus size={18} />} Yönetici hesabını oluştur</button>
+                {teamMessage && <p role="status">{teamMessage}</p>}
+              </form>
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );

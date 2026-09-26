@@ -91,6 +91,8 @@ KVKK ve gizlilik sayfaları arayüz taslağı olarak hazırlanmıştır. Veri so
 
 Bu temel artık `/bakir` rotasında uygulanmıştır. Site sahibine Directus Studio yerine projeye özel sade bir giriş ve özet ekranı gösterilir. Caddy, tarayıcıdan gelen `/bakir-api/*` isteklerini aynı origin altında Directus'a iletir; Directus oturumu `httpOnly`, `SameSite=Lax` çerezle yönetilir. Yerel HTTP ortamında Secure bayrağı kapalıdır, production HTTPS ortamında açılacaktır. Ekran Google Authenticator uyumlu TOTP kurulumunu destekler; kurulum anahtarı yalnızca oturum sahibine gösterilir ve etkinleştirme telefondaki güncel kodla tamamlanır. İçerik ekleme/düzenleme formları bir sonraki yönetim paketi olacaktır.
 
+Birden fazla yönetici ayrı Directus kullanıcı hesaplarıyla çalışabilir. Tam yetkili yönetici özel panelden yeni yönetici hesabı açar; ortak parola veya ortak TOTP anahtarı kullanılmaz. Panel yalnızca oturumdaki hesabın `tfa_enabled` durumunu ve yönetici ekibindeki hesapların güvenlik durumunu gösterir, `tfa_secret` değerini API cevabına koymaz. Her yöneticinin içerik işlemleri Directus aktivite kaydında kendi kullanıcı kimliğiyle izlenebilir.
+
 ### Production altyapısı
 
 Docker Compose servisleri:
