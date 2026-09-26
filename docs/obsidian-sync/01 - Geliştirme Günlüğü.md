@@ -447,3 +447,4 @@
 - Yeni `/bakir` dosyaları hedefli ESLint kontrolünden geçti; production build hem yerelde hem Docker imajı içinde başarıyla tamamlandı.
 - Docker üzerinden `/bakir` HTTP 200, güvenlik başlıkları ve hatalı giriş HTTP 401 davranışı doğrulandı; tüm bağımlı servisler sağlıklı çalıştı.
 - Bu paket güvenli giriş ve TOTP temelini tamamlar. Blog ve çalışma alanı ekleme/düzenleme/gizleme ekranları sıradaki yönetim paketinde hazırlanacaktır.
+- Uygulama paketi `1fb0494` kimliği ve `feat: add secure custom admin access` mesajıyla commit edildi.
