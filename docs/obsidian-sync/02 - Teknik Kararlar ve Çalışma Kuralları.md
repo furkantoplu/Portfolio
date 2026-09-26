@@ -213,6 +213,15 @@ Resmî referanslar:
 - Telefon bağlantısı yalnızca `+` ve rakam, WhatsApp değeri yalnızca rakam kabul edecek şekilde istemcide normalize edilir.
 - TOTP aktif yöneticiyle otomasyon betiği çalıştırmak için 2FA devre dışı bırakılmaz. Gerektiğinde rastgele geçici statik token yalnızca işlem süresince atanır ve `finally` ile temizlenir; kalıcı token oluşturulmaz.
 
+## Karar 032 — Tek telefon kaynağı ve Vinext bağlantı ön yükleme politikası
+
+- Yöneticiye telefonun görünür ve teknik bağlantı biçimleri ayrı alanlar olarak gösterilmez. Tek `Telefon numarası` alanı içerik kaynağıdır.
+- Görünür numara yöneticinin yazdığı okunabilir biçimi korur. `tel:` hedefi `phoneToDialValue` ile boşluk, parantez ve tirelerden arındırılır; Türkiye yerel numarası gerektiğinde `+90` uluslararası biçimine çevrilir.
+- Mevcut veriyi ve olası eski istemcileri bozmamak için türetilmiş `phone_value` JSON anahtarı şimdilik saklanır, ancak elle düzenlenmez.
+- Ana sayfa ve İletişim sayfası telefon, WhatsApp, e-posta, adres ve çalışma saatleri için aynı `site_pages.contact` kaydını kullanır. Bir alanda iki ayrı içerik kaynağı tutulmaz.
+- Vinext `1.0.0-beta.5` altında RSC prefetch kurulumu tekrar eden istemci konsol hatası ürettiği için `next/link` bileşenlerinde otomatik prefetch kapatılır.
+- Bu karar normal bağlantı navigasyonunu kapatmaz; yalnızca hedef sayfayı kullanıcı tıklamadan önce getiren optimizasyonu devre dışı bırakır. Vinext kararlı sürümde sorun düzeldiğinde yeniden değerlendirilebilir.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

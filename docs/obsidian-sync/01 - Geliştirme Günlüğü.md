@@ -546,3 +546,19 @@
 - `/hakkimda`, `/iletisim`, `/website-content/pages/about` ve `/website-content/pages/contact` Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
 - Database, Directus ve frontend container'larının `healthy`, Caddy proxy'nin çalışır durumda olduğu doğrulandı.
 - Uygulama paketi `fe00856` kimliği ve `feat: manage about and contact pages` mesajıyla commit edildi.
+
+### Paket 23 — İletişim verisi birleştirme ve Vinext konsol temizliği
+
+- Tarayıcı konsolunda yaklaşık 50 hata gibi görünen kayıtların farklı hatalar olmadığı, Vinext `next/link` RSC prefetch kurulumundaki aynı `TypeError: f is not a function` mesajının görünür her bağlantı için tekrarlandığı belirlendi.
+- Aynı kayıtta Directus `GET` ve `PATCH` isteklerinin başarıyla tamamlandığı görüldü; veri kaydetme problemi olmadığı doğrulandı.
+- Projedeki bütün `next/link` kullanımlarına `prefetch={false}` eklendi. Böylece mevcut Vinext beta sürümündeki sorunlu otomatik RSC ön yükleme yolu kullanılmadan normal istemci navigasyonu korunur.
+- Ana sayfadaki iç bağlantılar lint kuralına uygun olarak `Link` bileşenine geçirildi ve aynı şekilde prefetch kapatıldı.
+- Admin İletişim formundaki `Telefon görünümü` ve teknik `Telefon bağlantısı` alanları tek `Telefon numarası` alanında birleştirildi.
+- `phoneToDialValue` yardımcı fonksiyonu eklendi. Yönetici boşluklu veya yerel biçimde numara yazabilir; kayıtta arama bağlantısı otomatik olarak uluslararası `+` ve rakam biçimine dönüştürülür.
+- Eski Directus kayıtlarıyla uyumluluk için türetilen değer `phone_value` anahtarında tutulmaya devam eder; public sayfalar görünür numarayı esas alarak güvenli fallback üretir.
+- Ana sayfadaki telefon, WhatsApp, e-posta, adres ve çalışma saatleri hardcoded değerlerden çıkarıldı ve aynı `site_pages.contact` CMS kaydına bağlandı.
+- Hedefli ESLint ve yerel production build başarıyla tamamlandı.
+- Frontend Docker imajı yeniden oluşturuldu; database, Directus ve frontend container'ları `healthy`, Caddy proxy çalışır durumda doğrulandı.
+- `/`, `/iletisim`, `/bakir` ve contact public endpoint'i Docker/Caddy üzerinden HTTP 200 yanıtı verdi.
+- Tarayıcıda `/bakir` ve `/` sayfalarının hata/uyarı konsolları ayrı ayrı kontrol edildi; ikisi de boş döndü.
+- Admin kaydında daha önce değiştirilmiş telefonun ana sayfada görünür hale geldiği ve `tel:+...` arama bağlantısının otomatik üretildiği doğrulandı.

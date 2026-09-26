@@ -169,6 +169,8 @@ Frontend çalışma alanlarını `directus-extension-website-content` adlı salt
 
 Hakkımda ve İletişim sayfaları `site_pages` koleksiyonunda `about` ve `contact` anahtarlı iki kayıt olarak tutulur. Sayfaya özgü alanlar güvenli JSON `content` nesnesinde, SEO başlığı ve açıklaması ayrı alanlarda saklanır. Public frontend `/website-content/pages/:pageKey` salt-okunur endpoint'ini kullanır; endpoint yalnızca izin verilen iki sayfa anahtarını kabul eder. Yönetici `/bakir` içindeki Sayfa içerikleri ekranında Hakkımda ve İletişim sekmeleri arasında geçerek bu değerleri kod görmeden düzenler.
 
+İletişim kaydındaki telefon için yöneticiye tek `Telefon numarası` alanı gösterilir. Görünen metin bu alandan alınır; arama bağlantısında kullanılacak uluslararası `tel:` değeri kayıt sırasında otomatik normalize edilerek geriye dönük uyumluluk için `phone_value` anahtarında tutulur. Public iletişim sayfası ve ana sayfadaki iletişim bloğu aynı `contact` kaydını kullanır. Telefon, WhatsApp, e-posta, adres ve çalışma saatlerinde yapılan tek değişiklik iki görünümde de geçerli olur.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.
