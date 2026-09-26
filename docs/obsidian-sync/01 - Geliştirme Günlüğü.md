@@ -545,3 +545,4 @@
 - Directus eklentisi yeniden yüklendi; hedefli lint ve Docker production build başarıyla tamamlandı.
 - `/hakkimda`, `/iletisim`, `/website-content/pages/about` ve `/website-content/pages/contact` Docker/Caddy üzerinden HTTP 200 yanıtıyla doğrulandı.
 - Database, Directus ve frontend container'larının `healthy`, Caddy proxy'nin çalışır durumda olduğu doğrulandı.
+- Uygulama paketi `fe00856` kimliği ve `feat: manage about and contact pages` mesajıyla commit edildi.
