@@ -467,3 +467,22 @@
 - Directus eklentisinin yeniden yüklendiği, frontend hedefli ESLint kontrolünün geçtiği ve Docker production build'inin başarıyla tamamlandığı doğrulandı.
 - Tarayıcıda giriş ekranı yeniden kontrol edildi. Etkin durum ve ekip ekranının gerçek oturum doğrulaması, güvenlik gereği yönetici parolası/TOTP kodu otomasyona alınmadan kullanıcının bir sonraki girişiyle tamamlanacaktır.
 - Uygulama paketi `38f7272` kimliği ve `feat: support account-aware two-factor auth` mesajıyla commit edildi.
+
+### Paket 19 — Özel panelde blog yazısı yönetimi
+
+- `/bakir` yönetim paneline site sahibinin Directus Studio'ya girmeden kullanabileceği blog yönetimi bölümü eklendi.
+- Mevcut blog yazıları yayın durumu, başlık, kategori ve okuma süresiyle listelenir.
+- Her yazı listeden seçilerek aynı ekranda düzenlenebilir; yayınlanmış yazı yeni sekmede public sitede açılabilir.
+- Yeni yazı düğmesi boş ve varsayılan olarak taslak bir editör açar.
+- Yazı başlığı girilirken yeni kayıtlarda Türkçe karakterleri güvenli dönüştüren slug otomatik üretilir; slug alanı ayrıca düzenlenebilir.
+- Formda taslak/yayında/gizli durumu, kategori, başlık, slug, kart özeti, yayın tarihi, okuma süresi ve ana sayfada öne çıkarma seçenekleri bulunur.
+- Giriş metni, boş satırlarla ayrılan ana paragraflar, vurgulu alıntı, kapanış başlığı/metni ve SEO başlığı/açıklaması düzenlenebilir.
+- Paragraflar ham HTML yerine `{ text }` nesnelerinden oluşan güvenli JSON listesine dönüştürülerek Directus'a kaydedilir.
+- Yeni kayıtlar Directus standart `POST /items/blog_posts`, düzenlemeler ve durum değişiklikleri `PATCH /items/blog_posts/:id` endpoint'leri üzerinden yapılır.
+- Taslak veya gizli yazı tek düğmeyle yayınlanabilir; yayın tarihi boşsa güncel tarih atanır. Yayındaki yazı silinmeden gizlenebilir.
+- Yanlışlıkla kalıcı veri kaybını önlemek için bu pakette silme düğmesi eklenmedi.
+- Admin API istemcisi ayrı `admin-api.ts` modülüne taşınarak giriş, ekip ve içerik bileşenleri arasında güvenli biçimde paylaşıldı.
+- Blog formunun veritabanı alanlarıyla uyumu transaction içinde geçici kayıt eklenip `ROLLBACK` edilerek doğrulandı; test sonunda kalıcı deneme kaydı kalmadı.
+- Hedefli ESLint kontrolü, yerel production build ve Docker production build başarıyla tamamlandı.
+- Docker servislerinin tamamı `healthy`, `/bakir` rotası HTTP 200 durumunda doğrulandı.
+- Tarayıcı paneli oturum kapalı durumda bulundu; parola ve TOTP bilgilerine otomasyonla müdahale edilmedi. Editörün gerçek oturumdaki son kullanıcı görsel kontrolü bir sonraki manuel girişte yapılacaktır.

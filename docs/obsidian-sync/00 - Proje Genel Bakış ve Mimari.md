@@ -132,6 +132,8 @@ Cloudflare görevleri:
 
 Blog yazıları `scripts/bootstrap-blog.mjs` ile oluşturulan `blog_posts` koleksiyonunda tutulur. `status = published` kayıtları ana sayfa ve blog listesinde gösterilir; `draft` veya `hidden` kayıtları public endpoint tarafından döndürülmez. `featured` seçeneği öne çıkan yazı sırasını, `sort` ise aynı gruptaki sıralamayı belirler. Başlangıçta bir yayınlanmış ve iki taslak kayıt eklenmiştir.
 
+Site sahibi bu kayıtları `/bakir` içindeki özel blog yönetimi ekranından ekleyip düzenler. Liste ekranı yayın durumunu ve temel yazı bilgisini gösterir; hızlı yayınla/gizle işlemleri sunar. Editör başlık, otomatik Türkçe slug, kategori, özet, tarih, okuma süresi, öne çıkarma, giriş, paragraflar, alıntı, kapanış ve SEO bilgilerini yönetir. Silme işlemi ilk sürümde bilerek sunulmaz; içerik geri getirilebilir biçimde `hidden` durumuna alınır.
+
 Frontend blog içeriğini çalışma alanlarıyla aynı `directus-extension-website-content` salt-okunur eklentisinden alır. Eklenti `/blog-posts` ve `/blog-posts/:slug` endpoint'lerinde yalnızca izin verilen alanları ve yayınlanmış kayıtları döndürür. Yapılandırılmış paragraflar ve öneriler HTML olarak çalıştırılmadan React metni şeklinde render edilir.
 
 ### Çalışma alanı

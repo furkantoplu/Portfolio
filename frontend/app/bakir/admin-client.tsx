@@ -17,6 +17,8 @@ import {
   Users,
 } from "lucide-react";
 import { BrandMark } from "../components/brand-mark";
+import { directusRequest, type ContentItem } from "./admin-api";
+import { BlogManager, type ManagedBlogPost } from "./blog-manager";
 
 type AdminUser = {
   id: string;
@@ -32,40 +34,10 @@ type AdminUser = {
 
 type AdminMember = Omit<AdminUser, "is_admin">;
 
-type ContentItem = { status: "draft" | "published" | "hidden" };
-
 type ContentSummary = {
-  blog: ContentItem[];
+  blog: ManagedBlogPost[];
   practices: ContentItem[];
 };
-
-type DirectusError = {
-  errors?: Array<{ message?: string; extensions?: { code?: string } }>;
-};
-
-const apiBase = "/bakir-api";
-
-async function directusRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${apiBase}${path}`, {
-    ...init,
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-      ...(init?.body ? { "Content-Type": "application/json" } : {}),
-      ...init?.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as DirectusError | null;
-    const error = new Error(payload?.errors?.[0]?.message || "İstek tamamlanamadı.");
-    error.name = payload?.errors?.[0]?.extensions?.code || String(response.status);
-    throw error;
-  }
-
-  if (response.status === 204) return undefined as T;
-  return response.json() as Promise<T>;
-}
 
 function countStatus(items: ContentItem[], status: ContentItem["status"]) {
   return items.filter((item) => item.status === status).length;
@@ -95,7 +67,7 @@ export function BakirAdmin() {
     const [{ data: currentUser }, { data: members }, { data: blog }, { data: practices }] = await Promise.all([
       directusRequest<{ data: AdminUser }>("/website-content/admin-account"),
       directusRequest<{ data: AdminMember[] }>("/website-content/admin-team"),
-      directusRequest<{ data: ContentItem[] }>("/items/blog_posts?fields=status&limit=-1"),
+      directusRequest<{ data: ManagedBlogPost[] }>("/items/blog_posts?fields=id,status,sort,featured,category,title,slug,summary,published_at,reading_minutes,lead,body_paragraphs,quote,closing_title,closing_body,seo_title,seo_description&sort=-published_at,sort&limit=-1"),
       directusRequest<{ data: ContentItem[] }>("/items/practice_areas?fields=status&limit=-1"),
     ]);
 
@@ -344,6 +316,8 @@ export function BakirAdmin() {
             <p>{countStatus(summary?.practices ?? [], "published")} yayında · {countStatus(summary?.practices ?? [], "hidden")} gizli</p>
           </article>
         </section>
+
+        <BlogManager posts={summary?.blog ?? []} onChanged={loadDashboard} />
 
         <section className={`admin-security${user?.tfa_enabled ? " admin-security--enabled" : ""}`} aria-labelledby="tfa-title">
           <div className="admin-security__copy">

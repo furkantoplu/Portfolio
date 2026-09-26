@@ -32,6 +32,8 @@ Komut mevcut koleksiyonu veya kayıtları silmez; yalnızca eksik şema alanlar�
 
 Panel birden fazla yöneticiyi destekler. Tam yetkili bir yönetici `/bakir` içindeki ekip bölümünden ayrı e-posta ve geçici parolayla yeni yönetici hesabı oluşturabilir. Ortak hesap kullanılmaz; her yönetici ilk girişinden sonra kendi telefonuyla ayrı TOTP kurulumu yapar. Panel TOTP durumunu kullanıcı bazında okur ve etkin hesapta kurulum formu yerine `2FA aktif` durumunu gösterir. Gizli TOTP anahtarları hiçbir liste endpoint'inden tarayıcıya gönderilmez.
 
+Blog yazıları da doğrudan `/bakir` panelinden yönetilir. Yönetici yeni taslak oluşturabilir, mevcut yazıyı düzenleyebilir, yayınlayabilir, yeniden taslağa alabilir veya silmeden gizleyebilir. Başlık, URL adı, kategori, kart özeti, yayın tarihi, okuma süresi, öne çıkarma, giriş, paragraflar, alıntı, kapanış ve SEO alanları sade formdan düzenlenir. Paragraflar boş satırlarla ayrılır ve güvenli yapılandırılmış JSON olarak saklanır; panel ham HTML kabul etmez.
+
 Yerel HTTP geliştirmesinde `DIRECTUS_SESSION_COOKIE_SECURE=false` kullanılır. VPS üzerinde HTTPS etkinleştirildiğinde bu değer mutlaka `true` yapılmalıdır. `/bakir` yanıtları `noindex`, `nofollow`, `noarchive` ve `no-store` başlıklarıyla korunur; özel adres tek başına güvenlik önlemi sayılmaz.
 
 Çalışma alanları artık Directus'tan dinamik okunur. Ana sayfa yalnızca `Yayında` ve `Ana sayfada göster` işaretli kayıtları; `/calisma-alanlari` ise tüm `Yayında` kayıtları sıralama alanına göre gösterir. `Taslak` veya `Gizli` kayıtlar listelenmez ve detay URL'leri 404 döndürür.

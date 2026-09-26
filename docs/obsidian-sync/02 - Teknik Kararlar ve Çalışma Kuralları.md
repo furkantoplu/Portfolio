@@ -171,6 +171,17 @@ Resmî referanslar:
 - İlk yönetici yeni hesap için geçici güçlü parola belirler. Yeni yönetici giriş yaptıktan sonra kendi TOTP kurulumunu tamamlar; gizli anahtar başka yöneticiyle paylaşılmaz.
 - Yönetici kaldırma veya yetki düşürme işlemi yanlışlıkla erişim kaybı yaratabileceği için bu pakette özel panele eklenmez; teknik Directus arayüzünde kontrollü olarak yapılır ve ileride ayrıca güvenli akış tasarlanır.
 
+## Karar 028 — Özel panel blog düzenleme akışı
+
+- Site sahibinin günlük blog yönetimi Directus Studio yerine `/bakir` içindeki sade editörden yapılır.
+- Özel panel yeni bir içerik veritabanı veya ayrı yetkilendirme katmanı oluşturmaz; Directus'un oturum çerezi ve standart item API'sini kullanır.
+- Yazı ekleme `POST`, düzenleme ve yayın durumu değişikliği `PATCH` ile yapılır. Bu sayede Directus aktivite geçmişi işlemi yapan yönetici hesabını kaydedebilir.
+- İlk sürümde hard delete sunulmaz. Yayından kaldırma `hidden`, üzerinde çalışmaya devam etme `draft` durumuyla yapılır.
+- `published` durumuna alınan kaydın tarihi boşsa panel güncel tarihi ekler. Public endpoint yalnızca `published` kayıtları döndürmeye devam eder.
+- Blog gövdesi ham HTML veya çalıştırılabilir markup kabul etmez. Yönetici boş satırlarla paragraf ayırır; istemci bunları `{ text: string }` biçimindeki JSON listesine dönüştürür.
+- Yeni kayıtta başlıktan Türkçe uyumlu slug üretilir. Benzersizlik Directus/veritabanı kuralıyla da korunur ve çakışma kullanıcıya anlaşılır hata olarak gösterilir.
+- Kullanılabilirlik için listede hızlı yayınlama ve gizleme bulunur; tüm alan değişiklikleri formdaki açık kaydet düğmesiyle tamamlanır.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.
