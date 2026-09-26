@@ -222,6 +222,14 @@ Resmî referanslar:
 - Vinext `1.0.0-beta.5` altında RSC prefetch kurulumu tekrar eden istemci konsol hatası ürettiği için `next/link` bileşenlerinde otomatik prefetch kapatılır.
 - Bu karar normal bağlantı navigasyonunu kapatmaz; yalnızca hedef sayfayı kullanıcı tıklamadan önce getiren optimizasyonu devre dışı bırakır. Vinext kararlı sürümde sorun düzeldiğinde yeniden değerlendirilebilir.
 
+## Karar 033 — Ortak 404 davranışı
+
+- Bilinmeyen genel rotalar, bulunamayan blog yazıları ve bulunamayan çalışma alanları ayrı tasarımlar kullanmaz; kök `app/not-found.tsx` bileşeninde birleşir.
+- Kullanıcıya boş veya teknik hata ekranı gösterilmez. Marka navigasyonu korunur ve ana sayfa, çalışma alanları, blog, hakkımda ve iletişim için kurtarma bağlantıları verilir.
+- Özel görünüm sunucu durumunu maskelemez. Bulunamayan içerik her durumda gerçek HTTP 404 döndürür.
+- 404 sayfası arama indeksine alınmaz; metadata düzeyinde `noindex` ve `nofollow` kullanılır.
+- Bulunamayan bir sayfada menü öğelerinden hiçbiri aktif görünmez. `SiteHeader` yalnızca açıkça `active` değeri verilen gerçek bölüm sayfalarında aktif durum gösterir.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

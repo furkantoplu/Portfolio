@@ -37,6 +37,8 @@ Mevcut çalışma alanı rotaları:
 
 Blog liste sayfası `/blog`, yazı detayları `/blog/[slug]` düzenini kullanır. Ana sayfa, blog listesi ve yazı detayları Directus `blog_posts` koleksiyonundan dinamik okunur. İlk yayınlanmış örnek yazı `/blog/masa-basinda-hareket-molalari` rotasındadır; taslak ve gizli yazılar listelenmez ve doğrudan adreslerinde 404 döndürür.
 
+Kök seviyedeki `app/not-found.tsx` bütün bulunamayan içerikler için ortak ziyaretçi deneyimidir. Rastgele URL'ler, bilinmeyen blog slug'ları ve yayında olmayan/bilinmeyen çalışma alanları aynı markalı sayfayı gösterir. Sayfa ana sayfa, çalışma alanları, blog, hakkımda ve iletişim yönlendirmeleri sunar; görünür tasarıma rağmen sunucu gerçek HTTP 404 durumunu ve `noindex, nofollow` robots talimatını korur.
+
 Ortak navigasyon masaüstünde yatay, 1120 piksel ve altındaki ekranlarda açılır panel olarak çalışır. Mobil panel; aktif sayfa vurgusu, arka alana dokunarak kapatma, Escape tuşuyla kapatma ve açıkken arka sayfa kaymasını durdurma davranışlarını içerir. Menü verileri tek bir ortak kaynaktan hem header hem footer tarafından kullanılır.
 
 ## Sayfa yapısı

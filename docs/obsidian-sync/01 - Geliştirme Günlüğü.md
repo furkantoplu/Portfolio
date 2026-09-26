@@ -562,3 +562,17 @@
 - `/`, `/iletisim`, `/bakir` ve contact public endpoint'i Docker/Caddy üzerinden HTTP 200 yanıtı verdi.
 - Tarayıcıda `/bakir` ve `/` sayfalarının hata/uyarı konsolları ayrı ayrı kontrol edildi; ikisi de boş döndü.
 - Admin kaydında daha önce değiştirilmiş telefonun ana sayfada görünür hale geldiği ve `tel:+...` arama bağlantısının otomatik üretildiği doğrulandı.
+
+### Paket 24 — Markalı ve erişilebilir 404 sayfası
+
+- Projede kök seviye özel 404 bileşeni bulunmadığı, framework'ün varsayılan bulunamadı çıktısının kullanıldığı belirlendi.
+- `app/not-found.tsx` eklenerek sitenin renk, tipografi, header ve footer sistemini kullanan markalı bir “Sayfa bulunamadı” ekranı hazırlandı.
+- Ziyaretçiye ana sayfaya dönme, çalışma alanlarını inceleme, blog, hakkımda ve iletişim bağlantıları sunuldu.
+- Sayfaya arama motorları için `noindex, nofollow` metadata'sı eklendi.
+- Ortak header'da aktif menü varsayılanı kaldırıldı; 404 ve yasal sayfalarda Ana Sayfa menüsünün yanlışlıkla aktif görünmesi engellendi.
+- Header iç bağlantıları lint uyumlu `Link` bileşenine geçirildi ve Vinext prefetch sorununun tekrarlamaması için `prefetch={false}` kullanıldı.
+- Hedefli ESLint, yerel production build ve Docker production build başarıyla tamamlandı.
+- Rastgele genel URL, bilinmeyen blog slug'ı ve bilinmeyen çalışma alanı slug'ı ayrı ayrı test edildi; üçü de özel ekranla gerçek HTTP 404 ve `noindex` döndürdü.
+- Masaüstü ve 390 × 844 mobil görünüm tarayıcıda görsel olarak kontrol edildi; responsive yerleşim ve bağlantılar doğrulandı.
+- 404 sayfasının tarayıcı konsolunda hata veya uyarı bulunmadı.
+- Database, Directus ve frontend container'larının `healthy`, Caddy proxy'nin çalışır durumda olduğu doğrulandı.

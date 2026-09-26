@@ -96,6 +96,6 @@ node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" run dev
 - `database`: PostgreSQL 16 üzerinde Directus ve site içeriklerini kalıcı volume içinde saklar.
 - `directus`: Sabitlenmiş Directus 12.4.0 imajıyla içerik yönetim arayüzü ve API sağlar.
 
-PostgreSQL host sistemine port açmaz. Directus geliştirme aşamasında yalnızca `127.0.0.1:8055` adresine bağlanır. Özel `/bakir` girişi, TOTP kurulum akışı ve güvenli oturum temeli uygulanmıştır. Blog ve çalışma alanı düzenleme formları, zamanlanmış yedekleme ve production TLS/Cloudflare sertleştirmesi sonraki backend paketlerinde eklenecek. Parolalar ve diğer gizli değerler Git deposuna yazılmayacak.
+PostgreSQL host sistemine port açmaz. Directus geliştirme aşamasında yalnızca `127.0.0.1:8055` adresine bağlanır. Özel `/bakir` girişi, TOTP kurulum akışı, çoklu yönetici desteği ve blog/çalışma alanı/sayfa içerik editörleri uygulanmıştır. Zamanlanmış yedekleme ile production VPS, TLS ve Cloudflare sertleştirmesi sonraki altyapı paketlerinde eklenecek. Parolalar ve diğer gizli değerler Git deposuna yazılmayacak.
 
 Directus 12'nin yönetim panelinde gösterdiği proje sahibi e-posta toplama penceresi, resmî `PROJECT_OWNER_ENABLED=false` yapılandırmasıyla kapalıdır. Bu ayar yalnızca sahip bilgisi toplama ve senkronizasyonunu devre dışı bırakır; kullanılan Directus sürümünün lisans koşullarını değiştirmez.
