@@ -31,7 +31,7 @@ export default async function AboutPage() {
           <p className="eyebrow"><span aria-hidden="true" />Hakkımda</p>
           <h1 id="about-page-title">{content.hero_title}<em> {content.hero_accent}</em></h1>
           <p>{content.hero_description}</p>
-          <Link className="primary-button" href="/iletisim">İletişim bilgilerini görün <ArrowUpRight aria-hidden="true" size={18} /></Link>
+          <Link className="primary-button" href="/iletisim" prefetch={false}>İletişim bilgilerini görün <ArrowUpRight aria-hidden="true" size={18} /></Link>
         </div>
         <div className="about-page-hero__portrait">
           <Image src="/about-physiotherapist-v1.png" alt="Klinik ortamında fizyoterapist Furkan Toplu" fill priority sizes="(max-width: 860px) 100vw, 48vw" />
@@ -71,7 +71,7 @@ export default async function AboutPage() {
 
       <section className="about-page-cta">
         <p>Çalışma alanlarını ve süreç yaklaşımını daha ayrıntılı inceleyin.</p>
-        <Link href="/calisma-alanlari">Çalışma alanlarına gidin <ArrowUpRight aria-hidden="true" size={18} /></Link>
+        <Link href="/calisma-alanlari" prefetch={false}>Çalışma alanlarına gidin <ArrowUpRight aria-hidden="true" size={18} /></Link>
       </section>
 
       <SiteFooter />

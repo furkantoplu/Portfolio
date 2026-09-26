@@ -2,14 +2,8 @@ import type { Metadata } from "next";
 import { ArrowUpRight, Clock3, Mail, MapPin, MessageCircleMore, Phone, ShieldCheck } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { type ContactContent, phoneHref } from "../lib/contact";
 import { getSitePage } from "../lib/directus";
-
-type ContactContent = {
-  hero_title: string; hero_accent: string; intro: string; privacy_note: string;
-  phone_display: string; phone_value: string; whatsapp_value: string; email: string;
-  address_title: string; address_note: string; working_days: string; working_hours: string;
-  flow_title: string; flow_steps: Array<{ title: string; text: string }>;
-};
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getSitePage<ContactContent>("contact");
@@ -19,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ContactPage() {
   const { content } = await getSitePage<ContactContent>("contact");
   const methods = [
-    { icon: Phone, label: "Telefon", value: content.phone_display, note: content.working_days, href: `tel:${content.phone_value}` },
+    { icon: Phone, label: "Telefon", value: content.phone_display, note: content.working_days, href: phoneHref(content) },
     { icon: MessageCircleMore, label: "WhatsApp", value: "Mesaj gönderin", note: "Uygun olduğunda dönüş yapılır", href: `https://wa.me/${content.whatsapp_value}` },
     { icon: Mail, label: "E-posta", value: content.email, note: "Genel bilgi talepleri için", href: `mailto:${content.email}` },
   ];

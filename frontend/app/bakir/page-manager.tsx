@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { FileText, LoaderCircle, Save } from "lucide-react";
+import { phoneToDialValue } from "../lib/contact";
 import { directusRequest } from "./admin-api";
 
 export type ManagedSitePage = {
@@ -71,6 +72,9 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
       content.principles = pairs(draft.principles ?? lines(current.content.principles, "title", "text"), "title", "text");
     } else {
       content.flow_steps = pairs(draft.flow_steps ?? lines(current.content.flow_steps, "title", "text"), "title", "text");
+      const phoneDisplay = String(content.phone_display || "").trim();
+      content.phone_display = phoneDisplay;
+      content.phone_value = phoneToDialValue(phoneDisplay);
     }
     try {
       await directusRequest(`/items/site_pages/${current.id}`, { method: "PATCH", body: JSON.stringify({ content, seo_title: draft.seo_title ?? current.seo_title, seo_description: draft.seo_description ?? current.seo_description }) });
@@ -110,8 +114,7 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
             <label><span>Vurgulu başlık</span><input value={value("hero_accent")} onChange={(e) => update("hero_accent", e.target.value)} required /></label>
             <label className="admin-field--wide"><span>Giriş açıklaması</span><textarea rows={3} value={value("intro")} onChange={(e) => update("intro", e.target.value)} /></label>
             <label className="admin-field--wide"><span>Gizlilik uyarısı</span><input value={value("privacy_note")} onChange={(e) => update("privacy_note", e.target.value)} /></label>
-            <label><span>Telefon görünümü</span><input value={value("phone_display")} onChange={(e) => update("phone_display", e.target.value)} /></label>
-            <label><span>Telefon bağlantısı</span><input value={value("phone_value")} onChange={(e) => update("phone_value", e.target.value.replace(/[^+\d]/g, ""))} /></label>
+            <label><span>Telefon numarası</span><input type="tel" value={value("phone_display")} onChange={(e) => update("phone_display", e.target.value)} placeholder="+90 555 123 45 67" /><small>Arama bağlantısı bu numaradan otomatik oluşturulur.</small></label>
             <label><span>WhatsApp numarası</span><input value={value("whatsapp_value")} onChange={(e) => update("whatsapp_value", e.target.value.replace(/\D/g, ""))} /></label>
             <label><span>E-posta</span><input type="email" value={value("email")} onChange={(e) => update("email", e.target.value)} /></label>
             <label><span>Adres başlığı</span><input value={value("address_title")} onChange={(e) => update("address_title", e.target.value)} /></label>

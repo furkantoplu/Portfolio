@@ -1,5 +1,7 @@
 import Image from "next/image";
-import { formatTurkishDate, getBlogPosts, getPracticeAreas } from "./lib/directus";
+import Link from "next/link";
+import { type ContactContent, phoneHref } from "./lib/contact";
+import { formatTurkishDate, getBlogPosts, getPracticeAreas, getSitePage } from "./lib/directus";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import {
@@ -45,10 +47,12 @@ const approachSteps = [
 const practiceIcons = [Activity, Dumbbell, HeartPulse, PersonStanding];
 
 export default async function Home() {
-  const [practiceAreas, blogPosts] = await Promise.all([
+  const [practiceAreas, blogPosts, contactPage] = await Promise.all([
     getPracticeAreas({ homepage: true }),
     getBlogPosts({ homepage: true }),
+    getSitePage<ContactContent>("contact"),
   ]);
+  const contact = contactPage.content;
   return (
     <main className="site-shell">
       <SiteHeader active="home" />
@@ -76,10 +80,10 @@ export default async function Home() {
               Çalışma Alanlarını İncele
               <ArrowUpRight aria-hidden="true" size={18} />
             </a>
-            <a className="text-link" href="/hakkimda">
+            <Link className="text-link" href="/hakkimda" prefetch={false}>
               Yaklaşımımı Tanıyın
               <span aria-hidden="true">→</span>
-            </a>
+            </Link>
           </div>
 
           <dl className="hero__facts" aria-label="Kısa bilgiler">
@@ -260,10 +264,10 @@ export default async function Home() {
               Günlük yaşamda hareket sağlığını destekleyen, kolay anlaşılır ve
               kaynak odaklı içerikler.
             </p>
-            <a href="/blog">
+            <Link href="/blog" prefetch={false}>
               Tüm yazıları görün
               <ArrowUpRight aria-hidden="true" size={18} />
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -288,10 +292,10 @@ export default async function Home() {
               </div>
               <div className="blog-card__footer">
                 <time>{formatTurkishDate(post.published_at)}</time>
-                <a href={`/blog/${post.slug}`} aria-label={`${post.title} yazısını okuyun`}>
+                <Link href={`/blog/${post.slug}`} prefetch={false} aria-label={`${post.title} yazısını okuyun`}>
                   Yazıyı okuyun
                   <ArrowUpRight aria-hidden="true" size={17} />
-                </a>
+                </Link>
               </div>
             </article>
           ))}
@@ -318,17 +322,17 @@ export default async function Home() {
           </div>
 
           <div className="contact-section__actions" aria-label="İletişim seçenekleri">
-            <a className="contact-action contact-action--primary" href="tel:+905551234567">
+            <a className="contact-action contact-action--primary" href={phoneHref(contact)}>
               <Phone aria-hidden="true" size={22} strokeWidth={1.6} />
               <span>
                 <small>Telefon</small>
-                <strong>+90 555 123 45 67</strong>
+                <strong>{contact.phone_display}</strong>
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
             </a>
             <a
               className="contact-action"
-              href="https://wa.me/905551234567"
+              href={`https://wa.me/${contact.whatsapp_value}`}
               target="_blank"
               rel="noreferrer"
             >
@@ -339,11 +343,11 @@ export default async function Home() {
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
             </a>
-            <a className="contact-action" href="mailto:merhaba@furkantoplu.com">
+            <a className="contact-action" href={`mailto:${contact.email}`}>
               <Mail aria-hidden="true" size={22} strokeWidth={1.6} />
               <span>
                 <small>E-posta</small>
-                <strong>merhaba@furkantoplu.com</strong>
+                <strong>{contact.email}</strong>
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
             </a>
@@ -355,16 +359,16 @@ export default async function Home() {
             <MapPin aria-hidden="true" size={24} strokeWidth={1.5} />
             <div>
               <span>Görüşme adresi</span>
-              <strong>Kadıköy / İstanbul</strong>
-              <p>Detaylı adres randevu oluşturulduktan sonra paylaşılır.</p>
+              <strong>{contact.address_title}</strong>
+              <p>{contact.address_note}</p>
             </div>
           </article>
           <article>
             <Clock3 aria-hidden="true" size={24} strokeWidth={1.5} />
             <div>
               <span>Çalışma saatleri</span>
-              <strong>Pazartesi — Cumartesi</strong>
-              <p>09.00 — 19.00 · Yalnızca randevu ile</p>
+              <strong>{contact.working_days}</strong>
+              <p>{contact.working_hours}</p>
             </div>
           </article>
         </div>

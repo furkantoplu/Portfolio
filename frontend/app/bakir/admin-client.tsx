@@ -236,7 +236,7 @@ export function BakirAdmin() {
       <main className="admin-shell">
         <section className="admin-login" aria-labelledby="admin-login-title">
           <div className="admin-login__intro">
-            <Link className="admin-brand" href="/" aria-label="Furkan Toplu ana sayfa">
+            <Link className="admin-brand" href="/" prefetch={false} aria-label="Furkan Toplu ana sayfa">
               <BrandMark />
               <span><strong>Furkan Toplu</strong><small>İçerik yönetimi</small></span>
             </Link>
@@ -304,7 +304,7 @@ export function BakirAdmin() {
   return (
     <main className="admin-shell admin-dashboard">
       <header className="admin-dashboard__header">
-        <Link className="admin-brand admin-brand--light" href="/">
+        <Link className="admin-brand admin-brand--light" href="/" prefetch={false}>
           <BrandMark />
           <span><strong>Furkan Toplu</strong><small>İçerik yönetimi</small></span>
         </Link>
@@ -330,7 +330,7 @@ export function BakirAdmin() {
           </nav>
           <div className="admin-sidebar__footer">
             <span><strong>{userName}</strong><small>{user?.role_name || "Yönetici"}</small></span>
-            <Link href="/" target="_blank">Siteyi görüntüle <ArrowRight size={14} /></Link>
+            <Link href="/" prefetch={false} target="_blank">Siteyi görüntüle <ArrowRight size={14} /></Link>
           </div>
         </aside>
 

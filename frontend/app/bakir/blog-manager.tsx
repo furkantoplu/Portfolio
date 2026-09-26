@@ -213,7 +213,7 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
                 ) : (
                   <button type="button" onClick={() => changeStatus(post, "published")} title="Yayınla" disabled={busy}><Check size={16} /></button>
                 )}
-                {post.status === "published" && <Link href={`/blog/${post.slug}`} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></Link>}
+                {post.status === "published" && <Link href={`/blog/${post.slug}`} prefetch={false} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></Link>}
               </div>
             </article>
           ))}

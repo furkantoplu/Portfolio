@@ -225,7 +225,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
                 ) : (
                   <button type="button" onClick={() => changeStatus(area, "published")} title="Yayınla" disabled={busy}><Check size={16} /></button>
                 )}
-                {area.status === "published" && <Link href={`/calisma-alanlari/${area.slug}`} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></Link>}
+                {area.status === "published" && <Link href={`/calisma-alanlari/${area.slug}`} prefetch={false} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></Link>}
               </div>
             </article>
           ))}
