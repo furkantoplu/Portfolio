@@ -147,6 +147,7 @@ body {
 .admin-field--wide { grid-column: 1 / -1; }
 .admin-check { display: flex !important; align-items: center; grid-template-columns: auto 1fr; min-height: 42px; padding: 0 12px; border: 1px solid rgba(23, 79, 67, 0.12); border-radius: 6px; background: rgba(255, 255, 255, 0.6); }
 .admin-check input { width: 17px; height: 17px; accent-color: #174f43; }
+.admin-check span { display: inline-flex; align-items: center; gap: 7px; }
 .admin-post-editor__footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 24px 22px; border-top: 1px solid rgba(23, 79, 67, 0.1); }
 .admin-post-editor__footer p { margin: 0; color: #83908c; font-size: 10px; line-height: 1.5; }
 .admin-post-editor__footer p.is-visible { color: #735342; }

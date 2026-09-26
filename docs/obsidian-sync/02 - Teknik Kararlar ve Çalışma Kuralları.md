@@ -192,6 +192,17 @@ Resmî referanslar:
 - Genel bakış yalnızca özet ve kısa yollar içerir. Düzenleme formları kendi çalışma görünümünde yer alır.
 - Çalışma alanı yönetimi tamamlanmadan önce navigasyondaki kalıcı yeri hazırlanır; sonraki paket mevcut kabuğu bozmadan bu bölümü doldurur.
 
+## Karar 030 — Çalışma alanı özel editörü
+
+- Çalışma alanı yönetimi sidebar içindeki ayrı `practices` görünümünde yapılır; diğer yönetim modülleriyle aynı uzun sayfada bulunmaz.
+- Yeni alanlar varsayılan olarak `draft` ve `show_on_homepage=false` değerleriyle hazırlanır. Yönetici açıkça yayınlamadan public endpoint'e girmez.
+- Hard delete sunulmaz. Geçici yayından kaldırma `hidden`, düzenleme süreci `draft` durumuyla yürütülür.
+- Ana sayfa görünürlüğü yayın durumundan bağımsız ikinci bir seçimdir. Public ana sayfada görünmek için hem `published` hem `show_on_homepage=true` gerekir.
+- Değerlendirme maddeleri satır başına `{ text }`, süreç adımları `{ title, description }`, SSS kayıtları `{ question, answer }` nesnelerine dönüştürülür.
+- Süreç ve SSS alanlarında teknik JSON gösterilmez; kullanıcı dostu `Başlık | Açıklama` ve `Soru | Cevap` satır biçimi kullanılır.
+- Yeni başlıktan Türkçe karakterleri dönüştüren slug önerilir; benzersizlik veritabanında da korunur.
+- Görsel yükleme bu paketin kapsamında değildir. Yeni kayıtlar frontend'in varsayılan görsel davranışını kullanır; mevcut kayıtların görsel alanları editör payload'ı tarafından değiştirilmez.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

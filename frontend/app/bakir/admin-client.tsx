@@ -20,6 +20,7 @@ import {
 import { BrandMark } from "../components/brand-mark";
 import { directusRequest, type ContentItem } from "./admin-api";
 import { BlogManager, type ManagedBlogPost } from "./blog-manager";
+import { PracticeManager, type ManagedPracticeArea } from "./practice-manager";
 
 type AdminUser = {
   id: string;
@@ -38,7 +39,7 @@ type AdminView = "overview" | "blog" | "practices" | "team" | "security";
 
 type ContentSummary = {
   blog: ManagedBlogPost[];
-  practices: ContentItem[];
+  practices: ManagedPracticeArea[];
 };
 
 function countStatus(items: ContentItem[], status: ContentItem["status"]) {
@@ -71,7 +72,7 @@ export function BakirAdmin() {
       directusRequest<{ data: AdminUser }>("/website-content/admin-account"),
       directusRequest<{ data: AdminMember[] }>("/website-content/admin-team"),
       directusRequest<{ data: ManagedBlogPost[] }>("/items/blog_posts?fields=id,status,sort,featured,category,title,slug,summary,published_at,reading_minutes,lead,body_paragraphs,quote,closing_title,closing_body,seo_title,seo_description&sort=-published_at,sort&limit=-1"),
-      directusRequest<{ data: ContentItem[] }>("/items/practice_areas?fields=status&limit=-1"),
+      directusRequest<{ data: ManagedPracticeArea[] }>("/items/practice_areas?fields=id,status,sort,show_on_homepage,title,slug,summary,hero_title,hero_accent,lead,overview_title,overview_accent,overview,assessment_points,process_steps,faqs,seo_title,seo_description&sort=sort,id&limit=-1"),
     ]);
 
     setUser(currentUser);
@@ -360,14 +361,7 @@ export function BakirAdmin() {
 
           {activeView === "blog" && <BlogManager posts={summary?.blog ?? []} onChanged={loadDashboard} />}
 
-          {activeView === "practices" && (
-            <section className="admin-placeholder">
-              <Stethoscope size={32} />
-              <p className="admin-eyebrow">Çalışma alanları</p>
-              <h2>Alan yönetimi bu bölümde olacak.</h2>
-              <p>Mevcut alanları düzenleme, yeni alan ekleme, ana sayfada gösterme ve gizleme araçları sıradaki pakette burada hazırlanacak.</p>
-            </section>
-          )}
+          {activeView === "practices" && <PracticeManager areas={summary?.practices ?? []} onChanged={loadDashboard} />}
 
           {activeView === "security" && (
             <section className={`admin-security${user?.tfa_enabled ? " admin-security--enabled" : ""}`} aria-labelledby="tfa-title">

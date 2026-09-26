@@ -505,3 +505,21 @@
 - Header da sayfa kaydırıldığında görünür kalacak şekilde sticky yapıldı.
 - Hedefli ESLint kontrolü, yerel production build ve Docker production build başarıyla tamamlandı.
 - Uygulama paketi `ef1702a` kimliği ve `feat: add modular admin navigation` mesajıyla commit edildi.
+
+### Paket 21 — Özel panelde çalışma alanı yönetimi
+
+- Sidebar içindeki Çalışma alanları yer tutucusu gerçek içerik yönetim ekranıyla değiştirildi.
+- Mevcut çalışma alanları yayın durumu, başlık ve ana sayfa görünürlük bilgisiyle listelenir.
+- Yönetici listeden bir alanı seçerek düzenleyebilir veya `Yeni alan` düğmesiyle taslak kayıt hazırlayabilir.
+- Yeni kayıt başlığı yazılırken Türkçe uyumlu slug ve detay başlığı otomatik oluşturulur.
+- Yayın durumu taslak, yayında veya gizli olarak seçilebilir; sıralama değeri ve `Ana sayfadaki kartlarda göster` seçeneği yönetilebilir.
+- Kart açıklaması, detay başlığı/vurgusu, giriş açıklaması, değerlendirme başlığı/vurgusu ve genel bilgilendirme alanları eklendi.
+- Değerlendirme maddeleri her satırın ayrı madde olduğu sade textarea üzerinden düzenlenir.
+- Süreç adımları `Başlık | Açıklama`, sık sorulan sorular `Soru | Cevap` biçiminde satır bazında girilir ve güvenli JSON listelerine dönüştürülür.
+- SEO başlığı ve açıklaması aynı editör içinde düzenlenebilir.
+- Listeden taslak/gizli alan tek düğmeyle yayınlanabilir; yayındaki alan silinmeden gizlenebilir.
+- Yayınlanmış alanın public detay sayfasını yeni sekmede açan kontrol eklendi.
+- Yeni kayıt sıralaması mevcut son kaydın ardından önerilir; yönetici isterse değeri değiştirebilir.
+- Çalışma alanları sorgusu panel için gereken tüm alanları ve belirlenmiş sıralamayı döndürecek şekilde genişletildi.
+- Form payload'ındaki metin ve JSON alanları PostgreSQL transaction içinde geçici kayıtla doğrulandı; `ROLLBACK` sonrasında test kaydı kalmadığı kontrol edildi.
+- Hedefli ESLint kontrolü ve Docker production build başarıyla tamamlandı; bütün container'lar `healthy`, `/bakir` HTTP 200 durumunda doğrulandı.

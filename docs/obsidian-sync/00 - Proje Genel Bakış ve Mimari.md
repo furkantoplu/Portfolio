@@ -154,6 +154,8 @@ Frontend blog içeriğini çalışma alanlarıyla aynı `directus-extension-webs
 
 Çalışma alanları kodda sabit bir sayıyla sınırlandırılmayacak. Yaklaşık 15 alan veya daha fazlası Directus panelinden eklenebilir. `status = published` kayıtları çalışma alanları dizininde ve kendi detay URL'lerinde gösterilir. `status = hidden` kayıtları silinmeden ziyaretçiden saklanır. `show_on_homepage = true` yalnızca ana sayfadaki sınırlı kart seçimini belirler; böylece tüm alanlar dizinde kalırken ana sayfa kalabalıklaşmaz.
 
+Günlük yönetim Directus Studio yerine `/bakir` içindeki Çalışma alanları ekranından yapılır. Liste mevcut alanların yayın ve ana sayfa görünürlük durumunu gösterir. Editör temel kart bilgileri, detay hero metinleri, değerlendirme içeriği, satır bazlı maddeler, `Başlık | Açıklama` biçimindeki süreç adımları, `Soru | Cevap` biçimindeki SSS ve SEO alanlarını yönetir. Yeni alanlar varsayılan olarak taslak oluşturulur; silme yerine gizleme kullanılır.
+
 Frontend çalışma alanlarını `directus-extension-website-content` adlı salt-okunur Directus endpoint eklentisinden alır. Eklenti yalnızca `status = published` kayıtlarını ve frontend için izin verilen alanları döndürür. Standart Directus koleksiyon API'si anonim erişime kapalıdır. Ana sayfa endpoint'e ayrıca `homepage=true` parametresi göndererek yalnızca `show_on_homepage = true` kayıtları ister. Liste ve detay sayfaları her istekte güncel veriyi alır; gizlenen bir kayıt hem listeden kalkar hem de detay URL'sinde 404 üretir.
 
 ### Site ayarları
