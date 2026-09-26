@@ -504,3 +504,4 @@
 - 900 piksel ve altında sidebar, header'ın altında sabitlenen yatay kaydırılabilir menüye dönüşür. Böylece mobilde ekran alanı korunurken bütün bölümlere hızlı erişim sürer.
 - Header da sayfa kaydırıldığında görünür kalacak şekilde sticky yapıldı.
 - Hedefli ESLint kontrolü, yerel production build ve Docker production build başarıyla tamamlandı.
+- Uygulama paketi `ef1702a` kimliği ve `feat: add modular admin navigation` mesajıyla commit edildi.
