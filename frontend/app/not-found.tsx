@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Compass, SearchX } from "lucide-react";
+import { NativeLink } from "./components/native-link";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 
@@ -25,21 +25,21 @@ export default function NotFound() {
           </p>
 
           <div className="not-found-hero__actions">
-            <Link className="primary-button" href="/" prefetch={false}>
+            <NativeLink className="primary-button" href="/">
               <ArrowLeft aria-hidden="true" size={18} />
               Ana sayfaya dön
-            </Link>
-            <Link className="text-link" href="/calisma-alanlari" prefetch={false}>
+            </NativeLink>
+            <NativeLink className="text-link" href="/calisma-alanlari">
               Çalışma alanlarını incele
               <ArrowUpRight aria-hidden="true" size={18} />
-            </Link>
+            </NativeLink>
           </div>
 
           <nav className="not-found-quick-links" aria-label="Yardımcı bağlantılar">
             <span>Aradığınız içerik için</span>
-            <Link href="/blog" prefetch={false}>Blog</Link>
-            <Link href="/hakkimda" prefetch={false}>Hakkımda</Link>
-            <Link href="/iletisim" prefetch={false}>İletişim</Link>
+            <NativeLink href="/blog">Blog</NativeLink>
+            <NativeLink href="/hakkimda">Hakkımda</NativeLink>
+            <NativeLink href="/iletisim">İletişim</NativeLink>
           </nav>
         </div>
 

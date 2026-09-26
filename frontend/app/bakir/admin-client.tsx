@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
-import Link from "next/link";
 import {
   ArrowRight,
   BookOpenText,
@@ -19,6 +18,7 @@ import {
   Users,
 } from "lucide-react";
 import { BrandMark } from "../components/brand-mark";
+import { NativeLink } from "../components/native-link";
 import { directusRequest, type ContentItem } from "./admin-api";
 import { BlogManager, type ManagedBlogPost } from "./blog-manager";
 import { PracticeManager, type ManagedPracticeArea } from "./practice-manager";
@@ -236,10 +236,10 @@ export function BakirAdmin() {
       <main className="admin-shell">
         <section className="admin-login" aria-labelledby="admin-login-title">
           <div className="admin-login__intro">
-            <Link className="admin-brand" href="/" prefetch={false} aria-label="Furkan Toplu ana sayfa">
+            <NativeLink className="admin-brand" href="/" aria-label="Furkan Toplu ana sayfa">
               <BrandMark />
               <span><strong>Furkan Toplu</strong><small>İçerik yönetimi</small></span>
-            </Link>
+            </NativeLink>
             <div>
               <p className="admin-eyebrow"><ShieldCheck size={17} aria-hidden="true" /> Güvenli yönetim alanı</p>
               <h1 id="admin-login-title">Site içeriğini<br /><em>tek yerden yönetin.</em></h1>
@@ -304,10 +304,10 @@ export function BakirAdmin() {
   return (
     <main className="admin-shell admin-dashboard">
       <header className="admin-dashboard__header">
-        <Link className="admin-brand admin-brand--light" href="/" prefetch={false}>
+        <NativeLink className="admin-brand admin-brand--light" href="/">
           <BrandMark />
           <span><strong>Furkan Toplu</strong><small>İçerik yönetimi</small></span>
-        </Link>
+        </NativeLink>
         <div className="admin-user">
           <span><strong>{userName}</strong><small>{user?.email}</small></span>
           <button type="button" onClick={handleLogout} disabled={busy}><LogOut size={17} /> Çıkış</button>
@@ -330,7 +330,7 @@ export function BakirAdmin() {
           </nav>
           <div className="admin-sidebar__footer">
             <span><strong>{userName}</strong><small>{user?.role_name || "Yönetici"}</small></span>
-            <Link href="/" prefetch={false} target="_blank">Siteyi görüntüle <ArrowRight size={14} /></Link>
+            <NativeLink href="/" target="_blank">Siteyi görüntüle <ArrowRight size={14} /></NativeLink>
           </div>
         </aside>
 

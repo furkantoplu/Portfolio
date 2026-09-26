@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { NativeLink } from "./components/native-link";
 import { type ContactContent, phoneHref } from "./lib/contact";
 import { formatTurkishDate, getBlogPosts, getPracticeAreas, getSitePage } from "./lib/directus";
 import { SiteFooter } from "./components/site-footer";
@@ -80,10 +80,10 @@ export default async function Home() {
               Çalışma Alanlarını İncele
               <ArrowUpRight aria-hidden="true" size={18} />
             </a>
-            <Link className="text-link" href="/hakkimda" prefetch={false}>
+            <NativeLink className="text-link" href="/hakkimda">
               Yaklaşımımı Tanıyın
               <span aria-hidden="true">→</span>
-            </Link>
+            </NativeLink>
           </div>
 
           <dl className="hero__facts" aria-label="Kısa bilgiler">
@@ -264,10 +264,10 @@ export default async function Home() {
               Günlük yaşamda hareket sağlığını destekleyen, kolay anlaşılır ve
               kaynak odaklı içerikler.
             </p>
-            <Link href="/blog" prefetch={false}>
+            <NativeLink href="/blog">
               Tüm yazıları görün
               <ArrowUpRight aria-hidden="true" size={18} />
-            </Link>
+            </NativeLink>
           </div>
         </div>
 
@@ -292,10 +292,10 @@ export default async function Home() {
               </div>
               <div className="blog-card__footer">
                 <time>{formatTurkishDate(post.published_at)}</time>
-                <Link href={`/blog/${post.slug}`} prefetch={false} aria-label={`${post.title} yazısını okuyun`}>
+                <NativeLink href={`/blog/${post.slug}`} aria-label={`${post.title} yazısını okuyun`}>
                   Yazıyı okuyun
                   <ArrowUpRight aria-hidden="true" size={17} />
-                </Link>
+                </NativeLink>
               </div>
             </article>
           ))}

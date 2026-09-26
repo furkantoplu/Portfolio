@@ -1,9 +1,9 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Link from "next/link";
 import { ArrowUpRight, BookOpenText, Check, EyeOff, FilePlus2, LoaderCircle, PencilLine, Save } from "lucide-react";
 import { directusRequest, type ContentItem } from "./admin-api";
+import { NativeLink } from "../components/native-link";
 
 export type ManagedBlogPost = ContentItem & {
   id: number;
@@ -213,7 +213,7 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
                 ) : (
                   <button type="button" onClick={() => changeStatus(post, "published")} title="Yayınla" disabled={busy}><Check size={16} /></button>
                 )}
-                {post.status === "published" && <Link href={`/blog/${post.slug}`} prefetch={false} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></Link>}
+                {post.status === "published" && <NativeLink href={`/blog/${post.slug}`} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></NativeLink>}
               </div>
             </article>
           ))}

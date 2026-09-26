@@ -1,9 +1,9 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Link from "next/link";
 import { ArrowUpRight, Check, EyeOff, FilePlus2, Home, LoaderCircle, PencilLine, Save, Stethoscope } from "lucide-react";
 import { directusRequest, type ContentItem } from "./admin-api";
+import { NativeLink } from "../components/native-link";
 
 export type ManagedPracticeArea = ContentItem & {
   id: number;
@@ -225,7 +225,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
                 ) : (
                   <button type="button" onClick={() => changeStatus(area, "published")} title="Yayınla" disabled={busy}><Check size={16} /></button>
                 )}
-                {area.status === "published" && <Link href={`/calisma-alanlari/${area.slug}`} prefetch={false} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></Link>}
+                {area.status === "published" && <NativeLink href={`/calisma-alanlari/${area.slug}`} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></NativeLink>}
               </div>
             </article>
           ))}
