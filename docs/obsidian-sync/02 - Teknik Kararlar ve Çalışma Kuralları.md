@@ -231,6 +231,13 @@ Resmî referanslar:
 - 404 sayfası arama indeksine alınmaz; metadata düzeyinde `noindex` ve `nofollow` kullanılır.
 - Bulunamayan bir sayfada menü öğelerinden hiçbiri aktif görünmez. `SiteHeader` yalnızca açıkça `active` değeri verilen gerçek bölüm sayfalarında aktif durum gösterir.
 
+## Karar 034 — DevTools çalışma alanı keşif isteği
+
+- Chrome DevTools'un yerel çalışma alanı keşif isteği olan `/.well-known/appspecific/com.chrome.devtools.json`, ziyaretçi içeriği veya uygulama rotası değildir.
+- Bu kesin yol Caddy katmanında HTTP 204 ile sonlandırılır; frontend'e ve özel 404 sayfasına iletilmez.
+- Kural yalnızca tam yol eşleşmesidir. ACME, güvenlik doğrulaması veya ileride kullanılabilecek diğer `/.well-known/*` yollarını kapsam dışı bırakır.
+- Rastgele ziyaretçi URL'leri bu istisnadan etkilenmez ve gerçek HTTP 404 davranışını korur.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.

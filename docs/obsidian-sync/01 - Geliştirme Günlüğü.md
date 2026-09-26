@@ -589,3 +589,14 @@
 - Tarayıcıda gerçek tıklamalarla Ana Sayfa → Hakkımda → Çalışma Alanları → Blog → İletişim → Ana Sayfa zinciri tamamlandı.
 - Ana sayfadaki yayınlanmış yazı bağlantısından dinamik blog detayına geçiş ayrıca doğrulandı.
 - Bütün tıklama zincirinin sonunda tarayıcı hata/uyarı konsolu boş döndü; `link-*.js` çalışma zamanı hatası ortadan kalktı.
+
+### Paket 26 — Chrome DevTools 404 konsol gürültüsünün ayrıştırılması
+
+- Kullanıcı, yanlış bir URL denediğinde konsolda aynı `GET /iletisim/lsd 404` satırının çok sayıda tekrarlandığını bildirdi.
+- Paylaşılan kayıttaki `Navigated to ...` satırlarının hata değil, başarılı tam sayfa navigasyon bildirimleri olduğu ayrıştırıldı.
+- Docker frontend erişim kayıtlarında `/iletisim/lsd` isteğinin yalnızca bir kez geldiği görüldü; uygulamanın bilinmeyen URL'yi tekrar tekrar isteyen bir döngüye girmediği doğrulandı.
+- Aynı zaman aralığında Chrome DevTools'un `/.well-known/appspecific/com.chrome.devtools.json` yolunu onlarca kez sorguladığı tespit edildi.
+- Caddy'ye yalnızca bu kesin DevTools çalışma alanı keşif yolu için içeriksiz HTTP 204 cevabı eklendi. Genel `/.well-known` alanı veya başka public yollar etkilenmedi.
+- Caddy yapılandırması container içinde `caddy validate` ile doğrulandı.
+- DevTools teknik yolunun HTTP 204 ve sıfır bayt; `/iletisim/lsd` yolunun ise markalı içerikle gerçek HTTP 404 döndürdüğü doğrulandı.
+- Database, Directus ve frontend servisleri `healthy`, yeniden oluşturulan Caddy proxy çalışır durumda kaldı.

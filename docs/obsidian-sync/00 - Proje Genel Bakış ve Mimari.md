@@ -121,6 +121,8 @@ Cloudflare görevleri:
 - Temel WAF ve rate limit kuralları
 - Yönetim ve API yollarında uygun cache bypass kuralları
 
+Yerel geliştirmede Chrome DevTools, otomatik çalışma alanı keşfi için `/.well-known/appspecific/com.chrome.devtools.json` yolunu tekrar tekrar sorgulayabilir. Caddy bu kesin teknik yola içeriksiz HTTP 204 verir; istek frontend 404 bileşenine düşmez ve geliştirici konsolunu sahte çoklu hata görünümüyle kirletmez. Diğer bilinmeyen yollar normal biçimde özel 404 sayfasına ve HTTP 404 durumuna gitmeye devam eder.
+
 ## İçerik modelleri
 
 ### Blog yazısı
