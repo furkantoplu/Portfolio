@@ -34,6 +34,8 @@ Panel birden fazla yöneticiyi destekler. Tam yetkili bir yönetici `/bakir` iç
 
 Blog yazıları da doğrudan `/bakir` panelinden yönetilir. Yönetici yeni taslak oluşturabilir, mevcut yazıyı düzenleyebilir, yayınlayabilir, yeniden taslağa alabilir veya silmeden gizleyebilir. Başlık, URL adı, kategori, kart özeti, yayın tarihi, okuma süresi, öne çıkarma, giriş, paragraflar, alıntı, kapanış ve SEO alanları sade formdan düzenlenir. Paragraflar boş satırlarla ayrılır ve güvenli yapılandırılmış JSON olarak saklanır; panel ham HTML kabul etmez.
 
+Yönetim paneli tek uzun sayfa değildir. Masaüstünde sabit sol sidebar; tablet ve mobilde üstte yatay kaydırılabilir bölüm menüsü kullanır. Genel bakış, blog yazıları, çalışma alanları, yöneticiler ve hesap güvenliği birbirinden ayrı çalışma ekranları olarak açılır. Böylece yeni modüller eklendiğinde kullanıcı sayfanın altına inmek zorunda kalmaz.
+
 Yerel HTTP geliştirmesinde `DIRECTUS_SESSION_COOKIE_SECURE=false` kullanılır. VPS üzerinde HTTPS etkinleştirildiğinde bu değer mutlaka `true` yapılmalıdır. `/bakir` yanıtları `noindex`, `nofollow`, `noarchive` ve `no-store` başlıklarıyla korunur; özel adres tek başına güvenlik önlemi sayılmaz.
 
 Çalışma alanları artık Directus'tan dinamik okunur. Ana sayfa yalnızca `Yayında` ve `Ana sayfada göster` işaretli kayıtları; `/calisma-alanlari` ise tüm `Yayında` kayıtları sıralama alanına göre gösterir. `Taslak` veya `Gizli` kayıtlar listelenmez ve detay URL'leri 404 döndürür.

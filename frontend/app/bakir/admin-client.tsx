@@ -9,6 +9,7 @@ import {
   Eye,
   EyeOff,
   KeyRound,
+  LayoutDashboard,
   LoaderCircle,
   LogOut,
   ShieldCheck,
@@ -33,6 +34,7 @@ type AdminUser = {
 };
 
 type AdminMember = Omit<AdminUser, "is_admin">;
+type AdminView = "overview" | "blog" | "practices" | "team" | "security";
 
 type ContentSummary = {
   blog: ManagedBlogPost[];
@@ -62,6 +64,7 @@ export function BakirAdmin() {
   const [newAdmin, setNewAdmin] = useState({ first_name: "", last_name: "", email: "", password: "" });
   const [teamBusy, setTeamBusy] = useState(false);
   const [teamMessage, setTeamMessage] = useState<string | null>(null);
+  const [activeView, setActiveView] = useState<AdminView>("overview");
 
   const loadDashboard = useCallback(async () => {
     const [{ data: currentUser }, { data: members }, { data: blog }, { data: practices }] = await Promise.all([
@@ -284,6 +287,14 @@ export function BakirAdmin() {
 
   const userName = [user?.first_name, user?.last_name].filter(Boolean).join(" ") || "Yönetici";
 
+  const navigation: Array<{ id: AdminView; label: string; icon: typeof LayoutDashboard; adminOnly?: boolean }> = [
+    { id: "overview", label: "Genel bakış", icon: LayoutDashboard },
+    { id: "blog", label: "Blog yazıları", icon: BookOpenText },
+    { id: "practices", label: "Çalışma alanları", icon: Stethoscope },
+    { id: "team", label: "Yöneticiler", icon: Users, adminOnly: true },
+    { id: "security", label: "Hesap güvenliği", icon: ShieldCheck },
+  ];
+
   return (
     <main className="admin-shell admin-dashboard">
       <header className="admin-dashboard__header">
@@ -297,92 +308,134 @@ export function BakirAdmin() {
         </div>
       </header>
 
-      <div className="admin-dashboard__content">
-        <section className="admin-welcome">
-          <p className="admin-eyebrow"><CheckCircle2 size={17} /> Güvenli oturum açık</p>
-          <h1>İçerikleriniz<br /><em>kontrolünüz altında.</em></h1>
-          <p>Güvenli giriş, hesap bazlı iki adımlı doğrulama ve yönetici ekibi hazır. İçerik düzenleme ekranları sıradaki pakette bu alana eklenecek.</p>
-        </section>
-
-        <section className="admin-stat-grid" aria-label="İçerik özeti">
-          <article>
-            <BookOpenText aria-hidden="true" />
-            <div><span>Blog yazıları</span><strong>{summary?.blog.length ?? 0}</strong></div>
-            <p>{countStatus(summary?.blog ?? [], "published")} yayında · {countStatus(summary?.blog ?? [], "draft")} taslak</p>
-          </article>
-          <article>
-            <Stethoscope aria-hidden="true" />
-            <div><span>Çalışma alanları</span><strong>{summary?.practices.length ?? 0}</strong></div>
-            <p>{countStatus(summary?.practices ?? [], "published")} yayında · {countStatus(summary?.practices ?? [], "hidden")} gizli</p>
-          </article>
-        </section>
-
-        <BlogManager posts={summary?.blog ?? []} onChanged={loadDashboard} />
-
-        <section className={`admin-security${user?.tfa_enabled ? " admin-security--enabled" : ""}`} aria-labelledby="tfa-title">
-          <div className="admin-security__copy">
-            <p className="admin-eyebrow"><ShieldCheck size={17} /> Hesap güvenliği</p>
-            <h2 id="tfa-title">{user?.tfa_enabled ? "İki adımlı doğrulama aktif" : "Google Authenticator kurulumu"}</h2>
-            <p>{user?.tfa_enabled ? `${user.email} hesabı her girişte telefonunuzdaki 6 haneli kodla korunuyor.` : "Kurulum tamamlandığında e-posta ve parolaya ek olarak, her girişte telefonunuzdaki 6 haneli kod gerekir."}</p>
+      <div className="admin-dashboard__body">
+        <aside className="admin-sidebar" aria-label="Yönetim menüsü">
+          <nav>
+            {navigation.filter((item) => !item.adminOnly || user?.is_admin).map((item) => {
+              const Icon = item.icon;
+              return (
+                <button className={activeView === item.id ? "is-active" : ""} type="button" key={item.id} onClick={() => setActiveView(item.id)}>
+                  <Icon size={18} /><span>{item.label}</span>
+                  {item.id === "blog" && <small>{summary?.blog.length ?? 0}</small>}
+                  {item.id === "practices" && <small>{summary?.practices.length ?? 0}</small>}
+                </button>
+              );
+            })}
+          </nav>
+          <div className="admin-sidebar__footer">
+            <span><strong>{userName}</strong><small>{user?.role_name || "Yönetici"}</small></span>
+            <Link href="/" target="_blank">Siteyi görüntüle <ArrowRight size={14} /></Link>
           </div>
+        </aside>
 
-          <div className="admin-security__form">
-            {user?.tfa_enabled ? (
-              <div className="admin-security__active">
-                <CheckCircle2 size={34} aria-hidden="true" />
-                <div><strong>Authenticator bağlı</strong><span>Her yönetici bu güvenliği kendi hesabı ve kendi telefonu için ayrı kurar.</span></div>
+        <div className="admin-dashboard__content">
+          {activeView === "overview" && (
+            <>
+              <section className="admin-welcome">
+                <p className="admin-eyebrow"><CheckCircle2 size={17} /> Güvenli oturum açık</p>
+                <h1>İçerikleriniz<br /><em>kontrolünüz altında.</em></h1>
+                <p>Sol menüden yönetmek istediğiniz bölüme doğrudan geçebilirsiniz. Her bölüm kendi çalışma ekranında açılır.</p>
+              </section>
+
+              <section className="admin-stat-grid" aria-label="İçerik özeti">
+                <button type="button" onClick={() => setActiveView("blog")}>
+                  <BookOpenText aria-hidden="true" />
+                  <div><span>Blog yazıları</span><strong>{summary?.blog.length ?? 0}</strong></div>
+                  <p>{countStatus(summary?.blog ?? [], "published")} yayında · {countStatus(summary?.blog ?? [], "draft")} taslak</p>
+                </button>
+                <button type="button" onClick={() => setActiveView("practices")}>
+                  <Stethoscope aria-hidden="true" />
+                  <div><span>Çalışma alanları</span><strong>{summary?.practices.length ?? 0}</strong></div>
+                  <p>{countStatus(summary?.practices ?? [], "published")} yayında · {countStatus(summary?.practices ?? [], "hidden")} gizli</p>
+                </button>
+              </section>
+
+              <section className="admin-overview-note">
+                <ShieldCheck size={24} />
+                <div><strong>Hesabınız korunuyor</strong><p>{user?.tfa_enabled ? "Google Authenticator bu hesap için aktif." : "Hesap güvenliği bölümünden Google Authenticator kurulumunu tamamlayın."}</p></div>
+                <button type="button" onClick={() => setActiveView("security")}>Güvenliğe git <ArrowRight size={15} /></button>
+              </section>
+            </>
+          )}
+
+          {activeView === "blog" && <BlogManager posts={summary?.blog ?? []} onChanged={loadDashboard} />}
+
+          {activeView === "practices" && (
+            <section className="admin-placeholder">
+              <Stethoscope size={32} />
+              <p className="admin-eyebrow">Çalışma alanları</p>
+              <h2>Alan yönetimi bu bölümde olacak.</h2>
+              <p>Mevcut alanları düzenleme, yeni alan ekleme, ana sayfada gösterme ve gizleme araçları sıradaki pakette burada hazırlanacak.</p>
+            </section>
+          )}
+
+          {activeView === "security" && (
+            <section className={`admin-security${user?.tfa_enabled ? " admin-security--enabled" : ""}`} aria-labelledby="tfa-title">
+              <div className="admin-security__copy">
+                <p className="admin-eyebrow"><ShieldCheck size={17} /> Hesap güvenliği</p>
+                <h2 id="tfa-title">{user?.tfa_enabled ? "İki adımlı doğrulama aktif" : "Google Authenticator kurulumu"}</h2>
+                <p>{user?.tfa_enabled ? `${user.email} hesabı her girişte telefonunuzdaki 6 haneli kodla korunuyor.` : "Kurulum tamamlandığında e-posta ve parolaya ek olarak, her girişte telefonunuzdaki 6 haneli kod gerekir."}</p>
               </div>
-            ) : !tfaSecret ? (
-              <>
-                <label><span>Mevcut parola</span><input type="password" value={setupPassword} onChange={(event) => setSetupPassword(event.target.value)} autoComplete="current-password" placeholder="Kurulumu doğrulamak için" /></label>
-                <button type="button" onClick={generateTfa} disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <KeyRound size={18} />} Kurulum anahtarı oluştur</button>
-              </>
-            ) : (
-              <>
-                <div className="admin-secret"><span>Authenticator kurulum anahtarı</span><code>{tfaSecret}</code><small>Google Authenticator → “Kurulum anahtarı gir” seçeneğini kullanın.</small></div>
-                <label><span>Uygulamadaki 6 haneli kod</span><input className="admin-otp" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={tfaOtp} onChange={(event) => setTfaOtp(event.target.value.replace(/\D/g, ""))} autoComplete="one-time-code" placeholder="000000" /></label>
-                <button type="button" onClick={enableTfa} disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <ShieldCheck size={18} />} İki adımlı doğrulamayı etkinleştir</button>
-              </>
-            )}
-            {tfaMessage && <p className="admin-security__message" role="status">{tfaMessage}</p>}
-          </div>
-        </section>
 
-        {user?.is_admin && (
-          <section className="admin-team" aria-labelledby="admin-team-title">
-            <div className="admin-team__heading">
-              <div>
-                <p className="admin-eyebrow"><Users size={17} /> Yönetici ekibi</p>
-                <h2 id="admin-team-title">Birden fazla yönetici,<br /><em>ayrı ve güvenli hesaplar.</em></h2>
+              <div className="admin-security__form">
+                {user?.tfa_enabled ? (
+                  <div className="admin-security__active">
+                    <CheckCircle2 size={34} aria-hidden="true" />
+                    <div><strong>Authenticator bağlı</strong><span>Her yönetici bu güvenliği kendi hesabı ve kendi telefonu için ayrı kurar.</span></div>
+                  </div>
+                ) : !tfaSecret ? (
+                  <>
+                    <label><span>Mevcut parola</span><input type="password" value={setupPassword} onChange={(event) => setSetupPassword(event.target.value)} autoComplete="current-password" placeholder="Kurulumu doğrulamak için" /></label>
+                    <button type="button" onClick={generateTfa} disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <KeyRound size={18} />} Kurulum anahtarı oluştur</button>
+                  </>
+                ) : (
+                  <>
+                    <div className="admin-secret"><span>Authenticator kurulum anahtarı</span><code>{tfaSecret}</code><small>Google Authenticator → “Kurulum anahtarı gir” seçeneğini kullanın.</small></div>
+                    <label><span>Uygulamadaki 6 haneli kod</span><input className="admin-otp" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={tfaOtp} onChange={(event) => setTfaOtp(event.target.value.replace(/\D/g, ""))} autoComplete="one-time-code" placeholder="000000" /></label>
+                    <button type="button" onClick={enableTfa} disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <ShieldCheck size={18} />} İki adımlı doğrulamayı etkinleştir</button>
+                  </>
+                )}
+                {tfaMessage && <p className="admin-security__message" role="status">{tfaMessage}</p>}
               </div>
-              <p>Ortak parola kullanılmaz. Her yönetici kendi e-postası, parolası ve Authenticator kurulumu ile giriş yapar; işlemler hesabına göre kaydedilir.</p>
-            </div>
+            </section>
+          )}
 
-            <div className="admin-team__layout">
-              <div className="admin-team__members">
-                {team.map((member) => (
-                  <article key={member.id}>
-                    <div className="admin-team__avatar">{(member.first_name?.[0] || member.email[0]).toLocaleUpperCase("tr-TR")}</div>
-                    <div><strong>{[member.first_name, member.last_name].filter(Boolean).join(" ") || "Yönetici"}</strong><span>{member.email}</span></div>
-                    <span className={member.tfa_enabled ? "is-secure" : "is-pending"}>{member.tfa_enabled ? "2FA aktif" : "2FA bekliyor"}</span>
-                  </article>
-                ))}
-              </div>
-
-              <form className="admin-team__form" onSubmit={createAdmin}>
-                <div><UserPlus size={20} /><strong>Yeni yönetici ekle</strong></div>
-                <div className="admin-team__names">
-                  <label><span>Ad</span><input value={newAdmin.first_name} onChange={(event) => setNewAdmin((current) => ({ ...current, first_name: event.target.value }))} required /></label>
-                  <label><span>Soyad</span><input value={newAdmin.last_name} onChange={(event) => setNewAdmin((current) => ({ ...current, last_name: event.target.value }))} required /></label>
+          {activeView === "team" && user?.is_admin && (
+            <section className="admin-team" aria-labelledby="admin-team-title">
+              <div className="admin-team__heading">
+                <div>
+                  <p className="admin-eyebrow"><Users size={17} /> Yönetici ekibi</p>
+                  <h2 id="admin-team-title">Birden fazla yönetici,<br /><em>ayrı ve güvenli hesaplar.</em></h2>
                 </div>
-                <label><span>E-posta</span><input type="email" value={newAdmin.email} onChange={(event) => setNewAdmin((current) => ({ ...current, email: event.target.value }))} autoComplete="off" required /></label>
-                <label><span>Geçici parola</span><input type="password" value={newAdmin.password} onChange={(event) => setNewAdmin((current) => ({ ...current, password: event.target.value }))} minLength={10} autoComplete="new-password" required /><small>En az 10 karakter; büyük/küçük harf, rakam ve sembol içermeli.</small></label>
-                <button type="submit" disabled={teamBusy}>{teamBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <UserPlus size={18} />} Yönetici hesabını oluştur</button>
-                {teamMessage && <p role="status">{teamMessage}</p>}
-              </form>
-            </div>
-          </section>
-        )}
+                <p>Ortak parola kullanılmaz. Her yönetici kendi e-postası, parolası ve Authenticator kurulumu ile giriş yapar; işlemler hesabına göre kaydedilir.</p>
+              </div>
+
+              <div className="admin-team__layout">
+                <div className="admin-team__members">
+                  {team.map((member) => (
+                    <article key={member.id}>
+                      <div className="admin-team__avatar">{(member.first_name?.[0] || member.email[0]).toLocaleUpperCase("tr-TR")}</div>
+                      <div><strong>{[member.first_name, member.last_name].filter(Boolean).join(" ") || "Yönetici"}</strong><span>{member.email}</span></div>
+                      <span className={member.tfa_enabled ? "is-secure" : "is-pending"}>{member.tfa_enabled ? "2FA aktif" : "2FA bekliyor"}</span>
+                    </article>
+                  ))}
+                </div>
+
+                <form className="admin-team__form" onSubmit={createAdmin}>
+                  <div><UserPlus size={20} /><strong>Yeni yönetici ekle</strong></div>
+                  <div className="admin-team__names">
+                    <label><span>Ad</span><input value={newAdmin.first_name} onChange={(event) => setNewAdmin((current) => ({ ...current, first_name: event.target.value }))} required /></label>
+                    <label><span>Soyad</span><input value={newAdmin.last_name} onChange={(event) => setNewAdmin((current) => ({ ...current, last_name: event.target.value }))} required /></label>
+                  </div>
+                  <label><span>E-posta</span><input type="email" value={newAdmin.email} onChange={(event) => setNewAdmin((current) => ({ ...current, email: event.target.value }))} autoComplete="off" required /></label>
+                  <label><span>Geçici parola</span><input type="password" value={newAdmin.password} onChange={(event) => setNewAdmin((current) => ({ ...current, password: event.target.value }))} minLength={10} autoComplete="new-password" required /><small>En az 10 karakter; büyük/küçük harf, rakam ve sembol içermeli.</small></label>
+                  <button type="submit" disabled={teamBusy}>{teamBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <UserPlus size={18} />} Yönetici hesabını oluştur</button>
+                  {teamMessage && <p role="status">{teamMessage}</p>}
+                </form>
+              </div>
+            </section>
+          )}
+        </div>
       </div>
     </main>
   );

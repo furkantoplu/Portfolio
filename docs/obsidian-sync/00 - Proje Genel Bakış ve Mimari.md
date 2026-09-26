@@ -93,6 +93,8 @@ Bu temel artık `/bakir` rotasında uygulanmıştır. Site sahibine Directus Stu
 
 Birden fazla yönetici ayrı Directus kullanıcı hesaplarıyla çalışabilir. Tam yetkili yönetici özel panelden yeni yönetici hesabı açar; ortak parola veya ortak TOTP anahtarı kullanılmaz. Panel yalnızca oturumdaki hesabın `tfa_enabled` durumunu ve yönetici ekibindeki hesapların güvenlik durumunu gösterir, `tfa_secret` değerini API cevabına koymaz. Her yöneticinin içerik işlemleri Directus aktivite kaydında kendi kullanıcı kimliğiyle izlenebilir.
 
+Yönetim arayüzü büyüyebilir modüler bir kabuk kullanır. Masaüstünde 248 piksel genişliğinde sabit sidebar; 900 piksel altında ise header'ın altında sabitlenen yatay ve kaydırılabilir bölüm menüsü bulunur. Genel bakış, blog, çalışma alanları, yönetici ekibi ve hesap güvenliği aynı anda alt alta render edilmez; seçilen bölüm tek çalışma alanında gösterilir. Sidebar içerik sayılarını ve aktif bölümü belirtir. Genel bakış kartları da ilgili bölüme doğrudan geçiş sağlar.
+
 ### Production altyapısı
 
 Docker Compose servisleri:

@@ -487,3 +487,20 @@
 - Docker servislerinin tamamı `healthy`, `/bakir` rotası HTTP 200 durumunda doğrulandı.
 - Tarayıcı paneli oturum kapalı durumda bulundu; parola ve TOTP bilgilerine otomasyonla müdahale edilmedi. Editörün gerçek oturumdaki son kullanıcı görsel kontrolü bir sonraki manuel girişte yapılacaktır.
 - Uygulama paketi `df9b1a9` kimliği ve `feat: add blog management workspace` mesajıyla commit edildi.
+
+### Paket 20 — Sidebar tabanlı modüler admin navigasyonu
+
+- Yönetim araçlarının tek uzun sayfada alt alta bulunmasının, çalışma alanı editörü eklendiğinde ciddi kullanım sorunu oluşturacağı kullanıcı tarafından belirtildi.
+- `/bakir` paneli tek sayfalık dikey akıştan modüler yönetim kabuğuna dönüştürüldü.
+- Masaüstü görünümüne viewport boyunca sabit kalan sol sidebar eklendi.
+- Sidebar içinde Genel bakış, Blog yazıları, Çalışma alanları, Yöneticiler ve Hesap güvenliği bölümleri tanımlandı.
+- Aktif bölüm koyu yeşil durumla belirginleştirilir; blog ve çalışma alanı menülerinde mevcut kayıt sayısı gösterilir.
+- Yönetici ekibi menüsü yalnızca `admin_access` yetkisine sahip kullanıcılar tarafından görülür.
+- Her menü seçimi yalnızca ilgili çalışma ekranını render eder; blog editörü, güvenlik ve ekip yönetimi artık uzun sayfada birlikte bulunmaz.
+- Genel bakış ekranındaki içerik özet kartları butona dönüştürüldü ve doğrudan ilgili yönetim bölümüne bağlandı.
+- Genel bakışa hesap güvenliği durumunu gösteren ve güvenlik ekranına götüren kısa kart eklendi.
+- Henüz editörü tamamlanmayan Çalışma alanları bölümü için ayrı bir yer tutucu ekran hazırlandı; sıradaki paket aynı menü alanında uygulanacak.
+- Sidebar altına oturumdaki yönetici bilgisi ve public siteyi yeni sekmede açan bağlantı eklendi.
+- 900 piksel ve altında sidebar, header'ın altında sabitlenen yatay kaydırılabilir menüye dönüşür. Böylece mobilde ekran alanı korunurken bütün bölümlere hızlı erişim sürer.
+- Header da sayfa kaydırıldığında görünür kalacak şekilde sticky yapıldı.
+- Hedefli ESLint kontrolü, yerel production build ve Docker production build başarıyla tamamlandı.

@@ -182,6 +182,16 @@ Resmî referanslar:
 - Yeni kayıtta başlıktan Türkçe uyumlu slug üretilir. Benzersizlik Directus/veritabanı kuralıyla da korunur ve çakışma kullanıcıya anlaşılır hata olarak gösterilir.
 - Kullanılabilirlik için listede hızlı yayınlama ve gizleme bulunur; tüm alan değişiklikleri formdaki açık kaydet düğmesiyle tamamlanır.
 
+## Karar 029 — Admin bilgi mimarisi ve navigasyon kabuğu
+
+- Yönetim modülleri tek uzun sayfada alt alta dizilmez. Her ana işlev ayrı panel görünümü olarak açılır.
+- Masaüstünde sabit sidebar tercih edilir; içerik alanı sidebar yanında bağımsız kayar. Header ekranın üstünde sabit kalır.
+- Tablet ve mobilde sidebar ekranı daraltmamak için yatay, kaydırılabilir ve sticky bölüm menüsüne dönüşür.
+- Ana bölümler `overview`, `blog`, `practices`, `team` ve `security` kimlikleriyle yönetilir. Yeni modüller aynı navigasyon dizisine eklenerek genişletilir.
+- Yetkiye bağlı menüler istemcide gizlenmekle birlikte güvenlik bununla sınırlı değildir; ilgili API endpoint'i sunucu tarafında ayrıca yetki kontrolü uygular.
+- Genel bakış yalnızca özet ve kısa yollar içerir. Düzenleme formları kendi çalışma görünümünde yer alır.
+- Çalışma alanı yönetimi tamamlanmadan önce navigasyondaki kalıcı yeri hazırlanır; sonraki paket mevcut kabuğu bozmadan bu bölümü doldurur.
+
 ## Git commit yaklaşımı
 
 - Her küçük paket bittikten ve build doğrulandıktan sonra commit oluşturulur.
