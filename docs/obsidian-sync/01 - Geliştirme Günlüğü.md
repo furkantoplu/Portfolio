@@ -576,3 +576,16 @@
 - Masaüstü ve 390 × 844 mobil görünüm tarayıcıda görsel olarak kontrol edildi; responsive yerleşim ve bağlantılar doğrulandı.
 - 404 sayfasının tarayıcı konsolunda hata veya uyarı bulunmadı.
 - Database, Directus ve frontend container'larının `healthy`, Caddy proxy'nin çalışır durumda olduğu doğrulandı.
+
+### Paket 25 — Vinext sayfa geçişi çalışma zamanı düzeltmesi
+
+- Kullanıcı, 404 paketinden sonra menü bağlantılarının çalışmadığını ve konsolda `link-*.js: Uncaught TypeError: e is not a function` hatasının tekrarlandığını bildirdi.
+- Yeni kayıt, hatanın yalnızca RSC prefetch kurulumunda olmadığını; `next/link` tıklama işleyicisinin `startTransition` içindeki istemci navigasyonunda da oluştuğunu gösterdi.
+- Önceki `prefetch={false}` yaklaşımının prefetch tekrarını durdurduğu ancak bozuk router tıklama yolunu devrede bıraktığı kabul edildi ve teknik karar düzeltildi.
+- `NativeLink` adlı ortak, tipli bağlantı bileşeni eklendi. Bileşen semantik `<a href>` üretir ve framework istemci router'ı yerine tarayıcının yerel tam sayfa navigasyonunu kullanır.
+- Ana sayfa, ortak header, 404, Hakkımda, admin marka bağlantıları ve blog/çalışma alanı “sitede aç” kontrolleri dahil bütün `next/link` kullanımları kaldırıldı.
+- Proje uygulama kodunda `next/link`, `<Link>` veya `prefetch={false}` kullanımı kalmadığı kaynak taramasıyla doğrulandı.
+- Hedefli ESLint, yerel production build ve Docker production build başarıyla tamamlandı.
+- Tarayıcıda gerçek tıklamalarla Ana Sayfa → Hakkımda → Çalışma Alanları → Blog → İletişim → Ana Sayfa zinciri tamamlandı.
+- Ana sayfadaki yayınlanmış yazı bağlantısından dinamik blog detayına geçiş ayrıca doğrulandı.
+- Bütün tıklama zincirinin sonunda tarayıcı hata/uyarı konsolu boş döndü; `link-*.js` çalışma zamanı hatası ortadan kalktı.
