@@ -600,3 +600,17 @@
 - Caddy yapılandırması container içinde `caddy validate` ile doğrulandı.
 - DevTools teknik yolunun HTTP 204 ve sıfır bayt; `/iletisim/lsd` yolunun ise markalı içerikle gerçek HTTP 404 döndürdüğü doğrulandı.
 - Database, Directus ve frontend servisleri `healthy`, yeniden oluşturulan Caddy proxy çalışır durumda kaldı.
+
+### Paket 27 — Dinamik sitemap.xml ve robots.txt
+
+- Arama motoru tarama talimatları için Next/Vinext metadata route biçiminde `app/robots.ts` eklendi.
+- Public sayfalar taramaya açık bırakılırken `/bakir`, `/bakir/` ve `/bakir-api/` yolları robots çıktısında tarama dışında bırakıldı.
+- Robots çıktısına sitemap adresi ve tercih edilen site host'u eklendi.
+- `app/sitemap.ts` ile ana sayfa, Hakkımda, Çalışma Alanları, Blog, İletişim, KVKK ve Gizlilik sayfaları listelendi.
+- Directus public endpoint'lerinden yalnızca yayınlanmış çalışma alanları ve blog yazıları dinamik olarak sitemap'e eklenmeye başladı; taslak ve gizli kayıtlar dahil edilmedi.
+- Blog yayın tarihi uygun olduğunda `lastmod` değeri olarak kullanıldı.
+- Directus geçici olarak erişilemezse sitemap'in tamamen bozulmaması için dinamik sorgular `Promise.allSettled` ile ayrıştırıldı; sabit sayfalar üretilmeye devam eder.
+- `SITE_PUBLIC_URL` Vinext/Cloudflare binding, Docker build argümanı ve frontend runtime ortamına eklendi. Böylece localhost ile production domain arasında kod değişikliği gerekmez.
+- Hedefli ESLint kontrolü ve production build başarılı tamamlandı. Genel lint kontrolü yalnızca Vinext çalışma zamanı hatası nedeniyle bilerek kullanılan mevcut `NativeLink`/HTML anchor bağlantıları için altı `no-html-link-for-pages` ihlalini raporladı; yeni SEO dosyalarında hata bulunmadı.
+- Frontend Docker imajı yeniden oluşturuldu; `/robots.txt` `text/plain`, `/sitemap.xml` `application/xml` içerik türüyle HTTP 200 döndürdü.
+- Sitemap çıktısında yedi sabit sayfa, dört yayınlanmış çalışma alanı ve iki yayınlanmış blog yazısı doğrulandı.

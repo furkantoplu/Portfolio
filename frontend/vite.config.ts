@@ -18,6 +18,7 @@ const localBindingConfig = {
   compatibility_flags: ["nodejs_compat"],
   vars: {
     DIRECTUS_URL: process.env.DIRECTUS_URL || "http://localhost:8055",
+    SITE_PUBLIC_URL: process.env.SITE_PUBLIC_URL || "http://localhost:8080",
   },
   d1_databases: d1
     ? [

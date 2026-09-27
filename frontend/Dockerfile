@@ -3,7 +3,9 @@ FROM node:22-bookworm-slim AS build
 WORKDIR /app
 
 ARG DIRECTUS_URL=http://directus:8055
-ENV DIRECTUS_URL=${DIRECTUS_URL}
+ARG SITE_PUBLIC_URL=http://localhost:8080
+ENV DIRECTUS_URL=${DIRECTUS_URL} \
+    SITE_PUBLIC_URL=${SITE_PUBLIC_URL}
 
 COPY package.json package-lock.json ./
 RUN npm ci --include=dev --include=optional --no-audit --no-fund

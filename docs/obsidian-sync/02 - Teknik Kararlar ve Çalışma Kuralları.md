@@ -298,6 +298,14 @@ docker compose down
 - Yedekleme servisi backend aşamasının sonraki paketinde eklenecektir.
 - Parolalar, TOTP secret, Directus key/secret ve PostgreSQL parolası Git'e commit edilmeyecek.
 
+## Karar 035 — Arama motoru keşif rotaları
+
+- `robots.txt` bir güvenlik mekanizması değildir; yönetim yolları ayrıca kimlik doğrulaması, güvenli çerezler, cache engeli ve production rate-limit kurallarıyla korunmaya devam eder.
+- `/bakir`, alt yolları ve `/bakir-api/` iyi niyetli arama motoru tarayıcılarına kapatılır; public içerik taramaya açık kalır.
+- Sitemap yalnızca ziyaretçinin gerçekten açabildiği public ve yayınlanmış URL'leri listeler. Taslak, gizli veya bilinmeyen içerik eklenmez.
+- Mutlak sitemap ve robots URL'leri tek `SITE_PUBLIC_URL` kaynağından üretilir. Production değerinde HTTPS protokolü ve gerçek canonical domain zorunludur.
+- Directus kesintisinin sabit site keşfini de bozmasına izin verilmez; dinamik kayıtlar alınamazsa sitemap sabit public URL'lerle yanıt vermeye devam eder.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

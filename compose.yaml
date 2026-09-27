@@ -61,6 +61,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        SITE_PUBLIC_URL: ${SITE_PUBLIC_URL:-http://localhost:8080}
     image: fizyoterapist-frontend:local
     restart: unless-stopped
     depends_on:
@@ -73,6 +75,7 @@ services:
       WRANGLER_SEND_METRICS: "false"
       WRANGLER_WRITE_LOGS: "false"
       DIRECTUS_URL: http://directus:8055
+      SITE_PUBLIC_URL: ${SITE_PUBLIC_URL:-http://localhost:8080}
     healthcheck:
       test:
         - CMD

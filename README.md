@@ -47,6 +47,8 @@ Yerel HTTP geliştirmesinde `DIRECTUS_SESSION_COOKIE_SECURE=false` kullanılır.
 
 Blog içerikleri de Directus `blog_posts` koleksiyonundan yönetilir. Ana sayfa en fazla üç yayınlanmış yazıyı, `/blog` bütün yayınlanmış yazıları gösterir; her kayıt `/blog/[slug]` adresinde açılır. `Taslak` ve `Gizli` yazılar ziyaretçiye gösterilmez ve doğrudan URL istekleri 404 döndürür.
 
+Arama motoru keşfi için `/robots.txt` ve `/sitemap.xml` otomatik üretilir. Robots çıktısı public sayfaların taranmasına izin verirken `/bakir` ve `/bakir-api` yollarını tarama dışında bırakır. Sitemap sabit public sayfalarla birlikte yalnızca yayınlanmış blog yazılarını ve çalışma alanlarını Directus'tan dinamik ekler. URL kökü `.env` içindeki `SITE_PUBLIC_URL` değerinden alınır; production ortamında bu değer gerçek HTTPS domaini olmalıdır.
+
 Frontend içeriği standart Directus koleksiyon API'sinden değil, `directus/extensions/directus-extension-website-content` altındaki salt-okunur endpoint'ten alır. Bu endpoint yalnızca yayınlanmış kayıtları ve izin verilen alanları döndürür. Standart `items/practice_areas` ve `items/blog_posts` API'leri anonim erişime kapalı kalır.
 
 Durumu görüntüleme:
