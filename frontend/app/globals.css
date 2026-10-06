@@ -1250,6 +1250,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-size: 17px;
   line-height: 1.76;
 }
+.detail-hero__subtitle { max-width: 820px; margin: 24px 0 0; color: var(--primary-deep); font-family: Georgia, serif; font-size: clamp(25px, 2.8vw, 38px); line-height: 1.2; }
+.detail-hero__subtitle em { color: var(--terracotta); font-weight: 500; }
 
 .detail-hero .primary-button { align-self: flex-start; }
 

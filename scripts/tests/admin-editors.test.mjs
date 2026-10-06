@@ -42,6 +42,12 @@ test("Blog and practice editors expose image upload and accessibility text", () 
     assert.ok(module.exports[key].includes("Görsel açıklaması"), key);
   }
 });
+test("Practice manager shows an automatic readonly URL and a single primary name", () => {
+  assert.ok(module.exports.practice.includes("Çalışma alanı adı / sayfa başlığı"));
+  assert.ok(module.exports.practice.includes("Otomatik URL adı"));
+  assert.ok(module.exports.practice.includes('readOnly=""'));
+  assert.ok(!module.exports.practice.includes("Detay sayfası başlığı"));
+});
 test("Authenticator displays a local QR plus manual fallback, opened if QR is unavailable", () => {
   assert.ok(module.exports.qr.includes('src="data:image/png;base64,TEST_ONLY"'));
   assert.ok(module.exports.qr.includes("QR kod tara"));

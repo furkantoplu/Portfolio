@@ -205,6 +205,10 @@ Yüklenen dosyalar `directus_uploads` volume'ünde kalıcıdır; PostgreSQL içe
 
 Yeni yönetici kurulumunda Directus `secret/otpauth_url` üretir. Panel `qrcode` ile bağlantıyı yerelde PNG QR'a çevirir; Google Authenticator QR ile ekler, sonra altı haneli kod Directus'ta doğrulanır. QR taramak tek başına 2FA'yı açmaz. Manuel zamana dayalı anahtar girişi alternatif olarak kalır. QR/anahtar yalnızca geçici React state'inde tutulur; dış QR servisleri, public dosya depolaması ve kalıcı tarayıcı depolaması kullanılmaz. Başarı/çıkış sonrası state temizlenir. Önceden aktif hesaplara dokunulmaz. Telefon ve sunucu saatlerinin uyumlu olması gerekir. QR geri okuma testi yalnızca sahte test verileriyle yapılır.
 
+### Çalışma alanı adları ve adres geçmişi
+
+Çalışma alanının kart adı ve detay H1'i ana `title` alanıdır. Ayrı hero metni isteğe bağlı alt başlıktır. Türkçe ve EN/DE çalışma alanı URL'si başlıktan otomatik türetilir; PostgreSQL tetikleyicileri Directus yazımlarında bu sözleşmeyi uygular. Aynı isimlerde benzersiz kayıt eki kullanılır. `website_practice_slug_aliases` eski slug/dil → alan kimliği eşleştirmesini tutar. Public çözüm yalnızca o dilde yayımlanmış mevcut alanları hedefler; eski adresler tek adımda güncel adrese HTTP 308 yönlenir. URL geçmişi başka kayda atanamaz. Blog URL'leri bağımsız editörünü korur.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

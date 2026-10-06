@@ -1,4 +1,5 @@
 const table = "website_content_translations";
+import { practiceSlug } from "./practice-urls.js";
 const pageTextFields = ["hero_kicker","hero_title","hero_accent","hero_suffix","hero_description","hero_image_alt","hero_note_title","hero_note_text","location","location_note","fact_1","fact_2","fact_3","practice_title","practice_accent","practice_intro","practice_note","about_image_alt","about_title","about_accent","about_lead","about_body","value_1","value_2","value_3","approach_title","step_1_title","step_1_text","step_2_title","step_2_text","step_3_title","step_3_text","blog_title","blog_accent","blog_intro","blog_note","contact_title","contact_accent","contact_intro","note_title","note_accent","note_text","archive_title","archive_intro"];
 const translatedFields = {
   practice_areas: ["title", "summary", "hero_title", "hero_accent", "lead", "image_alt", "overview_title", "overview_accent", "overview", "assessment_points", "process_steps", "faqs", "seo_title", "seo_description"],
@@ -85,7 +86,7 @@ export function registerTranslations(router, database, adminAccount) {
         if (!["draft", "published", "hidden"].includes(status)) throw new Error("Yayın durumu geçersiz.");
         if (!request.body.content || typeof request.body.content !== "object" || Array.isArray(request.body.content)) throw new Error("Çeviri içeriği geçersiz.");
         content = pickContent(collection, request.body.content);
-        slug = collection === "site_pages" ? null : String(request.body.slug || "").trim();
+        slug = collection === "site_pages" ? null : collection === "practice_areas" ? practiceSlug(content.title) : String(request.body.slug || "").trim();
         if (slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error("URL adı küçük harf, rakam ve tire içermeli.");
         if (slug?.length > 220) throw new Error("URL adı çok uzun.");
         if (status === "published") {

@@ -348,6 +348,14 @@ docker compose down
 - QR/anahtar state'i başarı/çıkışta silinir. TFA isteği devam ederken çıkış engellenir. Manuel anahtar alternatifi QR üretim sorunu halinde açık kalır.
 - Kurulum formunda parola ve OTP kontrolleri gerçek HTML form içindedir. QR okunabilirlik testleri sahte URI'yi geri okuyup tam eşleşme kontrolü yapar; gerçek hesaplar üzerinde etkinleştirme testi otomatik yapılmaz.
 
+### Karar 040 — Çalışma alanı adı tek kaynak, URL otomatik
+
+- Kart adı ve detay ana başlığı `title` alanından gelir; hero metinleri kaybedilmeden alt başlık olarak tutulur.
+- Çalışma alanı slug'ı TR/EN/DE ilgili başlıktan türetilir. Panel URL'yi salt okunur gösterir; veritabanı tetikleyicisi farklı Directus yazımlarında da otomatik kuralı uygular. Blog slug'ı bu kuralın dışındadır.
+- Türkçe/Latin işaretler sadeleştirilir, küçük harf/rakam/tire kullanılır. Çakışma durumunda kayıt kimliği eki üretilir; aynı dil/base için transaction advisory lock seri seçim sağlar.
+- İsim değişirken eski slug alias tablosuna kaydedilir. Alias mevcut yayımlanmış dil sürümüne çözülür ve frontend 308 ile güncel canonical'a yönlenir; eski URL'leri başka alan devralamaz.
+- URL normalizasyonu mevcut isimleri değiştirmez. Veritabanı testleri ayrı transaction içinde kayıt ekleyip rename/çakışma/geçmiş durumlarını doğrular ve geri alınır. Gerçek hesap erişimini değiştirmek test adımı değildir.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

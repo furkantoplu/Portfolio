@@ -6,6 +6,7 @@ import { adminLanguageNames, locales, type Locale } from "../lib/i18n";
 import { directusRequest } from "./admin-api";
 import pageConfig from "../lib/page-content-config.json";
 import type { PageKey } from "./page-manager";
+import { practiceSlug } from "../lib/practice-slug";
 
 type Collection = "practice_areas" | "blog_posts" | "site_pages";
 type Field = { key: string; label: string; columns?: string[] };
@@ -54,7 +55,8 @@ export function TranslationEditor({ collection, parentId, language, pageKey }: {
     event.preventDefault(); setBusy(true); setMessage("");
     const content = Object.fromEntries(fields.map(field => [field.key, field.columns ? (draft[field.key] || "").split("\n").filter(line => line.trim()).map(line => { const cells = line.split("|"); return Object.fromEntries(field.columns!.map((column, index) => [column, (index === field.columns!.length - 1 ? cells.slice(index).join("|") : cells[index] || "").trim()])); }) : (draft[field.key] || "").trim()]));
     try {
-      await directusRequest(endpoint, { method: "PATCH", body: JSON.stringify({ status, slug, content }) });
+      const { data } = await directusRequest<{ data: Translation }>(endpoint, { method: "PATCH", body: JSON.stringify({ status, slug: collection === "practice_areas" ? practiceSlug(String(content.title || "")) : slug, content }) });
+      setSlug(data.slug || "");
       setMessage(`${adminLanguageNames[language]} çeviri kaydedildi. ${status === "published" ? "Ana kayıt da yayındaysa sitede görünür." : "Ziyaretçilerden gizli tutuluyor."}`);
     } catch (error) { setMessage(error instanceof Error ? error.message : "Çeviri kaydedilemedi."); }
     finally { setBusy(false); }
@@ -64,8 +66,8 @@ export function TranslationEditor({ collection, parentId, language, pageKey }: {
     <div className="admin-post-editor__topline"><strong>{adminLanguageNames[language]} çevirisi</strong><select aria-label="Çeviri yayın durumu" value={status} onChange={e => setStatus(e.target.value as Translation["status"])}><option value="draft">Taslak</option><option value="published">Yayında</option><option value="hidden">Gizli</option></select></div>
     <p className="admin-translation-note">Görsel, sıralama ve iletişim numaraları Türkçe sekmesindeki ortak bilgilerden alınır. Bu sekme yalnızca seçili dilin metinlerini ve yayın durumunu değiştirir.</p>
     <div className="admin-editor-grid">
-      {collection !== "site_pages" && <label className="admin-field--wide"><span>Bu dilde URL adı</span><input value={slug} pattern="[a-z0-9]+(-[a-z0-9]+)*" maxLength={220} required={status === "published"} onChange={e => setSlug(e.target.value)} placeholder="ornek-baslik" /></label>}
-      {fields.map(field => <label key={field.key} className="admin-field--wide"><span>{field.label}</span><textarea rows={field.columns ? 5 : ["title", "hero_title", "hero_accent", "seo_title", "category"].includes(field.key) ? 2 : 3} value={draft[field.key] || ""} onChange={e => setDraft(state => ({ ...state, [field.key]: e.target.value }))} />{field.columns && <small>{field.columns.length === 1 ? "Her satır ayrı bir metin olur." : field.key === "faqs" ? "Her satır: Soru | Cevap" : "Her satır: Başlık | Açıklama"}</small>}</label>)}
+      {collection !== "site_pages" && <label className="admin-field--wide"><span>{collection === "practice_areas" ? "Otomatik URL adı" : "Bu dilde URL adı"}</span><input value={slug} readOnly={collection === "practice_areas"} pattern="[a-z0-9]+(-[a-z0-9]+)*" maxLength={220} required={status === "published"} onChange={e => setSlug(e.target.value)} placeholder="ornek-baslik" />{collection === "practice_areas" && <small>Bu dildeki başlık değişince URL otomatik güncellenir; eski adres korunarak yönlendirilir.</small>}</label>}
+      {fields.map(field => <label key={field.key} className="admin-field--wide"><span>{collection === "practice_areas" && field.key === "hero_title" ? "Detay alt başlığı (isteğe bağlı)" : collection === "practice_areas" && field.key === "hero_accent" ? "Alt başlık vurgusu" : field.label}</span><textarea rows={field.columns ? 5 : ["title", "hero_title", "hero_accent", "seo_title", "category"].includes(field.key) ? 2 : 3} value={draft[field.key] || ""} onChange={e => { setDraft(state => ({ ...state, [field.key]: e.target.value })); if (collection === "practice_areas" && field.key === "title") setSlug(practiceSlug(e.target.value)); }} />{field.columns && <small>{field.columns.length === 1 ? "Her satır ayrı bir metin olur." : field.key === "faqs" ? "Her satır: Soru | Cevap" : "Her satır: Başlık | Açıklama"}</small>}</label>)}
     </div>
     <div className="admin-post-editor__footer"><p role="status">{message || "Çeviri kaydedilene kadar ziyaretçiler tarafından görülmez."}</p><button type="submit" disabled={busy || loadFailed}>{busy ? <LoaderCircle className="admin-spinner" size={18} /> : <Save size={18} />} Çeviriyi kaydet</button></div>
   </form>;

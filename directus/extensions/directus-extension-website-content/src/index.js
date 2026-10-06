@@ -1,5 +1,6 @@
 import { language, translateItems, translatePage, registerTranslations } from "./translations.js";
 import { registerMedia } from "./media.js";
+import { resolvePracticeUrl } from "./practice-urls.js";
 
 const publicFields = [
   "id",
@@ -157,7 +158,7 @@ export default {
     router.get("/practice-areas/:slug", async (request, response, next) => {
       try {
         const items = await translateItems(database, "practice_areas", await publishedPracticeAreas(database), language(request));
-        const item = items.find(row => row.slug === request.params.slug);
+        const item = await resolvePracticeUrl(database, items, request.params.slug, language(request));
 
         if (!item) {
           response.status(404).json({ errors: [{ message: "Çalışma alanı bulunamadı." }] });

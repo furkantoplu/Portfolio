@@ -6,6 +6,7 @@ import { getTranslator } from "./i18n";
 export type SitePageKey = "home" | "about" | "contact" | "areas" | "blog";
 
 export type PracticeArea = {
+  redirect_slug?: string;
   language_slugs?: Partial<Record<Locale, string>>;
   id: number;
   sort: number | null;

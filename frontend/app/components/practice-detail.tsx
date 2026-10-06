@@ -25,6 +25,7 @@ export type PracticeDetailContent = {
   slug: string;
   index: string;
   title: string;
+  subtitle?: string;
   titleAccent: string;
   lead: string;
   image: string | null;
@@ -69,8 +70,8 @@ export async function PracticeDetail({
           </p>
           <h1 id="detail-title">
             {content.title}
-            <em> {content.titleAccent}</em>
           </h1>
+          {(content.subtitle || content.titleAccent) && <p className="detail-hero__subtitle">{content.subtitle}<em> {content.titleAccent}</em></p>}
           <p className="detail-hero__lead">{content.lead}</p>
           <a className="primary-button" href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}<ArrowUpRight aria-hidden="true" size={18} />
           </a>

@@ -54,7 +54,7 @@ test("Translated pages preserve phone and email from the shared record", async (
 async function requestRoute(method, account, params, body) {
   const handlers = {};
   const router = { get(path, handler) { handlers.get = handler; }, patch(path, handler) { handlers.patch = handler; } };
-  registerTranslations(router, databaseFixture({ practice_areas: [{ id: 1 }] }), async () => account);
+  registerTranslations(router, databaseFixture({ practice_areas: [{ id: 1 }], blog_posts: [{ id: 1 }] }), async () => account);
   let status = 200, payload;
   const response = { status(value) { status = value; return response; }, set() { return response; }, json(value) { payload = value; return response; } };
   await handlers[method]({ accountability: { user: "test" }, params, body }, response, error => { throw error; });
@@ -71,6 +71,6 @@ test("Translation reads and writes require an active administrator", async () =>
 test("Published translations require complete basic fields and safe slugs", async () => {
   const account = { status: "active", is_admin: true };
   assert.equal((await requestRoute("patch", account, params, { status: "published", slug: "", content: {} })).status, 400);
-  assert.equal((await requestRoute("patch", account, params, { status: "draft", slug: "../admin", content: {} })).status, 400);
+  assert.equal((await requestRoute("patch", account, { ...params, collection: "blog_posts" }, { status: "draft", slug: "../admin", content: {} })).status, 400);
   assert.equal((await requestRoute("patch", account, { ...params, collection: "directus_users" }, { status: "draft", content: {} })).status, 400);
 });

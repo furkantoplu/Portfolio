@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
   PracticeDetail,
   type PracticeDetailContent,
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function PracticeAreaDetailPage({ params }: PageProps) {
-  const { t } = await getPageTools();
+  const { t, href: localHref } = await getPageTools();
   const slug = await resolveSlug(params);
   const [area, allAreas] = await Promise.all([
     getPracticeArea(slug),
@@ -41,13 +41,15 @@ export default async function PracticeAreaDetailPage({ params }: PageProps) {
   ]);
 
   if (!area) notFound();
+  if (area.redirect_slug) permanentRedirect(localHref(`/calisma-alanlari/${encodeURIComponent(area.slug)}`));
 
   const index = allAreas.findIndex((item) => item.slug === area.slug);
   const content: PracticeDetailContent = {
     slug: area.slug,
     index: String(index + 1).padStart(2, "0"),
-    title: area.hero_title || area.title,
-    titleAccent: area.hero_accent || t("kişiye özel değerlendirme."),
+    title: area.title,
+    subtitle: area.hero_title !== area.title ? area.hero_title || "" : "",
+    titleAccent: area.hero_accent || "",
     lead: area.lead || area.summary,
     image: area.image_path || null,
     imageAlt: area.image_alt || area.title,

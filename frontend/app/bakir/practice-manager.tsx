@@ -7,6 +7,7 @@ import { NativeLink } from "../components/native-link";
 import { LanguageTabs, TranslationEditor } from "./translation-editor";
 import type { Locale } from "../lib/i18n";
 import { ImageField } from "./image-field";
+import { practiceSlug } from "../lib/practice-slug";
 
 export type ManagedPracticeArea = ContentItem & {
   id: number;
@@ -79,21 +80,6 @@ const statusLabels: Record<ContentItem["status"], string> = {
   hidden: "Gizli",
 };
 
-function slugify(value: string) {
-  return value
-    .toLocaleLowerCase("tr-TR")
-    .replaceAll("ı", "i")
-    .replaceAll("ğ", "g")
-    .replaceAll("ü", "u")
-    .replaceAll("ş", "s")
-    .replaceAll("ö", "o")
-    .replaceAll("ç", "c")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
 function parsePairs(value: string, first: string, second: string) {
   return value.split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
     const separator = line.indexOf("|");
@@ -164,7 +150,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
       sort: draft.sort ? Number.parseInt(draft.sort, 10) : null,
       show_on_homepage: draft.show_on_homepage,
       title: draft.title.trim(),
-      slug: slugify(draft.slug),
+      slug: practiceSlug(draft.title),
       summary: draft.summary.trim(),
       hero_title: draft.hero_title.trim() || null,
       hero_accent: draft.hero_accent.trim() || null,
@@ -258,13 +244,13 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
           <div className="admin-editor-grid">
             <ImageField label="Çalışma alanı görseli" value={draft.image_path} onChange={path => update("image_path", path)} disabled={busy} />
             <label className="admin-field--wide"><span>Görsel açıklaması</span><input value={draft.image_alt} onChange={e => update("image_alt", e.target.value)} /></label>
-            <label className="admin-field--wide"><span>Çalışma alanı adı</span><input value={draft.title} onChange={(event) => { const title = event.target.value; setDraft((current) => ({ ...current, title, ...(!selectedId ? { slug: slugify(title), hero_title: title } : {}) })); }} required /></label>
-            <label><span>URL adı</span><input value={draft.slug} onChange={(event) => update("slug", slugify(event.target.value))} required /></label>
+            <label className="admin-field--wide"><span>Çalışma alanı adı / sayfa başlığı</span><input value={draft.title} maxLength={220} onChange={event => { const title = event.target.value; setDraft(current => ({ ...current, title, slug: practiceSlug(title) })); }} required /><small>Kart ve detay sayfasının ana başlığı bu addır.</small></label>
+            <label><span>Otomatik URL adı</span><input value={draft.slug || practiceSlug(draft.title)} readOnly /><small>Alan adı değişince adres otomatik güncellenir. Aynı ad kullanılıyorsa kayıtta benzersiz bir ek oluşturulur. Eski adres yeni sayfaya yönlenir.</small></label>
             <label><span>Sıralama</span><input type="number" min="1" value={draft.sort} onChange={(event) => update("sort", event.target.value)} /></label>
             <label className="admin-check admin-field--wide"><input type="checkbox" checked={draft.show_on_homepage} onChange={(event) => update("show_on_homepage", event.target.checked)} /><span><Home size={15} /> Ana sayfadaki kartlarda göster</span></label>
             <label className="admin-field--wide"><span>Kart açıklaması</span><textarea rows={3} value={draft.summary} onChange={(event) => update("summary", event.target.value)} required /></label>
-            <label><span>Detay sayfası başlığı</span><input value={draft.hero_title} onChange={(event) => update("hero_title", event.target.value)} /></label>
-            <label><span>Başlıktaki vurgulu bölüm</span><input value={draft.hero_accent} onChange={(event) => update("hero_accent", event.target.value)} /></label>
+            <label><span>Detay alt başlığı (isteğe bağlı)</span><input value={draft.hero_title} onChange={(event) => update("hero_title", event.target.value)} /></label>
+            <label><span>Alt başlık vurgusu (isteğe bağlı)</span><input value={draft.hero_accent} onChange={(event) => update("hero_accent", event.target.value)} /></label>
             <label className="admin-field--wide"><span>Detay giriş açıklaması</span><textarea rows={4} value={draft.lead} onChange={(event) => update("lead", event.target.value)} /></label>
             <label><span>Değerlendirme başlığı</span><input value={draft.overview_title} onChange={(event) => update("overview_title", event.target.value)} /></label>
             <label><span>Değerlendirme vurgusu</span><input value={draft.overview_accent} onChange={(event) => update("overview_accent", event.target.value)} /></label>

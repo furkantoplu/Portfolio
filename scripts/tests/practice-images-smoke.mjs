@@ -8,6 +8,8 @@ for (const area of areas) {
   const detail = await fetch(`${base}/calisma-alanlari/${encodeURIComponent(area.slug)}`);
   assert.equal(detail.status, 200);
   const html = await detail.text();
+  const title = area.title.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#x27;");
+  assert.ok(html.includes(`<h1 id="detail-title">${title}</h1>`), `${area.slug}: ana başlık alan adıyla aynı olmalı`);
   assert.equal(html.includes('class="detail-hero__visual"'), Boolean(area.image_path), `${area.slug}: detay görseli kayıtla eşleşmeli`);
   assert.equal(html.includes("detail-hero--text-only"), !area.image_path, `${area.slug}: görselsiz detay tek kolon olmalı`);
   if (area.image_path) assert.ok(html.includes("object-fit:contain"), "Detay görseli kırpılmadan sığmalı");
