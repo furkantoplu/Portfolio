@@ -49,7 +49,7 @@ export default async function PracticeAreaDetailPage({ params }: PageProps) {
     title: area.hero_title || area.title,
     titleAccent: area.hero_accent || t("kişiye özel değerlendirme."),
     lead: area.lead || area.summary,
-    image: area.image_path || "/hero-physiotherapy-v1.png",
+    image: area.image_path || null,
     imageAlt: area.image_alt || area.title,
     overviewTitle: area.overview_title || t("İhtiyacı bütüncül biçimde,"),
     overviewAccent: area.overview_accent || t("kişisel bağlamıyla değerlendirmek."),

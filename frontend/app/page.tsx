@@ -150,19 +150,19 @@ export default async function Home() {
             const href = `/calisma-alanlari/${slug}`;
             return (
               <article
-                className={`practice-card${index === 0 ? " practice-card--featured" : ""}`}
+                className={`practice-card${index === 0 ? " practice-card--featured" : ""}${image_path ? " practice-card--with-image" : " practice-card--text-only"}`}
                 key={title}
               >
-                {image_path && <a className="content-card-image" href={localHref(href)}><Image src={image_path} alt={image_alt || title} fill sizes="(max-width: 860px) 100vw, 25vw" /></a>}
                 <div className="practice-card__topline">
                   <span>{number}</span>
                   <Icon aria-hidden="true" size={26} strokeWidth={1.45} />
                 </div>
-                <div>
+                {image_path && <a className="content-card-image practice-card-image" href={localHref(href)}><Image src={image_path} alt={image_alt || title} fill sizes="(max-width: 860px) 100vw, 25vw" style={{ objectFit: "contain", objectPosition: "center" }} /></a>}
+                <div className="practice-card__body">
                   <h3>{title}</h3>
                   <p>{summary}</p>
                 </div>
-                <a href={localHref(href)} aria-label={`${title}: ${t("Detayları incele")}`}>{t("Detayları incele")}<ArrowUpRight aria-hidden="true" size={17} />
+                <a className="practice-card__link" href={localHref(href)} aria-label={`${title}: ${t("Detayları incele")}`}>{t("Detayları incele")}<ArrowUpRight aria-hidden="true" size={17} />
                 </a>
               </article>
             );

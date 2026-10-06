@@ -1,0 +1,23 @@
+import assert from "node:assert/strict";
+const base = process.env.TEST_SITE_URL || "http://localhost:8080";
+const response = await fetch(`${base}/bakir-api/website-content/practice-areas?language=tr`);
+assert.equal(response.status, 200);
+const { data: areas } = await response.json();
+assert.ok(areas.length, "Yayında bir çalışma alanı gerekli");
+for (const area of areas) {
+  const detail = await fetch(`${base}/calisma-alanlari/${encodeURIComponent(area.slug)}`);
+  assert.equal(detail.status, 200);
+  const html = await detail.text();
+  assert.equal(html.includes('class="detail-hero__visual"'), Boolean(area.image_path), `${area.slug}: detay görseli kayıtla eşleşmeli`);
+  assert.equal(html.includes("detail-hero--text-only"), !area.image_path, `${area.slug}: görselsiz detay tek kolon olmalı`);
+  if (area.image_path) assert.ok(html.includes("object-fit:contain"), "Detay görseli kırpılmadan sığmalı");
+  else assert.ok(!html.includes("hero-physiotherapy-v1.png"), "Görselsiz detay örnek fotoğraf kullanmamalı");
+  console.log(`PASS practice detail ${area.slug}: ${area.image_path ? "contained image" : "no image"}`);
+}
+const listing = await fetch(base + "/calisma-alanlari");
+assert.equal(listing.status, 200);
+const listingHtml = await listing.text();
+const withImages = areas.filter(area => Boolean(area.image_path)).length;
+assert.equal((listingHtml.match(/class="content-card-image practice-card-image"/g) || []).length, withImages);
+assert.equal((listingHtml.match(/<article class="practice-directory-card practice-directory-card--text-only"/g) || []).length, areas.length - withImages);
+console.log("PASS practice directory: image-free cards have no media slot");

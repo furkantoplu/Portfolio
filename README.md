@@ -109,6 +109,8 @@ QR okunabilirlik testi: `node --test scripts/tests/authenticator-qr.test.mjs`. S
 
 Görseller Türkçe sekmesinde yönetilen ortak alanlardır; İngilizce/Almanca sekmeleri metin ve çeviri yayın durumunu değiştirir. Liste ve detay görselleri ilgili kaydın aynı görselini kullanır. Varsayılan görseli olan bölümlerde özel görseli kaldırmak mevcut tasarım görseline döndürür. İsteğe bağlı liste sayfası giriş görselleri boşsa gösterilmez.
 
+Blog ve çalışma alanı kayıtlarında görsel boşsa örnek fotoğraf kullanılmaz. Çalışma alanı kartı bu durumda kompakt ikon/metin düzenine, detay sayfası tek kolonlu metin düzenine geçer. Çalışma alanı fotoğrafları kırpılmadan (`contain`) çerçeveye sığar; dikey/yatay oran korunur ve kenarlarda nötr zemin kalabilir. Detay bilgi notu fotoğrafın altında yer alır, fotoğrafı örtmez. Görsel var/yok kontrolü: `node scripts/tests/practice-images-smoke.mjs`.
+
 Dosyalar `directus_uploads` kalıcı Docker volume'ünde, içerik eşleştirmeleri PostgreSQL'de saklanır. VPS taşırken bu iki volume'ü yedekleyip taşıyın: frontend imajı tek başına içerikleri ve yüklenen görselleri taşımaz. Veritabanı ve uploads volume'lerini silmeyin.
 
 Public `/site-media/<UUID>` uçları yalnızca yayınlanmış yazı/alan veya tanımlı public sayfa görsellerini sunar. Dosya kütüphanesinin tamamına anonim erişim açılmaz; SVG/HTML public medya olarak sunulmaz. Kaydedilmemiş görsel yalnızca admin oturumunda önizlenir. “İçerikten kaldır” dosyayı fiziksel olarak silmez.

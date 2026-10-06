@@ -46,15 +46,17 @@ export default async function PracticeAreasPage() {
           const Icon = icons[index % icons.length];
           const number = String(index + 1).padStart(2, "0");
           return (
-            <article key={area.slug}>
-              {area.image_path && <a className="content-card-image" href={localHref(`/calisma-alanlari/${area.slug}`)}><Image src={area.image_path} alt={area.image_alt || area.title} fill sizes="(max-width: 860px) 100vw, 33vw" /></a>}
+            <article className={`practice-directory-card${area.image_path ? " practice-directory-card--with-image" : " practice-directory-card--text-only"}`} key={area.slug}>
               <div className="practice-directory-card__topline">
                 <span>{number}</span>
                 <Icon aria-hidden="true" size={29} strokeWidth={1.35} />
               </div>
+              {area.image_path && <a className="content-card-image practice-card-image" href={localHref(`/calisma-alanlari/${area.slug}`)}><Image src={area.image_path} alt={area.image_alt || area.title} fill sizes="(max-width: 860px) 100vw, 50vw" style={{ objectFit: "contain", objectPosition: "center" }} /></a>}
+              <div className="practice-directory-card__body">
               <h2>{area.title}</h2>
               <p>{area.summary}</p>
-              <a href={localHref(`/calisma-alanlari/${area.slug}`)} aria-label={`${area.title}: ${t("Detayları incele")}`}>{t("Detay sayfasını açın")}<ArrowUpRight aria-hidden="true" size={18} />
+              </div>
+              <a className="practice-directory-card__link" href={localHref(`/calisma-alanlari/${area.slug}`)} aria-label={`${area.title}: ${t("Detayları incele")}`}>{t("Detay sayfasını açın")}<ArrowUpRight aria-hidden="true" size={18} />
               </a>
             </article>
           );

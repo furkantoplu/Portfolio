@@ -27,7 +27,7 @@ export type PracticeDetailContent = {
   title: string;
   titleAccent: string;
   lead: string;
-  image: string;
+  image: string | null;
   imageAlt: string;
   overviewTitle: string;
   overviewAccent: string;
@@ -60,7 +60,7 @@ export async function PracticeDetail({
     <main className="site-shell detail-page">
       <SiteHeader locale={locale} active="areas" languageLinks={languageLinks} />
 
-      <section className="detail-hero" aria-labelledby="detail-title">
+      <section className={`detail-hero${content.image ? "" : " detail-hero--text-only"}`} aria-labelledby="detail-title">
         <div className="detail-hero__content">
           <a className="detail-back-link" href={localHref("/#calisma-alanlari")}>
             <ArrowLeft aria-hidden="true" size={17} />{t("Çalışma alanlarına dön")}</a>
@@ -74,9 +74,10 @@ export async function PracticeDetail({
           <p className="detail-hero__lead">{content.lead}</p>
           <a className="primary-button" href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}<ArrowUpRight aria-hidden="true" size={18} />
           </a>
+          {!content.image && <p className="detail-hero__text-notice">{t("Bu sayfa genel bilgilendirme amaçlıdır; kişisel değerlendirme ve tanı yerine geçmez.")}</p>}
         </div>
 
-        <div className="detail-hero__visual">
+        {content.image && <div className="detail-hero__visual">
           <div className="detail-hero__image">
             <Image
               src={content.image}
@@ -84,13 +85,11 @@ export async function PracticeDetail({
               fill
               priority
               sizes="(max-width: 860px) 100vw, 46vw"
+              style={{ objectFit: "contain", objectPosition: "center" }}
             />
           </div>
-          <div className="detail-hero__index" aria-hidden="true">
-            {content.index}
-          </div>
           <p className="detail-hero__notice">{t("Bu sayfa genel bilgilendirme amaçlıdır; kişisel değerlendirme ve tanı yerine geçmez.")}</p>
-        </div>
+        </div>}
       </section>
 
       <section className="detail-overview" aria-labelledby="overview-title">
