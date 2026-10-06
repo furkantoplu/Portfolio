@@ -57,6 +57,23 @@ services:
       retries: 8
       start_period: 60s
 
+  content-migrations:
+    image: postgres:16-alpine
+    restart: "no"
+    depends_on:
+      database:
+        condition: service_healthy
+      directus:
+        condition: service_healthy
+    environment:
+      PGHOST: database
+      PGDATABASE: ${POSTGRES_DB:-fizyoterapi}
+      PGUSER: ${POSTGRES_USER:-directus}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    volumes:
+      - ./scripts/migrations:/migrations:ro
+    command: ["psql", "-v", "ON_ERROR_STOP=1", "-f", "/migrations/001-content-translations.sql", "-f", "/migrations/002-page-language-seeds.sql"]
+
   frontend:
     build:
       context: ./frontend
@@ -68,6 +85,8 @@ services:
     depends_on:
       directus:
         condition: service_healthy
+      content-migrations:
+        condition: service_completed_successfully
     expose:
       - "3000"
     environment:

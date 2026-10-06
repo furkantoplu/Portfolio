@@ -1,36 +1,36 @@
+import { getPageTools } from "../lib/i18n-server";
 import { BrandMark } from "./brand-mark";
 import { navItems } from "./navigation";
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const { t, href: localHref } = await getPageTools();
   return (
     <footer className="site-footer">
       <div className="site-footer__top">
-        <a className="brand brand--footer" href="/" aria-label="Ana sayfaya dön">
+        <a className="brand brand--footer" href={localHref("/")} aria-label={t("Ana sayfaya dön")}>
           <BrandMark />
           <span className="brand__copy">
-            <strong>Fzt. Furkan Toplu</strong>
-            <span>Harekete alan açın</span>
+            <strong>{t("Fzt. Furkan Toplu")}</strong>
+            <span>{t("Harekete alan açın")}</span>
           </span>
         </a>
 
-        <nav className="site-footer__nav" aria-label="Alt menü">
+        <nav className="site-footer__nav" aria-label={t("Alt menü")}>
           {navItems.slice(1).map((item) => (
-            <a href={item.href} key={item.key}>{item.label}</a>
+            <a href={localHref(item.href)} key={item.key}>{t(item.label)}</a>
           ))}
         </nav>
 
-        <a className="site-footer__social" href="#" aria-label="Instagram profili">
-          <span aria-hidden="true">@</span>
-          Instagram
-        </a>
+        <a className="site-footer__social" href="#" aria-label={t("Instagram profili")}>
+          <span aria-hidden="true">@</span>{t("Instagram")}</a>
       </div>
 
       <div className="site-footer__bottom">
-        <p>© 2026 Fzt. Furkan Toplu. Tüm hakları saklıdır.</p>
-        <p>Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.</p>
+        <p>{t("© 2026 Fzt. Furkan Toplu. Tüm hakları saklıdır.")}</p>
+        <p>{t("Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.")}</p>
         <div>
-          <a href="/kvkk-aydinlatma-metni">KVKK Aydınlatma Metni</a>
-          <a href="/gizlilik">Gizlilik</a>
+          <a href={localHref("/kvkk-aydinlatma-metni")}>{t("KVKK Aydınlatma Metni")}</a>
+          <a href={localHref("/gizlilik")}>{t("Gizlilik")}</a>
         </div>
       </div>
     </footer>

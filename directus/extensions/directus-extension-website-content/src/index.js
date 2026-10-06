@@ -1,3 +1,5 @@
+import { language, translateItems, translatePage, registerTranslations } from "./translations.js";
+
 const publicFields = [
   "id",
   "sort",
@@ -57,7 +59,7 @@ function publishedBlogPosts(database) {
 }
 
 function sitePage(database, pageKey) {
-  return database("site_pages").select("page_key", "content", "seo_title", "seo_description").where("page_key", pageKey).first();
+  return database("site_pages").select("id", "page_key", "content", "seo_title", "seo_description").where("page_key", pageKey).first();
 }
 
 async function adminAccount(database, userId) {
@@ -93,6 +95,8 @@ async function adminAccount(database, userId) {
 export default {
   id: "website-content",
   handler: (router, { database }) => {
+    registerTranslations(router, database, adminAccount);
+    router.use((request, response, next) => language(request) ? next() : response.status(400).json({ errors: [{ message: "Geçersiz dil." }] }));
     router.get("/admin-account", async (request, response, next) => {
       try {
         const account = await adminAccount(database, request.accountability?.user);
@@ -141,7 +145,7 @@ export default {
           query.where("show_on_homepage", true);
         }
 
-        response.json({ data: await query });
+        response.json({ data: await translateItems(database, "practice_areas", await query, language(request)) });
       } catch (error) {
         next(error);
       }
@@ -149,9 +153,8 @@ export default {
 
     router.get("/practice-areas/:slug", async (request, response, next) => {
       try {
-        const item = await publishedPracticeAreas(database)
-          .where("slug", request.params.slug)
-          .first();
+        const items = await translateItems(database, "practice_areas", await publishedPracticeAreas(database), language(request));
+        const item = items.find(row => row.slug === request.params.slug);
 
         if (!item) {
           response.status(404).json({ errors: [{ message: "Çalışma alanı bulunamadı." }] });
@@ -172,11 +175,8 @@ export default {
           .orderByRaw("sort ASC NULLS LAST")
           .orderBy("id", "asc");
 
-        if (request.query.homepage === "true") {
-          query.limit(3);
-        }
-
-        response.json({ data: await query });
+        const items = await translateItems(database, "blog_posts", await query, language(request));
+        response.json({ data: request.query.homepage === "true" ? items.slice(0, 3) : items });
       } catch (error) {
         next(error);
       }
@@ -184,9 +184,8 @@ export default {
 
     router.get("/blog-posts/:slug", async (request, response, next) => {
       try {
-        const item = await publishedBlogPosts(database)
-          .where("slug", request.params.slug)
-          .first();
+        const items = await translateItems(database, "blog_posts", await publishedBlogPosts(database), language(request));
+        const item = items.find(row => row.slug === request.params.slug);
 
         if (!item) {
           response.status(404).json({ errors: [{ message: "Blog yazısı bulunamadı." }] });
@@ -202,7 +201,7 @@ export default {
     router.get("/pages/:pageKey", async (request, response, next) => {
       try {
         if (!new Set(["about", "contact"]).has(request.params.pageKey)) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
-        const page = await sitePage(database, request.params.pageKey);
+        const page = await translatePage(database, await sitePage(database, request.params.pageKey), language(request));
         if (!page) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
         response.json({ data: page });
       } catch (error) {

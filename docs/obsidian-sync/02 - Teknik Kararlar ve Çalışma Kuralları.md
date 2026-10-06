@@ -306,6 +306,29 @@ docker compose down
 - Mutlak sitemap ve robots URL'leri tek `SITE_PUBLIC_URL` kaynağından üretilir. Production değerinde HTTPS protokolü ve gerçek canonical domain zorunludur.
 - Directus kesintisinin sabit site keşfini de bozmasına izin verilmez; dinamik kayıtlar alınamazsa sitemap sabit public URL'lerle yanıt vermeye devam eder.
 
+## Karar 036 — Hero karakter varlığı ve 3D derinlik yaklaşımı
+
+- Kullanıcı fotoğrafından üretilen şeffaf 3B karakter ayrı ve sürümlü bir PNG olarak saklanır; özgün fotoğraf veya önceki hero varlığı üzerine yazılmaz. Güncel onay adayı `furkan-toplu-hero-3d-v3.png` dosyasıdır.
+- Kişinin yüz kimliği, ifadesi ve pozu korunur; foto-gerçekçi yüzey yerine açıkça modellenmiş sinema/oyun karakteri estetiği tercih edilir.
+- Karakter dikdörtgen fotoğraf kartı içine alınmaz ve sahne arka planı görselin içine gömülmez. Renk, gölge, ışık halesi ve derinlik web arayüzünde CSS ile kontrol edilir.
+- Karakter `contain` ve alt merkez hizasıyla render edilir. Framework'ün varsayılan `cover` davranışına güvenilmez; aksi halde portre ekran oranına göre yüz kadraj dışında kalabilir.
+- 3D hissi için ağır WebGL veya Three.js bağımlılığı eklenmez. Perspektif, katman, ışık halkası, gölge ve sınırlı hover dönüşümü CSS ile sağlanır.
+- Karakter dekoratif arayüz katmanlarının ve sabit navbar'ın üzerinde çizilir; hero görsel alanında onu navbar altında bırakan ayrı bir stacking context oluşturulmaz. Görsel katman `pointer-events: none` kaldığı için önde görünmesi navigasyon etkileşimini engellemez.
+- Karakterin alt kenarı başka bir bölümün zeminine değdirilmez ve sert biçimde kırpılmaz. Çok kademeli CSS alfa maskesiyle hero içinde saydamlığa eritilir; devam eden gövde izlenimi verilirken sonraki bölüm temiz bırakılır.
+- Hareket yalnızca yardımcı görsel etkidir; içerik ve navigasyon işlevi animasyona bağlı değildir. Hareket azaltma tercihi proje genelinde korunur.
+
+## Karar 037 — Çok dilli içerik ve Türkçe admin
+
+- Ziyaretçi dilleri `tr`, `en`, `de`; admin arayüzünün dili yalnızca Türkçedir. İçerik dili seçimi panelin arayüzünü değiştirmez.
+- Dil URL ile belirlenir. Mevcut Türkçe rotalar korunur; EN/DE alt dizinleri ve dile özgü sabit sayfa adları kullanılır. Tarayıcı diline göre zorunlu yönlendirme yapılmaz.
+- Aynı sayfanın dilleri ortak bileşenleri kullanır. Sabit metinler sözlükte, yönetilen editorial metinler çeviri tablosunda tutulur. Kaynak içerik üzerinde tarayıcıda sonradan metin değiştiren bir çeviri katmanı kullanılmaz.
+- Türkçe kayıt ana kayıttır. Yeni yazı/alan önce kaydedilir; EN/DE sekmeleri ana kayıt oluşunca kullanılabilir. Ortak görsel, iletişim değerleri, sıralama ve tarih bilgileri çoğaltılmaz.
+- EN/DE blog ve çalışma alanı için ana kayıt ve çeviri ayrı ayrı yayında olmalıdır. Taslak/gizli çeviri başka dildeki listede fallback olarak gösterilmez. Dil seçicisinde olmayan çeviri bağlantısı pasif olur.
+- Çeviri yazma endpoint'leri aktif tam yetkili Directus yöneticisini kontrol eder. Kullanıcıdan gelen koleksiyon, dil, kayıt kimliği, durum, URL adı ve JSON metin/listeleri doğrulanır. Genel koleksiyon veya yönetici alanları bu API ile güncellenemez.
+- Çeviri tablosu uygulama ilişki doğrulamasıyla ana kayıtları referans alır; public çıktı sadece gerçekten mevcut/yayındaki ana kayıtlar üzerinden üretilir. Ana kaydı olmayan bir çeviri public sayfa oluşturamaz.
+- Docker migrasyonları tekrar çalışabilir ve mevcut çevirileri ezmez. Servisin başarıyla tamamlanması frontend başlangıcının ön koşuludur. Temel Directus koleksiyonlarının ilk kurulumu README'deki bootstrap adımıdır.
+- Yasal metin çevirileri henüz bu pakette sunulmaz; Türkçe belgelere giden yabancı dil bağlantıları bunu açıkça belirtir. İçerik çevirileri yayına çıkmadan önce site sahibi tarafından kontrol edilir.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

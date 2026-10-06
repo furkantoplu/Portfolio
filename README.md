@@ -14,6 +14,14 @@ Site: `http://localhost:8080/`
 
 Özel yönetim girişi: `http://localhost:8080/bakir`
 
+Dil seçimi navbar'daki TR / EN / DE bağlantılarıyla yapılır. Türkçe adresler korunur; İngilizce ana sayfa `/en`, Almanca ana sayfa `/de` adresindedir. Menü ve içerik bağlantıları seçilen dilde devam eder. Dil tercihi URL ile taşınır; tarayıcı diline göre zorunlu yönlendirme uygulanmaz.
+
+Admin paneli tamamen Türkçedir. Blog, çalışma alanları ve sayfa içerikleri editörlerinde Türkçe / İngilizce / Almanca sekmeleri vardır. Yeni içerik önce Türkçe ana kayıt olarak kaydedilir; ardından çevirileri eklenir. Her çeviri Taslak / Yayında / Gizli durumlarından birine sahiptir. İngilizce/Almanca bir blog yazısı veya çalışma alanı ancak hem ana kayıt hem çeviri yayındaysa listelenir. Görsel, sıralama, telefon ve e-posta ortak kayıttan gelir.
+
+Compose içindeki `content-migrations` servisi çeviri tablosunu ve mevcut Hakkımda/İletişim kayıtlarına başlangıç çevirilerini hazırlar. Başarıyla tamamlanmadan frontend başlamaz. Kurulum tekrar çalıştırılabilir; mevcut çevirilerin üzerine yazmaz. Yeni bir veritabanında önce `docker compose up -d database directus` ile temel servisleri başlatın, aşağıdaki bootstrap komutlarını çalıştırın, ardından `docker compose up -d --build` kullanın.
+
+Başlangıç arayüzü ve Hakkımda/İletişim çevirileri hazırdır. Blog ve çalışma alanlarının İngilizce/Almanca metinleri panelden ayrıca girilip yayımlanmalıdır. Yasal belge bağlantıları şimdilik Türkçe belgelere gider; diğer dillerde bağlantı metninde bu belirtilir.
+
 Directus teknik yönetim arayüzü geliştirme sırasında yalnızca bu bilgisayardan `http://localhost:8055/` adresinde erişilebilir.
 
 İlk çalıştırmadan önce `.env.example` dosyasını `.env` adıyla kopyalayın ve örnek parolaları değiştirin. Bu depodaki yerel `.env` Git tarafından yok sayılır.
@@ -26,6 +34,15 @@ node scripts/bootstrap-blog.mjs
 node scripts/bootstrap-site-pages.mjs
 node scripts/bootstrap-security.mjs
 ```
+
+Çeviri kontrolleri:
+
+```powershell
+node --test scripts/tests/translations.test.mjs
+node scripts/tests/languages-smoke.mjs
+```
+
+İkinci komut için Docker sitesi açık olmalıdır. Birinci komut çeviri görünürlüğünü, ortak alanları ve yönetici yetki kontrollerini; ikinci komut üç dilde HTTP yanıtlarını, sayfa dilini, canonical/hreflang ve sitemap çıktısını denetler.
 
 Komut mevcut koleksiyonu veya kayıtları silmez; yalnızca eksik şema alanlarını ve başlangıç kayıtlarını ekler.
 

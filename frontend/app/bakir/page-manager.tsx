@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import { FileText, LoaderCircle, Save } from "lucide-react";
 import { phoneToDialValue } from "../lib/contact";
 import { directusRequest } from "./admin-api";
+import { LanguageTabs, TranslationEditor } from "./translation-editor";
+import type { Locale } from "../lib/i18n";
 
 export type ManagedSitePage = {
   id: number;
@@ -27,6 +29,7 @@ function pairs(value: string, first: string, second?: string) {
 }
 
 export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; onChanged: () => Promise<void> }) {
+  const [language, setLanguage] = useState<Locale>("tr");
   const [pageKey, setPageKey] = useState<"about" | "contact">("about");
   const [draft, setDraft] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
@@ -96,7 +99,8 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
         <button type="button" className={pageKey === "about" ? "is-active" : ""} onClick={() => selectPage("about")}>Hakkımda</button>
         <button type="button" className={pageKey === "contact" ? "is-active" : ""} onClick={() => selectPage("contact")}>İletişim</button>
       </div>
-      <form className="admin-post-editor" onSubmit={save}>
+      <LanguageTabs language={language} onChange={setLanguage} disabled={busy} />
+      {language !== "tr" && current ? <TranslationEditor key={`${current.id}-${language}`} collection="site_pages" parentId={current.id} pageKey={pageKey} language={language} /> : <form className="admin-post-editor" onSubmit={save}>
         <div className="admin-editor-grid">
           {pageKey === "about" ? <>
             <label><span>Ana başlık</span><input value={value("hero_title")} onChange={(e) => update("hero_title", e.target.value)} required /></label>
@@ -128,7 +132,7 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
           <label><span>SEO açıklaması</span><textarea rows={2} value={draft.seo_description ?? current?.seo_description ?? ""} onChange={(e) => update("seo_description", e.target.value)} /></label>
         </div>
         <div className="admin-post-editor__footer"><p className={message ? "is-visible" : ""} role="status">{message || "Kaydettiğiniz değişiklikler ilgili public sayfada hemen görünür."}</p><button type="submit" disabled={busy || !current}>{busy ? <LoaderCircle className="admin-spinner" size={18} /> : <Save size={18} />} Sayfayı kaydet</button></div>
-      </form>
+      </form>}
     </section>
   );
 }

@@ -1,0 +1,46 @@
+export const seeds = {
+  en: {
+    about: {
+      hero_title: "Understanding movement", hero_accent: "starts with listening to the person.",
+      hero_description: "Everyone has different daily routines, movement experiences and goals. I start by listening, assessing and building a clear plan together with you.",
+      story_title: "Making scientific knowledge", story_accent: "useful in everyday life.",
+      story_lead: "I believe physiotherapy extends beyond what happens during an appointment.",
+      story_paragraphs: [{ text: "Assessment considers your movement capacity, daily habits, working conditions and personal goals together. The aim is to make complex information understandable and give you a clear framework for taking an active role." }, { text: "At each step, I explain what we are considering and why, review progress regularly and adapt the plan when needed." }],
+      professional_note: "Verified qualifications, training and certificates will be added before the website is launched.",
+      principles_title: "A clear, transparent process shaped around you.",
+      principles: [{ title: "Listening", text: "Understanding your daily life, expectations and needs." }, { title: "Seeing the whole picture", text: "Considering movement, habits and the environment together." }, { title: "Explaining the plan", text: "Sharing assessment and follow-up steps in clear, understandable language." }],
+      seo_title: "About me | Furkan Toplu", seo_description: "Learn about physiotherapist Furkan Toplu, his assessment approach and practice principles in Istanbul.",
+    },
+    contact: {
+      hero_title: "Let us take the first step", hero_accent: "with clarity and confidence.",
+      intro: "Use the contact option that suits you to ask about appointments, available times or practice areas.",
+      privacy_note: "Please do not send medical reports or detailed health information in your first message.",
+      address_note: "The full address is shared after arranging an appointment.", working_days: "Monday — Saturday", working_hours: "09:00 — 19:00 · By appointment only",
+      flow_title: "Three clear steps from first contact to your appointment.",
+      flow_steps: [{ title: "Get in touch", text: "Share your preferred contact method and general enquiry." }, { title: "Clarify the time and scope", text: "We discuss availability and what to expect at the first appointment." }, { title: "Attend the first assessment", text: "Individual needs are considered in detail during your appointment." }],
+      seo_title: "Contact | Furkan Toplu", seo_description: "Contact information, appointment times and opening hours for physiotherapist Furkan Toplu in Istanbul.",
+    },
+  },
+  de: {
+    about: {
+      hero_title: "Bewegung verstehen", hero_accent: "beginnt damit, dem Menschen zuzuhören.",
+      hero_description: "Jeder Mensch hat einen eigenen Alltag, unterschiedliche Bewegungserfahrungen und persönliche Ziele. Deshalb beginne ich mit Zuhören, einer Untersuchung und einem gemeinsam erarbeiteten, verständlichen Plan.",
+      story_title: "Wissenschaftliche Erkenntnisse", story_accent: "für den Alltag nutzbar machen.",
+      story_lead: "Physiotherapie umfasst für mich mehr als das, was während eines Termins stattfindet.",
+      story_paragraphs: [{ text: "Bei der Untersuchung betrachte ich Bewegungsfähigkeit, Alltagsgewohnheiten, Arbeitsbedingungen und persönliche Ziele gemeinsam. Komplexe Informationen sollen verständlich werden, damit Sie den Prozess aktiv mitgestalten können." }, { text: "Bei jedem Schritt erläutere ich, was wir betrachten und warum. Wir überprüfen den Verlauf regelmäßig und passen den Plan bei Bedarf an." }],
+      professional_note: "Geprüfte Angaben zu Ausbildung, Fortbildungen und Zertifikaten werden vor Veröffentlichung der Website ergänzt.",
+      principles_title: "Ein klarer, transparenter und individueller Prozess.",
+      principles: [{ title: "Zuhören", text: "Ihren Alltag, Ihre Erwartungen und Bedürfnisse verstehen." }, { title: "Das Ganze sehen", text: "Bewegung, Gewohnheiten und Umfeld gemeinsam betrachten." }, { title: "Den Weg erklären", text: "Untersuchungs- und Folgeschritte klar und verständlich erläutern." }],
+      seo_title: "Über mich | Furkan Toplu", seo_description: "Erfahren Sie mehr über Physiotherapeut Furkan Toplu, seinen Untersuchungsansatz und seine Arbeitsgrundsätze in Istanbul.",
+    },
+    contact: {
+      hero_title: "Gehen wir den ersten Schritt", hero_accent: "gemeinsam und in Ruhe.",
+      intro: "Nutzen Sie den passenden Kontaktweg für allgemeine Fragen zu Terminen, verfügbaren Zeiten oder Behandlungsbereichen.",
+      privacy_note: "Bitte senden Sie beim ersten Kontakt keine medizinischen Berichte oder detaillierten Gesundheitsdaten.",
+      address_note: "Die vollständige Adresse erhalten Sie nach der Terminvereinbarung.", working_days: "Montag — Samstag", working_hours: "09:00 — 19:00 · Nur nach Terminvereinbarung",
+      flow_title: "Drei klare Schritte vom ersten Kontakt zum Termin.",
+      flow_steps: [{ title: "Kontakt aufnehmen", text: "Teilen Sie Ihren bevorzugten Kontaktweg und Ihre allgemeine Anfrage mit." }, { title: "Zeit und Rahmen klären", text: "Wir besprechen verfügbare Termine und den Rahmen des ersten Gesprächs." }, { title: "Erste Untersuchung", text: "Ihre persönlichen Bedürfnisse werden während des Termins ausführlich betrachtet." }],
+      seo_title: "Kontakt | Furkan Toplu", seo_description: "Kontaktdaten, Termininformationen und Öffnungszeiten von Physiotherapeut Furkan Toplu in Istanbul.",
+    },
+  },
+};

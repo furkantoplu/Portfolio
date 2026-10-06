@@ -1,3 +1,4 @@
+import { getPageTools } from "../lib/i18n-server";
 import type { Metadata } from "next";
 import {
   Activity,
@@ -20,31 +21,28 @@ export const metadata: Metadata = {
 const icons = [Activity, Dumbbell, HeartPulse, PersonStanding];
 
 export default async function PracticeAreasPage() {
+  const { locale, t, href: localHref } = await getPageTools();
   const practiceAreas = await getPracticeAreas();
 
   return (
     <main className="site-shell practice-directory-page">
-      <SiteHeader active="areas" />
+      <SiteHeader locale={locale} active="areas" />
 
       <section className="practice-directory-hero" aria-labelledby="directory-title">
         <div>
-          <p className="eyebrow"><span aria-hidden="true" />Çalışma Alanları</p>
-          <h1 id="directory-title">
-            Her hareket ihtiyacına
-            <em> kendi bağlamında bakmak.</em>
+          <p className="eyebrow"><span aria-hidden="true" />{t("Çalışma Alanları")}</p>
+          <h1 id="directory-title">{t("Her hareket ihtiyacına")}<em>{" "}{t("kendi bağlamında bakmak.")}</em>
           </h1>
         </div>
         <div className="practice-directory-hero__aside">
           <ArrowDownRight aria-hidden="true" size={30} strokeWidth={1.35} />
-          <p>
-            Aynı başlık altında görünen ihtiyaçlar bile her kişide farklı bir
-            hikâyeye sahip olabilir. Süreç, dinleme ve değerlendirmeyle başlar.
-          </p>
-          <span>{String(practiceAreas.length).padStart(2, "0")} çalışma alanı · Kişiye özel değerlendirme</span>
+          <p>{t("Aynı başlık altında görünen ihtiyaçlar bile her kişide farklı bir hikâyeye sahip olabilir. Süreç, dinleme ve değerlendirmeyle başlar.")}</p>
+          <span>{String(practiceAreas.length).padStart(2, "0")}{" "}{t("çalışma alanı · Kişiye özel değerlendirme")}</span>
         </div>
       </section>
 
-      <section className="practice-directory-grid" aria-label="Çalışma alanı listesi">
+      <section className="practice-directory-grid" aria-label={t("Çalışma alanı listesi")}>
+        {practiceAreas.length === 0 && <p>{t("Bu dilde çalışma alanları yakında eklenecek.")}</p>}
         {practiceAreas.map((area, index) => {
           const Icon = icons[index % icons.length];
           const number = String(index + 1).padStart(2, "0");
@@ -56,9 +54,7 @@ export default async function PracticeAreasPage() {
               </div>
               <h2>{area.title}</h2>
               <p>{area.summary}</p>
-              <a href={`/calisma-alanlari/${area.slug}`} aria-label={`${area.title} detayını inceleyin`}>
-                Detay sayfasını açın
-                <ArrowUpRight aria-hidden="true" size={18} />
+              <a href={localHref(`/calisma-alanlari/${area.slug}`)} aria-label={`${area.title}: ${t("Detayları incele")}`}>{t("Detay sayfasını açın")}<ArrowUpRight aria-hidden="true" size={18} />
               </a>
             </article>
           );
@@ -66,16 +62,11 @@ export default async function PracticeAreasPage() {
       </section>
 
       <section className="practice-directory-note" aria-labelledby="directory-note-title">
-        <p className="section-kicker">Yaklaşım Notu</p>
-        <h2 id="directory-note-title">
-          Sayfadaki başlıklar bir tanı listesi değil,
-          <em> değerlendirme kapsamını anlatan genel çerçevelerdir.</em>
+        <p className="section-kicker">{t("Yaklaşım Notu")}</p>
+        <h2 id="directory-note-title">{t("Sayfadaki başlıklar bir tanı listesi değil,")}<em>{" "}{t("değerlendirme kapsamını anlatan genel çerçevelerdir.")}</em>
         </h2>
-        <p>
-          Kişisel ihtiyaçlar ve sürecin uygunluğu ancak bireysel görüşme ve
-          değerlendirme sonrasında ele alınabilir.
-        </p>
-        <a href="/iletisim">İletişim bilgilerine gidin <ArrowUpRight aria-hidden="true" size={18} /></a>
+        <p>{t("Kişisel ihtiyaçlar ve sürecin uygunluğu ancak bireysel görüşme ve değerlendirme sonrasında ele alınabilir.")}</p>
+        <a href={localHref("/iletisim")}>{t("İletişim bilgilerine gidin")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></a>
       </section>
 
       <SiteFooter />

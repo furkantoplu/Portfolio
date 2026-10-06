@@ -1,4 +1,9 @@
+import { getLocale } from "./i18n-server";
+import type { Locale } from "./i18n";
+import { notFound } from "next/navigation";
+
 export type PracticeArea = {
+  language_slugs?: Partial<Record<Locale, string>>;
   id: number;
   sort: number | null;
   show_on_homepage: boolean;
@@ -21,6 +26,7 @@ export type PracticeArea = {
 };
 
 export type BlogPost = {
+  language_slugs?: Partial<Record<Locale, string>>;
   id: number;
   sort: number | null;
   featured: boolean;
@@ -57,12 +63,15 @@ type DirectusResponse<T> = {
 
 const directusUrl = (process.env.DIRECTUS_URL || "http://localhost:8055").replace(/\/$/, "");
 
-async function fetchDirectus<T>(path: string): Promise<T> {
-  const response = await fetch(`${directusUrl}/website-content${path}`, {
+async function fetchDirectus<T>(path: string, language?: Locale): Promise<T> {
+  const locale = language ?? await getLocale();
+  const separator = path.includes("?") ? "&" : "?";
+  const response = await fetch(`${directusUrl}/website-content${path}${separator}language=${locale}`, {
     cache: "no-store",
   });
 
   if (!response.ok) {
+    if (response.status === 404 && path.startsWith("/pages/")) notFound();
     throw new Error(`Directus içerik isteği başarısız: ${response.status}`);
   }
 
@@ -70,13 +79,13 @@ async function fetchDirectus<T>(path: string): Promise<T> {
   return payload.data;
 }
 
-export function getPracticeAreas(options: { homepage?: boolean } = {}) {
+export function getPracticeAreas(options: { homepage?: boolean; locale?: Locale } = {}) {
   const query = options.homepage ? "?homepage=true" : "";
-  return fetchDirectus<PracticeArea[]>(`/practice-areas${query}`);
+  return fetchDirectus<PracticeArea[]>(`/practice-areas${query}`, options.locale);
 }
 
 export async function getPracticeArea(slug: string) {
-  const response = await fetch(`${directusUrl}/website-content/practice-areas/${encodeURIComponent(slug)}`, {
+  const response = await fetch(`${directusUrl}/website-content/practice-areas/${encodeURIComponent(slug)}?language=${await getLocale()}`, {
     cache: "no-store",
   });
 
@@ -87,17 +96,27 @@ export async function getPracticeArea(slug: string) {
   return payload.data;
 }
 
-export function getBlogPosts(options: { homepage?: boolean } = {}) {
+export function getBlogPosts(options: { homepage?: boolean; locale?: Locale } = {}) {
   const query = options.homepage ? "?homepage=true" : "";
-  return fetchDirectus<BlogPost[]>(`/blog-posts${query}`);
+  return fetchDirectus<BlogPost[]>(`/blog-posts${query}`, options.locale);
 }
 
-export function getSitePage<T>(pageKey: "about" | "contact") {
-  return fetchDirectus<SitePage<T>>(`/pages/${pageKey}`);
+export function getSitePage<T>(pageKey: "about" | "contact", locale?: Locale) {
+  return fetchDirectus<SitePage<T>>(`/pages/${pageKey}`, locale);
+}
+
+export async function getHomeContact<T>() {
+  const locale = await getLocale();
+  try { return await getSitePage<T>("contact", locale); }
+  catch (error) {
+    if (locale === "tr") throw error;
+    const shared = await getSitePage<Record<string, unknown>>("contact", "tr");
+    return { ...shared, content: { ...shared.content, address_note: "", working_days: "", working_hours: "" } as T };
+  }
 }
 
 export async function getBlogPost(slug: string) {
-  const response = await fetch(`${directusUrl}/website-content/blog-posts/${encodeURIComponent(slug)}`, {
+  const response = await fetch(`${directusUrl}/website-content/blog-posts/${encodeURIComponent(slug)}?language=${await getLocale()}`, {
     cache: "no-store",
   });
 

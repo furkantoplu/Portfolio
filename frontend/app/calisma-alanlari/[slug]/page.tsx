@@ -5,6 +5,9 @@ import {
   type PracticeDetailContent,
 } from "../../components/practice-detail";
 import { getPracticeArea, getPracticeAreas } from "../../lib/directus";
+import { contentLanguageLinks } from "../../lib/i18n";
+import { getPageTools } from "../../lib/i18n-server";
+import { getSiteUrl } from "../../lib/site-url";
 
 type PageProps = {
   params: { slug: string } | Promise<{ slug: string }>;
@@ -15,6 +18,7 @@ async function resolveSlug(params: PageProps["params"]) {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await getPageTools();
   const area = await getPracticeArea(await resolveSlug(params));
 
   if (!area) {
@@ -24,10 +28,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: area.seo_title || `${area.title} | Fzt. Furkan Toplu`,
     description: area.seo_description || area.summary,
+    alternates: { canonical: `${getSiteUrl()}${contentLanguageLinks("areas", area.language_slugs)[locale]}`, languages: Object.fromEntries(Object.entries(contentLanguageLinks("areas", area.language_slugs)).map(([language, path]) => [language, `${getSiteUrl()}${path}`])) },
   };
 }
 
 export default async function PracticeAreaDetailPage({ params }: PageProps) {
+  const { t } = await getPageTools();
   const slug = await resolveSlug(params);
   const [area, allAreas] = await Promise.all([
     getPracticeArea(slug),
@@ -41,12 +47,12 @@ export default async function PracticeAreaDetailPage({ params }: PageProps) {
     slug: area.slug,
     index: String(index + 1).padStart(2, "0"),
     title: area.hero_title || area.title,
-    titleAccent: area.hero_accent || "kişiye özel değerlendirme.",
+    titleAccent: area.hero_accent || t("kişiye özel değerlendirme."),
     lead: area.lead || area.summary,
     image: area.image_path || "/hero-physiotherapy-v1.png",
-    imageAlt: area.image_alt || `${area.title} çalışma alanı görseli`,
-    overviewTitle: area.overview_title || "İhtiyacı bütüncül biçimde,",
-    overviewAccent: area.overview_accent || "kişisel bağlamıyla değerlendirmek.",
+    imageAlt: area.image_alt || area.title,
+    overviewTitle: area.overview_title || t("İhtiyacı bütüncül biçimde,"),
+    overviewAccent: area.overview_accent || t("kişisel bağlamıyla değerlendirmek."),
     overviewDescription: area.overview || area.summary,
     evaluationTopics: (area.assessment_points || []).map((item) => item.text),
     processSteps: area.process_steps || [],
@@ -62,5 +68,5 @@ export default async function PracticeAreaDetailPage({ params }: PageProps) {
       href: `/calisma-alanlari/${item.slug}`,
     }));
 
-  return <PracticeDetail content={content} relatedAreas={relatedAreas} />;
+  return <PracticeDetail content={content} relatedAreas={relatedAreas} languageLinks={contentLanguageLinks("areas", area.language_slugs)} />;
 }

@@ -614,3 +614,45 @@
 - Hedefli ESLint kontrolü ve production build başarılı tamamlandı. Genel lint kontrolü yalnızca Vinext çalışma zamanı hatası nedeniyle bilerek kullanılan mevcut `NativeLink`/HTML anchor bağlantıları için altı `no-html-link-for-pages` ihlalini raporladı; yeni SEO dosyalarında hata bulunmadı.
 - Frontend Docker imajı yeniden oluşturuldu; `/robots.txt` `text/plain`, `/sitemap.xml` `application/xml` içerik türüyle HTTP 200 döndürdü.
 - Sitemap çıktısında yedi sabit sayfa, dört yayınlanmış çalışma alanı ve iki yayınlanmış blog yazısı doğrulandı.
+
+### Paket 28 — Şeffaf 3D Furkan Toplu hero görseli
+
+- Kullanıcının sağladığı portre; kimlik, yüz ifadesi, saç/sakal yapısı, bakış yönü, kırmızı `23` numaralı tişört ve çapraz kol pozu korunarak şeffaf 3B karaktere dönüştürüldü.
+- İlk iki denemenin yarı gerçekçi görünümü ve karakteri çevreleyen dikdörtgen sahne, kullanıcı değerlendirmesinde hâlâ “fotoğraf/kart” hissi verdiği için reddedildi.
+- Üçüncü denemede foto-gerçekçi ten dokusu azaltıldı; saç, sakal ve yüz yüzeyleri sinema/oyun karakteri estetiğinde daha belirgin biçimde modellendi. Sıcak ana ışık ve turkuaz kenar ışığı karakter hacmini güçlendirdi.
+- Güncel aday `frontend/public/furkan-toplu-hero-3d-v3.png` adıyla projeye alındı. Dosyanın `1024 × 1536`, `Format32bppArgb` olduğu ve dört köşe alfa değerinin de `0` olduğu doğrulandı.
+- Fotoğraf kartını çağrıştıran kenarlık, köşe yuvarlama, dolu dikdörtgen arka plan ve kırpma kaldırıldı. Karakter krem sayfa üzerinde serbest duran, sağ kolondan taşan ayrı bir nesne olarak konumlandırıldı.
+- Arka planda yalnızca sınırı görünmeyen yumuşak dairesel hale, ince yörünge çizgileri, zemin gölgesi ve karakter drop-shadow'u bırakıldı. Bilgi kartı ile konum etiketi üst katmanda tutuldu.
+- Vinext `Image` bileşeninde açık `objectFit: contain` ve alt merkez hizası kullanılmaya devam edildi. Masaüstünde saçın sabit header arkasında kalmaması için karakter sahnesi aşağı taşındı.
+- Hedefli ESLint ve production build başarıyla tamamlandı; frontend Docker imajı her yerleşim düzeltmesinden sonra yeniden oluşturuldu.
+- `1440 × 900` masaüstü ve `390 × 844` mobil görünüm gerçek tarayıcıda kontrol edildi. Mobilde karakter, bilgi kartı ve sonraki bölüm sınırı taşma olmadan görüntülendi.
+- Kullanıcı geri bildirimiyle karakterin hero içindeki izole katman bağlamı kaldırıldı ve karakter katmanı sabit navbar'ın üzerine çıkarıldı. Sayfa kaydırıldığında saç veya gövde navbar alanına girse bile navbar karakteri örtemez; karakter her zaman en önde çizilir.
+- Karakter katmanı `pointer-events: none` olarak korundu. Böylece görsel navbarın önünde görünürken alttaki menü bağlantılarının tıklanmasını engellemez.
+- Yeni katman davranışı hem dar görünümde hem `1440 × 900` masaüstünde gerçek tarayıcı kaydırmasıyla doğrulandı.
+- Karakterin alt kısmının çalışma alanları bölümünün yeşil zeminine kadar uzadığı ve PNG'nin düz alt kenarını görünür kıldığı kullanıcı tarafından belirtildi. Karakter sahnesinin alt sınırı hero içine çekildi.
+- PNG üzerine çok kademeli alfa maskesi eklendi. Alt bölüm yüzde 73'e kadar tam görünür kalır; son bölümde kademeli olarak saydamlaşır ve hero sınırından önce tamamen kaybolur. Böylece sert kırpma yerine karakter kadrajın dışında devam ediyormuş izlenimi oluşur.
+- Fade bitişi `1440 × 900` masaüstü ve `390 × 844` mobil görünümde kontrol edildi; yeşil çalışma alanları bölümü başladığında karakterin görünmediği doğrulandı.
+- Bu paket görsel geri bildirimlerle ilerleyen deneysel aday olarak tutuldu; sonraki çok dilli site çalışmasında mevcut hero görünümü korundu.
+
+## 6 Ekim 2026
+
+### Paket 29 — Türkçe / İngilizce / Almanca ziyaretçi sitesi
+
+- Kullanıcı navbar'dan dil seçimini ve admin panelinin yalnızca Türkçe kalmasını onayladı. Mevcut Türkçe sayfa adresleri korundu; `/en` ve `/de` public dil kökleri eklendi.
+- `i18n.ts` dil tanımları, rota eşleştirme, çeviri sözlüğü erişimi, detay dil bağlantıları ve tarih biçimlendirmesini merkezileştirdi. Arayüz metinleri `messages.ts` dosyasına çıkarıldı.
+- `proxy.ts` URL üzerinden belirlenen dili server-rendered sayfalara aktarır. Dışarıdan gönderilen `x-site-language` ve `x-site-path` başlıkları güvenilir URL değerleriyle değiştirilir. HTML `lang` etiketi güncellenir.
+- Ana sayfa, navbar, footer, Hakkımda, İletişim, Blog, çalışma alanı listesi/detayı ve 404 arayüzleri dile göre render edilir. Tarihler `tr-TR`, `en-GB`, `de-DE` biçiminde gösterilir.
+- `/[locale]/[[...path]]` rotası aynı public bileşenleri kullanır ve yalnızca tanımlı EN/DE adreslerini kabul eder. `/en/bakir` gibi çevrilmiş admin yolları oluşturulmaz.
+- PostgreSQL `website_content_translations` tablosu eklendi. Koleksiyon/kayıt/dil anahtarı ve dil bazlı URL benzersizliği veritabanında korunur. Türkçe kayıtlara ve önceki içeriklere dokunulmadı.
+- Directus public endpoint'lerine dil filtresi eklendi. Ana kayıt veya çeviri taslak/gizli olduğunda foreign-language listede gösterilmez. Detay dil seçicisi yalnızca yayımlanmış sürümlere bağlanır.
+- Yeni yönetici çeviri endpoint'leri aktif admin hesabı gerektirir. Gönderilen içerik yalnızca izinli metin ve yapılandırılmış liste alanlarıyla sınırlandırılır. Çeviri ortak telefon/görsel alanlarını veya yetkileri değiştiremez.
+- Blog, çalışma alanı ve kurumsal sayfa editörlerine Türkçe / İngilizce / Almanca sekmeleri ve Türkçe etiketli çeviri formları eklendi. Çevirinin durum, metin ve URL adı ayrı kaydedilir.
+- Hakkımda/İletişim için başlangıç EN/DE metinleri eklendi. Blog/çalışma alanlarının çevirileri otomatik yayımlanmadı; sahibi panelden hazırlayıp yayımlar. Çeviri olmayan listelerde ilgili dilde boş-durum açıklaması bulunur.
+- `content-migrations` Compose servisi SQL kurulumunu Docker'a aldı. Mevcut kayıtlar `ON CONFLICT DO NOTHING` ile korunur. Yeni veritabanı için README temel servis → bootstrap → Compose sırasını açıklıyor.
+- Sitemap üç dilin sabit sayfalarını ve yalnızca yayındaki detay çevirilerini içerir. Canonical ve hreflang bağlantıları eklendi. Yönetim yollarının robots/noindex davranışı korundu.
+- Yasal belge içerikleri Türkçe kaldı; EN/DE footer bağlantıları bunu kullanıcıya belirtir.
+- TypeScript ve ESLint kontrolleri geçti. Önceden belgelenmiş Vinext bağlantı sorunu nedeniyle ESLint'in yalnızca `no-html-link-for-pages` kuralı bu kontrolde kapatıldı; NativeLink ile yerel tarayıcı navigasyonu sürüyor.
+- Altı otomatik test dil doğrulama, taslak/gizli çeviri filtreleme, ortak alanların korunması, olmayan ana kayda çeviri bağlanmaması ve admin yetkilerini doğruladı.
+- Canlı smoke testi 16 sayfada HTTP 200, doğru HTML dili/canonical/hreflang; iki bilinmeyen dil detayında 404, anonim çeviri isteğinde 401 ve geçersiz dilde 400 doğruladı. Sitemap EN/DE alternatifleri kontrol edildi.
+- Tarayıcıda navbar üzerinden TR → EN, İngilizce iletişim bağlantısı ve aynı sayfada DE geçişi denendi. 390 px ve 320 px mobil görünüm incelendi; 320 px'te eski body minimum genişliğinin scrollbar ile yarattığı yatay taşma kaldırıldı.
+- Önceki hero denemesinin görsel ve katman düzeni korundu. Kullanıcının ilgisiz `bok_kafa.png` dosyası ile eski v1/v2 deneme görselleri bu paketin Git kapsamına alınmadı.

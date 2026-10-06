@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import { ArrowUpRight, BookOpenText, Check, EyeOff, FilePlus2, LoaderCircle, PencilLine, Save } from "lucide-react";
 import { directusRequest, type ContentItem } from "./admin-api";
 import { NativeLink } from "../components/native-link";
+import { LanguageTabs, TranslationEditor } from "./translation-editor";
+import type { Locale } from "../lib/i18n";
 
 export type ManagedBlogPost = ContentItem & {
   id: number;
@@ -102,12 +104,14 @@ const statusLabels: Record<ContentItem["status"], string> = {
 };
 
 export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; onChanged: () => Promise<void> }) {
+  const [language, setLanguage] = useState<Locale>("tr");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [draft, setDraft] = useState<BlogDraft>(emptyDraft);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   function startNew() {
+    setLanguage("tr");
     setSelectedId(null);
     setDraft({ ...emptyDraft });
     setMessage(null);
@@ -219,7 +223,9 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
           ))}
         </div>
 
-        <form className="admin-post-editor" onSubmit={savePost}>
+        <div>
+        <LanguageTabs language={language} onChange={setLanguage} disabled={!selectedId || busy} />
+        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="blog_posts" parentId={selectedId} language={language} /> : <form className="admin-post-editor" onSubmit={savePost}>
           <div className="admin-post-editor__topline">
             <div><PencilLine size={18} /><strong>{selectedId ? "Yazıyı düzenle" : "Yeni yazı oluştur"}</strong></div>
             <select value={draft.status} onChange={(event) => update("status", event.target.value as ContentItem["status"])} aria-label="Yayın durumu">
@@ -250,7 +256,8 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
             <p className={message ? "is-visible" : ""} role="status">{message || "Değişiklikler kaydet düğmesine basılana kadar yayınlanmaz."}</p>
             <button type="submit" disabled={busy}>{busy ? <LoaderCircle className="admin-spinner" size={18} /> : <Save size={18} />} {draft.status === "published" ? "Kaydet ve yayınla" : "Yazıyı kaydet"}</button>
           </div>
-        </form>
+        </form>}
+        </div>
       </div>
     </section>
   );

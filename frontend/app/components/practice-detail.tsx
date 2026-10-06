@@ -1,3 +1,4 @@
+import { getPageTools } from "../lib/i18n-server";
 import Image from "next/image";
 import {
   ArrowLeft,
@@ -8,6 +9,7 @@ import {
   Route,
 } from "lucide-react";
 import { SiteHeader } from "./site-header";
+import type { Locale } from "../lib/i18n";
 
 type ProcessStep = {
   title: string;
@@ -44,35 +46,33 @@ type RelatedPracticeArea = {
 
 const processIcons = [MessageCircleMore, ClipboardCheck, Route];
 
-export function PracticeDetail({
+export async function PracticeDetail({
   content,
   relatedAreas,
+  languageLinks,
 }: {
   content: PracticeDetailContent;
   relatedAreas: RelatedPracticeArea[];
+  languageLinks?: Partial<Record<Locale, string>>;
 }) {
+  const { locale, t, href: localHref } = await getPageTools();
   return (
     <main className="site-shell detail-page">
-      <SiteHeader active="areas" />
+      <SiteHeader locale={locale} active="areas" languageLinks={languageLinks} />
 
       <section className="detail-hero" aria-labelledby="detail-title">
         <div className="detail-hero__content">
-          <a className="detail-back-link" href="/#calisma-alanlari">
-            <ArrowLeft aria-hidden="true" size={17} />
-            Çalışma alanlarına dön
-          </a>
+          <a className="detail-back-link" href={localHref("/#calisma-alanlari")}>
+            <ArrowLeft aria-hidden="true" size={17} />{t("Çalışma alanlarına dön")}</a>
           <p className="eyebrow">
-            <span aria-hidden="true" />
-            Çalışma Alanı · {content.index}
+            <span aria-hidden="true" />{t("Çalışma Alanı ·")}{content.index}
           </p>
           <h1 id="detail-title">
             {content.title}
             <em> {content.titleAccent}</em>
           </h1>
           <p className="detail-hero__lead">{content.lead}</p>
-          <a className="primary-button" href="/iletisim">
-            Görüşme hakkında bilgi alın
-            <ArrowUpRight aria-hidden="true" size={18} />
+          <a className="primary-button" href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}<ArrowUpRight aria-hidden="true" size={18} />
           </a>
         </div>
 
@@ -89,16 +89,13 @@ export function PracticeDetail({
           <div className="detail-hero__index" aria-hidden="true">
             {content.index}
           </div>
-          <p className="detail-hero__notice">
-            Bu sayfa genel bilgilendirme amaçlıdır; kişisel değerlendirme ve tanı
-            yerine geçmez.
-          </p>
+          <p className="detail-hero__notice">{t("Bu sayfa genel bilgilendirme amaçlıdır; kişisel değerlendirme ve tanı yerine geçmez.")}</p>
         </div>
       </section>
 
       <section className="detail-overview" aria-labelledby="overview-title">
         <div className="detail-overview__heading">
-          <p className="section-kicker">Değerlendirme Alanı</p>
+          <p className="section-kicker">{t("Değerlendirme Alanı")}</p>
           <h2 id="overview-title">
             {content.overviewTitle}
             <em> {content.overviewAccent}</em>
@@ -119,8 +116,8 @@ export function PracticeDetail({
 
       <section className="detail-process" aria-labelledby="process-title">
         <div className="detail-process__heading">
-          <p className="section-kicker">Süreç Nasıl İlerler?</p>
-          <h2 id="process-title">Üç adımda açık ve takip edilebilir bir yaklaşım.</h2>
+          <p className="section-kicker">{t("Süreç Nasıl İlerler?")}</p>
+          <h2 id="process-title">{t("Üç adımda açık ve takip edilebilir bir yaklaşım.")}</h2>
         </div>
         <div className="detail-process__grid">
           {content.processSteps.map((step, index) => {
@@ -141,12 +138,9 @@ export function PracticeDetail({
 
       <section className="detail-faq" aria-labelledby="faq-title">
         <div className="detail-faq__intro">
-          <p className="section-kicker">Merak Edilenler</p>
-          <h2 id="faq-title">İlk görüşme öncesinde kısa cevaplar.</h2>
-          <p>
-            Kişisel durumunuza ilişkin değerlendirme yalnızca görüşme sırasında
-            yapılabilir. Buradaki cevaplar sürecin genel çerçevesini anlatır.
-          </p>
+          <p className="section-kicker">{t("Merak Edilenler")}</p>
+          <h2 id="faq-title">{t("İlk görüşme öncesinde kısa cevaplar.")}</h2>
+          <p>{t("Kişisel durumunuza ilişkin değerlendirme yalnızca görüşme sırasında yapılabilir. Buradaki cevaplar sürecin genel çerçevesini anlatır.")}</p>
         </div>
         <div className="detail-faq__list">
           {content.questions.map((item, index) => (
@@ -163,12 +157,12 @@ export function PracticeDetail({
 
       <section className="detail-related" aria-labelledby="related-title">
         <div className="detail-related__heading">
-          <p className="section-kicker">Diğer Çalışma Alanları</p>
-          <h2 id="related-title">İhtiyacınıza yakın diğer başlıkları inceleyin.</h2>
+          <p className="section-kicker">{t("Diğer Çalışma Alanları")}</p>
+          <h2 id="related-title">{t("İhtiyacınıza yakın diğer başlıkları inceleyin.")}</h2>
         </div>
         <div className="detail-related__grid">
           {relatedAreas.map((area) => (
-              <a href={area.href} key={area.slug}>
+              <a href={localHref(area.href)} key={area.slug}>
                 <span>{area.number}</span>
                 <strong>{area.title}</strong>
                 <ArrowUpRight aria-hidden="true" size={18} />
@@ -179,18 +173,16 @@ export function PracticeDetail({
 
       <section className="detail-cta" aria-labelledby="detail-cta-title">
         <div>
-          <p className="section-kicker section-kicker--light">İletişim</p>
-          <h2 id="detail-cta-title">Sürecin sizin için uygunluğunu birlikte konuşalım.</h2>
+          <p className="section-kicker section-kicker--light">{t("İletişim")}</p>
+          <h2 id="detail-cta-title">{t("Sürecin sizin için uygunluğunu birlikte konuşalım.")}</h2>
         </div>
-        <a href="/iletisim">
-          İletişim bilgilerine gidin
-          <ArrowUpRight aria-hidden="true" size={19} />
+        <a href={localHref("/iletisim")}>{t("İletişim bilgilerine gidin")}<ArrowUpRight aria-hidden="true" size={19} />
         </a>
       </section>
 
       <footer className="detail-footer">
-        <p>© 2026 Fzt. Furkan Toplu</p>
-        <a href="/">Ana sayfaya dön</a>
+        <p>{t("© 2026 Fzt. Furkan Toplu")}</p>
+        <a href={localHref("/")}>{t("Ana sayfaya dön")}</a>
       </footer>
     </main>
   );

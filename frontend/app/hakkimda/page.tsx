@@ -1,3 +1,4 @@
+import { getPageTools } from "../lib/i18n-server";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowUpRight, Eye, MessageCircleMore, Route, Sparkles } from "lucide-react";
@@ -21,27 +22,28 @@ export async function generateMetadata(): Promise<Metadata> {
 const principleIcons = [MessageCircleMore, Eye, Route];
 
 export default async function AboutPage() {
+  const { locale, t, href: localHref } = await getPageTools();
   const { content } = await getSitePage<AboutContent>("about");
   return (
     <main className="site-shell about-page">
-      <SiteHeader active="about" />
+      <SiteHeader locale={locale} active="about" />
 
       <section className="about-page-hero" aria-labelledby="about-page-title">
         <div className="about-page-hero__copy">
-          <p className="eyebrow"><span aria-hidden="true" />Hakkımda</p>
+          <p className="eyebrow"><span aria-hidden="true" />{t("Hakkımda")}</p>
           <h1 id="about-page-title">{content.hero_title}<em> {content.hero_accent}</em></h1>
           <p>{content.hero_description}</p>
-          <NativeLink className="primary-button" href="/iletisim">İletişim bilgilerini görün <ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
+          <NativeLink className="primary-button" href={localHref("/iletisim")}>{t("İletişim bilgilerini görün")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
         </div>
         <div className="about-page-hero__portrait">
-          <Image src="/about-physiotherapist-v1.png" alt="Klinik ortamında fizyoterapist Furkan Toplu" fill priority sizes="(max-width: 860px) 100vw, 48vw" />
-          <div><span>Fizyoterapist</span><strong>Furkan Toplu</strong></div>
+          <Image src="/about-physiotherapist-v1.png" alt={t("Klinik ortamında fizyoterapist Furkan Toplu")} fill priority sizes="(max-width: 860px) 100vw, 48vw" />
+          <div><span>{t("Fizyoterapist")}</span><strong>{t("Furkan Toplu")}</strong></div>
         </div>
       </section>
 
       <section className="about-story" aria-labelledby="about-story-title">
         <div>
-          <p className="section-kicker">Mesleki Yaklaşım</p>
+          <p className="section-kicker">{t("Mesleki Yaklaşım")}</p>
           <h2 id="about-story-title">{content.story_title}<em> {content.story_accent}</em></h2>
         </div>
         <div className="about-story__body">
@@ -53,7 +55,7 @@ export default async function AboutPage() {
 
       <section className="about-principles" aria-labelledby="principles-title">
         <div className="about-principles__heading">
-          <p className="section-kicker section-kicker--light">Çalışma İlkeleri</p>
+          <p className="section-kicker section-kicker--light">{t("Çalışma İlkeleri")}</p>
           <h2 id="principles-title">{content.principles_title}</h2>
         </div>
         <div className="about-principles__grid">
@@ -70,8 +72,8 @@ export default async function AboutPage() {
       </section>
 
       <section className="about-page-cta">
-        <p>Çalışma alanlarını ve süreç yaklaşımını daha ayrıntılı inceleyin.</p>
-        <NativeLink href="/calisma-alanlari">Çalışma alanlarına gidin <ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
+        <p>{t("Çalışma alanlarını ve süreç yaklaşımını daha ayrıntılı inceleyin.")}</p>
+        <NativeLink href={localHref("/calisma-alanlari")}>{t("Çalışma alanlarına gidin")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
       </section>
 
       <SiteFooter />

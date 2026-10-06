@@ -24,6 +24,8 @@ Planlanan sıra:
 
 İç sayfa tasarımlarına `Bel ve Boyun Sağlığı` çalışma alanı ile başlandı. Kullanılan rota: `/calisma-alanlari/bel-ve-boyun-sagligi`. İkinci örnek olarak `/calisma-alanlari/sporcu-rehabilitasyonu` hazırlandı.
 
+Ana sayfa hero görseli Furkan Toplu'nun kullanıcı tarafından sağlanan fotoğrafından üretilmiş, foto-gerçekçilikten bilinçli olarak uzaklaştırılmış şeffaf 3B karakter render'ını kullanır. Onay için kullanılan güncel aday `frontend/public/furkan-toplu-hero-3d-v3.png` dosyasıdır; özgün fotoğraf ile önceki görsel denemeleri geri dönüş olanağı için korunur. Karakter bir fotoğraf kartı veya dikdörtgen sahne içine kapatılmaz; krem sayfa üzerinde serbest duran ve sağ kolondan taşan ayrı bir nesne gibi yerleşir. Hacim hissi CSS perspektifi, yumuşak ışık halesi, zemin gölgesi, drop-shadow ve sınırlı hover dönüşümüyle desteklenir. `prefers-reduced-motion` tercihinde hareket süresi proje genel kuralıyla etkisiz hale gelir.
+
 Her çalışma alanı ziyaretçi açısından kendine ait `/calisma-alanlari/[slug]` adresine sahiptir. Tek dinamik rota ortak `PracticeDetail` şablonunu kullanır; metadata, başlık, açıklamalar, değerlendirme başlıkları, süreç adımları ve SSS verileri Directus kaydından alınır.
 
 Çalışma alanlarının tamamını sunan `/calisma-alanlari` dizin sayfası oluşturuldu. Kartlar, detay sayfaları ve çapraz bağlantılarda kullanılan başlık, slug, özet ve sıralama bilgileri Directus `practice_areas` koleksiyonundan dinamik olarak alınıyor.
@@ -178,6 +180,18 @@ Frontend çalışma alanlarını `directus-extension-website-content` adlı salt
 Hakkımda ve İletişim sayfaları `site_pages` koleksiyonunda `about` ve `contact` anahtarlı iki kayıt olarak tutulur. Sayfaya özgü alanlar güvenli JSON `content` nesnesinde, SEO başlığı ve açıklaması ayrı alanlarda saklanır. Public frontend `/website-content/pages/:pageKey` salt-okunur endpoint'ini kullanır; endpoint yalnızca izin verilen iki sayfa anahtarını kabul eder. Yönetici `/bakir` içindeki Sayfa içerikleri ekranında Hakkımda ve İletişim sekmeleri arasında geçerek bu değerleri kod görmeden düzenler.
 
 İletişim kaydındaki telefon için yöneticiye tek `Telefon numarası` alanı gösterilir. Görünen metin bu alandan alınır; arama bağlantısında kullanılacak uluslararası `tel:` değeri kayıt sırasında otomatik normalize edilerek geriye dönük uyumluluk için `phone_value` anahtarında tutulur. Public iletişim sayfası ve ana sayfadaki iletişim bloğu aynı `contact` kaydını kullanır. Telefon, WhatsApp, e-posta, adres ve çalışma saatlerinde yapılan tek değişiklik iki görünümde de geçerli olur.
+
+## Çok dilli ziyaretçi sitesi — 6 Ekim 2026
+
+Ziyaretçi arayüzü Türkçe, İngilizce ve Almanca sunulur. Navbar'daki TR / EN / DE bağlantıları dil değiştirir. Türkçe mevcut kök adreslerini korur; İngilizce `/en`, Almanca `/de` altında çalışır. Sabit adresler ortak rota haritasında tanımlıdır. Örnekler: `/hakkimda`, `/en/about`, `/de/ueber-mich`; `/iletisim`, `/en/contact`, `/de/kontakt`. Alt sayfalara geçildiğinde dil URL üzerinden korunur. Admin yalnızca Türkçedir ve `/bakir` adresini kullanır.
+
+Sabit arayüz metinleri `frontend/app/lib/messages.ts` sözlüğündedir. `proxy.ts` ziyaretçi URL'sinden dili çıkarır, istemciden gelen dil başlığını doğrulanmış değerle değiştirir ve server-rendered sayfalara aktarır. Kök HTML `lang` değeri dilin kendisini gösterir. İngilizce ve Almanca rotalar mevcut public sayfa bileşenlerini yeniden kullanır; sayfa tasarımı üç ayrı kopyaya ayrılmaz. Framework istemci navigasyon sorunu nedeniyle kullanılan NativeLink ve tam sayfa navigasyonu korunur.
+
+Türkçe editorial kayıtlar mevcut Directus koleksiyonlarında kalır. İngilizce/Almanca çeviriler PostgreSQL `website_content_translations` tablosunda `collection + parent_id + language` benzersiz anahtarıyla ana kayda bağlanır. İlişki uygulama tarafından doğrulanır; dinamik koleksiyonlar için tek fiziksel yabancı anahtar kullanılmaz. Çevirinin JSON içeriği yalnızca açıkça izin verilen metin ve liste alanlarını kabul eder. Telefon, e-posta, görsel, sıralama ve görünürlük seçenekleri ana kayıttan gelir. Çeviri URL adı dil/koleksiyon bazında benzersizdir.
+
+Yönetici mevcut editörlerin Türkçe / İngilizce / Almanca sekmelerini kullanır. Çeviri yayın durumu ana kayıttan bağımsızdır; public blog ve çalışma alanında hem ana kayıt hem çeviri `published` olmalıdır. Hazır olmayan dil sürümleri listelenmez, dil seçicisinde kullanılamaz ve doğrudan URL'de 404 verir. Liste boşsa o dilde açıklayıcı mesaj gösterilir. Çeviri okuma/yazma endpoint'leri aktif, tam yetkili Directus yöneticisi gerektirir; oturum ve TOTP sistemi değiştirilmez.
+
+Compose `content-migrations` servisi idempotent SQL migrasyonlarını çalıştırır ve başarılı tamamlanmadan frontend başlatılmaz. Var olan çeviriler başlangıç metinleriyle ezilmez. İlk örnek Hakkımda/İletişim çevirileri hazırdır; blog ve çalışma alanı çevirileri panelden doldurulur. Yasal belgeler bu pakette Türkçe kalır; EN/DE bağlantı metni belgenin Türkçe olduğunu belirtir. Sitemap yalnızca yayınlanmış çeviri detaylarını listeler; canonical ve hreflang adresleri dil URL'leriyle eşleşir.
 
 ## Sağlık ve veri güvenliği sınırları
 

@@ -1,3 +1,4 @@
+import { getPageTools } from "../lib/i18n-server";
 import type { Metadata } from "next";
 import { ArrowUpRight, Clock3, Mail, MapPin, MessageCircleMore, Phone, ShieldCheck } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";
@@ -11,6 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
+  const { locale, t } = await getPageTools();
   const { content } = await getSitePage<ContactContent>("contact");
   const methods = [
     { icon: Phone, label: "Telefon", value: content.phone_display, note: content.working_days, href: phoneHref(content) },
@@ -19,11 +21,11 @@ export default async function ContactPage() {
   ];
   return (
     <main className="site-shell contact-page">
-      <SiteHeader active="contact" />
+      <SiteHeader locale={locale} active="contact" />
 
       <section className="contact-page-hero" aria-labelledby="contact-page-title">
         <div>
-          <p className="eyebrow"><span aria-hidden="true" />İletişim</p>
+          <p className="eyebrow"><span aria-hidden="true" />{t("İletişim")}</p>
           <h1 id="contact-page-title">{content.hero_title}<em> {content.hero_accent}</em></h1>
         </div>
         <div className="contact-page-hero__intro">
@@ -32,28 +34,28 @@ export default async function ContactPage() {
         </div>
       </section>
 
-      <section className="contact-methods" aria-label="İletişim seçenekleri">
+      <section className="contact-methods" aria-label={t("İletişim seçenekleri")}>
         {methods.map(({ icon: Icon, label, value, note, href }) => (
           <a href={href} key={label} target={label === "WhatsApp" ? "_blank" : undefined} rel={label === "WhatsApp" ? "noreferrer" : undefined}>
             <div className="contact-methods__top"><Icon aria-hidden="true" size={25} strokeWidth={1.45} /><ArrowUpRight aria-hidden="true" size={19} /></div>
-            <span>{label}</span><strong>{value}</strong><small>{note}</small>
+                <span>{t(label)}</span><strong>{t(value)}</strong><small>{t(note)}</small>
           </a>
         ))}
       </section>
 
       <section className="contact-details" aria-labelledby="visit-title">
         <div className="contact-details__heading">
-          <p className="section-kicker">Görüşme Bilgileri</p>
-          <h2 id="visit-title">Görüşme öncesinde bilmeniz gerekenler.</h2>
+          <p className="section-kicker">{t("Görüşme Bilgileri")}</p>
+          <h2 id="visit-title">{t("Görüşme öncesinde bilmeniz gerekenler.")}</h2>
         </div>
         <div className="contact-details__cards">
-          <article><MapPin aria-hidden="true" size={24} /><span>Görüşme adresi</span><h3>{content.address_title}</h3><p>{content.address_note}</p></article>
-          <article><Clock3 aria-hidden="true" size={24} /><span>Çalışma saatleri</span><h3>{content.working_days}</h3><p>{content.working_hours}</p></article>
+          <article><MapPin aria-hidden="true" size={24} /><span>{t("Görüşme adresi")}</span><h3>{content.address_title}</h3><p>{content.address_note}</p></article>
+          <article><Clock3 aria-hidden="true" size={24} /><span>{t("Çalışma saatleri")}</span><h3>{content.working_days}</h3><p>{content.working_hours}</p></article>
         </div>
       </section>
 
       <section className="contact-flow" aria-labelledby="contact-flow-title">
-        <div><p className="section-kicker section-kicker--light">Kısa Süreç</p><h2 id="contact-flow-title">{content.flow_title}</h2></div>
+        <div><p className="section-kicker section-kicker--light">{t("Kısa Süreç")}</p><h2 id="contact-flow-title">{content.flow_title}</h2></div>
         <ol>
           {content.flow_steps.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{step.title}</strong><p>{step.text}</p></div></li>)}
         </ol>

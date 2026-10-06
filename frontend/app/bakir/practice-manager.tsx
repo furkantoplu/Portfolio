@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import { ArrowUpRight, Check, EyeOff, FilePlus2, Home, LoaderCircle, PencilLine, Save, Stethoscope } from "lucide-react";
 import { directusRequest, type ContentItem } from "./admin-api";
 import { NativeLink } from "../components/native-link";
+import { LanguageTabs, TranslationEditor } from "./translation-editor";
+import type { Locale } from "../lib/i18n";
 
 export type ManagedPracticeArea = ContentItem & {
   id: number;
@@ -118,6 +120,7 @@ function areaToDraft(area: ManagedPracticeArea): PracticeDraft {
 }
 
 export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeArea[]; onChanged: () => Promise<void> }) {
+  const [language, setLanguage] = useState<Locale>("tr");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [draft, setDraft] = useState<PracticeDraft>(emptyDraft);
   const [busy, setBusy] = useState(false);
@@ -128,6 +131,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
   }
 
   function startNew() {
+    setLanguage("tr");
     setSelectedId(null);
     setDraft({ ...emptyDraft, sort: String((areas.at(-1)?.sort ?? areas.length) + 1) });
     setMessage(null);
@@ -231,7 +235,9 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
           ))}
         </div>
 
-        <form className="admin-post-editor" onSubmit={saveArea}>
+        <div>
+        <LanguageTabs language={language} onChange={setLanguage} disabled={!selectedId || busy} />
+        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="practice_areas" parentId={selectedId} language={language} /> : <form className="admin-post-editor" onSubmit={saveArea}>
           <div className="admin-post-editor__topline">
             <div><PencilLine size={18} /><strong>{selectedId ? "Alanı düzenle" : "Yeni çalışma alanı"}</strong></div>
             <select value={draft.status} onChange={(event) => update("status", event.target.value as ContentItem["status"])} aria-label="Yayın durumu">
@@ -264,7 +270,8 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
             <p className={message ? "is-visible" : ""} role="status">{message || "Değişiklikler kaydet düğmesine basılana kadar yayınlanmaz."}</p>
             <button type="submit" disabled={busy}>{busy ? <LoaderCircle className="admin-spinner" size={18} /> : <Save size={18} />} {draft.status === "published" ? "Kaydet ve yayınla" : "Alanı kaydet"}</button>
           </div>
-        </form>
+        </form>}
+        </div>
       </div>
     </section>
   );
