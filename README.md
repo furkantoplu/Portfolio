@@ -117,6 +117,8 @@ Public `/site-media/<UUID>` uçları yalnızca yayınlanmış yazı/alan veya ta
 
 Kontroller: `node --test scripts/tests/*.test.mjs`, `node scripts/tests/languages-smoke.mjs` ve frontend içinde `npx tsc --noEmit`.
 
+Yüklenen public görseller için `node scripts/tests/media-smoke.mjs`: yayındaki yazı/alan ve sayfa görsellerini bulur, Directus endpoint'i → `/site-media` proxy → `/_next/image` yolunda 200 ve gerçek görsel baytlarını doğrular. Belirli dosyalar için komutun sonuna UUID eklenebilir. Özel medya endpoint'i Directus 12 `AssetsService.getAsset` çağrısına `{ transformationParams: {} }` gönderir; sadece `{}` kullanmak görsel döndürme sırasında sunucu hatasına yol açar.
+
 ## Frontend geliştirme komutları
 
 ```powershell

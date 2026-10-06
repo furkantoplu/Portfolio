@@ -23,7 +23,7 @@ export function registerMedia(router, { database, services, getSchema }) {
       if (!record || !imageTypes.has(record.type)) return response.status(404).end();
       // Public access is granted only for referenced images, never the entire file library.
       const service = new services.AssetsService({ schema: await getSchema(), knex: database, accountability: null });
-      const { stream, file } = await service.getAsset(id, {});
+      const { stream, file } = await service.getAsset(id, { transformationParams: {} });
       response.set({ "Content-Type": file.type, "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" });
       stream.on("error", error => { if (response.headersSent) response.destroy(error); else next(error); });
       response.on("close", () => stream.destroy());
