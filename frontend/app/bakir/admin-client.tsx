@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useLayoutEffect, useState } from "react";
 import {
   ArrowRight,
   BookOpenText,
@@ -69,6 +69,10 @@ export function BakirAdmin() {
   const [teamBusy, setTeamBusy] = useState(false);
   const [teamMessage, setTeamMessage] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<AdminView>("overview");
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [activeView]);
 
   const loadDashboard = useCallback(async () => {
     const [{ data: currentUser }, { data: members }, { data: blog }, { data: practices }, { data: pages }] = await Promise.all([

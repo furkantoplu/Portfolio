@@ -674,3 +674,11 @@
 - Canlı smoke: 16 TR/EN/DE sayfası 200/doğru lang/canonical/dil seçici, bilinmeyen sayfa/medya 404, anonim çeviri 401, hatalı dil 400 ve sitemap alternatifleri geçti. İletişim kartları ve menü masaüstünde; dil değiştirme aynı iletişim sayfasında; 390 ve 320 px mobilde taşma kontrol edildi.
 - Tarayıcıda admin oturumu kapalı olduğundan gerçek hesapla upload → kaydet E2E yapılmadı; şifre/TOTP değiştirilmedi veya atlanmadı. Bu doğrulama teslim öncesinde açık yönetici oturumuyla yapılmalı. API akışının pozitif canlı dosya yükleme testi yapılmış gibi raporlanmaz.
 - README'de panel kullanımı, upload/kaydet ayrımı, izinli formatlar, varsayılan görsele dönüş, kalıcı volume taşıma ve test komutları belgelendi. Obsidian eşitlenir; paket Git'e kaydedilip mevcut main remote'una gönderilir. İlgisiz dosyalar kapsam dışıdır.
+
+### Paket 31 — Admin bölüm geçişlerinde kaydırmayı sıfırlama
+
+- Kullanıcı, uzun çalışma alanı/sayfa editörünün aşağısındayken sidebar'dan başka bölüme geçildiğinde yeni bölümün eski kaydırma yüksekliğinde açıldığını bildirdi.
+- Admin bölümleri aynı sayfa üzerinde `activeView` state'iyle değişiyordu; document scroll konumu sıfırlanmıyordu. Yeni rotaya geçilmediği için tarayıcının rota kaydırma davranışı devreye girmiyordu.
+- `activeView` değiştiğinde çalışan `useLayoutEffect` eklendi. Yeni bölüm DOM'a işlendiğinde, boyama öncesi `window.scrollTo({ top: 0, left: 0, behavior: "instant" })` ile tepeye dönülür. Global smooth-scroll kuralına rağmen geçiş anlıktır.
+- Sidebar ve genel bakış kısayolları aynı mekanizmadan faydalanır. Editörün içinde yazı yazmak, kayıt yüklemek veya içerik kaydetmek `activeView` değiştirmediği için kaydırmayı sıfırlamaz. Kimlik doğrulama ve içerik kayıtları değiştirilmedi.
+- TypeScript, hedefli ESLint ve mevcut 11 test geçti; production Docker build tamamlandı, frontend yeniden başlatıldı ve `/bakir` HTTP 200 doğrulandı. Açık yönetici oturumu ile aşağı kaydırıp bölüm değiştirme etkileşimi bu pakette ayrıca tarayıcıdan denenmedi.
