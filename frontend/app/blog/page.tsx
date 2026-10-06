@@ -32,10 +32,10 @@ export default async function BlogPage() {
       {content.hero_image && <div className="managed-page-image"><Image src={content.hero_image} alt={content.hero_image_alt} fill sizes="100vw" /></div> }
 
       {featuredPost ? (
-        <section className="featured-article" aria-labelledby="featured-title">
-          <a className="featured-article__image" href={localHref(`/blog/${featuredPost.slug}`)}>
-            <Image src={featuredPost.cover_path || "/hero-physiotherapy-v1.png"} alt={featuredPost.cover_alt || featuredPost.title} fill priority sizes="(max-width: 860px) 100vw, 50vw" />
-          </a>
+        <section className={`featured-article${featuredPost.cover_path ? "" : " featured-article--text-only"}`} aria-labelledby="featured-title">
+          {featuredPost.cover_path && <a className="featured-article__image" href={localHref(`/blog/${featuredPost.slug}`)}>
+            <Image src={featuredPost.cover_path} alt={featuredPost.cover_alt || featuredPost.title} fill priority sizes="(max-width: 860px) 100vw, 50vw" />
+          </a>}
           <article className="featured-article__content">
             <div className="article-meta">
               <span>{featuredPost.category}</span>

@@ -1621,6 +1621,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 .featured-article__image { position: relative; min-height: 560px; overflow: hidden; }
+.featured-article.featured-article--text-only { grid-template-columns: minmax(0, 1fr); }
+.featured-article--text-only .featured-article__label { margin-top: 0; }
 .featured-article__image::after { position: absolute; inset: 0; background: linear-gradient(90deg, transparent 65%, rgba(15, 60, 52, 0.12)); content: ""; }
 .featured-article__image img { object-fit: cover; object-position: 54% center; transition: transform 500ms ease; }
 .featured-article__image:hover img { transform: scale(1.025); }

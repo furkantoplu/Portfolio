@@ -48,10 +48,10 @@ export default async function BlogPostPage({ params }: PageProps) {
           <p>{post.summary}</p>
         </header>
 
-        <div className="article-cover">
-          <Image src={post.cover_path || "/hero-physiotherapy-v1.png"} alt={post.cover_alt || post.title} fill priority sizes="(max-width: 860px) 100vw, 1200px" />
+        {post.cover_path && <div className="article-cover">
+          <Image src={post.cover_path} alt={post.cover_alt || post.title} fill priority sizes="(max-width: 860px) 100vw, 1200px" />
           {post.cover_caption && <div className="article-cover__caption">{post.cover_caption}</div>}
-        </div>
+        </div>}
 
         <div className="article-layout">
           <aside className="article-toc" aria-label={t("Yazı içeriği")}>

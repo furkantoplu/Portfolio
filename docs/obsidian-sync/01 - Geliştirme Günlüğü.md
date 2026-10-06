@@ -682,3 +682,11 @@
 - `activeView` değiştiğinde çalışan `useLayoutEffect` eklendi. Yeni bölüm DOM'a işlendiğinde, boyama öncesi `window.scrollTo({ top: 0, left: 0, behavior: "instant" })` ile tepeye dönülür. Global smooth-scroll kuralına rağmen geçiş anlıktır.
 - Sidebar ve genel bakış kısayolları aynı mekanizmadan faydalanır. Editörün içinde yazı yazmak, kayıt yüklemek veya içerik kaydetmek `activeView` değiştirmediği için kaydırmayı sıfırlamaz. Kimlik doğrulama ve içerik kayıtları değiştirilmedi.
 - TypeScript, hedefli ESLint ve mevcut 11 test geçti; production Docker build tamamlandı, frontend yeniden başlatıldı ve `/bakir` HTTP 200 doğrulandı. Açık yönetici oturumu ile aşağı kaydırıp bölüm değiştirme etkileşimi bu pakette ayrıca tarayıcıdan denenmedi.
+
+### Paket 32 — Görselsiz blog yazılarında örnek kapak kaldırıldı
+
+- Kullanıcının bildirdiği fark public API ile doğrulandı: iki yayındaki yazıdan yalnızca ilkinde `cover_path` doluydu; ikinci yazının görsel alanı boştu. Detay sayfasındaki `cover_path || örnek fotoğraf` kuralı olmayan görseli gösteriyordu.
+- Blog detayında görsel ve alt yazı bölümü yalnızca kayıtlı kapak varsa render edilir; görselsiz yazıda boş fotoğraf alanı bırakılmaz. Blog listesindeki öne çıkan kart için de örnek fotoğraf fallback'i kaldırıldı; görselsiz kart tek kolona geçer.
+- Ana sayfa blog kartları ve arşiv kartları zaten yalnızca kayıtlı görseli gösteriyordu; bu davranış korundu. Çalışma alanları, ana sayfa karakteri ve Hakkımda görsel varsayılanları bu talebin dışında kaldı. İçerik/veritabanı kayıtlarına dokunulmadı.
+- `blog-images-smoke.mjs` canlı yayındaki yazıların kapak bölümünü CMS görsel alanıyla karşılaştırır; liste öne çıkan kartının görsel ve tek kolon sınıfını da denetler.
+- TypeScript, hedefli ESLint, 11 mevcut test ve Docker production build geçti. Yeni canlı test ilk yazıda kapak bulunduğunu, ikinci yazıda kapak bölümü olmadığını doğruladı; üç dilde 16 sayfa ve SEO/404/yetki smoke kontrolleri de geçti. Yerel frontend sağlıklı olarak yeniden başlatıldı.
