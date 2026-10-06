@@ -42,6 +42,7 @@ services:
       SESSION_COOKIE_SAME_SITE: lax
       LOGIN_STALL_TIME: "750"
       TELEMETRY: "false"
+      FILES_MAX_UPLOAD_SIZE: "10mb"
       WEBSOCKETS_ENABLED: "true"
     volumes:
       - directus_uploads:/directus/uploads
@@ -72,7 +73,7 @@ services:
       PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
     volumes:
       - ./scripts/migrations:/migrations:ro
-    command: ["psql", "-v", "ON_ERROR_STOP=1", "-f", "/migrations/001-content-translations.sql", "-f", "/migrations/002-page-language-seeds.sql"]
+    command: ["psql", "-v", "ON_ERROR_STOP=1", "-f", "/migrations/001-content-translations.sql", "-f", "/migrations/002-page-language-seeds.sql", "-f", "/migrations/003-editable-public-pages.sql"]
 
   frontend:
     build:

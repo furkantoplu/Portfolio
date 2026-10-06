@@ -6,6 +6,7 @@ import { directusRequest, type ContentItem } from "./admin-api";
 import { NativeLink } from "../components/native-link";
 import { LanguageTabs, TranslationEditor } from "./translation-editor";
 import type { Locale } from "../lib/i18n";
+import { ImageField } from "./image-field";
 
 export type ManagedPracticeArea = ContentItem & {
   id: number;
@@ -14,6 +15,8 @@ export type ManagedPracticeArea = ContentItem & {
   title: string;
   slug: string;
   summary: string;
+  image_path: string | null;
+  image_alt: string | null;
   hero_title: string | null;
   hero_accent: string | null;
   lead: string | null;
@@ -28,6 +31,8 @@ export type ManagedPracticeArea = ContentItem & {
 };
 
 type PracticeDraft = {
+  image_path: string;
+  image_alt: string;
   status: ContentItem["status"];
   sort: string;
   show_on_homepage: boolean;
@@ -48,6 +53,7 @@ type PracticeDraft = {
 };
 
 const emptyDraft: PracticeDraft = {
+  image_path: "", image_alt: "",
   status: "draft",
   sort: "",
   show_on_homepage: false,
@@ -99,6 +105,7 @@ function parsePairs(value: string, first: string, second: string) {
 
 function areaToDraft(area: ManagedPracticeArea): PracticeDraft {
   return {
+    image_path: area.image_path ?? "", image_alt: area.image_alt ?? "",
     status: area.status,
     sort: area.sort == null ? "" : String(area.sort),
     show_on_homepage: area.show_on_homepage,
@@ -152,6 +159,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
     const processSteps = parsePairs(draft.process_steps, "title", "description");
     const faqs = parsePairs(draft.faqs, "question", "answer");
     const payload = {
+      image_path: draft.image_path || null, image_alt: draft.image_alt.trim() || null,
       status: draft.status,
       sort: draft.sort ? Number.parseInt(draft.sort, 10) : null,
       show_on_homepage: draft.show_on_homepage,
@@ -248,6 +256,8 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
           </div>
 
           <div className="admin-editor-grid">
+            <ImageField label="Çalışma alanı görseli" value={draft.image_path} onChange={path => update("image_path", path)} disabled={busy} />
+            <label className="admin-field--wide"><span>Görsel açıklaması</span><input value={draft.image_alt} onChange={e => update("image_alt", e.target.value)} /></label>
             <label className="admin-field--wide"><span>Çalışma alanı adı</span><input value={draft.title} onChange={(event) => { const title = event.target.value; setDraft((current) => ({ ...current, title, ...(!selectedId ? { slug: slugify(title), hero_title: title } : {}) })); }} required /></label>
             <label><span>URL adı</span><input value={draft.slug} onChange={(event) => update("slug", slugify(event.target.value))} required /></label>
             <label><span>Sıralama</span><input type="number" min="1" value={draft.sort} onChange={(event) => update("sort", event.target.value)} /></label>

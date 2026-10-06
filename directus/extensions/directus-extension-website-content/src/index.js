@@ -1,4 +1,5 @@
 import { language, translateItems, translatePage, registerTranslations } from "./translations.js";
+import { registerMedia } from "./media.js";
 
 const publicFields = [
   "id",
@@ -94,7 +95,9 @@ async function adminAccount(database, userId) {
 
 export default {
   id: "website-content",
-  handler: (router, { database }) => {
+  handler: (router, context) => {
+    const { database } = context;
+    registerMedia(router, context);
     registerTranslations(router, database, adminAccount);
     router.use((request, response, next) => language(request) ? next() : response.status(400).json({ errors: [{ message: "Geçersiz dil." }] }));
     router.get("/admin-account", async (request, response, next) => {
@@ -200,7 +203,7 @@ export default {
 
     router.get("/pages/:pageKey", async (request, response, next) => {
       try {
-        if (!new Set(["about", "contact"]).has(request.params.pageKey)) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
+        if (!new Set(["home", "about", "contact", "areas", "blog"]).has(request.params.pageKey)) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
         const page = await translatePage(database, await sitePage(database, request.params.pageKey), language(request));
         if (!page) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
         response.json({ data: page });

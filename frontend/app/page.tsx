@@ -1,9 +1,10 @@
+import type { Metadata } from "next";
 import { getPageTools } from "./lib/i18n-server";
 import { formatDate } from "./lib/i18n";
 import Image from "next/image";
 import { NativeLink } from "./components/native-link";
 import { type ContactContent, phoneHref } from "./lib/contact";
-import { getBlogPosts, getPracticeAreas, getHomeContact } from "./lib/directus";
+import { getBlogPosts, getPracticeAreas, getHomeContact, getEditablePage } from "./lib/directus";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import {
@@ -48,14 +49,18 @@ const approachSteps = [
 
 const practiceIcons = [Activity, Dumbbell, HeartPulse, PersonStanding];
 
+export async function generateMetadata(): Promise<Metadata> { const page = await getEditablePage("home"); return { title: page.seo_title || "Fzt. Furkan Toplu | Fizyoterapist", description: page.seo_description || undefined }; }
+
 export default async function Home() {
   const { locale, t, href: localHref } = await getPageTools();
-  const [practiceAreas, blogPosts, contactPage] = await Promise.all([
+  const [practiceAreas, blogPosts, contactPage, homePage] = await Promise.all([
     getPracticeAreas({ homepage: true }),
     getBlogPosts({ homepage: true }),
     getHomeContact<ContactContent>(),
+    getEditablePage("home"),
   ]);
   const contact = contactPage.content;
+  const content = homePage.content;
   return (
     <main className="site-shell">
       <SiteHeader locale={locale} active="home" />
@@ -63,12 +68,12 @@ export default async function Home() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero__content">
           <p className="eyebrow">
-            <span aria-hidden="true" />{t("Kişiye özel fizyoterapi yaklaşımı")}</p>
+            <span aria-hidden="true" />{content.hero_kicker}</p>
 
-          <h1 id="hero-title">{t("Hareketinize güven,")}<br />
-            <em>{" "}{t("yaşamınıza güç")}</em>{" "}{t("katın.")}</h1>
+          <h1 id="hero-title">{content.hero_title}<br />
+            <em>{" "}{content.hero_accent}</em>{" "}{content.hero_suffix}</h1>
 
-          <p className="hero__description">{t("İhtiyaçlarınızı dinleyen, hareket kapasitenizi destekleyen ve süreci sizinle birlikte şekillendiren bilimsel bir yaklaşım.")}</p>
+          <p className="hero__description">{content.hero_description}</p>
 
           <div className="hero__actions">
             <a className="primary-button" href="#calisma-alanlari">{t("Çalışma Alanlarını İncele")}<ArrowUpRight aria-hidden="true" size={18} />
@@ -80,15 +85,15 @@ export default async function Home() {
           <dl className="hero__facts" aria-label={t("Kısa bilgiler")}>
             <div>
               <dt>01</dt>
-              <dd>{t("Kişiye özel değerlendirme")}</dd>
+              <dd>{content.fact_1}</dd>
             </div>
             <div>
               <dt>02</dt>
-              <dd>{t("Bilimsel ve güncel yaklaşım")}</dd>
+              <dd>{content.fact_2}</dd>
             </div>
             <div>
               <dt>03</dt>
-              <dd>{t("Şeffaf süreç takibi")}</dd>
+              <dd>{content.fact_3}</dd>
             </div>
           </dl>
         </div>
@@ -98,8 +103,8 @@ export default async function Home() {
             <span className="hero__portrait-orbit hero__portrait-orbit--outer" aria-hidden="true" />
             <span className="hero__portrait-orbit hero__portrait-orbit--inner" aria-hidden="true" />
             <Image
-              src="/furkan-toplu-hero-3d-v3.png"
-              alt={t("Kollarını bağlayarak gülümseyen Fizyoterapist Furkan Toplu")}
+              src={content.hero_image || "/furkan-toplu-hero-3d-v3.png"}
+              alt={content.hero_image_alt}
               fill
               priority
               sizes="(max-width: 860px) 100vw, 52vw"
@@ -111,14 +116,14 @@ export default async function Home() {
           <div className="hero__note">
             <span className="hero__note-icon" aria-hidden="true">✦</span>
             <p>
-              <strong>{t("Her hareket bir başlangıçtır.")}</strong>
-              <span>{t("Sizin için doğru olan yerden başlayalım.")}</span>
+              <strong>{content.hero_note_title}</strong>
+              <span>{content.hero_note_text}</span>
             </p>
           </div>
 
           <div className="hero__location">
-            <span>{t("İstanbul")}</span>
-            <strong>{t("Yüz yüze görüşme")}</strong>
+            <span>{content.location}</span>
+            <strong>{content.location_note}</strong>
           </div>
         </div>
       </section>
@@ -131,15 +136,15 @@ export default async function Home() {
         <div className="practice-section__intro">
           <div>
             <p className="section-kicker">{t("Çalışma Alanları")}</p>
-            <h2 id="practice-title">{t("Hareketin farklı ihtiyaçlarına")}<em>{" "}{t("bütüncül bir bakış.")}</em>
+            <h2 id="practice-title">{content.practice_title}<em>{" "}{content.practice_accent}</em>
             </h2>
           </div>
-          <p>{t("Her süreç dinlemekle başlar. Değerlendirme sonrasında ihtiyaçlara uygun, anlaşılır ve takip edilebilir bir yol haritası oluşturulur.")}</p>
+          <p>{content.practice_intro}</p>
         </div>
 
         <div className="practice-grid">
           {practiceAreas.length === 0 && <p>{t("Bu dilde çalışma alanları yakında eklenecek.")}</p>}
-          {practiceAreas.map(({ title, summary, slug }, index) => {
+          {practiceAreas.map(({ title, summary, slug, image_path, image_alt }, index) => {
             const Icon = practiceIcons[index % practiceIcons.length];
             const number = String(index + 1).padStart(2, "0");
             const href = `/calisma-alanlari/${slug}`;
@@ -148,6 +153,7 @@ export default async function Home() {
                 className={`practice-card${index === 0 ? " practice-card--featured" : ""}`}
                 key={title}
               >
+                {image_path && <a className="content-card-image" href={localHref(href)}><Image src={image_path} alt={image_alt || title} fill sizes="(max-width: 860px) 100vw, 25vw" /></a>}
                 <div className="practice-card__topline">
                   <span>{number}</span>
                   <Icon aria-hidden="true" size={26} strokeWidth={1.45} />
@@ -163,15 +169,15 @@ export default async function Home() {
           })}
         </div>
 
-        <p className="practice-section__footnote">{t("Buradaki içerikler genel bilgilendirme amaçlıdır; kişisel değerlendirme yerine geçmez.")}</p>
+        <p className="practice-section__footnote">{content.practice_note}</p>
       </section>
 
       <section className="about-section" id="hakkimda" aria-labelledby="about-title">
         <div className="about-section__portrait">
           <div className="about-section__image">
             <Image
-              src="/about-physiotherapist-v1.png"
-              alt={t("Klinikte duran fizyoterapist portresi")}
+              src={content.about_image || "/about-physiotherapist-v1.png"}
+              alt={content.about_image_alt}
               fill
               sizes="(max-width: 860px) 100vw, 43vw"
             />
@@ -184,23 +190,23 @@ export default async function Home() {
 
         <div className="about-section__content">
           <p className="section-kicker section-kicker--light">{t("Hakkımda")}</p>
-          <h2 id="about-title">{t("Hareketin her insanda")}<em>{" "}{t("farklı bir hikâyesi var.")}</em>
+          <h2 id="about-title">{content.about_title}<em>{" "}{content.about_accent}</em>
           </h2>
-          <p className="about-section__lead">{t("Her bireyin ihtiyaçlarının, günlük yaşamının ve hedeflerinin farklı olduğuna inanıyorum. Bu nedenle sürece hazır kalıplarla değil, dinleyerek ve değerlendirerek başlıyorum.")}</p>
-          <p className="about-section__body">{t("Amacım; karmaşık görünen süreci anlaşılır hale getirmek, hareketle ilgili hedefleri birlikte belirlemek ve her adımda açık bir iletişim kurmak.")}</p>
+          <p className="about-section__lead">{content.about_lead}</p>
+          <p className="about-section__body">{content.about_body}</p>
 
           <div className="about-values" aria-label={t("Yaklaşım değerleri")}>
             <div>
               <span>01</span>
-              <strong>{t("Dinlemek")}</strong>
+              <strong>{content.value_1}</strong>
             </div>
             <div>
               <span>02</span>
-              <strong>{t("Anlamak")}</strong>
+              <strong>{content.value_2}</strong>
             </div>
             <div>
               <span>03</span>
-              <strong>{t("Birlikte ilerlemek")}</strong>
+              <strong>{content.value_3}</strong>
             </div>
           </div>
         </div>
@@ -208,18 +214,18 @@ export default async function Home() {
         <div className="approach-panel" aria-labelledby="approach-title">
           <div className="approach-panel__heading">
             <p className="section-kicker section-kicker--light">{t("Yaklaşımım")}</p>
-            <h3 id="approach-title">{t("Sade, anlaşılır ve takip edilebilir bir süreç.")}</h3>
+            <h3 id="approach-title">{content.approach_title}</h3>
           </div>
 
           <div className="approach-steps">
-            {approachSteps.map(({ number, title, description, icon: Icon }) => (
+            {approachSteps.map(({ number, title, icon: Icon }, index) => (
               <article className="approach-step" key={title}>
                 <div className="approach-step__icon">
                   <Icon aria-hidden="true" size={25} strokeWidth={1.5} />
                 </div>
                 <span>{number}</span>
-                <h4>{t(title)}</h4>
-                <p>{t(description)}</p>
+                <h4>{content[`step_${index + 1}_title`]}</h4>
+                <p>{content[`step_${index + 1}_text`]}</p>
               </article>
             ))}
           </div>
@@ -230,11 +236,11 @@ export default async function Home() {
         <div className="blog-section__heading">
           <div>
             <p className="section-kicker">{t("Bilgi Köşesi")}</p>
-            <h2 id="blog-title">{t("Hareketi anlamak için")}<em>{" "}{t("sade ve güvenilir bilgiler.")}</em>
+            <h2 id="blog-title">{content.blog_title}<em>{" "}{content.blog_accent}</em>
             </h2>
           </div>
           <div className="blog-section__intro">
-            <p>{t("Günlük yaşamda hareket sağlığını destekleyen, kolay anlaşılır ve kaynak odaklı içerikler.")}</p>
+            <p>{content.blog_intro}</p>
             <NativeLink href={localHref("/blog")}>{t("Tüm yazıları görün")}<ArrowUpRight aria-hidden="true" size={18} />
             </NativeLink>
           </div>
@@ -247,6 +253,7 @@ export default async function Home() {
               className={`blog-card${index === 0 ? " blog-card--featured" : ""}`}
               key={post.title}
             >
+              {post.cover_path && <NativeLink className="content-card-image" href={localHref(`/blog/${post.slug}`)}><Image src={post.cover_path} alt={post.cover_alt || post.title} fill sizes="(max-width: 860px) 100vw, 33vw" /></NativeLink>}
               <div className="blog-card__meta">
                 <span>{post.category}</span>
                 <span>{post.reading_minutes}{" "}{t("dk okuma")}</span>
@@ -269,16 +276,16 @@ export default async function Home() {
           ))}
         </div>
 
-        <p className="blog-section__note">{t("Bilgi Köşesi içerikleri genel bilgilendirme amaçlıdır; tanı veya kişisel tedavi önerisi yerine geçmez.")}</p>
+        <p className="blog-section__note">{content.blog_note}</p>
       </section>
 
       <section className="contact-section" id="iletisim" aria-labelledby="contact-title">
         <div className="contact-section__main">
           <div className="contact-section__copy">
             <p className="section-kicker">{t("İletişim")}</p>
-            <h2 id="contact-title">{t("İlk adımı birlikte")}<em>{" "}{t("sakin ve net atalım.")}</em>
+            <h2 id="contact-title">{content.contact_title}<em>{" "}{content.contact_accent}</em>
             </h2>
-            <p>{t("Görüşme süreci, uygun saatler veya çalışma alanları hakkında bilgi almak için size uygun iletişim kanalını kullanabilirsiniz.")}</p>
+            <p>{content.contact_intro}</p>
           </div>
 
           <div className="contact-section__actions" aria-label={t("İletişim seçenekleri")}>

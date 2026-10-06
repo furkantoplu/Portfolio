@@ -183,7 +183,7 @@ Hakkımda ve İletişim sayfaları `site_pages` koleksiyonunda `about` ve `conta
 
 ## Çok dilli ziyaretçi sitesi — 6 Ekim 2026
 
-Ziyaretçi arayüzü Türkçe, İngilizce ve Almanca sunulur. Navbar'daki TR / EN / DE bağlantıları dil değiştirir. Türkçe mevcut kök adreslerini korur; İngilizce `/en`, Almanca `/de` altında çalışır. Sabit adresler ortak rota haritasında tanımlıdır. Örnekler: `/hakkimda`, `/en/about`, `/de/ueber-mich`; `/iletisim`, `/en/contact`, `/de/kontakt`. Alt sayfalara geçildiğinde dil URL üzerinden korunur. Admin yalnızca Türkçedir ve `/bakir` adresini kullanır.
+Ziyaretçi arayüzü Türkçe, İngilizce ve Almanca sunulur. Navbar'daki mevcut dil adı (Türkçe / English / Deutsch) tıklanınca açılan menü dil değiştirir; üç dil yan yana gösterilmez. Türkçe mevcut kök adreslerini korur; İngilizce `/en`, Almanca `/de` altında çalışır. Sabit adresler ortak rota haritasında tanımlıdır. Örnekler: `/hakkimda`, `/en/about`, `/de/ueber-mich`; `/iletisim`, `/en/contact`, `/de/kontakt`. Alt sayfalara geçildiğinde dil URL üzerinden korunur. Admin yalnızca Türkçedir ve `/bakir` adresini kullanır.
 
 Sabit arayüz metinleri `frontend/app/lib/messages.ts` sözlüğündedir. `proxy.ts` ziyaretçi URL'sinden dili çıkarır, istemciden gelen dil başlığını doğrulanmış değerle değiştirir ve server-rendered sayfalara aktarır. Kök HTML `lang` değeri dilin kendisini gösterir. İngilizce ve Almanca rotalar mevcut public sayfa bileşenlerini yeniden kullanır; sayfa tasarımı üç ayrı kopyaya ayrılmaz. Framework istemci navigasyon sorunu nedeniyle kullanılan NativeLink ve tam sayfa navigasyonu korunur.
 
@@ -192,6 +192,14 @@ Türkçe editorial kayıtlar mevcut Directus koleksiyonlarında kalır. İngiliz
 Yönetici mevcut editörlerin Türkçe / İngilizce / Almanca sekmelerini kullanır. Çeviri yayın durumu ana kayıttan bağımsızdır; public blog ve çalışma alanında hem ana kayıt hem çeviri `published` olmalıdır. Hazır olmayan dil sürümleri listelenmez, dil seçicisinde kullanılamaz ve doğrudan URL'de 404 verir. Liste boşsa o dilde açıklayıcı mesaj gösterilir. Çeviri okuma/yazma endpoint'leri aktif, tam yetkili Directus yöneticisi gerektirir; oturum ve TOTP sistemi değiştirilmez.
 
 Compose `content-migrations` servisi idempotent SQL migrasyonlarını çalıştırır ve başarılı tamamlanmadan frontend başlatılmaz. Var olan çeviriler başlangıç metinleriyle ezilmez. İlk örnek Hakkımda/İletişim çevirileri hazırdır; blog ve çalışma alanı çevirileri panelden doldurulur. Yasal belgeler bu pakette Türkçe kalır; EN/DE bağlantı metni belgenin Türkçe olduğunu belirtir. Sitemap yalnızca yayınlanmış çeviri detaylarını listeler; canonical ve hreflang adresleri dil URL'leriyle eşleşir.
+
+## Yönetilebilir sayfalar ve medya — 6 Ekim 2026
+
+`site_pages` kayıtları artık `home`, `about`, `contact`, `areas`, `blog` sayfalarını kapsar. Sayfa içerikleri panelinde beş ayrı sekme vardır. Ana sayfa hero ve bölüm metinleri, kısa bilgiler/değerler/süreç adımları ile hero/Hakkımda görselleri yönetilebilir. Blog ve çalışma alanları liste sayfalarının girişleri, isteğe bağlı giriş görselleri, arşiv ve bilgi notu metinleri de CMS'den gelir. Hakkımda'nın görseli kendi sayfa kaydındadır. İletişim bilgileri ana sayfa ve İletişim'de tek ortak kayıttan kullanılır. Tasarım yapısı/CSS ve ortak gezinme düğmelerinin etiketleri kodda kalır; serbest sayfa oluşturucu uygulanmadı.
+
+Yazı `cover_path/cover_alt/cover_caption`, çalışma alanı `image_path/image_alt` bilgileri kendi kayıtlarında saklanır. Yönetici JPG/PNG/WebP dosyasını panelden seçer; Directus `/files` üzerinden mevcut yetkili oturumla yüklenir. Dosya yüklemek ile içeriği kaydetmek iki ayrı adımdır. Görseller diller arasında ortak, alt metinler çevrilebilir. Yeni sayfa başlangıç içerikleri/çevirileri idempotent `003-editable-public-pages.sql` ile eklenir, mevcut kayıtlar ezilmez.
+
+Yüklenen dosyalar `directus_uploads` volume'ünde kalıcıdır; PostgreSQL içerik kayıtlarını tutar. İmaj taşımak bu verileri taşımaz; VPS geçişinde her iki volume de yedeklenmelidir. Public `/site-media/<UUID>` route'u Directus özel `/website-content/media/<UUID>` endpoint'inden akış alır. Yalnızca yayındaki blog/alan veya tanımlı public sayfa görselleri açılır; dosya kütüphanesine genel public permission verilmez. SVG/HTML sunulmaz. Kaydedilmemiş dosyalar admin oturumu üzerinden önizlenir. İçerikten kaldırma dosyayı silmez.
 
 ## Sağlık ve veri güvenliği sınırları
 

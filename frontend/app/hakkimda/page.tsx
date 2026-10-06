@@ -8,6 +8,7 @@ import { SiteHeader } from "../components/site-header";
 import { getSitePage } from "../lib/directus";
 
 type AboutContent = {
+  image_path?: string; image_alt?: string;
   hero_title: string; hero_accent: string; hero_description: string;
   story_title: string; story_accent: string; story_lead: string;
   story_paragraphs: Array<{ text: string }>; professional_note: string;
@@ -36,7 +37,7 @@ export default async function AboutPage() {
           <NativeLink className="primary-button" href={localHref("/iletisim")}>{t("İletişim bilgilerini görün")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
         </div>
         <div className="about-page-hero__portrait">
-          <Image src="/about-physiotherapist-v1.png" alt={t("Klinik ortamında fizyoterapist Furkan Toplu")} fill priority sizes="(max-width: 860px) 100vw, 48vw" />
+          <Image src={content.image_path || "/about-physiotherapist-v1.png"} alt={content.image_alt || t("Klinik ortamında fizyoterapist Furkan Toplu")} fill priority sizes="(max-width: 860px) 100vw, 48vw" />
           <div><span>{t("Fizyoterapist")}</span><strong>{t("Furkan Toplu")}</strong></div>
         </div>
       </section>

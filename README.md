@@ -93,7 +93,23 @@ $env:HTTP_PORT=8081
 docker compose up -d
 ```
 
-## Frontend geliştirme modu
+## Sayfa ve görsel yönetimi
+
+`http://localhost:8080/bakir` → **Sayfa içerikleri** bölümünde Ana sayfa, Hakkımda, İletişim, Çalışma alanları ve Blog sekmeleri bulunur. Ana sayfanın bölüm başlıkları, açıklamaları, kısa bilgileri, süreç adımları, 3D karakteri ve Hakkımda bölüm görseli burada düzenlenir. Blog/çalışma alanları liste sayfalarının girişleri ve bilgi notları da ayrı yönetilir. İletişim numaraları ana sayfaya aynı ortak kayıttan gelir.
+
+**Blog yazıları** ve **Çalışma alanları** editörlerinde “Bilgisayardan görsel seç” alanını kullanın. Görsel yüklemek dosyayı saklar; ziyaretçilere göstermek için ilgili yazıyı/alanı/sayfayı ayrıca kaydedin. JPG, PNG ve WebP desteklenir; yükleme limiti 10 MB'dir. 3D karakter görünümü için arka planı şeffaf PNG kullanın. Alt metin alanı erişilebilirlik içindir.
+
+Görseller Türkçe sekmesinde yönetilen ortak alanlardır; İngilizce/Almanca sekmeleri metin ve çeviri yayın durumunu değiştirir. Liste ve detay görselleri ilgili kaydın aynı görselini kullanır. Varsayılan görseli olan bölümlerde özel görseli kaldırmak mevcut tasarım görseline döndürür. İsteğe bağlı liste sayfası giriş görselleri boşsa gösterilmez.
+
+Dosyalar `directus_uploads` kalıcı Docker volume'ünde, içerik eşleştirmeleri PostgreSQL'de saklanır. VPS taşırken bu iki volume'ü yedekleyip taşıyın: frontend imajı tek başına içerikleri ve yüklenen görselleri taşımaz. Veritabanı ve uploads volume'lerini silmeyin.
+
+Public `/site-media/<UUID>` uçları yalnızca yayınlanmış yazı/alan veya tanımlı public sayfa görsellerini sunar. Dosya kütüphanesinin tamamına anonim erişim açılmaz; SVG/HTML public medya olarak sunulmaz. Kaydedilmemiş görsel yalnızca admin oturumunda önizlenir. “İçerikten kaldır” dosyayı fiziksel olarak silmez.
+
+`003-editable-public-pages.sql` Docker geçişine eklidir; mevcut metinleri ezmeden üç dilde başlangıç içeriklerini kurar. Manuel kurulum için `node scripts/setup-languages.mjs`. Seed SQL değiştirilecekse Node 22.18+ ile `node scripts/generate-page-content-migration.mjs` çıktısını inceleyin; kaynak config `frontend/app/lib/page-content-config.json` dosyasıdır.
+
+Kontroller: `node --test scripts/tests/*.test.mjs`, `node scripts/tests/languages-smoke.mjs` ve frontend içinde `npx tsc --noEmit`.
+
+## Frontend geliştirme komutları
 
 ```powershell
 cd frontend

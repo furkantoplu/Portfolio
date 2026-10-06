@@ -329,6 +329,17 @@ docker compose down
 - Docker migrasyonları tekrar çalışabilir ve mevcut çevirileri ezmez. Servisin başarıyla tamamlanması frontend başlangıcının ön koşuludur. Temel Directus koleksiyonlarının ilk kurulumu README'deki bootstrap adımıdır.
 - Yasal metin çevirileri henüz bu pakette sunulmaz; Türkçe belgelere giden yabancı dil bağlantıları bunu açıkça belirtir. İçerik çevirileri yayına çıkmadan önce site sahibi tarafından kontrol edilir.
 
+### Karar 038 — Tam sayfa içerikleri, ortak görseller ve açılır dil menüsü
+
+- Sayfa editörü Ana sayfa/Hakkımda/İletişim/Çalışma alanları/Blog sekmelerini içerir; liste sayfası metinleri tek tek yazı metinlerinden ayrı yönetilir. Sayfa tasarımının düzeni ve CSS admin paneline taşınmaz.
+- Ana sayfa 3D karakter ve bölüm portresi ayrı alanlardır. Hakkımda sayfasının portresi de ayrı yönetilir. Blog ve çalışma alanı görselleri kendi kaydında saklanır ve liste/ana sayfa/detayda ortak kullanılır.
+- Dosya seçimi panelden yapılır; dosya yolu yazdırılmaz. Yükleme sonrasında kaydetme gereklidir. Şeffaf ana karakter için PNG kullanılır; JPG/PNG/WebP desteklenir, boyut limiti 10 MB'dir.
+- Yeni uploadlar kalıcı Directus volume'üne gider. Veritabanı ve uploads volume'leri VPS taşınmasında frontend imajına ek olarak taşınır. Dosya silme bu pakette yoktur; içerikten kaldırma geri dönüşsüz dosya silmez.
+- Medya için genel public dosya izni açılmaz. Özel public endpoint UUID, yayın referansı ve MIME allowlist kontrol eder; admin önizleme normal Directus yetkili varlık uçlarını kullanır.
+- Görseller ortak Türkçe kayıtta, içerik çevirileri EN/DE tabloda tutulur. Çeviri beyaz listesi görsel yolunu değiştiremez.
+- Dil düğmesi mevcut dilin tam adını gösterir; tıklama seçenekleri altına açar. Dışarı tıklama/Escape kapatır; mevcut sayfa dil eşleştirmesi ve yayımlanmamış çeviri pasifliği korunur.
+- İletişim kartları ana sayfa ve ayrı iletişim sayfasında farklı CSS kapsamlarına sahiptir; çakışan `.contact-details` yerleşimi ayrıştırılır. Blog okuma bağlantıları 16 px ve en az 44 px tıklama yüksekliğine çıkarılır.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

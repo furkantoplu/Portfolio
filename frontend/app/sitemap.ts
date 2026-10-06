@@ -9,11 +9,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const availability: Record<string, Partial<Record<Locale, string>>> = {};
   for (const [key, paths] of Object.entries(routes)) availability[key] = { ...paths };
   const results = await Promise.all(locales.map(async locale => {
-    const [areas, posts, about, contact] = await Promise.allSettled([
-      getPracticeAreas({ locale }), getBlogPosts({ locale }), getSitePage("about", locale), getSitePage("contact", locale),
+    const [areas, posts, ...pages] = await Promise.allSettled([
+      getPracticeAreas({ locale }), getBlogPosts({ locale }), ...(["home", "about", "contact", "areas", "blog"] as const).map(key => getSitePage(key, locale)),
     ]);
-    if (about.status === "rejected") delete availability.about[locale];
-    if (contact.status === "rejected") delete availability.contact[locale];
+    (["home", "about", "contact", "areas", "blog"] as const).forEach((key, index) => { if (pages[index].status === "rejected") delete availability[key][locale]; });
     return { locale, areas: areas.status === "fulfilled" ? areas.value : [], posts: posts.status === "fulfilled" ? posts.value : [] };
   }));
   for (const key of Object.keys(routes) as RouteKey[]) {

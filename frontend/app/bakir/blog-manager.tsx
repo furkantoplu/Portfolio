@@ -6,6 +6,7 @@ import { directusRequest, type ContentItem } from "./admin-api";
 import { NativeLink } from "../components/native-link";
 import { LanguageTabs, TranslationEditor } from "./translation-editor";
 import type { Locale } from "../lib/i18n";
+import { ImageField } from "./image-field";
 
 export type ManagedBlogPost = ContentItem & {
   id: number;
@@ -15,6 +16,9 @@ export type ManagedBlogPost = ContentItem & {
   title: string;
   slug: string;
   summary: string;
+  cover_path: string | null;
+  cover_alt: string | null;
+  cover_caption: string | null;
   published_at: string | null;
   reading_minutes: number;
   lead: string | null;
@@ -27,6 +31,9 @@ export type ManagedBlogPost = ContentItem & {
 };
 
 type BlogDraft = {
+  cover_path: string;
+  cover_alt: string;
+  cover_caption: string;
   status: ContentItem["status"];
   featured: boolean;
   category: string;
@@ -45,6 +52,7 @@ type BlogDraft = {
 };
 
 const emptyDraft: BlogDraft = {
+  cover_path: "", cover_alt: "", cover_caption: "",
   status: "draft",
   featured: false,
   category: "Genel Bilgilendirme",
@@ -79,6 +87,7 @@ function slugify(value: string) {
 
 function postToDraft(post: ManagedBlogPost): BlogDraft {
   return {
+    cover_path: post.cover_path ?? "", cover_alt: post.cover_alt ?? "", cover_caption: post.cover_caption ?? "",
     status: post.status,
     featured: post.featured,
     category: post.category,
@@ -139,6 +148,7 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
       .map((text) => ({ text }));
 
     const payload = {
+      cover_path: draft.cover_path || null, cover_alt: draft.cover_alt.trim() || null, cover_caption: draft.cover_caption.trim() || null,
       status: draft.status,
       featured: draft.featured,
       category: draft.category.trim(),
@@ -236,6 +246,9 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
           </div>
 
           <div className="admin-editor-grid">
+            <ImageField label="Yazı kapak görseli" value={draft.cover_path} onChange={path => update("cover_path", path)} disabled={busy} />
+            <label><span>Görsel açıklaması</span><input value={draft.cover_alt} onChange={e => update("cover_alt", e.target.value)} /></label>
+            <label><span>Görsel alt yazısı</span><input value={draft.cover_caption} onChange={e => update("cover_caption", e.target.value)} /></label>
             <label className="admin-field--wide"><span>Yazı başlığı</span><input value={draft.title} onChange={(event) => { const title = event.target.value; setDraft((current) => ({ ...current, title, ...(!selectedId ? { slug: slugify(title) } : {}) })); }} required /></label>
             <label><span>Kategori</span><input value={draft.category} onChange={(event) => update("category", event.target.value)} required /></label>
             <label><span>URL adı</span><input value={draft.slug} onChange={(event) => update("slug", slugify(event.target.value))} required /></label>

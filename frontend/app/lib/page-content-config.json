@@ -1,0 +1,74 @@
+{
+  "home": {
+    "label": "Ana sayfa",
+    "fields": [
+      {"key":"hero_kicker","label":"Üst başlık","default":"Kişiye özel fizyoterapi yaklaşımı"},
+      {"key":"hero_title","label":"Ana başlık","default":"Hareketinize güven,"},
+      {"key":"hero_accent","label":"Başlık vurgusu","default":"yaşamınıza güç"},
+      {"key":"hero_suffix","label":"Başlık devamı","default":"katın."},
+      {"key":"hero_description","label":"Ana açıklama","default":"İhtiyaçlarınızı dinleyen, hareket kapasitenizi destekleyen ve süreci sizinle birlikte şekillendiren bilimsel bir yaklaşım."},
+      {"key":"hero_image","label":"Ana görsel / 3D karakter","default":"/furkan-toplu-hero-3d-v3.png","type":"image"},
+      {"key":"hero_image_alt","label":"Ana görsel açıklaması","default":"Kollarını bağlayarak gülümseyen Fizyoterapist Furkan Toplu"},
+      {"key":"hero_note_title","label":"Görsel yanındaki başlık","default":"Her hareket bir başlangıçtır."},
+      {"key":"hero_note_text","label":"Görsel yanındaki metin","default":"Sizin için doğru olan yerden başlayalım."},
+      {"key":"location","label":"Şehir","default":"İstanbul"},
+      {"key":"location_note","label":"Görüşme biçimi","default":"Yüz yüze görüşme"},
+      {"key":"fact_1","label":"Kısa bilgi 1","default":"Kişiye özel değerlendirme"},
+      {"key":"fact_2","label":"Kısa bilgi 2","default":"Bilimsel ve güncel yaklaşım"},
+      {"key":"fact_3","label":"Kısa bilgi 3","default":"Şeffaf süreç takibi"},
+      {"key":"practice_title","label":"Çalışma alanları başlığı","default":"Hareketin farklı ihtiyaçlarına"},
+      {"key":"practice_accent","label":"Çalışma alanları vurgusu","default":"bütüncül bir bakış."},
+      {"key":"practice_intro","label":"Çalışma alanları açıklaması","default":"Her süreç dinlemekle başlar. Değerlendirme sonrasında ihtiyaçlara uygun, anlaşılır ve takip edilebilir bir yol haritası oluşturulur."},
+      {"key":"practice_note","label":"Çalışma alanları bilgi notu","default":"Buradaki içerikler genel bilgilendirme amaçlıdır; kişisel değerlendirme yerine geçmez."},
+      {"key":"about_image","label":"Hakkımda bölüm görseli","default":"/about-physiotherapist-v1.png","type":"image"},
+      {"key":"about_image_alt","label":"Hakkımda görsel açıklaması","default":"Klinikte duran fizyoterapist portresi"},
+      {"key":"about_title","label":"Hakkımda başlığı","default":"Hareketin her insanda"},
+      {"key":"about_accent","label":"Hakkımda vurgusu","default":"farklı bir hikâyesi var."},
+      {"key":"about_lead","label":"Hakkımda giriş metni","default":"Her bireyin ihtiyaçlarının, günlük yaşamının ve hedeflerinin farklı olduğuna inanıyorum. Bu nedenle sürece hazır kalıplarla değil, dinleyerek ve değerlendirerek başlıyorum."},
+      {"key":"about_body","label":"Hakkımda devam metni","default":"Amacım; karmaşık görünen süreci anlaşılır hale getirmek, hareketle ilgili hedefleri birlikte belirlemek ve her adımda açık bir iletişim kurmak."},
+      {"key":"value_1","label":"Değer 1","default":"Dinlemek"},
+      {"key":"value_2","label":"Değer 2","default":"Anlamak"},
+      {"key":"value_3","label":"Değer 3","default":"Birlikte ilerlemek"},
+      {"key":"approach_title","label":"Yaklaşım başlığı","default":"Sade, anlaşılır ve takip edilebilir bir süreç."},
+      {"key":"step_1_title","label":"Adım 1 başlığı","default":"Sizi dinleyerek başlarız"},
+      {"key":"step_1_text","label":"Adım 1 açıklaması","default":"Beklentilerinizi, günlük yaşamınızı ve hareketle ilgili ihtiyaçlarınızı birlikte ele alırız."},
+      {"key":"step_2_title","label":"Adım 2 başlığı","default":"Yol haritasını netleştiririz"},
+      {"key":"step_2_text","label":"Adım 2 açıklaması","default":"Değerlendirme sonrasında anlaşılır ve kişiye özel bir süreç planı oluştururuz."},
+      {"key":"step_3_title","label":"Adım 3 başlığı","default":"Süreci birlikte izleriz"},
+      {"key":"step_3_text","label":"Adım 3 açıklaması","default":"İlerlemeyi düzenli olarak gözden geçirir, ihtiyaçlara göre planı yeniden şekillendiririz."},
+      {"key":"blog_title","label":"Blog bölüm başlığı","default":"Hareketi anlamak için"},
+      {"key":"blog_accent","label":"Blog bölüm vurgusu","default":"sade ve güvenilir bilgiler."},
+      {"key":"blog_intro","label":"Blog bölüm açıklaması","default":"Günlük yaşamda hareket sağlığını destekleyen, kolay anlaşılır ve kaynak odaklı içerikler."},
+      {"key":"blog_note","label":"Blog bilgi notu","default":"Bilgi Köşesi içerikleri genel bilgilendirme amaçlıdır; tanı veya kişisel tedavi önerisi yerine geçmez."},
+      {"key":"contact_title","label":"İletişim bölüm başlığı","default":"İlk adımı birlikte"},
+      {"key":"contact_accent","label":"İletişim bölüm vurgusu","default":"sakin ve net atalım."},
+      {"key":"contact_intro","label":"İletişim bölüm açıklaması","default":"Görüşme süreci, uygun saatler veya çalışma alanları hakkında bilgi almak için size uygun iletişim kanalını kullanabilirsiniz."}
+    ]
+  },
+  "areas": {
+    "label":"Çalışma alanları sayfası",
+    "fields":[
+      {"key":"hero_title","label":"Ana başlık","default":"Her hareket ihtiyacına"},
+      {"key":"hero_accent","label":"Başlık vurgusu","default":"kendi bağlamında bakmak."},
+      {"key":"hero_description","label":"Giriş metni","default":"Aynı başlık altında görünen ihtiyaçlar bile her kişide farklı bir hikâyeye sahip olabilir. Süreç, dinleme ve değerlendirmeyle başlar."},
+      {"key":"hero_image","label":"Sayfa giriş görseli (isteğe bağlı)","default":"","type":"image"},
+      {"key":"hero_image_alt","label":"Görsel açıklaması","default":"Çalışma Alanları"},
+      {"key":"note_title","label":"Bilgi notu başlığı","default":"Sayfadaki başlıklar bir tanı listesi değil,"},
+      {"key":"note_accent","label":"Bilgi notu vurgusu","default":"değerlendirme kapsamını anlatan genel çerçevelerdir."},
+      {"key":"note_text","label":"Bilgi notu metni","default":"Kişisel ihtiyaçlar ve sürecin uygunluğu ancak bireysel görüşme ve değerlendirme sonrasında ele alınabilir."}
+    ]
+  },
+  "blog": {
+    "label":"Blog sayfası",
+    "fields":[
+      {"key":"hero_title","label":"Ana başlık","default":"Hareketi anlamak için"},
+      {"key":"hero_accent","label":"Başlık vurgusu","default":"sade ve güvenilir bilgiler."},
+      {"key":"hero_description","label":"Giriş metni","default":"Günlük yaşamda hareket sağlığını destekleyen konuları, karmaşık ifadelerden uzak ve anlaşılır bir dille ele alıyoruz."},
+      {"key":"hero_image","label":"Sayfa giriş görseli (isteğe bağlı)","default":"","type":"image"},
+      {"key":"hero_image_alt","label":"Görsel açıklaması","default":"Bilgi Köşesi"},
+      {"key":"archive_title","label":"Arşiv başlığı","default":"Bilgi arşivi"},
+      {"key":"archive_intro","label":"Arşiv açıklaması","default":"Yeni içerikler yayınlandıkça bu alan otomatik olarak genişleyecek."},
+      {"key":"note_text","label":"Bilgi notu","default":"Bu içerikler genel bilgilendirme amaçlıdır; tanı, tedavi veya kişisel değerlendirme yerine geçmez."}
+    ]
+  }
+}

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Home from "../../page";
+import Home, { generateMetadata as homeMetadata } from "../../page";
 import About, { generateMetadata as aboutMetadata } from "../../hakkimda/page";
 import Contact, { generateMetadata as contactMetadata } from "../../iletisim/page";
-import Areas, { metadata as areasMetadata } from "../../calisma-alanlari/page";
+import Areas, { generateMetadata as areasMetadata } from "../../calisma-alanlari/page";
 import Area, { generateMetadata as areaMetadata } from "../../calisma-alanlari/[slug]/page";
-import Blog, { metadata as blogMetadata } from "../../blog/page";
+import Blog, { generateMetadata as blogMetadata } from "../../blog/page";
 import Post, { generateMetadata as postMetadata } from "../../blog/[slug]/page";
 import { routes, type Locale, type RouteKey } from "../../lib/i18n";
 import { getSiteUrl } from "../../lib/site-url";
@@ -40,7 +40,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   else {
     const titles = { home: { en: "Physiotherapy", de: "Physiotherapie" }, areas: { en: "Practice areas", de: "Behandlungsbereiche" }, blog: { en: "Knowledge corner", de: "Wissensecke" } };
     const descriptions = { en: "Individual physiotherapy assessment, practice areas and clear information about movement with Furkan Toplu in Istanbul.", de: "Individuelle physiotherapeutische Untersuchung, Behandlungsbereiche und verständliche Informationen zu Bewegung mit Furkan Toplu in Istanbul." };
-    metadata = { ...(key === "areas" ? areasMetadata : key === "blog" ? blogMetadata : {}), title: `${titles[key][locale as "en" | "de"]} | Furkan Toplu`, description: descriptions[locale as "en" | "de"] };
+    const editable = await (key === "areas" ? areasMetadata() : key === "blog" ? blogMetadata() : homeMetadata());
+    metadata = { title: `${titles[key][locale as "en" | "de"]} | Furkan Toplu`, description: descriptions[locale as "en" | "de"], ...editable };
   }
   return { ...metadata, alternates: { canonical: languages[locale], languages: { ...languages, ...(languages.tr ? { "x-default": languages.tr } : {}) } } };
 }

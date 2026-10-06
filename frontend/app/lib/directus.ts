@@ -1,6 +1,9 @@
 import { getLocale } from "./i18n-server";
 import type { Locale } from "./i18n";
 import { notFound } from "next/navigation";
+import pageConfig from "./page-content-config.json";
+import { getTranslator } from "./i18n";
+export type SitePageKey = "home" | "about" | "contact" | "areas" | "blog";
 
 export type PracticeArea = {
   language_slugs?: Partial<Record<Locale, string>>;
@@ -51,7 +54,7 @@ export type BlogPost = {
 };
 
 export type SitePage<T> = {
-  page_key: "about" | "contact";
+  page_key: SitePageKey;
   content: T;
   seo_title: string | null;
   seo_description: string | null;
@@ -101,8 +104,16 @@ export function getBlogPosts(options: { homepage?: boolean; locale?: Locale } = 
   return fetchDirectus<BlogPost[]>(`/blog-posts${query}`, options.locale);
 }
 
-export function getSitePage<T>(pageKey: "about" | "contact", locale?: Locale) {
+export function getSitePage<T>(pageKey: SitePageKey, locale?: Locale) {
   return fetchDirectus<SitePage<T>>(`/pages/${pageKey}`, locale);
+}
+
+export async function getEditablePage(pageKey: keyof typeof pageConfig) {
+  const locale = await getLocale();
+  const t = getTranslator(locale);
+  const page = await getSitePage<Record<string, string>>(pageKey, locale);
+  const defaults = Object.fromEntries(pageConfig[pageKey].fields.map(field => [field.key, "type" in field ? field.default : t(field.default)]));
+  return { ...page, content: { ...defaults, ...page.content } };
 }
 
 export async function getHomeContact<T>() {

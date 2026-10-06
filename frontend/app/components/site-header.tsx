@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ArrowUpRight, CalendarDays, Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, CalendarDays, ChevronDown, Menu, X } from "lucide-react";
 import { BrandMark } from "./brand-mark";
 import { NativeLink } from "./native-link";
 import { navItems, type NavigationKey } from "./navigation";
@@ -18,11 +18,19 @@ export function SiteHeader({ active, locale = "tr", languageLinks }: SiteHeaderP
   const languageUrls = languageLinks ?? routes[active || "home"];
   const navigation = navItems.map(item => ({ ...item, label: t(item.label), href: localizeHref(item.href, locale) }));
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const languageRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const close = (event: PointerEvent) => { if (!languageRef.current?.contains(event.target as Node)) setIsLanguageOpen(false); };
+    document.addEventListener("pointerdown", close);
+    return () => document.removeEventListener("pointerdown", close);
+  }, []);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsMenuOpen(false);
+        setIsLanguageOpen(false);
       }
     };
 
@@ -61,11 +69,14 @@ export function SiteHeader({ active, locale = "tr", languageLinks }: SiteHeaderP
         </nav>
 
         <div className="header-actions">
-        <nav className="language-switch" aria-label={locale === "tr" ? "Dil seçimi" : locale === "en" ? "Language selection" : "Sprachauswahl"}>
+        <div className="language-dropdown" ref={languageRef}>
+        <button type="button" className="language-dropdown__trigger" aria-expanded={isLanguageOpen} aria-controls="language-options" onClick={() => setIsLanguageOpen(open => !open)}>{languageNames[locale]}<ChevronDown size={15} aria-hidden="true" /></button>
+        {isLanguageOpen && <nav id="language-options" className="language-dropdown__options" aria-label={locale === "tr" ? "Dil seçimi" : locale === "en" ? "Language selection" : "Sprachauswahl"}>
           {locales.map(language => languageUrls[language] ? (
-            <NativeLink key={language} href={languageUrls[language]!} lang={language} hrefLang={language} aria-current={language === locale ? "page" : undefined} title={languageNames[language]}>{language.toUpperCase()}</NativeLink>
-          ) : <span key={language} aria-disabled="true" title={locale === "tr" ? "Çeviri henüz yayımlanmadı" : locale === "en" ? "Translation not published yet" : "Übersetzung noch nicht veröffentlicht"}>{language.toUpperCase()}</span>)}
-        </nav>
+            <NativeLink key={language} href={languageUrls[language]!} lang={language} hrefLang={language} aria-current={language === locale ? "page" : undefined}>{languageNames[language]}</NativeLink>
+          ) : <span key={language} aria-disabled="true" title={locale === "tr" ? "Çeviri henüz yayımlanmadı" : locale === "en" ? "Translation not published yet" : "Übersetzung noch nicht veröffentlicht"}>{languageNames[language]}</span>)}
+        </nav>}
+        </div>
         <NativeLink className="header-cta" href={routes.contact[locale]}>
           <CalendarDays aria-hidden="true" size={18} strokeWidth={1.8} />
           <span>{t("Randevu Bilgisi")}</span>

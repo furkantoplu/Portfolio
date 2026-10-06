@@ -5,16 +5,14 @@ import Image from "next/image";
 import { ArrowUpRight, BookOpenText, Clock3 } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
-import { getBlogPosts } from "../lib/directus";
+import { getBlogPosts, getEditablePage } from "../lib/directus";
 
-export const metadata: Metadata = {
-  title: "Bilgi Köşesi | Fzt. Furkan Toplu",
-  description: "Hareket, günlük yaşam ve fizyoterapi süreci hakkında sade ve genel bilgilendirici yazılar.",
-};
+export async function generateMetadata(): Promise<Metadata> { const page = await getEditablePage("blog"); return { title: page.seo_title || "Blog sayfası | Fzt. Furkan Toplu", description: page.seo_description || undefined }; }
 
 export default async function BlogPage() {
   const { locale, t, href: localHref } = await getPageTools();
   const posts = await getBlogPosts();
+  const { content } = await getEditablePage("blog");
   const [featuredPost, ...otherPosts] = posts;
 
   return (
@@ -23,14 +21,15 @@ export default async function BlogPage() {
 
       <section className="editorial-hero" aria-labelledby="editorial-title">
         <div className="editorial-hero__heading">
-          <p className="section-kicker">{t("Bilgi Köşesi")}</p>
-          <h1 id="editorial-title">{t("Hareketi anlamak için")}<em>{" "}{t("sade ve güvenilir bilgiler.")}</em></h1>
+          <p className="section-kicker">{content.hero_image_alt}</p>
+          <h1 id="editorial-title">{content.hero_title}<em>{" "}{content.hero_accent}</em></h1>
         </div>
         <div className="editorial-hero__intro">
           <BookOpenText aria-hidden="true" size={30} strokeWidth={1.35} />
-          <p>{t("Günlük yaşamda hareket sağlığını destekleyen konuları, karmaşık ifadelerden uzak ve anlaşılır bir dille ele alıyoruz.")}</p>
+          <p>{content.hero_description}</p>
         </div>
       </section>
+      {content.hero_image && <div className="managed-page-image"><Image src={content.hero_image} alt={content.hero_image_alt} fill sizes="100vw" /></div> }
 
       {featuredPost ? (
         <section className="featured-article" aria-labelledby="featured-title">
@@ -60,12 +59,13 @@ export default async function BlogPage() {
       {otherPosts.length > 0 && (
         <section className="article-archive" aria-labelledby="archive-title">
           <div className="article-archive__heading">
-            <div><p className="section-kicker">{t("Son Yazılar")}</p><h2 id="archive-title">{t("Bilgi arşivi")}</h2></div>
-            <p>{t("Yeni içerikler yayınlandıkça bu alan otomatik olarak genişleyecek.")}</p>
+            <div><p className="section-kicker">{t("Son Yazılar")}</p><h2 id="archive-title">{content.archive_title}</h2></div>
+            <p>{content.archive_intro}</p>
           </div>
           <div className="article-archive__grid">
             {otherPosts.map((post, index) => (
               <article className="archive-card" key={post.slug}>
+                {post.cover_path && <a className="content-card-image" href={localHref(`/blog/${post.slug}`)}><Image src={post.cover_path} alt={post.cover_alt || post.title} fill sizes="(max-width: 860px) 100vw, 33vw" /></a>}
                 <div className="archive-card__topline"><span>{String(index + 2).padStart(2, "0")}</span><span>{post.category}</span></div>
                 <div><h3>{post.title}</h3><p>{post.summary}</p></div>
                 <div className="archive-card__footer">
@@ -75,7 +75,7 @@ export default async function BlogPage() {
               </article>
             ))}
           </div>
-          <p className="article-archive__note">{t("Bu içerikler genel bilgilendirme amaçlıdır; tanı, tedavi veya kişisel değerlendirme yerine geçmez.")}</p>
+          <p className="article-archive__note">{content.note_text}</p>
         </section>
       )}
 

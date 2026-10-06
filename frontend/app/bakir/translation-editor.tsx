@@ -4,6 +4,8 @@ import { useEffect, useState, type FormEvent } from "react";
 import { LoaderCircle, Save } from "lucide-react";
 import { adminLanguageNames, locales, type Locale } from "../lib/i18n";
 import { directusRequest } from "./admin-api";
+import pageConfig from "../lib/page-content-config.json";
+import type { PageKey } from "./page-manager";
 
 type Collection = "practice_areas" | "blog_posts" | "site_pages";
 type Field = { key: string; label: string; columns?: string[] };
@@ -27,8 +29,9 @@ export function LanguageTabs({ language, onChange, disabled = false }: { languag
   return <div className="admin-language-tabs" aria-label="İçerik dili">{locales.map(locale => <button key={locale} type="button" aria-pressed={language === locale} className={language === locale ? "is-active" : ""} disabled={disabled && locale !== "tr"} onClick={() => onChange(locale)}>{adminLanguageNames[locale]}</button>)}</div>;
 }
 
-export function TranslationEditor({ collection, parentId, language, pageKey }: { collection: Collection; parentId: number; language: "en" | "de"; pageKey?: "about" | "contact" }) {
-  const fields: Field[] = `${fieldKeys[collection === "site_pages" ? pageKey || "about" : collection]} seo_title seo_description`.split(" ").map(key => ({ key, label: labels[key], columns: arrayFields[key] }));
+export function TranslationEditor({ collection, parentId, language, pageKey }: { collection: Collection; parentId: number; language: "en" | "de"; pageKey?: PageKey }) {
+  const configuredPage = pageKey === "home" || pageKey === "areas" || pageKey === "blog" ? pageConfig[pageKey] : null;
+  const fields: Field[] = configuredPage ? [...configuredPage.fields.filter(field => !("type" in field && field.type === "image")).map(field => ({ key: field.key, label: field.label })), { key: "seo_title", label: labels.seo_title }, { key: "seo_description", label: labels.seo_description }] : `${fieldKeys[collection === "site_pages" ? pageKey === "contact" ? "contact" : "about" : collection]}${pageKey === "about" ? " image_alt" : ""} seo_title seo_description`.split(" ").map(key => ({ key, label: labels[key], columns: arrayFields[key] }));
   const [draft, setDraft] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Translation["status"]>("draft");
   const [slug, setSlug] = useState("");

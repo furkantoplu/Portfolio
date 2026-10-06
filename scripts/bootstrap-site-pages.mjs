@@ -111,4 +111,4 @@ for (const page of pages) {
   if (existing.length === 0) await request("/items/site_pages", { method: "POST", token, body: page });
 }
 
-console.log("Hakkımda ve iletişim sayfası içerikleri hazır.");
+console.log("Hakkımda ve iletişim sayfası içerikleri hazır. Ana sayfa, blog ve çalışma alanları sayfaları için node scripts/setup-languages.mjs çalıştırın.");

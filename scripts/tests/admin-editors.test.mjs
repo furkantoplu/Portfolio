@@ -1,0 +1,41 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
+const requireFrontend = createRequire(new URL("../../frontend/package.json", import.meta.url));
+const { build } = requireFrontend("esbuild");
+const result = await build({
+  stdin: { contents: `
+    import React from 'react';
+    import { renderToStaticMarkup } from 'react-dom/server';
+    import { PageManager } from './app/bakir/page-manager';
+    import { BlogManager } from './app/bakir/blog-manager';
+    import { PracticeManager } from './app/bakir/practice-manager';
+    import config from './app/lib/page-content-config.json';
+    const onChanged = async () => {};
+    export const page = renderToStaticMarkup(<PageManager pages={[{ id: 1, page_key: 'home', content: Object.fromEntries(config.home.fields.map(f => [f.key, f.default])), seo_title: '', seo_description: '' }]} onChanged={onChanged} />);
+    export const blog = renderToStaticMarkup(<BlogManager posts={[]} onChanged={onChanged} />);
+    export const practice = renderToStaticMarkup(<PracticeManager areas={[]} onChanged={onChanged} />);
+  `, resolveDir: fileURLToPath(new URL("../../frontend/", import.meta.url)), loader: "tsx" },
+  write: false, bundle: true, format: "cjs", platform: "node", jsx: "automatic",
+  external: ["react", "react/jsx-runtime", "react-dom/server", "lucide-react"],
+  plugins: [{ name: "test-image", setup(builder) {
+    builder.onResolve({ filter: /^next\/image$/ }, () => ({ path: "image", namespace: "test-image" }));
+    builder.onLoad({ filter: /.*/, namespace: "test-image" }, () => ({ contents: 'import {createElement} from "react"; export default function Image({src,alt}) { return createElement("img",{src,alt}); }', loader: "js" }));
+  } }],
+});
+const module = { exports: {} };
+// Image optimization is a framework concern; this test checks the editor controls.
+new Function("require", "module", "exports", result.outputFiles[0].text)(requireFrontend, module, module.exports);
+test("Page manager includes all five pages, homepage copy and image upload controls", () => {
+  const html = module.exports.page;
+  for (const label of ["Ana sayfa", "Hakkımda", "İletişim", "Çalışma alanları", "Blog", "Ana görsel / 3D karakter", "Hakkımda bölüm görseli", "Adım 3 açıklaması"]) assert.ok(html.includes(label), label);
+  assert.ok(html.includes('type="file"'));
+  assert.ok(html.includes("Hareketinize güven,"));
+});
+test("Blog and practice editors expose image upload and accessibility text", () => {
+  for (const key of ["blog", "practice"]) {
+    assert.ok(module.exports[key].includes('type="file"'), key);
+    assert.ok(module.exports[key].includes("Görsel açıklaması"), key);
+  }
+});

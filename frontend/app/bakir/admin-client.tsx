@@ -74,8 +74,8 @@ export function BakirAdmin() {
     const [{ data: currentUser }, { data: members }, { data: blog }, { data: practices }, { data: pages }] = await Promise.all([
       directusRequest<{ data: AdminUser }>("/website-content/admin-account"),
       directusRequest<{ data: AdminMember[] }>("/website-content/admin-team"),
-      directusRequest<{ data: ManagedBlogPost[] }>("/items/blog_posts?fields=id,status,sort,featured,category,title,slug,summary,published_at,reading_minutes,lead,body_paragraphs,quote,closing_title,closing_body,seo_title,seo_description&sort=-published_at,sort&limit=-1"),
-      directusRequest<{ data: ManagedPracticeArea[] }>("/items/practice_areas?fields=id,status,sort,show_on_homepage,title,slug,summary,hero_title,hero_accent,lead,overview_title,overview_accent,overview,assessment_points,process_steps,faqs,seo_title,seo_description&sort=sort,id&limit=-1"),
+      directusRequest<{ data: ManagedBlogPost[] }>("/items/blog_posts?fields=id,status,sort,featured,category,title,slug,summary,cover_path,cover_alt,cover_caption,published_at,reading_minutes,lead,body_paragraphs,quote,closing_title,closing_body,seo_title,seo_description&sort=-published_at,sort&limit=-1"),
+      directusRequest<{ data: ManagedPracticeArea[] }>("/items/practice_areas?fields=id,status,sort,show_on_homepage,title,slug,summary,image_path,image_alt,hero_title,hero_accent,lead,overview_title,overview_accent,overview,assessment_points,process_steps,faqs,seo_title,seo_description&sort=sort,id&limit=-1"),
       directusRequest<{ data: ManagedSitePage[] }>("/items/site_pages?fields=id,page_key,content,seo_title,seo_description&sort=page_key&limit=-1"),
     ]);
 

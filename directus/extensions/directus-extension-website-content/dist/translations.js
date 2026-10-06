@@ -1,8 +1,9 @@
 const table = "website_content_translations";
+const pageTextFields = ["hero_kicker","hero_title","hero_accent","hero_suffix","hero_description","hero_image_alt","hero_note_title","hero_note_text","location","location_note","fact_1","fact_2","fact_3","practice_title","practice_accent","practice_intro","practice_note","about_image_alt","about_title","about_accent","about_lead","about_body","value_1","value_2","value_3","approach_title","step_1_title","step_1_text","step_2_title","step_2_text","step_3_title","step_3_text","blog_title","blog_accent","blog_intro","blog_note","contact_title","contact_accent","contact_intro","note_title","note_accent","note_text","archive_title","archive_intro"];
 const translatedFields = {
   practice_areas: ["title", "summary", "hero_title", "hero_accent", "lead", "image_alt", "overview_title", "overview_accent", "overview", "assessment_points", "process_steps", "faqs", "seo_title", "seo_description"],
   blog_posts: ["title", "category", "summary", "cover_alt", "cover_caption", "lead", "body_paragraphs", "quote", "tips_title", "tips", "closing_title", "closing_body", "seo_title", "seo_description"],
-  site_pages: ["hero_title", "hero_accent", "hero_description", "story_title", "story_accent", "story_lead", "story_paragraphs", "professional_note", "principles_title", "principles", "intro", "privacy_note", "address_note", "working_days", "working_hours", "flow_title", "flow_steps", "seo_title", "seo_description"],
+  site_pages: [...new Set([...pageTextFields, "image_alt", "hero_title", "hero_accent", "hero_description", "story_title", "story_accent", "story_lead", "story_paragraphs", "professional_note", "principles_title", "principles", "intro", "privacy_note", "address_note", "working_days", "working_hours", "flow_title", "flow_steps", "seo_title", "seo_description"])],
 };
 const arrays = {
   assessment_points: ["text"], process_steps: ["title", "description"], faqs: ["question", "answer"],
@@ -88,7 +89,7 @@ export function registerTranslations(router, database, adminAccount) {
         if (slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error("URL adı küçük harf, rakam ve tire içermeli.");
         if (slug?.length > 220) throw new Error("URL adı çok uzun.");
         if (status === "published") {
-          const required = collection === "site_pages" ? ["hero_title", "hero_accent", parent.page_key === "about" ? "hero_description" : "intro"] : ["title", "summary"];
+          const required = collection === "site_pages" ? ["hero_title", "hero_accent", parent.page_key === "contact" ? "intro" : "hero_description"] : ["title", "summary"];
           if (required.some(field => !content[field]) || (collection !== "site_pages" && !slug)) throw new Error("Yayın için başlık, açıklama ve URL alanlarını doldurun.");
         }
       } catch (error) { return response.status(400).json({ errors: [{ message: error.message }] }); }

@@ -43,14 +43,10 @@ export default async function ContactPage() {
         ))}
       </section>
 
-      <section className="contact-details" aria-labelledby="visit-title">
-        <div className="contact-details__heading">
-          <p className="section-kicker">{t("Görüşme Bilgileri")}</p>
-          <h2 id="visit-title">{t("Görüşme öncesinde bilmeniz gerekenler.")}</h2>
-        </div>
+      <section className="contact-visit-details" aria-label={t("Görüşme Bilgileri")}>
         <div className="contact-details__cards">
-          <article><MapPin aria-hidden="true" size={24} /><span>{t("Görüşme adresi")}</span><h3>{content.address_title}</h3><p>{content.address_note}</p></article>
-          <article><Clock3 aria-hidden="true" size={24} /><span>{t("Çalışma saatleri")}</span><h3>{content.working_days}</h3><p>{content.working_hours}</p></article>
+          <article><MapPin aria-hidden="true" size={24} /><div><span>{t("Görüşme adresi")}</span><h3>{content.address_title}</h3><p>{content.address_note}</p></div></article>
+          <article><Clock3 aria-hidden="true" size={24} /><div><span>{t("Çalışma saatleri")}</span><h3>{content.working_days}</h3><p>{content.working_hours}</p></div></article>
         </div>
       </section>
 

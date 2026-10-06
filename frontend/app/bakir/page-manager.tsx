@@ -6,10 +6,15 @@ import { phoneToDialValue } from "../lib/contact";
 import { directusRequest } from "./admin-api";
 import { LanguageTabs, TranslationEditor } from "./translation-editor";
 import type { Locale } from "../lib/i18n";
+import pageConfig from "../lib/page-content-config.json";
+import { ImageField } from "./image-field";
+
+export type PageKey = "home" | "about" | "contact" | "areas" | "blog";
+const pageLabels: Record<PageKey, string> = { home: "Ana sayfa", about: "Hakkımda", contact: "İletişim", areas: "Çalışma alanları", blog: "Blog" };
 
 export type ManagedSitePage = {
   id: number;
-  page_key: "about" | "contact";
+  page_key: PageKey;
   content: Record<string, unknown>;
   seo_title: string | null;
   seo_description: string | null;
@@ -30,14 +35,14 @@ function pairs(value: string, first: string, second?: string) {
 
 export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; onChanged: () => Promise<void> }) {
   const [language, setLanguage] = useState<Locale>("tr");
-  const [pageKey, setPageKey] = useState<"about" | "contact">("about");
+  const [pageKey, setPageKey] = useState<PageKey>("home");
   const [draft, setDraft] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   const current = pages.find((page) => page.page_key === pageKey);
 
-  function selectPage(key: "about" | "contact") {
+  function selectPage(key: PageKey) {
     const page = pages.find((item) => item.page_key === key);
     const content = page?.content || {};
     setPageKey(key);
@@ -73,7 +78,7 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
     if (pageKey === "about") {
       content.story_paragraphs = pairs(draft.story_paragraphs ?? lines(current.content.story_paragraphs, "text"), "text");
       content.principles = pairs(draft.principles ?? lines(current.content.principles, "title", "text"), "title", "text");
-    } else {
+    } else if (pageKey === "contact") {
       content.flow_steps = pairs(draft.flow_steps ?? lines(current.content.flow_steps, "title", "text"), "title", "text");
       const phoneDisplay = String(content.phone_display || "").trim();
       content.phone_display = phoneDisplay;
@@ -82,7 +87,7 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
     try {
       await directusRequest(`/items/site_pages/${current.id}`, { method: "PATCH", body: JSON.stringify({ content, seo_title: draft.seo_title ?? current.seo_title, seo_description: draft.seo_description ?? current.seo_description }) });
       await onChanged();
-      setMessage(`${pageKey === "about" ? "Hakkımda" : "İletişim"} sayfası güncellendi.`);
+      setMessage(`${pageLabels[pageKey]} sayfası güncellendi.`);
     } catch {
       setMessage("Sayfa kaydedilemedi. Bağlantıyı ve alanları kontrol edin.");
     } finally {
@@ -96,13 +101,14 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
         <div><p className="admin-eyebrow"><FileText size={17} /> Sayfa içerikleri</p><h2 id="page-manager-title">Kurumsal sayfaları,<br /><em>kod açmadan güncelleyin.</em></h2></div>
       </div>
       <div className="admin-page-tabs" role="tablist">
-        <button type="button" className={pageKey === "about" ? "is-active" : ""} onClick={() => selectPage("about")}>Hakkımda</button>
-        <button type="button" className={pageKey === "contact" ? "is-active" : ""} onClick={() => selectPage("contact")}>İletişim</button>
+        {(Object.keys(pageLabels) as PageKey[]).map(key => <button key={key} type="button" role="tab" aria-selected={pageKey === key} disabled={busy} className={pageKey === key ? "is-active" : ""} onClick={() => selectPage(key)}>{pageLabels[key]}</button>)}
       </div>
       <LanguageTabs language={language} onChange={setLanguage} disabled={busy} />
       {language !== "tr" && current ? <TranslationEditor key={`${current.id}-${language}`} collection="site_pages" parentId={current.id} pageKey={pageKey} language={language} /> : <form className="admin-post-editor" onSubmit={save}>
         <div className="admin-editor-grid">
-          {pageKey === "about" ? <>
+          {pageKey === "home" || pageKey === "areas" || pageKey === "blog" ? pageConfig[pageKey].fields.map(field => "type" in field && field.type === "image" ? <ImageField key={field.key} label={field.label} value={value(field.key)} onChange={path => update(field.key, path)} disabled={busy} /> : <label className="admin-field--wide" key={field.key}><span>{field.label}</span><textarea rows={field.default.length > 100 ? 3 : 2} value={value(field.key)} onChange={e => update(field.key, e.target.value)} /></label>) : pageKey === "about" ? <>
+            <ImageField label="Hakkımda sayfası görseli" value={value("image_path") || "/about-physiotherapist-v1.png"} onChange={path => update("image_path", path)} disabled={busy} />
+            <label className="admin-field--wide"><span>Görsel açıklaması</span><input value={value("image_alt")} onChange={e => update("image_alt", e.target.value)} /></label>
             <label><span>Ana başlık</span><input value={value("hero_title")} onChange={(e) => update("hero_title", e.target.value)} required /></label>
             <label><span>Vurgulu başlık</span><input value={value("hero_accent")} onChange={(e) => update("hero_accent", e.target.value)} required /></label>
             <label className="admin-field--wide"><span>Ana açıklama</span><textarea rows={4} value={value("hero_description")} onChange={(e) => update("hero_description", e.target.value)} /></label>
