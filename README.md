@@ -93,6 +93,14 @@ $env:HTTP_PORT=8081
 docker compose up -d
 ```
 
+## Authenticator QR kurulumu
+
+Admin → Hesap güvenliği → mevcut parolayı girin → “Kurulum anahtarı ve QR oluştur”. Google Authenticator'da **+ → QR kod tara** ile ekleyin; uygulamadaki güncel altı haneli kodu panelde onaylayın. QR taramak tek başına iki adımlı doğrulamayı etkinleştirmez. QR tarayamıyorsanız “Anahtarı elle gir” alanını açıp zamana dayalı anahtar olarak ekleyebilirsiniz.
+
+QR, Directus'un o oturum için ürettiği `otpauth_url` bağlantısından `qrcode` paketiyle tarayıcı içinde üretilir; dış bir QR servisi kullanılmaz. Anahtar ve QR kalıcı tarayıcı depolamasına veya loglara yazılmaz. Onay/çıkış sonrası React state'inden kaldırılır. QR görselini ve anahtarı paylaşmayın. Telefon/sunucu saatlerinin doğru olması gerekir. Kurulumu tamamlanmış hesaplarda mevcut 2FA korunur; QR yeniden gösterilmez veya 2FA kendiliğinden sıfırlanmaz.
+
+QR okunabilirlik testi: `node --test scripts/tests/authenticator-qr.test.mjs`. Sahte test bağlantısı yerelde QR'a dönüştürülüp `jsqr` ile geri okunur; gerçek kullanıcı parolası/anahtarı kullanılmaz.
+
 ## Sayfa ve görsel yönetimi
 
 `http://localhost:8080/bakir` → **Sayfa içerikleri** bölümünde Ana sayfa, Hakkımda, İletişim, Çalışma alanları ve Blog sekmeleri bulunur. Ana sayfanın bölüm başlıkları, açıklamaları, kısa bilgileri, süreç adımları, 3D karakteri ve Hakkımda bölüm görseli burada düzenlenir. Blog/çalışma alanları liste sayfalarının girişleri ve bilgi notları da ayrı yönetilir. İletişim numaraları ana sayfaya aynı ortak kayıttan gelir.

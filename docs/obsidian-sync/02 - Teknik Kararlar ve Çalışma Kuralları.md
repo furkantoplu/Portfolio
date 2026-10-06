@@ -340,6 +340,14 @@ docker compose down
 - Dil düğmesi mevcut dilin tam adını gösterir; tıklama seçenekleri altına açar. Dışarı tıklama/Escape kapatır; mevcut sayfa dil eşleştirmesi ve yayımlanmamış çeviri pasifliği korunur.
 - İletişim kartları ana sayfa ve ayrı iletişim sayfasında farklı CSS kapsamlarına sahiptir; çakışan `.contact-details` yerleşimi ayrıştırılır. Blog okuma bağlantıları 16 px ve en az 44 px tıklama yüksekliğine çıkarılır.
 
+### Karar 039 — QR ile Authenticator ekleme
+
+- QR yalnızca Directus'un hesap için döndürdüğü `otpauth://totp` bağlantısından üretilir; URL secret değeri aynı yanıtın secret değeriyle eşleşmelidir.
+- Yerel `qrcode@1.5.4` üretimi kullanılır. QR için dış web servislerine, resim optimizer'a veya public upload alanına hesap anahtarı gönderilmez.
+- QR tarama ve elle anahtar girme iki alternatif kayıt yöntemidir; her ikisinde de etkinleştirme altı haneli kodla Directus üzerinden yapılır. Aktif 2FA sıfırlanmaz veya anahtarı yeniden gösterilmez.
+- QR/anahtar state'i başarı/çıkışta silinir. TFA isteği devam ederken çıkış engellenir. Manuel anahtar alternatifi QR üretim sorunu halinde açık kalır.
+- Kurulum formunda parola ve OTP kontrolleri gerçek HTML form içindedir. QR okunabilirlik testleri sahte URI'yi geri okuyup tam eşleşme kontrolü yapar; gerçek hesaplar üzerinde etkinleştirme testi otomatik yapılmaz.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

@@ -201,6 +201,10 @@ Yazı `cover_path/cover_alt/cover_caption`, çalışma alanı `image_path/image_
 
 Yüklenen dosyalar `directus_uploads` volume'ünde kalıcıdır; PostgreSQL içerik kayıtlarını tutar. İmaj taşımak bu verileri taşımaz; VPS geçişinde her iki volume de yedeklenmelidir. Public `/site-media/<UUID>` route'u Directus özel `/website-content/media/<UUID>` endpoint'inden akış alır. Yalnızca yayındaki blog/alan veya tanımlı public sayfa görselleri açılır; dosya kütüphanesine genel public permission verilmez. SVG/HTML sunulmaz. Kaydedilmemiş dosyalar admin oturumu üzerinden önizlenir. İçerikten kaldırma dosyayı silmez.
 
+### Authenticator QR kurulum akışı
+
+Yeni yönetici kurulumunda Directus `secret/otpauth_url` üretir. Panel `qrcode` ile bağlantıyı yerelde PNG QR'a çevirir; Google Authenticator QR ile ekler, sonra altı haneli kod Directus'ta doğrulanır. QR taramak tek başına 2FA'yı açmaz. Manuel zamana dayalı anahtar girişi alternatif olarak kalır. QR/anahtar yalnızca geçici React state'inde tutulur; dış QR servisleri, public dosya depolaması ve kalıcı tarayıcı depolaması kullanılmaz. Başarı/çıkış sonrası state temizlenir. Önceden aktif hesaplara dokunulmaz. Telefon ve sunucu saatlerinin uyumlu olması gerekir. QR geri okuma testi yalnızca sahte test verileriyle yapılır.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

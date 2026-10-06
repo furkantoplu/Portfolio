@@ -169,6 +169,14 @@ body {
 .admin-security__form label > span { color: rgba(255, 255, 255, 0.72); }
 .admin-security__form button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 48px; margin-top: 16px; padding: 0 17px; border: 0; border-radius: 6px; background: #c47859; color: #fff; font: inherit; font-size: 12px; font-weight: 750; cursor: pointer; }
 .admin-secret { display: grid; gap: 8px; }
+.admin-authenticator-qr { display: grid; justify-items: center; gap: 10px; }
+.admin-authenticator-qr img { display: block; max-width: 100%; height: auto; border: 8px solid #fff; border-radius: 10px; background: #fff; }
+.admin-authenticator-qr p, .admin-authenticator-instruction { margin: 0; color: #dce7df; font-size: 12px; line-height: 1.65; }
+.admin-authenticator-setup { display: grid; gap: 17px; }
+.admin-authenticator-manual { border: 1px solid #ffffff30; border-radius: 7px; padding: 12px; }
+.admin-authenticator-manual summary { color: #e8eee9; font-size: 12px; cursor: pointer; }
+.admin-authenticator-manual .admin-secret { margin-top: 14px; }
+.admin-authenticator-warning { margin: 0; color: #c9dacf; font-size: 11px; line-height: 1.6; }
 .admin-secret > span { color: rgba(255, 255, 255, 0.7); font-size: 11px; font-weight: 700; }
 .admin-secret code { padding: 13px; overflow-wrap: anywhere; border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 5px; background: rgba(0, 0, 0, 0.17); color: #fff; font-size: 14px; letter-spacing: 0.08em; }
 .admin-secret small { color: rgba(255, 255, 255, 0.48); font-size: 10px; line-height: 1.5; }

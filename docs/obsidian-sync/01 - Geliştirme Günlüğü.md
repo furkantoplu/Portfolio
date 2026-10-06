@@ -690,3 +690,14 @@
 - Ana sayfa blog kartları ve arşiv kartları zaten yalnızca kayıtlı görseli gösteriyordu; bu davranış korundu. Çalışma alanları, ana sayfa karakteri ve Hakkımda görsel varsayılanları bu talebin dışında kaldı. İçerik/veritabanı kayıtlarına dokunulmadı.
 - `blog-images-smoke.mjs` canlı yayındaki yazıların kapak bölümünü CMS görsel alanıyla karşılaştırır; liste öne çıkan kartının görsel ve tek kolon sınıfını da denetler.
 - TypeScript, hedefli ESLint, 11 mevcut test ve Docker production build geçti. Yeni canlı test ilk yazıda kapak bulunduğunu, ikinci yazıda kapak bölümü olmadığını doğruladı; üç dilde 16 sayfa ve SEO/404/yetki smoke kontrolleri de geçti. Yerel frontend sağlıklı olarak yeniden başlatıldı.
+
+### Paket 33 — Google Authenticator QR ile kayıt
+
+- Kullanıcı önceki 400/TOTP sorununu yanlış bilgisayar saati olarak tespit edip çözdüğünü bildirdi; bu inceleme durduruldu. Var olan kullanıcı hesaplarına, parola kurallarına ve aktif 2FA ayarlarına müdahale edilmedi. Loglardaki parola veya gerçek kurulum anahtarları notlara kopyalanmadı.
+- Yeni kurulum ekranına QR ile kayıt eklendi. Directus'un `/users/me/tfa/generate` yanıtındaki `secret` ve `otpauth_url` kullanılır. QR yalnızca yerelde `qrcode@1.5.4` ile PNG data URL olarak üretilir; dış QR API'sine hesap anahtarı gönderilmez.
+- Kurulum bağlantısı `otpauth://totp` protokol/türünde ve dönen secret ile aynı olmalıdır. Beyaz zemin, siyah modüller, 4 modül sessiz alan ve 240 px boyut kullanılır. Görsel Next Image ile `unoptimized` render edilir; resim sunucusuna/proxy optimizer'a gönderilmez.
+- Google Authenticator + → QR kod tara yönergesi, 6 haneli kodla onay ve anahtarı elle girme alternatifi eklendi. QR üretimi başarısızsa manuel seçenek açık kalır; etkinleştirme yine Directus doğrulamasını gerektirir. Aktif 2FA hesabında yeni QR gösterilmez/kurulum sıfırlanmaz.
+- Kurulum alanı gerçek `form` oldu; parola/OTP Enter ile gönderilebilir ve zorunlu girişler tarayıcı tarafından doğrulanır. Form dışında parola DOM uyarısının bu alandaki nedeni kaldırıldı.
+- QR ve anahtar yalnızca React state'inde tutulur; başarı/çıkışta temizlenir. Devam eden TFA isteği sırasında çıkış düğmesi kilitlenir. Anahtar/QR paylaşılmaması ve saat uyumu için uyarı eklendi.
+- Test bağımlılıkları `@types/qrcode@1.5.6` ve `jsqr@1.4.0` eklendi, lockfile güncellendi. Gerçek hesap olmayan test URL'si QR PNG'den geri okunup birebir eşleştiği doğrulandı. Yanlış protokol/tür/anahtar reddedilir. QR/manüel bileşen render testi de eklendi; toplam 14 otomatik test geçti.
+- TypeScript, hedefli ESLint, 16 public/admin rota smoke testi, blog kapak smoke testi ve Docker production build geçti. Frontend sağlıklı olarak yeniden başlatıldı. Gerçek yönetici hesabında telefonla tarama/2FA etkinleştirme yapılmadı; mevcut aktif doğrulama ayarları korunuyor. README, mimari ve teknik karar notları güncellendi.

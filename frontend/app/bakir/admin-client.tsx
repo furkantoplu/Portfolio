@@ -23,6 +23,8 @@ import { directusRequest, type ContentItem } from "./admin-api";
 import { BlogManager, type ManagedBlogPost } from "./blog-manager";
 import { PracticeManager, type ManagedPracticeArea } from "./practice-manager";
 import { PageManager, type ManagedSitePage } from "./page-manager";
+import { AuthenticatorQr } from "./authenticator-qr";
+import { createAuthenticatorQr } from "./authenticator-qr-code";
 
 type AdminUser = {
   id: string;
@@ -62,6 +64,7 @@ export function BakirAdmin() {
   const [message, setMessage] = useState<string | null>(null);
   const [setupPassword, setSetupPassword] = useState("");
   const [tfaSecret, setTfaSecret] = useState<string | null>(null);
+  const [tfaQrDataUrl, setTfaQrDataUrl] = useState<string | null>(null);
   const [tfaOtp, setTfaOtp] = useState("");
   const [tfaMessage, setTfaMessage] = useState<string | null>(null);
   const [tfaBusy, setTfaBusy] = useState(false);
@@ -147,6 +150,10 @@ export function BakirAdmin() {
     }).catch(() => undefined);
     setUser(null);
     setSummary(null);
+    setTfaSecret(null);
+    setTfaQrDataUrl(null);
+    setTfaOtp("");
+    setSetupPassword("");
     setSessionState("signed-out");
     setBusy(false);
   }
@@ -165,8 +172,15 @@ export function BakirAdmin() {
         body: JSON.stringify({ password: setupPassword }),
       });
       setTfaSecret(data.secret);
+      setTfaQrDataUrl(null);
+      setTfaOtp("");
       setSetupPassword("");
-      setTfaMessage("Kurulum anahtarı oluşturuldu. Anahtarı Authenticator uygulamasına girin.");
+      try {
+        setTfaQrDataUrl(await createAuthenticatorQr(data.secret, data.otpauth_url));
+        setTfaMessage("QR kod hazır. Authenticator ile tarayıp güncel 6 haneli kodla doğrulayın.");
+      } catch {
+        setTfaMessage("QR kod oluşturulamadı. Aşağıdaki anahtarı Authenticator uygulamasına elle girerek devam edebilirsiniz.");
+      }
     } catch {
       setTfaMessage("Kurulum başlatılamadı. Parolanızı kontrol edip yeniden deneyin.");
     } finally {
@@ -188,6 +202,7 @@ export function BakirAdmin() {
         body: JSON.stringify({ secret: tfaSecret, otp: tfaOtp }),
       });
       setTfaSecret(null);
+      setTfaQrDataUrl(null);
       setTfaOtp("");
       setUser((current) => current ? { ...current, tfa_enabled: true } : current);
       setTfaMessage("İki adımlı doğrulama etkinleştirildi. Bundan sonraki girişlerde 6 haneli kod istenecek.");
@@ -314,7 +329,7 @@ export function BakirAdmin() {
         </NativeLink>
         <div className="admin-user">
           <span><strong>{userName}</strong><small>{user?.email}</small></span>
-          <button type="button" onClick={handleLogout} disabled={busy}><LogOut size={17} /> Çıkış</button>
+          <button type="button" onClick={handleLogout} disabled={busy || tfaBusy}><LogOut size={17} /> Çıkış</button>
         </div>
       </header>
 
@@ -382,7 +397,7 @@ export function BakirAdmin() {
                 <p>{user?.tfa_enabled ? `${user.email} hesabı her girişte telefonunuzdaki 6 haneli kodla korunuyor.` : "Kurulum tamamlandığında e-posta ve parolaya ek olarak, her girişte telefonunuzdaki 6 haneli kod gerekir."}</p>
               </div>
 
-              <div className="admin-security__form">
+              <form className="admin-security__form" onSubmit={event => { event.preventDefault(); if (!tfaBusy) void (tfaSecret ? enableTfa() : generateTfa()); }}>
                 {user?.tfa_enabled ? (
                   <div className="admin-security__active">
                     <CheckCircle2 size={34} aria-hidden="true" />
@@ -390,18 +405,18 @@ export function BakirAdmin() {
                   </div>
                 ) : !tfaSecret ? (
                   <>
-                    <label><span>Mevcut parola</span><input type="password" value={setupPassword} onChange={(event) => setSetupPassword(event.target.value)} autoComplete="current-password" placeholder="Kurulumu doğrulamak için" /></label>
-                    <button type="button" onClick={generateTfa} disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <KeyRound size={18} />} Kurulum anahtarı oluştur</button>
+                    <label><span>Mevcut parola</span><input type="password" value={setupPassword} onChange={(event) => setSetupPassword(event.target.value)} autoComplete="current-password" placeholder="Kurulumu doğrulamak için" required /></label>
+                    <button type="submit" disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <KeyRound size={18} />} Kurulum anahtarı ve QR oluştur</button>
                   </>
                 ) : (
                   <>
-                    <div className="admin-secret"><span>Authenticator kurulum anahtarı</span><code>{tfaSecret}</code><small>Google Authenticator → “Kurulum anahtarı gir” seçeneğini kullanın.</small></div>
-                    <label><span>Uygulamadaki 6 haneli kod</span><input className="admin-otp" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={tfaOtp} onChange={(event) => setTfaOtp(event.target.value.replace(/\D/g, ""))} autoComplete="one-time-code" placeholder="000000" /></label>
-                    <button type="button" onClick={enableTfa} disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <ShieldCheck size={18} />} İki adımlı doğrulamayı etkinleştir</button>
+                    <AuthenticatorQr qrDataUrl={tfaQrDataUrl} secret={tfaSecret} />
+                    <label><span>Uygulamadaki 6 haneli kod</span><input className="admin-otp" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={tfaOtp} onChange={(event) => setTfaOtp(event.target.value.replace(/\D/g, ""))} autoComplete="one-time-code" placeholder="000000" required /></label>
+                    <button type="submit" disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <ShieldCheck size={18} />} İki adımlı doğrulamayı etkinleştir</button>
                   </>
                 )}
                 {tfaMessage && <p className="admin-security__message" role="status">{tfaMessage}</p>}
-              </div>
+              </form>
             </section>
           )}
 

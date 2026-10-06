@@ -11,11 +11,14 @@ const result = await build({
     import { PageManager } from './app/bakir/page-manager';
     import { BlogManager } from './app/bakir/blog-manager';
     import { PracticeManager } from './app/bakir/practice-manager';
+    import { AuthenticatorQr } from './app/bakir/authenticator-qr';
     import config from './app/lib/page-content-config.json';
     const onChanged = async () => {};
     export const page = renderToStaticMarkup(<PageManager pages={[{ id: 1, page_key: 'home', content: Object.fromEntries(config.home.fields.map(f => [f.key, f.default])), seo_title: '', seo_description: '' }]} onChanged={onChanged} />);
     export const blog = renderToStaticMarkup(<BlogManager posts={[]} onChanged={onChanged} />);
     export const practice = renderToStaticMarkup(<PracticeManager areas={[]} onChanged={onChanged} />);
+    export const qr = renderToStaticMarkup(<AuthenticatorQr qrDataUrl="data:image/png;base64,TEST_ONLY" secret="TEST_ONLY" />);
+    export const manual = renderToStaticMarkup(<AuthenticatorQr qrDataUrl={null} secret="TEST_ONLY" />);
   `, resolveDir: fileURLToPath(new URL("../../frontend/", import.meta.url)), loader: "tsx" },
   write: false, bundle: true, format: "cjs", platform: "node", jsx: "automatic",
   external: ["react", "react/jsx-runtime", "react-dom/server", "lucide-react"],
@@ -38,4 +41,11 @@ test("Blog and practice editors expose image upload and accessibility text", () 
     assert.ok(module.exports[key].includes('type="file"'), key);
     assert.ok(module.exports[key].includes("Görsel açıklaması"), key);
   }
+});
+test("Authenticator displays a local QR plus manual fallback, opened if QR is unavailable", () => {
+  assert.ok(module.exports.qr.includes('src="data:image/png;base64,TEST_ONLY"'));
+  assert.ok(module.exports.qr.includes("QR kod tara"));
+  assert.ok(module.exports.qr.includes("anahtarı elle gir"));
+  assert.ok(module.exports.manual.includes('<details class="admin-authenticator-manual" open="">'));
+  assert.ok(!module.exports.manual.includes("<img"));
 });
