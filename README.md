@@ -93,6 +93,18 @@ $env:HTTP_PORT=8081
 docker compose up -d
 ```
 
+## Kendi yönetici hesabını düzenleme
+
+Admin → **Hesabım** bölümünde ad/soyad, giriş e-postası ve isteğe bağlı yeni parola değiştirilebilir. Mevcut parola her kayıtta, aktifse Authenticator kodu da onay için gerekir. Yeni parola ve tekrar alanı eşleşmelidir. Varsayılan kural 10–128 karakter, büyük/küçük harf, rakam ve semboldür. E-posta veya parola değişince yalnızca o hesaba ait tüm oturumlar kapatılır; yeni bilgilerle yeniden giriş yapılır. Sadece ad/soyad değişince mevcut oturum korunur. 2FA anahtarı değiştirilmez; Authenticator uygulamasındaki hesap etiketi eski e-postayı gösterebilir, kod aynı anahtarla çalışmaya devam eder.
+
+`PATCH /website-content/account-settings` hedef kullanıcıyı yalnızca doğrulanmış oturumdan alır. Kullanıcı kimliği, rol, durum, politika veya TFA anahtarı body'den kabul edilmez. Güncelleme ve kendi oturumlarını kapatma tek DB transaction'ındadır. Hata cevaplarına parola/OTP/ham servis hata ayrıntıları eklenmez. Testlerde gerçek yönetici hesaplarının parolası değiştirilmez.
+
+`directus-extension-account-ownership` hook'u, oturum açmış kullanıcıların başka hesaba `users.update/users.delete` yazmasını tam admin olsalar da reddeder. Directus'un null accountability kullanan dahili authentication işlemleri korunur. Yönetici ekleme ayrı `POST /website-content/admin-team` endpoint'iyle sadece yeni hesap oluşturur; rol mevcut yöneticiden gelir, hedef kimlik veya farklı rol gönderilemez. Başka yöneticinin bilgilerini düzenleme/parola sıfırlama ekranı yoktur.
+
+Caddy `/bakir-api` yalnızca mevcut panelin kullandığı oturum, içerik, dosya, kendine ait TFA ve özel website-content yollarını geçirir. Genel `/users`, kullanıcı tablosu, roller/politikalar, GraphQL ve diğer platform yönetim yolları public panel proxy'sinden kapalıdır. Teknik Directus portunu internete açmayın; Compose onu `127.0.0.1:8055` üzerinde tutar. Parola unutma/kurtarma ayrı bir sonraki özellik olarak tasarlanmalıdır.
+
+`005-password-policy-escaping.sql` yalnızca bilinen yanlış çift kaçışlı varsayılan regex'i düzeltir; özel bir politika varsa ezmez. Mevcut kullanıcı parolalarına dokunmaz. Kontroller: `node --test scripts/tests/account-settings.test.mjs`, `node scripts/tests/account-access-smoke.mjs`.
+
 ## Authenticator QR kurulumu
 
 Admin → Hesap güvenliği → mevcut parolayı girin → “Kurulum anahtarı ve QR oluştur”. Google Authenticator'da **+ → QR kod tara** ile ekleyin; uygulamadaki güncel altı haneli kodu panelde onaylayın. QR taramak tek başına iki adımlı doğrulamayı etkinleştirmez. QR tarayamıyorsanız “Anahtarı elle gir” alanını açıp zamana dayalı anahtar olarak ekleyebilirsiniz.

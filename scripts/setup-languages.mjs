@@ -15,6 +15,7 @@ for (const [language, pages] of Object.entries(seeds)) {
 sql += "COMMIT;\n";
 sql += readFileSync(resolve(root, "scripts/migrations/003-editable-public-pages.sql"), "utf8");
 sql += readFileSync(resolve(root, "scripts/migrations/004-practice-title-urls.sql"), "utf8");
+sql += readFileSync(resolve(root, "scripts/migrations/005-password-policy-escaping.sql"), "utf8");
 const result = spawnSync("docker", ["compose", "exec", "-T", "database", "sh", "-c", 'exec psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"'], { cwd: root, input: sql, encoding: "utf8" });
 if (result.error) throw result.error;
 process.stdout.write(result.stdout || "");

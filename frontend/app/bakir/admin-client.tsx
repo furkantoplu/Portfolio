@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BookOpenText,
@@ -16,6 +16,7 @@ import {
   Stethoscope,
   UserPlus,
   Users,
+  UserRound,
 } from "lucide-react";
 import { BrandMark } from "../components/brand-mark";
 import { NativeLink } from "../components/native-link";
@@ -25,6 +26,7 @@ import { PracticeManager, type ManagedPracticeArea } from "./practice-manager";
 import { PageManager, type ManagedSitePage } from "./page-manager";
 import { AuthenticatorQr } from "./authenticator-qr";
 import { createAuthenticatorQr } from "./authenticator-qr-code";
+import { AccountSettings, type AccountProfile } from "./account-settings";
 
 type AdminUser = {
   id: string;
@@ -39,7 +41,7 @@ type AdminUser = {
 };
 
 type AdminMember = Omit<AdminUser, "is_admin">;
-type AdminView = "overview" | "blog" | "practices" | "pages" | "team" | "security";
+type AdminView = "overview" | "blog" | "practices" | "pages" | "team" | "security" | "account";
 
 type ContentSummary = {
   blog: ManagedBlogPost[];
@@ -54,6 +56,7 @@ function countStatus(items: ContentItem[], status: ContentItem["status"]) {
 export function BakirAdmin() {
   const [sessionState, setSessionState] = useState<"checking" | "signed-out" | "signed-in">("checking");
   const [user, setUser] = useState<AdminUser | null>(null);
+  const userIdRef = useRef<string | null>(null);
   const [summary, setSummary] = useState<ContentSummary | null>(null);
   const [team, setTeam] = useState<AdminMember[]>([]);
   const [email, setEmail] = useState("");
@@ -86,6 +89,7 @@ export function BakirAdmin() {
       directusRequest<{ data: ManagedSitePage[] }>("/items/site_pages?fields=id,page_key,content,seo_title,seo_description&sort=page_key&limit=-1"),
     ]);
 
+    userIdRef.current = currentUser.id;
     setUser(currentUser);
     setTeam(members);
     setSummary({ blog, practices, pages });
@@ -143,6 +147,7 @@ export function BakirAdmin() {
   }
 
   async function handleLogout() {
+    userIdRef.current = null;
     setBusy(true);
     await directusRequest("/auth/logout", {
       method: "POST",
@@ -220,13 +225,11 @@ export function BakirAdmin() {
     setTeamBusy(true);
     setTeamMessage(null);
     try {
-      await directusRequest("/users", {
+      await directusRequest("/website-content/admin-team", {
         method: "POST",
         body: JSON.stringify({
           ...newAdmin,
           email: newAdmin.email.trim(),
-          role: user.role,
-          status: "active",
         }),
       });
       const { data } = await directusRequest<{ data: AdminMember[] }>("/website-content/admin-team");
@@ -235,7 +238,7 @@ export function BakirAdmin() {
       setTeamMessage("Yeni yönetici oluşturuldu. İlk girişinden sonra kendi Authenticator kurulumunu yapabilir.");
     } catch (error) {
       const code = error instanceof Error ? error.name : "";
-      setTeamMessage(code === "RECORD_NOT_UNIQUE" ? "Bu e-posta adresiyle zaten bir hesap var." : "Yönetici oluşturulamadı. Bilgileri ve parola kurallarını kontrol edin.");
+      setTeamMessage(code === "RECORD_NOT_UNIQUE" ? "Bu e-posta adresiyle zaten bir hesap var." : error instanceof Error ? error.message : "Yönetici oluşturulamadı. Bilgileri ve parola kurallarını kontrol edin.");
     } finally {
       setTeamBusy(false);
     }
@@ -318,6 +321,7 @@ export function BakirAdmin() {
     { id: "pages", label: "Sayfa içerikleri", icon: FileText },
     { id: "team", label: "Yöneticiler", icon: Users, adminOnly: true },
     { id: "security", label: "Hesap güvenliği", icon: ShieldCheck },
+    { id: "account", label: "Hesabım", icon: UserRound },
   ];
 
   return (
@@ -388,6 +392,11 @@ export function BakirAdmin() {
           {activeView === "practices" && <PracticeManager areas={summary?.practices ?? []} onChanged={loadDashboard} />}
 
           {activeView === "pages" && <PageManager pages={summary?.pages ?? []} onChanged={loadDashboard} />}
+          {activeView === "account" && user && <AccountSettings key={user.id} user={user} onSaved={async (profile: AccountProfile, credentialsChanged) => {
+            if (userIdRef.current !== profile.id) return;
+            if (credentialsChanged) { await handleLogout(); setEmail(profile.email); setActiveView("overview"); setMessage("Giriş bilgileriniz güncellendi. Yeni e-posta ve parolanızla tekrar giriş yapın."); }
+            else { setUser(current => current ? { ...current, ...profile } : current); setTeam(current => current.map(member => member.id === profile.id ? { ...member, ...profile } : member)); }
+          }} />}
 
           {activeView === "security" && (
             <section className={`admin-security${user?.tfa_enabled ? " admin-security--enabled" : ""}`} aria-labelledby="tfa-title">
@@ -444,11 +453,11 @@ export function BakirAdmin() {
                 <form className="admin-team__form" onSubmit={createAdmin}>
                   <div><UserPlus size={20} /><strong>Yeni yönetici ekle</strong></div>
                   <div className="admin-team__names">
-                    <label><span>Ad</span><input value={newAdmin.first_name} onChange={(event) => setNewAdmin((current) => ({ ...current, first_name: event.target.value }))} required /></label>
-                    <label><span>Soyad</span><input value={newAdmin.last_name} onChange={(event) => setNewAdmin((current) => ({ ...current, last_name: event.target.value }))} required /></label>
+                    <label><span>Ad</span><input maxLength={50} value={newAdmin.first_name} onChange={(event) => setNewAdmin((current) => ({ ...current, first_name: event.target.value }))} required /></label>
+                    <label><span>Soyad</span><input maxLength={50} value={newAdmin.last_name} onChange={(event) => setNewAdmin((current) => ({ ...current, last_name: event.target.value }))} required /></label>
                   </div>
-                  <label><span>E-posta</span><input type="email" value={newAdmin.email} onChange={(event) => setNewAdmin((current) => ({ ...current, email: event.target.value }))} autoComplete="off" required /></label>
-                  <label><span>Geçici parola</span><input type="password" value={newAdmin.password} onChange={(event) => setNewAdmin((current) => ({ ...current, password: event.target.value }))} minLength={10} autoComplete="new-password" required /><small>En az 10 karakter; büyük/küçük harf, rakam ve sembol içermeli.</small></label>
+                  <label><span>E-posta</span><input type="email" maxLength={128} value={newAdmin.email} onChange={(event) => setNewAdmin((current) => ({ ...current, email: event.target.value }))} autoComplete="off" required /></label>
+                  <label><span>Geçici parola</span><input type="password" value={newAdmin.password} onChange={(event) => setNewAdmin((current) => ({ ...current, password: event.target.value }))} minLength={10} maxLength={128} autoComplete="new-password" required /><small>10–128 karakter; büyük/küçük harf, rakam ve sembol içermeli.</small></label>
                   <button type="submit" disabled={teamBusy}>{teamBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <UserPlus size={18} />} Yönetici hesabını oluştur</button>
                   {teamMessage && <p role="status">{teamMessage}</p>}
                 </form>

@@ -209,6 +209,12 @@ Yeni yönetici kurulumunda Directus `secret/otpauth_url` üretir. Panel `qrcode`
 
 Çalışma alanının kart adı ve detay H1'i ana `title` alanıdır. Ayrı hero metni isteğe bağlı alt başlıktır. Türkçe ve EN/DE çalışma alanı URL'si başlıktan otomatik türetilir; PostgreSQL tetikleyicileri Directus yazımlarında bu sözleşmeyi uygular. Aynı isimlerde benzersiz kayıt eki kullanılır. `website_practice_slug_aliases` eski slug/dil → alan kimliği eşleştirmesini tutar. Public çözüm yalnızca o dilde yayımlanmış mevcut alanları hedefler; eski adresler tek adımda güncel adrese HTTP 308 yönlenir. URL geçmişi başka kayda atanamaz. Blog URL'leri bağımsız editörünü korur.
 
+### Yönetici hesap sahipliği
+
+Hesabım ekranı ve account-settings endpoint'i sadece oturum açan yöneticiye aittir. Güncelleme hedef kimliği istek gövdesinden alınmaz; rol/durum/TFA anahtarı düzenlenemez. Mevcut parola ve etkin TOTP onayı sonrası isimler/e-posta/parola Directus servisleriyle değiştirilir. Giriş bilgisi değişince kendi tüm oturumları kapanır; diğer yönetici oturumları etkilenmez. Veri ve session değişikliği tek transaction içindedir.
+
+account-ownership hook'u oturum açmış yöneticinin başka kullanıcıya güncelleme/silme yazmasını sistem seviyesinde durdurur. Public panel proxy'si dar allowlist kullanır; genel platform yönetimi ve user API yazımları dışa açık değildir. Takım oluşturma ayrı, kontrollü yeni-hesap endpoint'idir; diğer üyeler okunur görüntülenir. Dahili Directus auth işlemleri ve loopback bakım API'si farklı güven sınırıdır; Directus portu internete açılmaz. Mevcut 2FA anahtarı e-posta/parola değişiminde korunur. Parola unutma ayrı özellik olarak ele alınacaktır.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

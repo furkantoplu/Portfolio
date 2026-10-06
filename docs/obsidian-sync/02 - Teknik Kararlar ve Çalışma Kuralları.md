@@ -356,6 +356,15 @@ docker compose down
 - İsim değişirken eski slug alias tablosuna kaydedilir. Alias mevcut yayımlanmış dil sürümüne çözülür ve frontend 308 ile güncel canonical'a yönlenir; eski URL'leri başka alan devralamaz.
 - URL normalizasyonu mevcut isimleri değiştirmez. Veritabanı testleri ayrı transaction içinde kayıt ekleyip rename/çakışma/geçmiş durumlarını doğrular ve geri alınır. Gerçek hesap erişimini değiştirmek test adımı değildir.
 
+### Karar 041 — Kendi hesabı dışında yazım yok
+
+- Profil hedefi yalnızca authenticated user'dır; request id/role/status/policies/TFA alanları kabul edilmez. Ad/soyad ve giriş bilgileri ayrı politikayla saklanır.
+- Mevcut parola ve etkin TOTP onayı zorunludur. E-posta/parola değişince yalnızca actor'ın tüm session'ları kapanır; isim değişiminde oturum korunur. Güncelleme/clear session birlikte commit edilir.
+- Genel full-admin user yazımı yalnızca UI'de gizlenmez: users.update/users.delete hook'u cross-account hedefleri ve bulk karma hedefleri engeller. Null accountability dahili auth işlemleridir; public panel yazımı bu yoldan yapılmaz.
+- Public bakir-api sadece gerekli yol/metotları geçirir. Genel kullanıcı/rol/GraphQL/system user yolları kapalıdır. Directus teknik portu loopback'tir. Takım ekleme kontrollü create-only endpoint olup mevcut kullanıcıyı hedefleyemez.
+- Parola/OTP gerçek verileri testte veya hata çıktılarında kullanılmaz. Servis hataları güvenli Türkçe mesajlara eşlenir. Gerçek parola değiştirme otomasyonla yapılmaz.
+- Navbar'da dil seçici gerçek DOM sırasıyla en sağa alınır; yalnızca CSS order ile klavye sırası farklılaştırılmaz.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

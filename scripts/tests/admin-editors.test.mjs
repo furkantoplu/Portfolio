@@ -12,6 +12,8 @@ const result = await build({
     import { BlogManager } from './app/bakir/blog-manager';
     import { PracticeManager } from './app/bakir/practice-manager';
     import { AuthenticatorQr } from './app/bakir/authenticator-qr';
+    import { AccountSettings } from './app/bakir/account-settings';
+    import { SiteHeader } from './app/components/site-header';
     import config from './app/lib/page-content-config.json';
     const onChanged = async () => {};
     export const page = renderToStaticMarkup(<PageManager pages={[{ id: 1, page_key: 'home', content: Object.fromEntries(config.home.fields.map(f => [f.key, f.default])), seo_title: '', seo_description: '' }]} onChanged={onChanged} />);
@@ -19,6 +21,8 @@ const result = await build({
     export const practice = renderToStaticMarkup(<PracticeManager areas={[]} onChanged={onChanged} />);
     export const qr = renderToStaticMarkup(<AuthenticatorQr qrDataUrl="data:image/png;base64,TEST_ONLY" secret="TEST_ONLY" />);
     export const manual = renderToStaticMarkup(<AuthenticatorQr qrDataUrl={null} secret="TEST_ONLY" />);
+    export const account = renderToStaticMarkup(<AccountSettings user={{id:'test-only',first_name:'Test',last_name:'Owner',email:'test@example.test',tfa_enabled:true}} onSaved={async()=>{}} />);
+    export const header = renderToStaticMarkup(<SiteHeader locale="tr" />);
   `, resolveDir: fileURLToPath(new URL("../../frontend/", import.meta.url)), loader: "tsx" },
   write: false, bundle: true, format: "cjs", platform: "node", jsx: "automatic",
   external: ["react", "react/jsx-runtime", "react-dom/server", "lucide-react"],
@@ -54,4 +58,13 @@ test("Authenticator displays a local QR plus manual fallback, opened if QR is un
   assert.ok(module.exports.qr.includes("anahtarı elle gir"));
   assert.ok(module.exports.manual.includes('<details class="admin-authenticator-manual" open="">'));
   assert.ok(!module.exports.manual.includes("<img"));
+});
+test("Self account form has credential confirmations and no other-user selector", () => {
+  for (const label of ["Giriş e-posta adresi", "Yeni parola", "Mevcut parola ile onaylayın", "Authenticator doğrulama kodu"]) assert.ok(module.exports.account.includes(label));
+  assert.ok(!module.exports.account.includes("<select"));
+});
+test("Language selector is last in the header, after appointment and mobile menu", () => {
+  const html = module.exports.header;
+  assert.ok(html.indexOf('class="header-cta"') < html.indexOf('class="language-dropdown"'));
+  assert.ok(html.indexOf('class="mobile-menu"') < html.indexOf('class="language-dropdown"'));
 });

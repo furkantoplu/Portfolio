@@ -1,6 +1,7 @@
 import { language, translateItems, translatePage, registerTranslations } from "./translations.js";
 import { registerMedia } from "./media.js";
 import { resolvePracticeUrl } from "./practice-urls.js";
+import { registerAccountSettings } from "./account-settings.js";
 
 const publicFields = [
   "id",
@@ -100,6 +101,7 @@ export default {
     const { database } = context;
     registerMedia(router, context);
     registerTranslations(router, database, adminAccount);
+    registerAccountSettings(router, context, adminAccount);
     router.use((request, response, next) => language(request) ? next() : response.status(400).json({ errors: [{ message: "Geçersiz dil." }] }));
     router.get("/admin-account", async (request, response, next) => {
       try {
