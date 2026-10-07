@@ -45,6 +45,7 @@ export default async function PracticeAreaDetailPage({ params }: PageProps) {
 
   const index = allAreas.findIndex((item) => item.slug === area.slug);
   const content: PracticeDetailContent = {
+    section_visibility: area.section_visibility,
     slug: area.slug,
     index: String(index + 1).padStart(2, "0"),
     title: area.title,

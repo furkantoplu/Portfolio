@@ -1,0 +1,291 @@
+{
+  "home": [
+    {
+      "key": "intro",
+      "label": "Ana açıklama",
+      "field": "hero_description"
+    },
+    {
+      "key": "image",
+      "label": "Ana görsel ve yan bilgiler",
+      "field": "hero_image"
+    },
+    {
+      "key": "facts",
+      "label": "Kısa bilgiler",
+      "field": "fact_1"
+    },
+    {
+      "key": "note",
+      "label": "Görsel yanı not",
+      "field": "hero_note_title"
+    },
+    {
+      "key": "location",
+      "label": "Konum bilgisi",
+      "field": "location"
+    },
+    {
+      "key": "practices",
+      "label": "Çalışma alanları bölümü",
+      "field": "practice_title"
+    },
+    {
+      "key": "about",
+      "label": "Hakkımda bölümü",
+      "field": "about_title"
+    },
+    {
+      "key": "about_image",
+      "label": "Hakkımda görseli",
+      "field": "about_image"
+    },
+    {
+      "key": "values",
+      "label": "Yaklaşım değerleri",
+      "field": "value_1"
+    },
+    {
+      "key": "approach",
+      "label": "Yaklaşım / süreç bölümü",
+      "field": "approach_title"
+    },
+    {
+      "key": "blog",
+      "label": "Blog bölümü",
+      "field": "blog_title"
+    },
+    {
+      "key": "contact",
+      "label": "İletişim bölümü",
+      "field": "contact_title"
+    },
+    {
+      "key": "contact_details",
+      "label": "Adres ve çalışma saati kartları",
+      "field": null
+    }
+  ],
+  "about": [
+    {
+      "key": "intro",
+      "label": "Giriş açıklaması",
+      "field": "hero_description"
+    },
+    {
+      "key": "image",
+      "label": "Sayfa görseli",
+      "field": "image_path"
+    },
+    {
+      "key": "story",
+      "label": "Mesleki yaklaşım",
+      "field": "story_title"
+    },
+    {
+      "key": "professional_note",
+      "label": "Mesleki bilgi notu",
+      "field": "professional_note"
+    },
+    {
+      "key": "principles",
+      "label": "Çalışma ilkeleri",
+      "field": "principles_title"
+    },
+    {
+      "key": "cta",
+      "label": "Çalışma alanlarına yönlendirme",
+      "field": null
+    }
+  ],
+  "contact": [
+    {
+      "key": "intro",
+      "label": "Giriş açıklaması",
+      "field": "intro"
+    },
+    {
+      "key": "phone",
+      "label": "Telefon kartı",
+      "field": "phone_display"
+    },
+    {
+      "key": "whatsapp",
+      "label": "WhatsApp kartı",
+      "field": "whatsapp_value"
+    },
+    {
+      "key": "email",
+      "label": "E-posta kartı",
+      "field": "email"
+    },
+    {
+      "key": "address",
+      "label": "Adres kartı",
+      "field": "address_title"
+    },
+    {
+      "key": "hours",
+      "label": "Çalışma saatleri kartı",
+      "field": "working_days"
+    },
+    {
+      "key": "flow",
+      "label": "İletişim süreci",
+      "field": "flow_title"
+    }
+  ],
+  "areas": [
+    {
+      "key": "intro",
+      "label": "Giriş açıklaması",
+      "field": "hero_description"
+    },
+    {
+      "key": "image",
+      "label": "Sayfa giriş görseli",
+      "field": "hero_image"
+    },
+    {
+      "key": "listing",
+      "label": "Çalışma alanı kartları",
+      "field": null
+    },
+    {
+      "key": "note",
+      "label": "Yaklaşım notu",
+      "field": "note_title"
+    }
+  ],
+  "blog": [
+    {
+      "key": "intro",
+      "label": "Giriş açıklaması",
+      "field": "hero_description"
+    },
+    {
+      "key": "image",
+      "label": "Sayfa giriş görseli",
+      "field": "hero_image"
+    },
+    {
+      "key": "featured",
+      "label": "Öne çıkan yazı",
+      "field": null
+    },
+    {
+      "key": "archive",
+      "label": "Yazı arşivi",
+      "field": "archive_title"
+    },
+    {
+      "key": "note",
+      "label": "Arşiv bilgi notu",
+      "field": "note_text"
+    }
+  ],
+  "practice_areas": [
+    {
+      "key": "summary",
+      "label": "Kart açıklaması",
+      "field": "summary"
+    },
+    {
+      "key": "image",
+      "label": "Çalışma alanı görseli",
+      "field": "image_path"
+    },
+    {
+      "key": "subtitle",
+      "label": "Detay alt başlığı",
+      "field": "hero_title"
+    },
+    {
+      "key": "lead",
+      "label": "Giriş açıklaması",
+      "field": "lead"
+    },
+    {
+      "key": "overview",
+      "label": "Genel değerlendirme",
+      "field": "overview_title"
+    },
+    {
+      "key": "assessment",
+      "label": "Değerlendirme maddeleri",
+      "field": "assessment_points"
+    },
+    {
+      "key": "process",
+      "label": "Süreç adımları",
+      "field": "process_steps"
+    },
+    {
+      "key": "faqs",
+      "label": "Sık sorulan sorular",
+      "field": "faqs"
+    },
+    {
+      "key": "related",
+      "label": "Diğer çalışma alanları",
+      "field": null
+    },
+    {
+      "key": "cta",
+      "label": "İletişime yönlendirme",
+      "field": null
+    }
+  ],
+  "blog_posts": [
+    {
+      "key": "summary",
+      "label": "Kart / yazı özeti",
+      "field": "summary"
+    },
+    {
+      "key": "image",
+      "label": "Kapak görseli",
+      "field": "cover_path"
+    },
+    {
+      "key": "meta",
+      "label": "Kategori, tarih ve okuma bilgisi",
+      "field": "category"
+    },
+    {
+      "key": "lead",
+      "label": "Giriş metni",
+      "field": "lead"
+    },
+    {
+      "key": "body",
+      "label": "Yazı paragrafları",
+      "field": "body_paragraphs"
+    },
+    {
+      "key": "quote",
+      "label": "Vurgulu alıntı",
+      "field": "quote"
+    },
+    {
+      "key": "tips",
+      "label": "Öneriler / uygulanabilir adımlar",
+      "field": "tips_title"
+    },
+    {
+      "key": "closing",
+      "label": "Kapanış bölümü",
+      "field": "closing_title"
+    },
+    {
+      "key": "toc",
+      "label": "İçindekiler menüsü",
+      "field": null
+    },
+    {
+      "key": "cta",
+      "label": "Yazı sonu bağlantıları",
+      "field": null
+    }
+  ]
+}

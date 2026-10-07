@@ -365,6 +365,15 @@ docker compose down
 - Parola/OTP gerçek verileri testte veya hata çıktılarında kullanılmaz. Servis hataları güvenli Türkçe mesajlara eşlenir. Gerçek parola değiştirme otomasyonla yapılmaz.
 - Navbar'da dil seçici gerçek DOM sırasıyla en sağa alınır; yalnızca CSS order ile klavye sırası farklılaştırılmaz.
 
+### Karar 042 — İçerik ve görünürlük ayrı, dillerde ortak
+
+- Sayfa bölümleri frontend koşullu render ile gösterilir/gizlenir; gizli bölüm başlığı, boş görsel slotu veya TOC bağlantısı bırakılmaz. Alan adının yanında anahtar vardır; ayrı metin alanı olmayan bölümler isim/anahtar satırını kullanır. Anahtar form kaydıyla uygulanır, metin/görsel silmez.
+- Ortak `section_visibility` haritasının eksik anahtarı görünür, strict boolean false kapalıdır. Mevcut içerikler migrasyonla gizlenmez. Harita sayfalarda content içinde, alan/yazılarda ayrı JSONB'de saklanır. Config çift kopyası otomatik testle eşitlenir; yeni bölüm eklendiğinde iki kaynak/runtime kopyası birlikte güncellenmelidir.
+- Görünürlük dile özel metin değildir; TR/EN/DE ortak düzen bilgisidir. Çeviri metninden override edilmez. Çeviri kaydıyla bayrak yazımı atomiktir, sayfa JSON yoluna yazım diğer ortak metinleri ezmez. Üst bölüm altlarını saklar, alt bayrağı/çeviriyi silmez.
+- Görsel bayrağı aynı kaydın tüm kart/detay kullanımlarına uygulanır. İletişim yöntemleri aynı ortak haritayı ana sayfada kullanır. Blog öne çıkanın kapalı olması ilk kaydı arşivden çıkarmaz; TOC yalnızca görünen hedefleri gösterir. H1/ortak gezinme/sabit uyarılar korunur.
+- Gizleme erişim kontrolü değildir; API ve dosya URL'si public kalabilir. Hassas içerik güvenliği için yayın/yetki tasarımı gerekir. Sayfanın URL/sitemap/SEO ve kayıt yayın durumu ayrı özelliklerdir.
+- Canlı metin/görsel veya gerçek hesapları değiştirmeyen sahte render/transaction testleri tercih edilir. UI yardımcı çalışmazsa görsel QA tamamlanmış gibi yazılmaz; başarısızlık ve kalan doğrulama açıkça kaydedilir.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

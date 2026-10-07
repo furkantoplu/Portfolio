@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { ImagePlus, LoaderCircle } from "lucide-react";
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { directusRequest } from "./admin-api";
 
-export function ImageField({ label, value, onChange, disabled = false }: { label: string; value: string; onChange: (path: string) => void; disabled?: boolean }) {
+export function ImageField({ label, value, onChange, disabled = false, visibilityControl }: { label: string; value: string; onChange: (path: string) => void; disabled?: boolean; visibilityControl?: ReactNode }) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   async function upload(file?: File) {
@@ -21,7 +22,7 @@ export function ImageField({ label, value, onChange, disabled = false }: { label
     finally { setBusy(false); }
   }
   return <div className="admin-image-field admin-field--wide">
-    <span>{label}</span>
+    <span className="admin-field-heading"><span>{label}</span>{visibilityControl}</span>
     {value && <Image unoptimized width={600} height={210} src={value.startsWith("/site-media/") ? `/bakir-api/assets/${value.split("/").pop()}` : value} alt="Seçili görsel önizlemesi" />}
     <label className="admin-image-upload">{busy ? <LoaderCircle className="admin-spinner" size={18} /> : <ImagePlus size={18} />} {busy ? "Yükleniyor…" : "Bilgisayardan görsel seç"}<input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy || disabled} onChange={e => { void upload(e.target.files?.[0]); e.target.value = ""; }} /></label>
     <button type="button" disabled={busy || disabled || !value} onClick={() => onChange("")}>Görseli içerikten kaldır</button>

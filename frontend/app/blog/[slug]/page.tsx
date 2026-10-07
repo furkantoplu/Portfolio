@@ -3,6 +3,7 @@ import { getSiteUrl } from "../../lib/site-url";
 import { contentLanguageLinks, formatDate } from "../../lib/i18n";
 import type { Metadata } from "next";
 import Image from "next/image";
+import { isSectionVisible } from "../../lib/section-visibility";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Clock3, Quote } from "lucide-react";
 import { SiteFooter } from "../../components/site-footer";
@@ -32,6 +33,11 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const paragraphs = post.body_paragraphs || [];
   const tips = post.tips || [];
+  const show = (key: string) => isSectionVisible(post.section_visibility, key);
+  const hasIntro = Boolean(show("lead") && post.lead || show("body") && paragraphs.length);
+  const hasTips = show("tips") && tips.length > 0;
+  const hasClosing = show("closing") && Boolean(post.closing_body);
+  const hasToc = show("toc") && (hasIntro || hasTips || hasClosing);
 
   return (
     <main className="site-shell article-page">
@@ -39,37 +45,37 @@ export default async function BlogPostPage({ params }: PageProps) {
       <article>
         <header className="article-header">
           <a className="detail-back-link" href={localHref("/blog")}><ArrowLeft aria-hidden="true" size={17} />{t("Bilgi Köşesi'ne dön")}</a>
-          <div className="article-header__meta">
+          {show("meta") && (<div className="article-header__meta">
             <span>{post.category}</span>
             <time>{formatDate(post.published_at, locale)}</time>
             <span><Clock3 aria-hidden="true" size={15} />{post.reading_minutes}{" "}{t("dk okuma")}</span>
-          </div>
+          </div>) }
           <h1>{post.title}</h1>
-          <p>{post.summary}</p>
+          {show("summary") && (<p>{post.summary}</p>) }
         </header>
 
-        {post.cover_path && <div className="article-cover">
+        {post.cover_path && show("image") && <div className="article-cover">
           <Image src={post.cover_path} alt={post.cover_alt || post.title} fill priority sizes="(max-width: 860px) 100vw, 1200px" />
           {post.cover_caption && <div className="article-cover__caption">{post.cover_caption}</div>}
         </div>}
 
-        <div className="article-layout">
-          <aside className="article-toc" aria-label={t("Yazı içeriği")}>
+        <div className={`article-layout${hasToc ? "" : " article-layout--no-toc"}`}>
+          {hasToc && (<aside className="article-toc" aria-label={t("Yazı içeriği")}>
             <span>{t("Bu yazıda")}</span>
-            <a href="#giris">{t("Konuya giriş")}</a>
-            {tips.length > 0 && <a href="#oneriler">{t("Uygulanabilir adımlar")}</a>}
-            {post.closing_body && <a href="#kisa-not">{t("Akılda tutulması gerekenler")}</a>}
-          </aside>
+            {hasIntro && <a href="#giris">{t("Konuya giriş")}</a>}
+            {hasTips && <a href="#oneriler">{t("Uygulanabilir adımlar")}</a>}
+            {hasClosing && <a href="#kisa-not">{t("Akılda tutulması gerekenler")}</a>}
+          </aside>) }
 
           <div className="article-body">
-            <section id="giris">
-              {post.lead && <p className="article-body__lead">{post.lead}</p>}
-              {paragraphs.map((paragraph, index) => <p key={`${post.id}-paragraph-${index}`}>{paragraph.text}</p>)}
-            </section>
+            {hasIntro && (<section id="giris">
+              {show("lead") && post.lead && <p className="article-body__lead">{post.lead}</p>}
+              {show("body") && paragraphs.map((paragraph, index) => <p key={`${post.id}-paragraph-${index}`}>{paragraph.text}</p>)}
+            </section>) }
 
-            {post.quote && <blockquote><Quote aria-hidden="true" size={28} strokeWidth={1.35} /><p>{post.quote}</p></blockquote>}
+            {show("quote") && post.quote && <blockquote><Quote aria-hidden="true" size={28} strokeWidth={1.35} /><p>{post.quote}</p></blockquote>}
 
-            {tips.length > 0 && (
+            {hasTips && (
               <section id="oneriler">
                 <p className="section-kicker">{t("Uygulanabilir Adımlar")}</p>
                 <h2>{post.tips_title || t("Günlük yaşamda nasıl uygulanabilir?")}</h2>
@@ -81,7 +87,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               </section>
             )}
 
-            {post.closing_body && (
+            {hasClosing && (
               <section id="kisa-not">
                 <p className="section-kicker">{t("Kısa Not")}</p>
                 <h2>{post.closing_title || t("Her ihtiyaç birbirinden farklıdır.")}</h2>
@@ -90,10 +96,10 @@ export default async function BlogPostPage({ params }: PageProps) {
             )}
 
             <div className="article-disclaimer">{t("Bu yazı genel bilgilendirme amaçlıdır; tanı, tedavi veya kişisel egzersiz önerisi yerine geçmez.")}</div>
-            <div className="article-end">
+            {show("cta") && (<div className="article-end">
               <a href={localHref("/blog")}><ArrowLeft aria-hidden="true" size={17} />{t("Tüm yazılara dön")}</a>
               <a href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></a>
-            </div>
+            </div>) }
           </div>
         </div>
       </article>

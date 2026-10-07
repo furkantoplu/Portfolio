@@ -23,6 +23,7 @@ const publicFields = [
   "faqs",
   "seo_title",
   "seo_description",
+  "section_visibility",
 ];
 
 function publishedPracticeAreas(database) {
@@ -32,6 +33,7 @@ function publishedPracticeAreas(database) {
 }
 
 const publicBlogFields = [
+  "section_visibility",
   "id",
   "sort",
   "featured",

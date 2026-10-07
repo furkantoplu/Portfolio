@@ -3,9 +3,11 @@ import type { Locale } from "./i18n";
 import { notFound } from "next/navigation";
 import pageConfig from "./page-content-config.json";
 import { getTranslator } from "./i18n";
+import type { SectionVisibility } from "./section-visibility";
 export type SitePageKey = "home" | "about" | "contact" | "areas" | "blog";
 
 export type PracticeArea = {
+  section_visibility?: SectionVisibility;
   redirect_slug?: string;
   language_slugs?: Partial<Record<Locale, string>>;
   id: number;
@@ -30,6 +32,7 @@ export type PracticeArea = {
 };
 
 export type BlogPost = {
+  section_visibility?: SectionVisibility;
   language_slugs?: Partial<Record<Locale, string>>;
   id: number;
   sort: number | null;
@@ -112,7 +115,7 @@ export function getSitePage<T>(pageKey: SitePageKey, locale?: Locale) {
 export async function getEditablePage(pageKey: keyof typeof pageConfig) {
   const locale = await getLocale();
   const t = getTranslator(locale);
-  const page = await getSitePage<Record<string, string>>(pageKey, locale);
+  const page = await getSitePage<Record<string, string> & { section_visibility?: SectionVisibility }>(pageKey, locale);
   const defaults = Object.fromEntries(pageConfig[pageKey].fields.map(field => [field.key, "type" in field ? field.default : t(field.default)]));
   return { ...page, content: { ...defaults, ...page.content } };
 }

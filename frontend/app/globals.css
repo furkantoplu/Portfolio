@@ -1720,6 +1720,21 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .admin-image-upload input { width: 100%; font-size: 12px; }
 .admin-image-field > button { border: 1px solid var(--line); border-radius: 6px; padding: 9px; font-size: 12px; }
 .admin-account-fields { min-width: 0; margin: 0; padding: 0; border: 0; }
+.admin-visibility-field { display: grid; align-content: start; gap: 7px; min-width: 0; }
+.admin-field-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 12px; width: 100%; }
+.admin-editor-grid .admin-field-heading > label { display: block; color: #49635c; font-size: 11px; font-weight: 700; }
+.admin-visibility-switch { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid #cbd6ce; border-radius: 20px; background: #f0f0eb; color: #6d7672; font: inherit; font-size: 11px; cursor: pointer; }
+.admin-visibility-switch.is-visible { background: #e5efe5; color: #245c45; border-color: #b8cfb8; }
+.admin-visibility-switch:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 3px; }
+.admin-visibility-field > small { color: #87938f; font-size: 10px; line-height: 1.5; }
+.admin-extra-section { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 12px; font-weight: 650; }
+.admin-visibility-note { margin: 0; padding: 0 24px; color: #728277; font-size: 11px; line-height: 1.6; }
+.hero.hero--text-only, .about-section.about-section--text-only, .about-page-hero.about-page-hero--text-only, .contact-section__main.contact-section__main--text-only { grid-template-columns: minmax(0, 1fr); }
+.article-layout.article-layout--no-toc { grid-template-columns: minmax(0, 820px); justify-content: center; }
+.contact-details.contact-details--single, .contact-details__cards.contact-details__cards--single { grid-template-columns: minmax(0, 1fr); }
+.contact-methods.contact-methods--single { grid-template-columns: minmax(0, 1fr); }
+.contact-methods.contact-methods--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 860px) { .contact-methods.contact-methods--two { grid-template-columns: minmax(0, 1fr); } }
 .admin-page-tabs { flex-wrap: wrap; }
 .archive-card__status { padding: 7px 11px; border-radius: 999px; background: var(--sage-soft); color: var(--primary); font-size: 10px; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; }
 .article-archive__note { margin: 24px 0 0; color: #75817c; font-size: 12px; line-height: 1.55; }

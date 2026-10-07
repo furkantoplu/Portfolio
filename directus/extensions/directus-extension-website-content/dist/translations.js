@@ -1,5 +1,6 @@
 const table = "website_content_translations";
 import { practiceSlug } from "./practice-urls.js";
+import { sharedVisibility, validateVisibility, visibilityScope, saveSharedVisibility } from "./section-visibility.js";
 const pageTextFields = ["hero_kicker","hero_title","hero_accent","hero_suffix","hero_description","hero_image_alt","hero_note_title","hero_note_text","location","location_note","fact_1","fact_2","fact_3","practice_title","practice_accent","practice_intro","practice_note","about_image_alt","about_title","about_accent","about_lead","about_body","value_1","value_2","value_3","approach_title","step_1_title","step_1_text","step_2_title","step_2_text","step_3_title","step_3_text","blog_title","blog_accent","blog_intro","blog_note","contact_title","contact_accent","contact_intro","note_title","note_accent","note_text","archive_title","archive_intro"];
 const translatedFields = {
   practice_areas: ["title", "summary", "hero_title", "hero_accent", "lead", "image_alt", "overview_title", "overview_accent", "overview", "assessment_points", "process_steps", "faqs", "seo_title", "seo_description"],
@@ -65,10 +66,10 @@ export function registerTranslations(router, database, adminAccount) {
       if (!account.is_admin) return response.status(403).json({ errors: [{ message: "Yönetici yetkisi gerekli." }] });
       const { collection, parentId, language: locale } = request.params;
       if (!Object.hasOwn(translatedFields, collection) || !["en", "de"].includes(locale) || !/^\d+$/.test(parentId)) return response.status(400).json({ errors: [{ message: "Geçersiz çeviri isteği." }] });
-      const parent = await database(collection).where("id", Number(parentId)).first("id");
+      const parent = await database(collection).where("id", Number(parentId)).first();
       if (!parent) return response.status(404).json({ errors: [{ message: "İçerik bulunamadı." }] });
       const version = await database(table).where({ collection, parent_id: Number(parentId), language: locale }).first();
-      response.set("Cache-Control", "no-store").json({ data: version ?? { status: "draft", slug: "", content: {} } });
+      response.set("Cache-Control", "no-store").json({ data: { ...(version ?? { status: "draft", slug: "", content: {} }), section_visibility: sharedVisibility(collection, parent) } });
     } catch (error) { next(error); }
   });
   router.patch("/translations/:collection/:parentId/:language", async (request, response, next) => {
@@ -80,12 +81,13 @@ export function registerTranslations(router, database, adminAccount) {
       if (!Object.hasOwn(translatedFields, collection) || !["en", "de"].includes(locale) || !/^\d+$/.test(parentId)) return response.status(400).json({ errors: [{ message: "Geçersiz çeviri isteği." }] });
       const parent = await database(collection).where("id", Number(parentId)).first();
       if (!parent) return response.status(404).json({ errors: [{ message: "İçerik bulunamadı." }] });
-      let content, slug;
+      let content, slug, visibility;
       const status = request.body?.status;
       try {
         if (!["draft", "published", "hidden"].includes(status)) throw new Error("Yayın durumu geçersiz.");
         if (!request.body.content || typeof request.body.content !== "object" || Array.isArray(request.body.content)) throw new Error("Çeviri içeriği geçersiz.");
         content = pickContent(collection, request.body.content);
+        if (request.body.section_visibility !== undefined) visibility = validateVisibility(visibilityScope(collection, parent.page_key), request.body.section_visibility);
         slug = collection === "site_pages" ? null : collection === "practice_areas" ? practiceSlug(content.title) : String(request.body.slug || "").trim();
         if (slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error("URL adı küçük harf, rakam ve tire içermeli.");
         if (slug?.length > 220) throw new Error("URL adı çok uzun.");
@@ -95,7 +97,12 @@ export function registerTranslations(router, database, adminAccount) {
         }
       } catch (error) { return response.status(400).json({ errors: [{ message: error.message }] }); }
       const record = { collection, parent_id: Number(parentId), language: locale, status, slug: slug || null, content: JSON.stringify(content), updated_at: new Date() };
-      const [saved] = await database(table).insert(record).onConflict(["collection", "parent_id", "language"]).merge(["status", "slug", "content", "updated_at"]).returning(["id", "status", "slug", "content"]);
+      const write = async db => {
+        const [saved] = await db(table).insert(record).onConflict(["collection", "parent_id", "language"]).merge(["status", "slug", "content", "updated_at"]).returning(["id", "status", "slug", "content"]);
+        if (visibility !== undefined) await saveSharedVisibility(db, collection, Number(parentId), visibility);
+        return { ...saved, section_visibility: visibility ?? sharedVisibility(collection, parent) };
+      };
+      const saved = visibility === undefined ? await write(database) : await database.transaction(write);
       response.set("Cache-Control", "no-store").json({ data: saved });
     } catch (error) {
       if (error.code === "23505") return response.status(409).json({ errors: [{ message: "Bu dilde aynı URL adı kullanılıyor." }] });

@@ -215,6 +215,16 @@ Hesabım ekranı ve account-settings endpoint'i sadece oturum açan yöneticiye 
 
 account-ownership hook'u oturum açmış yöneticinin başka kullanıcıya güncelleme/silme yazmasını sistem seviyesinde durdurur. Public panel proxy'si dar allowlist kullanır; genel platform yönetimi ve user API yazımları dışa açık değildir. Takım oluşturma ayrı, kontrollü yeni-hesap endpoint'idir; diğer üyeler okunur görüntülenir. Dahili Directus auth işlemleri ve loopback bakım API'si farklı güven sınırıdır; Directus portu internete açılmaz. Mevcut 2FA anahtarı e-posta/parola değişiminde korunur. Parola unutma ayrı özellik olarak ele alınacaktır.
 
+## Bölüm görünürlüğü — 7 Ekim 2026
+
+Admin'de sayfa, alan ve blog editörlerinde bölüm adının yanında Görünür/Gizli anahtarı bulunur. Sayfa başlığı, navbar/footer ve sabit bilgilendirme uyarıları korunurken düzenlenebilir içerik bölümleri kapatılabilir. Görünürlük kaydetme ile uygulanır; yazı, görsel referansı, alt bölüm ayarları ve çeviriler silinmez. Üst bölüm kapalıysa altları da public DOM'da üretilmez. Fotoğraf kapatıldığında kart/detay aynı bayrağı kullanır ve görselsiz yerleşime geçer.
+
+Bayraklar tüm dillerde ortak düzen bilgisidir. `practice_areas` ve `blog_posts` yeni JSONB `section_visibility` alanını, `site_pages` ise `content.section_visibility` haritasını kullanır. Eksik anahtar görünür kabul edilir; yalnızca boolean false gizler. Frontend/Directus `section-config.json` tanımları eşleşir. `006-section-visibility.sql` Directus JSON alan metadatasını ekler, idempotenttir; mevcut içerik veya yayın durumunu değiştirmez. Compose ve manuel dil kurulumu migrasyonu içerir.
+
+Çeviri endpoint'i ortak görünürlüğü okur ve EN/DE metin kaydıyla aynı DB transaction'ında ana kayda yazar. Sayfa JSON'una yazım jsonb_set ile yalnızca görünürlük yolunu günceller; Türkçe metinler ezilmez. Çeviri beyaz listesi görünürlüğün çeviri metni üzerinden geçersiz kılınmasına izin vermez. İletişim kartları ana sayfada ortak iletişim ayarını kullanır. Blog içindekiler yalnızca görünen bölümlere bağlanır; öne çıkan blok kapalıysa ilk yazı arşive taşınır.
+
+Bu bir gizlilik/yetkilendirme sistemi değildir. Public içerik API'si gizli bölüm metinlerini, public referanslı dosya URL'si görselleri sunmaya devam edebilir. Hassas içerik konulmamalıdır. Bölüm kapatma URL/sitemap/SEO veya yazının yayın durumunu kaldırmaz. Gerçek admin hesabı/şifre/2FA test için değiştirilmez. Otomatik render/kayıt testleri sahte içerik kullanır. Bu pakette Computer Use yardımcısı sandbox başlatma hatası verdiğinden masaüstü/mobil görsel doğrulaması tamamlanamadı; production build, TypeScript/ESLint ve canlı HTTP kontrolleri geçti.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

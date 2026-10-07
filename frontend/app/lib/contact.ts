@@ -1,4 +1,5 @@
 export type ContactContent = {
+  section_visibility?: Record<string, boolean>;
   hero_title: string;
   hero_accent: string;
   intro: string;

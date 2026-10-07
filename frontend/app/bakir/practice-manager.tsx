@@ -1,15 +1,17 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { ArrowUpRight, Check, EyeOff, FilePlus2, Home, LoaderCircle, PencilLine, Save, Stethoscope } from "lucide-react";
 import { directusRequest, type ContentItem } from "./admin-api";
 import { NativeLink } from "../components/native-link";
 import { LanguageTabs, TranslationEditor } from "./translation-editor";
 import type { Locale } from "../lib/i18n";
 import { ImageField } from "./image-field";
+import { VisibilityField, VisibilitySwitch, ExtraSectionControls } from "./section-visibility";
 import { practiceSlug } from "../lib/practice-slug";
 
 export type ManagedPracticeArea = ContentItem & {
+  section_visibility?: Record<string, boolean>;
   id: number;
   sort: number | null;
   show_on_homepage: boolean;
@@ -32,6 +34,7 @@ export type ManagedPracticeArea = ContentItem & {
 };
 
 type PracticeDraft = {
+  section_visibility: Record<string, boolean>;
   image_path: string;
   image_alt: string;
   status: ContentItem["status"];
@@ -54,6 +57,7 @@ type PracticeDraft = {
 };
 
 const emptyDraft: PracticeDraft = {
+  section_visibility: {},
   image_path: "", image_alt: "",
   status: "draft",
   sort: "",
@@ -91,6 +95,7 @@ function parsePairs(value: string, first: string, second: string) {
 
 function areaToDraft(area: ManagedPracticeArea): PracticeDraft {
   return {
+    section_visibility: area.section_visibility || {},
     image_path: area.image_path ?? "", image_alt: area.image_alt ?? "",
     status: area.status,
     sort: area.sort == null ? "" : String(area.sort),
@@ -115,6 +120,7 @@ function areaToDraft(area: ManagedPracticeArea): PracticeDraft {
 export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeArea[]; onChanged: () => Promise<void> }) {
   const [language, setLanguage] = useState<Locale>("tr");
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const selectedIdRef = useRef<number | null>(null);
   const [draft, setDraft] = useState<PracticeDraft>(emptyDraft);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -124,6 +130,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
   }
 
   function startNew() {
+    selectedIdRef.current = null;
     setLanguage("tr");
     setSelectedId(null);
     setDraft({ ...emptyDraft, sort: String((areas.at(-1)?.sort ?? areas.length) + 1) });
@@ -131,6 +138,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
   }
 
   function editArea(area: ManagedPracticeArea) {
+    selectedIdRef.current = area.id;
     setSelectedId(area.id);
     setDraft(areaToDraft(area));
     setMessage(null);
@@ -145,6 +153,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
     const processSteps = parsePairs(draft.process_steps, "title", "description");
     const faqs = parsePairs(draft.faqs, "question", "answer");
     const payload = {
+      section_visibility: draft.section_visibility,
       image_path: draft.image_path || null, image_alt: draft.image_alt.trim() || null,
       status: draft.status,
       sort: draft.sort ? Number.parseInt(draft.sort, 10) : null,
@@ -170,6 +179,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
         method: selectedId ? "PATCH" : "POST",
         body: JSON.stringify(payload),
       });
+      selectedIdRef.current = result.data.id;
       setSelectedId(result.data.id);
       setDraft(areaToDraft(result.data));
       await onChanged();
@@ -231,7 +241,7 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
 
         <div>
         <LanguageTabs language={language} onChange={setLanguage} disabled={!selectedId || busy} />
-        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="practice_areas" parentId={selectedId} language={language} /> : <form className="admin-post-editor" onSubmit={saveArea}>
+        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="practice_areas" parentId={selectedId} language={language} onVisibilitySaved={async value => { if (selectedIdRef.current === selectedId) update("section_visibility", value); await onChanged(); }} /> : <form className="admin-post-editor" onSubmit={saveArea}>
           <div className="admin-post-editor__topline">
             <div><PencilLine size={18} /><strong>{selectedId ? "Alanı düzenle" : "Yeni çalışma alanı"}</strong></div>
             <select value={draft.status} onChange={(event) => update("status", event.target.value as ContentItem["status"])} aria-label="Yayın durumu">
@@ -241,25 +251,27 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
             </select>
           </div>
 
+          <p className="admin-visibility-note">Görünürlük tüm dillerde ortaktır. Gizlemek içerikleri silmez; Kaydet ile uygulanır.</p>
           <div className="admin-editor-grid">
-            <ImageField label="Çalışma alanı görseli" value={draft.image_path} onChange={path => update("image_path", path)} disabled={busy} />
+            <ImageField label="Çalışma alanı görseli" value={draft.image_path} onChange={path => update("image_path", path)} disabled={busy}  visibilityControl={<VisibilitySwitch section="image" label="Çalışma alanı görseli" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy} />} />
             <label className="admin-field--wide"><span>Görsel açıklaması</span><input value={draft.image_alt} onChange={e => update("image_alt", e.target.value)} /></label>
             <label className="admin-field--wide"><span>Çalışma alanı adı / sayfa başlığı</span><input value={draft.title} maxLength={220} onChange={event => { const title = event.target.value; setDraft(current => ({ ...current, title, slug: practiceSlug(title) })); }} required /><small>Kart ve detay sayfasının ana başlığı bu addır.</small></label>
             <label><span>Otomatik URL adı</span><input value={draft.slug || practiceSlug(draft.title)} readOnly /><small>Alan adı değişince adres otomatik güncellenir. Aynı ad kullanılıyorsa kayıtta benzersiz bir ek oluşturulur. Eski adres yeni sayfaya yönlenir.</small></label>
             <label><span>Sıralama</span><input type="number" min="1" value={draft.sort} onChange={(event) => update("sort", event.target.value)} /></label>
             <label className="admin-check admin-field--wide"><input type="checkbox" checked={draft.show_on_homepage} onChange={(event) => update("show_on_homepage", event.target.checked)} /><span><Home size={15} /> Ana sayfadaki kartlarda göster</span></label>
-            <label className="admin-field--wide"><span>Kart açıklaması</span><textarea rows={3} value={draft.summary} onChange={(event) => update("summary", event.target.value)} required /></label>
-            <label><span>Detay alt başlığı (isteğe bağlı)</span><input value={draft.hero_title} onChange={(event) => update("hero_title", event.target.value)} /></label>
+            <VisibilityField label="Kart açıklaması" section="summary" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={3} value={draft.summary} onChange={(event) => update("summary", event.target.value)} required /></VisibilityField>
+            <VisibilityField label="Detay alt başlığı (isteğe bağlı)" section="subtitle" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><input value={draft.hero_title} onChange={(event) => update("hero_title", event.target.value)} /></VisibilityField>
             <label><span>Alt başlık vurgusu (isteğe bağlı)</span><input value={draft.hero_accent} onChange={(event) => update("hero_accent", event.target.value)} /></label>
-            <label className="admin-field--wide"><span>Detay giriş açıklaması</span><textarea rows={4} value={draft.lead} onChange={(event) => update("lead", event.target.value)} /></label>
-            <label><span>Değerlendirme başlığı</span><input value={draft.overview_title} onChange={(event) => update("overview_title", event.target.value)} /></label>
+            <VisibilityField label="Detay giriş açıklaması" section="lead" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={4} value={draft.lead} onChange={(event) => update("lead", event.target.value)} /></VisibilityField>
+            <VisibilityField label="Değerlendirme başlığı" section="overview" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><input value={draft.overview_title} onChange={(event) => update("overview_title", event.target.value)} /></VisibilityField>
             <label><span>Değerlendirme vurgusu</span><input value={draft.overview_accent} onChange={(event) => update("overview_accent", event.target.value)} /></label>
             <label className="admin-field--wide"><span>Genel bilgilendirme</span><textarea rows={5} value={draft.overview} onChange={(event) => update("overview", event.target.value)} /></label>
-            <label className="admin-field--wide"><span>Değerlendirme maddeleri</span><textarea rows={5} value={draft.assessment_points} onChange={(event) => update("assessment_points", event.target.value)} placeholder={"Her satıra bir madde yazın.\nHareket değerlendirmesi\nGünlük yaşam alışkanlıkları"} /><small>Her satır sitede ayrı bir madde olarak görünür.</small></label>
-            <label className="admin-field--wide"><span>Süreç adımları</span><textarea rows={6} value={draft.process_steps} onChange={(event) => update("process_steps", event.target.value)} placeholder={"Değerlendirme | İhtiyaçlar birlikte belirlenir.\nPlanlama | Kişiye uygun yol haritası oluşturulur."} /><small>Her satırı “Başlık | Açıklama” biçiminde yazın.</small></label>
-            <label className="admin-field--wide"><span>Sık sorulan sorular</span><textarea rows={6} value={draft.faqs} onChange={(event) => update("faqs", event.target.value)} placeholder={"İlk görüşme ne kadar sürer? | Süre ihtiyaca göre değişebilir.\nNe getirmeliyim? | Varsa önceki raporlarınızı getirebilirsiniz."} /><small>Her satırı “Soru | Cevap” biçiminde yazın.</small></label>
+            <VisibilityField label="Değerlendirme maddeleri" section="assessment" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={5} value={draft.assessment_points} onChange={(event) => update("assessment_points", event.target.value)} placeholder={"Her satıra bir madde yazın.\nHareket değerlendirmesi\nGünlük yaşam alışkanlıkları"} /><small>Her satır sitede ayrı bir madde olarak görünür.</small></VisibilityField>
+            <VisibilityField label="Süreç adımları" section="process" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={6} value={draft.process_steps} onChange={(event) => update("process_steps", event.target.value)} placeholder={"Değerlendirme | İhtiyaçlar birlikte belirlenir.\nPlanlama | Kişiye uygun yol haritası oluşturulur."} /><small>Her satırı “Başlık | Açıklama” biçiminde yazın.</small></VisibilityField>
+            <VisibilityField label="Sık sorulan sorular" section="faqs" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={6} value={draft.faqs} onChange={(event) => update("faqs", event.target.value)} placeholder={"İlk görüşme ne kadar sürer? | Süre ihtiyaca göre değişebilir.\nNe getirmeliyim? | Varsa önceki raporlarınızı getirebilirsiniz."} /><small>Her satırı “Soru | Cevap” biçiminde yazın.</small></VisibilityField>
             <label><span>SEO başlığı</span><input value={draft.seo_title} onChange={(event) => update("seo_title", event.target.value)} /></label>
             <label><span>SEO açıklaması</span><textarea rows={2} maxLength={180} value={draft.seo_description} onChange={(event) => update("seo_description", event.target.value)} /></label>
+            <ExtraSectionControls scope="practice_areas" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy} />
           </div>
 
           <div className="admin-post-editor__footer">

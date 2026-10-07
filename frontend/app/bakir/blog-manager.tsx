@@ -1,14 +1,18 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { ArrowUpRight, BookOpenText, Check, EyeOff, FilePlus2, LoaderCircle, PencilLine, Save } from "lucide-react";
 import { directusRequest, type ContentItem } from "./admin-api";
 import { NativeLink } from "../components/native-link";
 import { LanguageTabs, TranslationEditor } from "./translation-editor";
 import type { Locale } from "../lib/i18n";
 import { ImageField } from "./image-field";
+import { VisibilityField, VisibilitySwitch, ExtraSectionControls } from "./section-visibility";
 
 export type ManagedBlogPost = ContentItem & {
+  section_visibility?: Record<string, boolean>;
+  tips_title: string | null;
+  tips: Array<{ title: string; text: string }> | null;
   id: number;
   sort: number | null;
   featured: boolean;
@@ -31,6 +35,9 @@ export type ManagedBlogPost = ContentItem & {
 };
 
 type BlogDraft = {
+  section_visibility: Record<string, boolean>;
+  tips_title: string;
+  tips: string;
   cover_path: string;
   cover_alt: string;
   cover_caption: string;
@@ -52,6 +59,7 @@ type BlogDraft = {
 };
 
 const emptyDraft: BlogDraft = {
+  section_visibility: {}, tips_title: "", tips: "",
   cover_path: "", cover_alt: "", cover_caption: "",
   status: "draft",
   featured: false,
@@ -87,6 +95,7 @@ function slugify(value: string) {
 
 function postToDraft(post: ManagedBlogPost): BlogDraft {
   return {
+    section_visibility: post.section_visibility || {}, tips_title: post.tips_title || "", tips: post.tips?.map(tip => `${tip.title} | ${tip.text}`).join("\n") || "",
     cover_path: post.cover_path ?? "", cover_alt: post.cover_alt ?? "", cover_caption: post.cover_caption ?? "",
     status: post.status,
     featured: post.featured,
@@ -115,11 +124,13 @@ const statusLabels: Record<ContentItem["status"], string> = {
 export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; onChanged: () => Promise<void> }) {
   const [language, setLanguage] = useState<Locale>("tr");
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const selectedIdRef = useRef<number | null>(null);
   const [draft, setDraft] = useState<BlogDraft>(emptyDraft);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   function startNew() {
+    selectedIdRef.current = null;
     setLanguage("tr");
     setSelectedId(null);
     setDraft({ ...emptyDraft });
@@ -127,6 +138,7 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
   }
 
   function editPost(post: ManagedBlogPost) {
+    selectedIdRef.current = post.id;
     setSelectedId(post.id);
     setDraft(postToDraft(post));
     setMessage(null);
@@ -148,6 +160,9 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
       .map((text) => ({ text }));
 
     const payload = {
+      section_visibility: draft.section_visibility,
+      tips_title: draft.tips_title.trim() || null,
+      tips: draft.tips.split("\n").filter(line => line.trim()).map(line => { const separator = line.indexOf("|"); return { title: (separator < 0 ? line : line.slice(0, separator)).trim(), text: separator < 0 ? "" : line.slice(separator + 1).trim() }; }),
       cover_path: draft.cover_path || null, cover_alt: draft.cover_alt.trim() || null, cover_caption: draft.cover_caption.trim() || null,
       status: draft.status,
       featured: draft.featured,
@@ -171,6 +186,7 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
         method: selectedId ? "PATCH" : "POST",
         body: JSON.stringify(payload),
       });
+      selectedIdRef.current = result.data.id;
       setSelectedId(result.data.id);
       setDraft(postToDraft(result.data));
       await onChanged();
@@ -235,7 +251,7 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
 
         <div>
         <LanguageTabs language={language} onChange={setLanguage} disabled={!selectedId || busy} />
-        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="blog_posts" parentId={selectedId} language={language} /> : <form className="admin-post-editor" onSubmit={savePost}>
+        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="blog_posts" parentId={selectedId} language={language} onVisibilitySaved={async value => { if (selectedIdRef.current === selectedId) update("section_visibility", value); await onChanged(); }} /> : <form className="admin-post-editor" onSubmit={savePost}>
           <div className="admin-post-editor__topline">
             <div><PencilLine size={18} /><strong>{selectedId ? "Yazıyı düzenle" : "Yeni yazı oluştur"}</strong></div>
             <select value={draft.status} onChange={(event) => update("status", event.target.value as ContentItem["status"])} aria-label="Yayın durumu">
@@ -245,24 +261,28 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
             </select>
           </div>
 
+          <p className="admin-visibility-note">Görünürlük tüm dillerde ortaktır. Gizlemek içerikleri silmez; Kaydet ile uygulanır.</p>
           <div className="admin-editor-grid">
-            <ImageField label="Yazı kapak görseli" value={draft.cover_path} onChange={path => update("cover_path", path)} disabled={busy} />
+            <ImageField label="Yazı kapak görseli" value={draft.cover_path} onChange={path => update("cover_path", path)} disabled={busy}  visibilityControl={<VisibilitySwitch section="image" label="Yazı kapak görseli" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy} />} />
             <label><span>Görsel açıklaması</span><input value={draft.cover_alt} onChange={e => update("cover_alt", e.target.value)} /></label>
             <label><span>Görsel alt yazısı</span><input value={draft.cover_caption} onChange={e => update("cover_caption", e.target.value)} /></label>
             <label className="admin-field--wide"><span>Yazı başlığı</span><input value={draft.title} onChange={(event) => { const title = event.target.value; setDraft((current) => ({ ...current, title, ...(!selectedId ? { slug: slugify(title) } : {}) })); }} required /></label>
-            <label><span>Kategori</span><input value={draft.category} onChange={(event) => update("category", event.target.value)} required /></label>
+            <VisibilityField label="Kategori" section="meta" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><input value={draft.category} onChange={(event) => update("category", event.target.value)} required /></VisibilityField>
             <label><span>URL adı</span><input value={draft.slug} onChange={(event) => update("slug", slugify(event.target.value))} required /></label>
-            <label className="admin-field--wide"><span>Kart özeti</span><textarea rows={3} value={draft.summary} onChange={(event) => update("summary", event.target.value)} required /></label>
+            <VisibilityField label="Kart özeti" section="summary" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={3} value={draft.summary} onChange={(event) => update("summary", event.target.value)} required /></VisibilityField>
             <label><span>Yayın tarihi</span><input type="date" value={draft.published_at} onChange={(event) => update("published_at", event.target.value)} /></label>
             <label><span>Okuma süresi</span><input type="number" min="1" max="120" value={draft.reading_minutes} onChange={(event) => update("reading_minutes", event.target.value)} required /></label>
             <label className="admin-check admin-field--wide"><input type="checkbox" checked={draft.featured} onChange={(event) => update("featured", event.target.checked)} /><span>Ana sayfada öne çıkar</span></label>
-            <label className="admin-field--wide"><span>Giriş metni</span><textarea rows={4} value={draft.lead} onChange={(event) => update("lead", event.target.value)} /></label>
-            <label className="admin-field--wide"><span>Yazı paragrafları</span><textarea rows={10} value={draft.body} onChange={(event) => update("body", event.target.value)} placeholder="Her paragrafın arasına bir boş satır bırakın." /><small>Boş satırlarla ayrılan her bölüm ayrı paragraf olarak yayınlanır.</small></label>
-            <label className="admin-field--wide"><span>Vurgulu alıntı</span><textarea rows={2} value={draft.quote} onChange={(event) => update("quote", event.target.value)} /></label>
-            <label><span>Kapanış başlığı</span><input value={draft.closing_title} onChange={(event) => update("closing_title", event.target.value)} /></label>
+            <VisibilityField label="Giriş metni" section="lead" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={4} value={draft.lead} onChange={(event) => update("lead", event.target.value)} /></VisibilityField>
+            <VisibilityField label="Yazı paragrafları" section="body" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={10} value={draft.body} onChange={(event) => update("body", event.target.value)} placeholder="Her paragrafın arasına bir boş satır bırakın." /><small>Boş satırlarla ayrılan her bölüm ayrı paragraf olarak yayınlanır.</small></VisibilityField>
+            <VisibilityField label="Vurgulu alıntı" section="quote" className="admin-field--wide" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><textarea rows={2} value={draft.quote} onChange={(event) => update("quote", event.target.value)} /></VisibilityField>
+            <VisibilityField label="Öneriler başlığı" section="tips" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><input value={draft.tips_title} onChange={e => update("tips_title", e.target.value)} /></VisibilityField>
+            <label className="admin-field--wide"><span>Öneriler / uygulanabilir adımlar</span><textarea rows={6} value={draft.tips} onChange={e => update("tips", e.target.value)} /><small>Her satır: Başlık | Açıklama</small></label>
+            <VisibilityField label="Kapanış başlığı" section="closing" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy}><input value={draft.closing_title} onChange={(event) => update("closing_title", event.target.value)} /></VisibilityField>
             <label><span>SEO başlığı</span><input value={draft.seo_title} onChange={(event) => update("seo_title", event.target.value)} /></label>
             <label className="admin-field--wide"><span>Kapanış metni</span><textarea rows={3} value={draft.closing_body} onChange={(event) => update("closing_body", event.target.value)} /></label>
             <label className="admin-field--wide"><span>SEO açıklaması</span><textarea rows={2} maxLength={180} value={draft.seo_description} onChange={(event) => update("seo_description", event.target.value)} /></label>
+            <ExtraSectionControls scope="blog_posts" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy} />
           </div>
 
           <div className="admin-post-editor__footer">

@@ -137,6 +137,18 @@ Kontroller: `node --test scripts/tests/*.test.mjs`, `node scripts/tests/language
 
 Yüklenen public görseller için `node scripts/tests/media-smoke.mjs`: yayındaki yazı/alan ve sayfa görsellerini bulur, Directus endpoint'i → `/site-media` proxy → `/_next/image` yolunda 200 ve gerçek görsel baytlarını doğrular. Belirli dosyalar için komutun sonuna UUID eklenebilir. Özel medya endpoint'i Directus 12 `AssetsService.getAsset` çağrısına `{ transformationParams: {} }` gönderir; sadece `{}` kullanmak görsel döndürme sırasında sunucu hatasına yol açar.
 
+## Bölüm görünürlüğü
+
+Admin → Sayfa içerikleri / Çalışma alanları / Blog yazıları editörlerinde ilgili bölüm adının yanında **Görünür / Gizli** anahtarı vardır. Örneğin çalışma alanındaki **Sık sorulan sorular** anahtarını kapatıp alanı kaydedin: SSS başlığı ve cevapları public detayda görünmez. Yeniden açıp kaydettiğinizde aynı içerik geri gelir. İçerik/görsel silinmez; değişiklik Kaydet veya Çeviriyi kaydet ile uygulanır.
+
+Ana sayfa bölümleri, Hakkımda yaklaşımı/ilkeleri, iletişim kartları/süreci, liste sayfası kartları/notları, alan detayının değerlendirme/süreç/SSS bölümleri ve blogun kapak/özet/gövde/alıntı/öneriler/kapanış/içindekiler bölümleri kontrol edilebilir. Ana başlık, navbar/footer ve sabit bilgilendirme/gizlilik uyarıları korunur. Üst bölüm gizliyse altları da görünmez; alt anahtarlar ve içerikler saklanır. Blogun öne çıkan bölümü kapalı, arşivi açıksa ilk yazı arşive katılır.
+
+Görünürlük **TR/EN/DE için ortak** sayfa düzenidir. EN/DE editörü de ortak bayrakları gösterir; çeviri ile birlikte atomik kaydeder. Görsel bayrağı kart ve detayda birlikte uygulanır. İletişim kartlarının ortak ayarı ana sayfada da uygulanır; navbar/footer iletişim bağlantılarını kaldırmaz. Bölüm gizlemek yayın durumundan farklıdır: sayfa URL'si, sitemap kaydı ve SEO alanları korunur. Hassas veriyi özel yapmaz; metin public içerik API'sinde, referanslı medya doğrudan URL'sinde erişilebilir kalabilir.
+
+`section_visibility` haritası `site_pages.content` içinde, `practice_areas/blog_posts` için JSONB sütunlarında saklanır. Eksik bayraklar görünür kabul edilir; yalnızca boolean `false` gizler. `006-section-visibility.sql` idempotent olup içerikleri ezmez, başlangıçta hiçbir bölümü kapatmaz. Frontend ve Directus `section-config.json` tanımları eşleşir. Frontend DOM üretimini koşula bağlar; CSS ile boş alan bırakıp gizlemez. İçindekiler menüsü yalnızca görünür hedeflere bağlantı verir.
+
+Kontrol: `node --test scripts/tests/section-visibility.test.mjs`. Bu test gerçek yönetici girişi/parolası veya canlı içerik değişikliği kullanmaz; tüm sayfa türlerini sahte verilerle render eder. Migrasyon Compose ve `scripts/setup-languages.mjs` akışına eklenmiştir.
+
 ## Frontend geliştirme komutları
 
 ```powershell

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getPageTools } from "./lib/i18n-server";
 import { formatDate } from "./lib/i18n";
 import Image from "next/image";
+import { isSectionVisible } from "./lib/section-visibility";
 import { NativeLink } from "./components/native-link";
 import { type ContactContent, phoneHref } from "./lib/contact";
 import { getBlogPosts, getPracticeAreas, getHomeContact, getEditablePage } from "./lib/directus";
@@ -61,11 +62,13 @@ export default async function Home() {
   ]);
   const contact = contactPage.content;
   const content = homePage.content;
+  const show = (key: string) => isSectionVisible(content.section_visibility, key);
+  const contactShow = (key: string) => isSectionVisible(contact.section_visibility, key);
   return (
     <main className="site-shell">
       <SiteHeader locale={locale} active="home" />
 
-      <section className="hero" aria-labelledby="hero-title">
+      <section className={`hero${show("image") ? "" : " hero--text-only"}`} aria-labelledby="hero-title">
         <div className="hero__content">
           <p className="eyebrow">
             <span aria-hidden="true" />{content.hero_kicker}</p>
@@ -73,16 +76,16 @@ export default async function Home() {
           <h1 id="hero-title">{content.hero_title}<br />
             <em>{" "}{content.hero_accent}</em>{" "}{content.hero_suffix}</h1>
 
-          <p className="hero__description">{content.hero_description}</p>
+          {show("intro") && (<p className="hero__description">{content.hero_description}</p>) }
 
           <div className="hero__actions">
-            <a className="primary-button" href="#calisma-alanlari">{t("Çalışma Alanlarını İncele")}<ArrowUpRight aria-hidden="true" size={18} />
+            <a className="primary-button" href={show("practices") ? "#calisma-alanlari" : localHref("/calisma-alanlari")}>{t("Çalışma Alanlarını İncele")}<ArrowUpRight aria-hidden="true" size={18} />
             </a>
             <NativeLink className="text-link" href={localHref("/hakkimda")}>{t("Yaklaşımımı Tanıyın")}<span aria-hidden="true">→</span>
             </NativeLink>
           </div>
 
-          <dl className="hero__facts" aria-label={t("Kısa bilgiler")}>
+          {show("facts") && (<dl className="hero__facts" aria-label={t("Kısa bilgiler")}>
             <div>
               <dt>01</dt>
               <dd>{content.fact_1}</dd>
@@ -95,10 +98,10 @@ export default async function Home() {
               <dt>03</dt>
               <dd>{content.fact_3}</dd>
             </div>
-          </dl>
+          </dl>) }
         </div>
 
-        <div className="hero__visual">
+        {show("image") && (<div className="hero__visual">
           <div className="hero__character">
             <span className="hero__portrait-orbit hero__portrait-orbit--outer" aria-hidden="true" />
             <span className="hero__portrait-orbit hero__portrait-orbit--inner" aria-hidden="true" />
@@ -113,22 +116,22 @@ export default async function Home() {
             <span className="hero__portrait-floor" aria-hidden="true" />
           </div>
 
-          <div className="hero__note">
+          {show("note") && (<div className="hero__note">
             <span className="hero__note-icon" aria-hidden="true">✦</span>
             <p>
               <strong>{content.hero_note_title}</strong>
               <span>{content.hero_note_text}</span>
             </p>
-          </div>
+          </div>) }
 
-          <div className="hero__location">
+          {show("location") && (<div className="hero__location">
             <span>{content.location}</span>
             <strong>{content.location_note}</strong>
-          </div>
-        </div>
+          </div>) }
+        </div>) }
       </section>
 
-      <section
+      {show("practices") && (<section
         className="practice-section"
         id="calisma-alanlari"
         aria-labelledby="practice-title"
@@ -144,23 +147,24 @@ export default async function Home() {
 
         <div className="practice-grid">
           {practiceAreas.length === 0 && <p>{t("Bu dilde çalışma alanları yakında eklenecek.")}</p>}
-          {practiceAreas.map(({ title, summary, slug, image_path, image_alt }, index) => {
+          {practiceAreas.map(({ title, summary, slug, image_path, image_alt, section_visibility }, index) => {
             const Icon = practiceIcons[index % practiceIcons.length];
             const number = String(index + 1).padStart(2, "0");
             const href = `/calisma-alanlari/${slug}`;
+            const hasImage = Boolean(image_path) && isSectionVisible(section_visibility, "image");
             return (
               <article
-                className={`practice-card${index === 0 ? " practice-card--featured" : ""}${image_path ? " practice-card--with-image" : " practice-card--text-only"}`}
+                className={`practice-card${index === 0 ? " practice-card--featured" : ""}${hasImage ? " practice-card--with-image" : " practice-card--text-only"}`}
                 key={title}
               >
                 <div className="practice-card__topline">
                   <span>{number}</span>
                   <Icon aria-hidden="true" size={26} strokeWidth={1.45} />
                 </div>
-                {image_path && <a className="content-card-image practice-card-image" href={localHref(href)}><Image src={image_path} alt={image_alt || title} fill sizes="(max-width: 860px) 100vw, 25vw" style={{ objectFit: "contain", objectPosition: "center" }} /></a>}
+                {image_path && isSectionVisible(section_visibility, "image") && <a className="content-card-image practice-card-image" href={localHref(href)}><Image src={image_path} alt={image_alt || title} fill sizes="(max-width: 860px) 100vw, 25vw" style={{ objectFit: "contain", objectPosition: "center" }} /></a>}
                 <div className="practice-card__body">
                   <h3>{title}</h3>
-                  <p>{summary}</p>
+                  {isSectionVisible(section_visibility, "summary") && <p>{summary}</p>}
                 </div>
                 <a className="practice-card__link" href={localHref(href)} aria-label={`${title}: ${t("Detayları incele")}`}>{t("Detayları incele")}<ArrowUpRight aria-hidden="true" size={17} />
                 </a>
@@ -170,10 +174,10 @@ export default async function Home() {
         </div>
 
         <p className="practice-section__footnote">{content.practice_note}</p>
-      </section>
+      </section>) }
 
-      <section className="about-section" id="hakkimda" aria-labelledby="about-title">
-        <div className="about-section__portrait">
+      {show("about") && (<section className={`about-section${show("about_image") ? "" : " about-section--text-only"}`} id="hakkimda" aria-labelledby="about-title">
+        {show("about_image") && (<div className="about-section__portrait">
           <div className="about-section__image">
             <Image
               src={content.about_image || "/about-physiotherapist-v1.png"}
@@ -186,7 +190,7 @@ export default async function Home() {
             <span>{t("Fizyoterapist")}</span>
             <strong>{t("Furkan Toplu")}</strong>
           </div>
-        </div>
+        </div>) }
 
         <div className="about-section__content">
           <p className="section-kicker section-kicker--light">{t("Hakkımda")}</p>
@@ -195,7 +199,7 @@ export default async function Home() {
           <p className="about-section__lead">{content.about_lead}</p>
           <p className="about-section__body">{content.about_body}</p>
 
-          <div className="about-values" aria-label={t("Yaklaşım değerleri")}>
+          {show("values") && (<div className="about-values" aria-label={t("Yaklaşım değerleri")}>
             <div>
               <span>01</span>
               <strong>{content.value_1}</strong>
@@ -208,10 +212,10 @@ export default async function Home() {
               <span>03</span>
               <strong>{content.value_3}</strong>
             </div>
-          </div>
+          </div>) }
         </div>
 
-        <div className="approach-panel" aria-labelledby="approach-title">
+        {show("approach") && (<div className="approach-panel" aria-labelledby="approach-title">
           <div className="approach-panel__heading">
             <p className="section-kicker section-kicker--light">{t("Yaklaşımım")}</p>
             <h3 id="approach-title">{content.approach_title}</h3>
@@ -229,10 +233,10 @@ export default async function Home() {
               </article>
             ))}
           </div>
-        </div>
-      </section>
+        </div>) }
+      </section>) }
 
-      <section className="blog-section" id="blog" aria-labelledby="blog-title">
+      {show("blog") && (<section className="blog-section" id="blog" aria-labelledby="blog-title">
         <div className="blog-section__heading">
           <div>
             <p className="section-kicker">{t("Bilgi Köşesi")}</p>
@@ -253,11 +257,11 @@ export default async function Home() {
               className={`blog-card${index === 0 ? " blog-card--featured" : ""}`}
               key={post.title}
             >
-              {post.cover_path && <NativeLink className="content-card-image" href={localHref(`/blog/${post.slug}`)}><Image src={post.cover_path} alt={post.cover_alt || post.title} fill sizes="(max-width: 860px) 100vw, 33vw" /></NativeLink>}
-              <div className="blog-card__meta">
+              {post.cover_path && isSectionVisible(post.section_visibility, "image") && <NativeLink className="content-card-image" href={localHref(`/blog/${post.slug}`)}><Image src={post.cover_path} alt={post.cover_alt || post.title} fill sizes="(max-width: 860px) 100vw, 33vw" /></NativeLink>}
+              {isSectionVisible(post.section_visibility, "meta") && (<div className="blog-card__meta">
                 <span>{post.category}</span>
                 <span>{post.reading_minutes}{" "}{t("dk okuma")}</span>
-              </div>
+              </div>) }
               <div className="blog-card__content">
                 {index === 0 && (
                   <span className="blog-card__icon" aria-hidden="true">
@@ -265,10 +269,10 @@ export default async function Home() {
                   </span>
                 )}
                 <h3>{post.title}</h3>
-                <p>{post.summary}</p>
+                {isSectionVisible(post.section_visibility, "summary") && <p>{post.summary}</p>}
               </div>
               <div className="blog-card__footer">
-                <time>{formatDate(post.published_at, locale)}</time>
+                {isSectionVisible(post.section_visibility, "meta") && <time>{formatDate(post.published_at, locale)}</time>}
                 <NativeLink href={localHref(`/blog/${post.slug}`)} aria-label={`${post.title}: ${t("Yazıyı okuyun")}`}>{t("Yazıyı okuyun")}<ArrowUpRight aria-hidden="true" size={17} />
                 </NativeLink>
               </div>
@@ -277,10 +281,10 @@ export default async function Home() {
         </div>
 
         <p className="blog-section__note">{content.blog_note}</p>
-      </section>
+      </section>) }
 
-      <section className="contact-section" id="iletisim" aria-labelledby="contact-title">
-        <div className="contact-section__main">
+      {show("contact") && (<section className="contact-section" id="iletisim" aria-labelledby="contact-title">
+        <div className={`contact-section__main${contactShow("phone") || contactShow("whatsapp") || contactShow("email") ? "" : " contact-section__main--text-only"}`}>
           <div className="contact-section__copy">
             <p className="section-kicker">{t("İletişim")}</p>
             <h2 id="contact-title">{content.contact_title}<em>{" "}{content.contact_accent}</em>
@@ -289,15 +293,15 @@ export default async function Home() {
           </div>
 
           <div className="contact-section__actions" aria-label={t("İletişim seçenekleri")}>
-            <a className="contact-action contact-action--primary" href={phoneHref(contact)}>
+            {contactShow("phone") && (<a className="contact-action contact-action--primary" href={phoneHref(contact)}>
               <Phone aria-hidden="true" size={22} strokeWidth={1.6} />
               <span>
                 <small>{t("Telefon")}</small>
                 <strong>{contact.phone_display}</strong>
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
-            </a>
-            <a
+            </a>) }
+            {contactShow("whatsapp") && (<a
               className="contact-action"
               href={`https://wa.me/${contact.whatsapp_value}`}
               target="_blank"
@@ -309,37 +313,37 @@ export default async function Home() {
                 <strong>{t("Mesaj gönderin")}</strong>
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
-            </a>
-            <a className="contact-action" href={`mailto:${contact.email}`}>
+            </a>) }
+            {contactShow("email") && (<a className="contact-action" href={`mailto:${contact.email}`}>
               <Mail aria-hidden="true" size={22} strokeWidth={1.6} />
               <span>
                 <small>{t("E-posta")}</small>
                 <strong>{contact.email}</strong>
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
-            </a>
+            </a>) }
           </div>
         </div>
 
-        <div className="contact-details">
-          <article>
+        {show("contact_details") && (contactShow("address") || contactShow("hours")) && (<div className={`contact-details${contactShow("address") && contactShow("hours") ? "" : " contact-details--single"}`}>
+          {contactShow("address") && (<article>
             <MapPin aria-hidden="true" size={24} strokeWidth={1.5} />
             <div>
               <span>{t("Görüşme adresi")}</span>
               <strong>{contact.address_title}</strong>
               <p>{contact.address_note}</p>
             </div>
-          </article>
-          <article>
+          </article>) }
+          {contactShow("hours") && (<article>
             <Clock3 aria-hidden="true" size={24} strokeWidth={1.5} />
             <div>
               <span>{t("Çalışma saatleri")}</span>
               <strong>{contact.working_days}</strong>
               <p>{contact.working_hours}</p>
             </div>
-          </article>
-        </div>
-      </section>
+          </article>) }
+        </div>) }
+      </section>) }
 
       <SiteFooter />
     </main>
