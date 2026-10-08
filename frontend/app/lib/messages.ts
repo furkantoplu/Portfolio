@@ -28,6 +28,7 @@ export const messages: Record<string, { en: string; de: string }> = {
   "Bilimsel ve güncel yaklaşım": { en: "Evidence-informed practice", de: "Wissenschaftlich fundierter Ansatz" },
   "Şeffaf süreç takibi": { en: "Transparent progress reviews", de: "Transparente Verlaufskontrolle" },
   "Kollarını bağlayarak gülümseyen Fizyoterapist Furkan Toplu": { en: "Physiotherapist Furkan Toplu smiling with his arms crossed", de: "Physiotherapeut Furkan Toplu lächelt mit verschränkten Armen" },
+  "Beyaz önlüğüyle kollarını bağlayan Fizyoterapist Furkan Toplu": { en: "Physiotherapist Furkan Toplu in a white coat with his arms crossed", de: "Physiotherapeut Furkan Toplu im weißen Kittel mit verschränkten Armen" },
   "Her hareket bir başlangıçtır.": { en: "Every movement is a beginning.", de: "Jede Bewegung ist ein Anfang." },
   "Sizin için doğru olan yerden başlayalım.": { en: "Let us start where it feels right for you.", de: "Beginnen wir dort, wo es für Sie passt." },
   "İstanbul": { en: "Istanbul", de: "Istanbul" },

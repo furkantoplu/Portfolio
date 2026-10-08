@@ -225,6 +225,12 @@ Bayraklar tüm dillerde ortak düzen bilgisidir. `practice_areas` ve `blog_posts
 
 Bu bir gizlilik/yetkilendirme sistemi değildir. Public içerik API'si gizli bölüm metinlerini, public referanslı dosya URL'si görselleri sunmaya devam edebilir. Hassas içerik konulmamalıdır. Bölüm kapatma URL/sitemap/SEO veya yazının yayın durumunu kaldırmaz. Gerçek admin hesabı/şifre/2FA test için değiştirilmez. Otomatik render/kayıt testleri sahte içerik kullanır. Bu pakette Computer Use yardımcısı sandbox başlatma hatası verdiğinden masaüstü/mobil görsel doğrulaması tamamlanamadı; production build, TypeScript/ESLint ve canlı HTTP kontrolleri geçti.
 
+## Beyaz önlüklü ana karakter — 8 Ekim 2026
+
+Kullanıcının sağladığı yeni fotoğraf ana sayfada önceki kırmızı tişörtlü portrenin yerine geçti. Yerleşik image_gen ile kişi belden yukarı çıkarıldı, klinik arka planı kaldırıldı; `frontend/public/furkan-toplu-hero-white-coat-v1.png` şeffaf PNG'dir. Perspektif, z-index 120, drop-shadow ve alttan kaybolan maske mevcut CSS'ten gelir, yeni 3D motor/model eklenmedi. Önceki asset dosyası geri dönüş için korunur. Admin görsel yönetimi ve üç dilde ortak görsel kullanımı devam eder.
+
+Config/fallback yeni dosyayı kullanır; `007-white-coat-hero.sql` sadece önceki v1/v2/v3 paketlenmiş görsel yolunu ve değiştirilmemiş eski alt açıklamalarını TR/EN/DE için günceller. Bağımsız metin/görsel yüklemeleri ve bölüm görünürlüğü ezilmez. Compose/manual kurulum migrasyonu içerir. Üretim prompt'u `assets/hero-white-coat-prompt.md` içindedir. 41 test, üç dil rota/hero smoke ve production Docker build geçti. Computer Use sandbox hatası nedeniyle masaüstü/mobil sayfa screenshot QA tamamlanamadı; gerçek PNG ve canlı HTTP çıktıları doğrulandı.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

@@ -139,6 +139,8 @@ Yüklenen public görseller için `node scripts/tests/media-smoke.mjs`: yayında
 
 ## Bölüm görünürlüğü
 
+Ana sayfanın varsayılan karakteri beyaz önlüklü, belden yukarı şeffaf `furkan-toplu-hero-white-coat-v1.png` görselidir. Mevcut CSS perspective/katman/gölge ve alt fade efekti korunur; bu gerçek bir 3D model değil, şeffaf portreyle derinlik hissidir. Admin → Sayfa içerikleri → Ana sayfa → Ana görsel üzerinden değiştirilebilir. `007-white-coat-hero.sql` sadece eski paketlenmiş kırmızı tişört görselini değiştirir, özel yükleme/diğer içerik/görünürlüğü korur. Görsel üretim yöntemi ve tam istem `assets/hero-white-coat-prompt.md` içindedir. Kontroller: `node --test scripts/tests/hero-portrait.test.mjs` ve `node scripts/tests/hero-portrait-smoke.mjs`.
+
 Admin → Sayfa içerikleri / Çalışma alanları / Blog yazıları editörlerinde ilgili bölüm adının yanında **Görünür / Gizli** anahtarı vardır. Örneğin çalışma alanındaki **Sık sorulan sorular** anahtarını kapatıp alanı kaydedin: SSS başlığı ve cevapları public detayda görünmez. Yeniden açıp kaydettiğinizde aynı içerik geri gelir. İçerik/görsel silinmez; değişiklik Kaydet veya Çeviriyi kaydet ile uygulanır.
 
 Ana sayfa bölümleri, Hakkımda yaklaşımı/ilkeleri, iletişim kartları/süreci, liste sayfası kartları/notları, alan detayının değerlendirme/süreç/SSS bölümleri ve blogun kapak/özet/gövde/alıntı/öneriler/kapanış/içindekiler bölümleri kontrol edilebilir. Ana başlık, navbar/footer ve sabit bilgilendirme/gizlilik uyarıları korunur. Üst bölüm gizliyse altları da görünmez; alt anahtarlar ve içerikler saklanır. Blogun öne çıkan bölümü kapalı, arşivi açıksa ilk yazı arşive katılır.

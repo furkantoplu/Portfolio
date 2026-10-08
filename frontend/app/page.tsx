@@ -106,7 +106,7 @@ export default async function Home() {
             <span className="hero__portrait-orbit hero__portrait-orbit--outer" aria-hidden="true" />
             <span className="hero__portrait-orbit hero__portrait-orbit--inner" aria-hidden="true" />
             <Image
-              src={content.hero_image || "/furkan-toplu-hero-3d-v3.png"}
+              src={content.hero_image || "/furkan-toplu-hero-white-coat-v1.png"}
               alt={content.hero_image_alt}
               fill
               priority

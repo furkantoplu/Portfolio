@@ -374,6 +374,13 @@ docker compose down
 - Gizleme erişim kontrolü değildir; API ve dosya URL'si public kalabilir. Hassas içerik güvenliği için yayın/yetki tasarımı gerekir. Sayfanın URL/sitemap/SEO ve kayıt yayın durumu ayrı özelliklerdir.
 - Canlı metin/görsel veya gerçek hesapları değiştirmeyen sahte render/transaction testleri tercih edilir. UI yardımcı çalışmazsa görsel QA tamamlanmış gibi yazılmaz; başarısızlık ve kalan doğrulama açıkça kaydedilir.
 
+### Karar 043 — Ana karakter değişimi aynı cutout mimarisinde
+
+- Kullanıcı gerçek fotoğrafı yeni ana karakter olarak seçtiğinde sadece asset/default/CMS görseli değiştirilir; mevcut perspektif/gölge/katman/alt fade altyapısı korunur. Şeffaf belden yukarı PNG kullanılır, arka plan/klinik objeleri asset'e dahil edilmez.
+- Bu 3D model değildir; şeffaf kişinin sayfa önünde görünmesi ve CSS derinliğiyle 3D hissidir. Kimlik korunması image edit prompt'unda istenir; otomatik üretimin müşteri onayı gerekir.
+- Asset yeni sürümlü dosyadır; eski asset silinmez. Yerleşik image_gen varsayılandır; prompt/yöntem projede kaydedilir, proje resmi yalnız generated_images altında bırakılmaz. Alfa kanalı kopyalamada korunur; inceleme testi 252–253 alfa gövdeyi yakın-opak kabul eder.
+- Varsayılan fotoğraf değiştirme migrasyonu yalnızca eski bilinen yolları hedefler; sonradan yapılmış özel görsel/metin veya görünürlük yazımlarını ezmez. Yeni kurulum ve mevcut DB ortak migrasyonla eşitlenir. Alt açıklamalar gerçek yeni kıyafet/ifadeye ve dillerine uyarlanır.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:
