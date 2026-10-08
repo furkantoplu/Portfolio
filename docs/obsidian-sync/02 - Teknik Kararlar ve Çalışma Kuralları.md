@@ -381,6 +381,12 @@ docker compose down
 - Asset yeni sürümlü dosyadır; eski asset silinmez. Yerleşik image_gen varsayılandır; prompt/yöntem projede kaydedilir, proje resmi yalnız generated_images altında bırakılmaz. Alfa kanalı kopyalamada korunur; inceleme testi 252–253 alfa gövdeyi yakın-opak kabul eder.
 - Varsayılan fotoğraf değiştirme migrasyonu yalnızca eski bilinen yolları hedefler; sonradan yapılmış özel görsel/metin veya görünürlük yazımlarını ezmez. Yeni kurulum ve mevcut DB ortak migrasyonla eşitlenir. Alt açıklamalar gerçek yeni kıyafet/ifadeye ve dillerine uyarlanır.
 
+### Karar 044 — Kart ölçüsü içeriği kesmeden eşitlenir
+
+- Çalışma alanı kartları aynı ızgarada eşit genişlik/yükseklik kullanır; görsel varlığı veya kısa açıklama daha kısa kart oluşturmaz. Grid auto rows 1fr/stretch ve minimum ölçü kullanılır; sabit max-height veya metin line-clamp yoktur.
+- En uzun içerik tüm satırların ortak yüksekliğini belirler. Responsive kolon sayısı korunur; metin min-width 0/overflow-wrap ile taşmaz. Footer son satıra/auto margin ile en alta bağlanır. Görselsiz kartta foto slotu saklanmaz, ikon/metin kullanılabilir alanı dengeler.
+- PostCSS sözleşme testleri gerçek tarayıcı ölçümü yerine geçmez. UI yardımcı başarısızsa bu sınır günlüğe/final duruma yazılır. CMS içeriği yalnız yerleşim düzeltmesi için değiştirilmez.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

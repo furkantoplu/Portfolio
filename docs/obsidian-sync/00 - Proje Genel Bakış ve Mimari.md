@@ -231,6 +231,10 @@ Kullanıcının sağladığı yeni fotoğraf ana sayfada önceki kırmızı tiş
 
 Config/fallback yeni dosyayı kullanır; `007-white-coat-hero.sql` sadece önceki v1/v2/v3 paketlenmiş görsel yolunu ve değiştirilmemiş eski alt açıklamalarını TR/EN/DE için günceller. Bağımsız metin/görsel yüklemeleri ve bölüm görünürlüğü ezilmez. Compose/manual kurulum migrasyonu içerir. Üretim prompt'u `assets/hero-white-coat-prompt.md` içindedir. 41 test, üç dil rota/hero smoke ve production Docker build geçti. Computer Use sandbox hatası nedeniyle masaüstü/mobil sayfa screenshot QA tamamlanamadı; gerçek PNG ve canlı HTTP çıktıları doğrulandı.
 
+### Çalışma alanı kartlarının eşit ölçüleri — 8 Ekim 2026
+
+Ana sayfa ve alan listesi ızgaraları `grid-auto-rows: 1fr` / stretch ile aynı ekran genişliğinde tüm satırlarda ortak yüksekliği kullanır. Sabit kesici height yerine en uzun içerik belirleyicidir; uzun TR/EN/DE metin kesilmeden kartların tamamını büyütür. Eşit kolonlar minmax(0,1fr), kartta min-width 0 ve overflow-wrap ile taşma önlenir. Footer linkleri flex margin-top auto; görselli directory kartı auto/1fr/auto grid satırlarıyla en alta hizalanır. Görselsiz kartlarda metin kalan alanı dengeli kullanır, boş görsel slotu oluşturulmaz. CMS verisi/değişen fotoğraf ve detay sayfaları aynı kalır.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.
