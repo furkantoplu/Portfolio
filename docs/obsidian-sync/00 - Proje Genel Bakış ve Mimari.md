@@ -235,6 +235,18 @@ Config/fallback yeni dosyayı kullanır; `007-white-coat-hero.sql` sadece öncek
 
 Ana sayfa ve alan listesi ızgaraları `grid-auto-rows: 1fr` / stretch ile aynı ekran genişliğinde tüm satırlarda ortak yüksekliği kullanır. Sabit kesici height yerine en uzun içerik belirleyicidir; uzun TR/EN/DE metin kesilmeden kartların tamamını büyütür. Eşit kolonlar minmax(0,1fr), kartta min-width 0 ve overflow-wrap ile taşma önlenir. Footer linkleri flex margin-top auto; görselli directory kartı auto/1fr/auto grid satırlarıyla en alta hizalanır. Görselsiz kartlarda metin kalan alanı dengeli kullanır, boş görsel slotu oluşturulmaz. CMS verisi/değişen fotoğraf ve detay sayfaları aynı kalır.
 
+## Fotoğraf yaşam döngüsü ve kalıcı temizlik — 9 Ekim 2026
+
+Önceki “görseli içerikten kaldır dosyayı saklar” davranışı Paket 41 ile değişti. Kaldırma/değiştirme kaydedildikten sonra son güncel kullanımını kaybeden yüklenmiş fotoğraf orijinali, thumbnail'ları ve directus_files satırıyla kalıcı silinir. Draft/hidden kayıtlar, bölüm görünürlükleri, diğer sayfalar, tüm dil içerikleri ve schema dosya ilişkileri referans kabul edilir. Yalnız görünürlüğü kapatmak temizlik tetiklemez; paketlenmiş/default repo görselleri silinmez.
+
+website_media_assets kayıt tablosu yalnız bilinen site yüklemelerini izler. 008 migrasyonu güncel/eski CMS revizyonlarındaki bilinen /site-media UUID'lerini benimser. Yeni yüklemeler description işaretiyle takip edilir; hiç kaydedilmeyenlere 24 saat edit payı verilir. Editörde vazgeçilen aynı oturumun yeni yüklemesi yalnız yükleyen aktif adminin media-discard çağrısıyla erken temizlenebilir. Başka kişinin dosyasına veya genel file delete API'sine erişim açılmaz.
+
+DB trigger'ları dosya varlığını ve MIME'ını kontrol edip dosya satırlarını sıralı kilitler, referans kaydını aynı transaction'da işaretler. Collector aynı kilitle güncel referansları denetler ve FilesService silmesini dış DB transaction'da yapar. Storage hatası DB yazımını geri alır; küçük resimlerin kalan kısmı da sonraki denemede temizlenir. Dosya/sayfa eşzamanlılığı kırık referans oluşturmaz. Hook kayıt olayları sonrası çalışır; dakikalık schedule kaçan olayları/restart hatalarını yeniden ele alır.
+
+Mevcut iki gerçek upload toplam 1.923.046 bayt ve hâlâ kullanılıyor; korunmuştur. Gerçek disk/thumbnail/DB silme ve canlı schedule yalnız yapay test PNG'lerinde doğrulandı; test kayıtları temizlendi. 52 unit/regresyon testi, TypeScript/ESLint, Docker build ve canlı dil/medya/yetki smoke geçti. Fotoğraf kalıcı silindiğinde revizyon eski URL'yi taşısa da görseli geri getirmez. Metin geçmişi ve eski yedeklerin saklama politikası değiştirilmedi.
+
+Silme iki aşamalıdır: kilit/kullanım kontrolü sonrası retired_at işareti DB'ye commit edilir, ardından dosya/metadata silinir. Kısmi fiziksel silme hatasında DB geri alınsa bile işaret korunur, eski dosyanın yeniden bir içeriğe bağlanması reddedilir. Böylece tekrar deneme sırasında hasarlı/kayıp fotoğrafı kullanan yeni sayfa oluşmaz; işaretli dosya grace süresini beklemeden temizlenir.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

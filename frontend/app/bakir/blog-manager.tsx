@@ -263,7 +263,7 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
 
           <p className="admin-visibility-note">Görünürlük tüm dillerde ortaktır. Gizlemek içerikleri silmez; Kaydet ile uygulanır.</p>
           <div className="admin-editor-grid">
-            <ImageField label="Yazı kapak görseli" value={draft.cover_path} onChange={path => update("cover_path", path)} disabled={busy}  visibilityControl={<VisibilitySwitch section="image" label="Yazı kapak görseli" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy} />} />
+            <ImageField key={`blog-image-${selectedId ?? "new"}`} label="Yazı kapak görseli" value={draft.cover_path} onChange={path => update("cover_path", path)} disabled={busy}  visibilityControl={<VisibilitySwitch section="image" label="Yazı kapak görseli" visibility={draft.section_visibility} onChange={value => update("section_visibility", value)} disabled={busy} />} />
             <label><span>Görsel açıklaması</span><input value={draft.cover_alt} onChange={e => update("cover_alt", e.target.value)} /></label>
             <label><span>Görsel alt yazısı</span><input value={draft.cover_caption} onChange={e => update("cover_caption", e.target.value)} /></label>
             <label className="admin-field--wide"><span>Yazı başlığı</span><input value={draft.title} onChange={(event) => { const title = event.target.value; setDraft((current) => ({ ...current, title, ...(!selectedId ? { slug: slugify(title) } : {}) })); }} required /></label>

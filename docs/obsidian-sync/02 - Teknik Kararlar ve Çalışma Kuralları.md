@@ -387,6 +387,16 @@ docker compose down
 - En uzun içerik tüm satırların ortak yüksekliğini belirler. Responsive kolon sayısı korunur; metin min-width 0/overflow-wrap ile taşmaz. Footer son satıra/auto margin ile en alta bağlanır. Görselsiz kartta foto slotu saklanmaz, ikon/metin kullanılabilir alanı dengeler.
 - PostCSS sözleşme testleri gerçek tarayıcı ölçümü yerine geçmez. UI yardımcı başarısızsa bu sınır günlüğe/final duruma yazılır. CMS içeriği yalnız yerleşim düzeltmesi için değiştirilmez.
 
+### Karar 045 — Fotoğraf son güncel kullanımdan sonra kalıcı silinir
+
+- Kaldırma/değiştirme Kaydet sonrası uygulanır; Kaydet öncesinde canlı fotoğraf silinmez. Fotoğraf yalnız son güncel referans kalkınca dosya/thumbnail/DB satırıyla kalıcı temizlenir. Görünürlük, draft veya hidden durum kullanım olmaktan çıkarmaz.
+- Yalnız bilinen site yüklemeleri registry'de izlenir; keyfi dosya kütüphanesi wipe yok. Yeni upload marker'lıdır; 24 saat kaydedilmeyen yükleme otomatik temizlenir. Aynı oturumda vazgeçilen pending upload sadece kendi uploader'ı aktif admin olarak erken discard edebilir. Paket/default repo görselleri kapsam dışıdır.
+- DB trigger ve collector aynı file row kilidini kullanır; çoklu UUID sıralı kilitlenir. Referans son kontrolünden sonra FilesService dış transaction'da çağrılır. Storage hatası DB'yi rollback edip tekrar denemeye olanak sağlar. Eşzamanlı save-delete ya kullanımı korur ya geçersiz save'i reddeder.
+- İçerik olayları ve dakikalık schedule birlikte çalışır; olaylar üst üste gelince son değişiklik kaybolmaz. Genel DELETE files API'si açılmaz. Server sahiplik/kullanım kontrolü frontend düğmesinden bağımsızdır.
+- Kalıcı silme geri dönüşlü bir visibility ayarı değildir. Revizyon geçmişindeki URL fotoğrafı kurtarmaz; eski yedekler/audit metinleri farklı saklama kapsamıdır. Metin revizyonları bu özellik için silinmez. Yeni string-medya koleksiyonu eklenirse referans taraması/trigger kapsamı büyütülmelidir.
+- Test gerçek dosya silmeyi yalnız yeni oluşturduğu yapay PNG/orijinal/varyantlar üzerinde yapar. Gerçek kullanıcı dosyaları ve hesaplar test için değiştirilmez; işlem sonunda kesin ID'lerle test verisi temizlenir.
+- Fiziksel storage ve DB atomik değildir: retired_at storage'dan önce ayrı transaction'da persist edilir. Kısmi silme hatasında metadata rollback olurken işaret kalır, yeni referans reddedilir ve grace beklemeden retry yapılır. DB satırı yeniden var diye fiziksel olarak hasarlı dosya tekrar yayına bağlanamaz.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

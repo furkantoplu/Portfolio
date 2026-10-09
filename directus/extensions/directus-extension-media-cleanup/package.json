@@ -1,0 +1,6 @@
+{
+  "name": "directus-extension-media-cleanup",
+  "version": "1.0.0",
+  "type": "module",
+  "directus:extension": { "type": "hook", "path": "dist/index.js", "source": "src/index.js", "host": "^12.0.0" }
+}
