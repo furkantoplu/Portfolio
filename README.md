@@ -99,7 +99,7 @@ docker compose up -d
 
 ## Hakkımda portresinin boyutlandırılması
 
-Hakkımda portresi `fill` görselde açık `style={{ objectFit: "contain" }}` kullanır. Vinext shim'in varsayılan inline `cover` stili stylesheet'teki contain kuralını ezdiğinden yalnız CSS kontrolü yeterli değildir. Fotoğraf/admin yüklemesi değişmez; gerçek shim renderer testi `node --test scripts/tests/about-image.test.mjs`, üç dil HTTP kontrolü `node scripts/tests/public-design-smoke.mjs` ile yapılır.
+Hakkımda sayfası portresi ve ana sayfadaki Hakkımda bölüm fotoğrafı `fill` görselde açık `style={{ objectFit: "contain" }}` kullanır. Vinext shim'in varsayılan inline `cover` stili stylesheet'teki contain kuralını ezdiğinden yalnız CSS kontrolü yeterli değildir. Fotoğraf/admin yüklemesi ve üstteki 3D karakter değişmez; gerçek shim renderer testi `node --test scripts/tests/about-image.test.mjs`, üç dil HTTP kontrolü `node scripts/tests/public-design-smoke.mjs` ile yapılır.
 
 ## Blog yazısı ve çalışma alanını kalıcı silme
 

@@ -9,7 +9,9 @@ const result=await build({
     import React from 'react';
     import {renderToStaticMarkup} from 'react-dom/server';
     import About from './app/hakkimda/page';
+    import Home from './app/page';
     export async function render(content){globalThis.__aboutImageContent=content;return renderToStaticMarkup(await About())}
+    export async function renderHome(content){globalThis.__aboutImageContent=content;return renderToStaticMarkup(await Home())}
   `,resolveDir:fileURLToPath(new URL('../../frontend/',import.meta.url)),loader:'tsx'},
   bundle:true,write:false,format:'cjs',platform:'node',jsx:'automatic',
   external:['react','react/jsx-runtime','react-dom','react-dom/server','lucide-react'],
@@ -19,7 +21,7 @@ const result=await build({
     builder.onResolve({filter:/(?:i18n-server|\/directus|site-header|site-footer|native-link)$/},args=>({path:args.path,namespace:'fixtures'}));
     builder.onLoad({filter:/.*/,namespace:'fixtures'},({path})=>{
       if(path.endsWith('i18n-server'))return {contents:'export async function getPageTools(){return {locale:"tr",t:v=>v,href:v=>v}}',loader:'js'};
-      if(path.endsWith('/directus'))return {contents:'export async function getSitePage(){return {content:globalThis.__aboutImageContent}}',loader:'js'};
+      if(path.endsWith('/directus'))return {contents:'export async function getSitePage(){return {content:globalThis.__aboutImageContent}};export const getEditablePage=getSitePage,getHomeContact=getSitePage;export async function getPracticeAreas(){return []};export async function getBlogPosts(){return []}',loader:'js'};
       return {contents:'import {createElement} from "react"; export const SiteHeader=()=>null;export const SiteFooter=()=>null;export const NativeLink=props=>createElement("a",props);',loader:'js'};
     });
   }}],
@@ -39,4 +41,18 @@ test('About portrait uses inline contain with the real framework renderer, inclu
 test('About image visibility still removes both photo and its frame',async()=>{
   const html=await module.exports.render({...content,section_visibility:{image:false}});
   assert.ok(!html.includes('about-page-hero__photo'));assert.ok(html.includes('about-page-hero--text-only'));
+});
+const homeVisibility={image:false,about:true,about_image:true,contact:false,approach:false,practices:false,blog:false,values:false};
+test('Homepage about photo also overrides real fill cover for default and uploaded sources',async()=>{
+  for(const about_image of [undefined,'/site-media/12345678-1234-4234-8234-123456789abc']){
+    const html=await module.exports.renderHome({...content,about_image,about_image_alt:'Test portrait',section_visibility:homeVisibility});
+    const image=html.match(/class="about-section__image"[^>]*>\s*(<img\b[^>]*>)/)?.[1];
+    assert.ok(image);assert.ok(image.includes('object-fit:contain'));assert.ok(!image.includes('object-fit:cover'));
+    assert.ok(html.includes(about_image?'site-media':'furkan-toplu-hero-white-coat-v1.png'));
+    assert.ok(html.includes('about-section__caption'));
+  }
+});
+test('Homepage about image switch hides its frame without hiding about text',async()=>{
+  const html=await module.exports.renderHome({...content,about_title:'Keep this text',section_visibility:{...homeVisibility,about_image:false}});
+  assert.ok(!html.includes('about-section__image'));assert.ok(html.includes('about-section--text-only'));assert.ok(html.includes('Keep this text'));
 });

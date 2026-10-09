@@ -169,6 +169,7 @@ export default async function Home() {
               src={content.about_image || "/furkan-toplu-hero-white-coat-v1.png"}
               alt={content.about_image_alt}
               fill
+              style={{ objectFit: "contain" }}
               sizes="(max-width: 860px) 100vw, 43vw"
             />
           </div>

@@ -454,7 +454,7 @@ docker compose down
 
 ### Karar 053 — Fill görselinde gerçek inline stil de test edilir
 
-- Framework fill img'nin varsayılan inline object-fit:cover stili CSS contain'i ezer. Tam görsel gösterilecek Hakkımda slotu explicit style contain kullanır; dosya/admin kaynağı veya ana sayfa karakteri değiştirilmez.
+- Framework fill img'nin varsayılan inline object-fit:cover stili CSS contain'i ezer. Tam görsel gösterilecek Hakkımda sayfası ve ana sayfa Hakkımda slotları explicit style contain kullanır; dosya/admin kaynağı veya üstteki 3D ana sayfa karakteri değiştirilmez. Her slotun gerçek bileşeni ayrı regression ile kapsanır.
 - Sadece img stub veya stylesheet kuralına bakmak kırpılmama kanıtı değildir. Gerçek yüklü renderer ile HTML inline stil, default/upload kaynak ve hidden frame; canlı üç dil route çıktısı denetlenir. HTML testi gerçek piksel ekran QA yerine geçirilmez.
 
 ## Güncelleme kontrol listesi
