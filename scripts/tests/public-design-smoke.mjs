@@ -11,4 +11,10 @@ for(const [language,path,contact] of [['tr','/','/iletisim'],['en','/en','/en/co
   console.log(`PASS ${language}: practitioner, contact CTA, real public stylesheet, no retired effects`);
 }
 for(const path of ['/hakkimda','/blog','/iletisim','/calisma-alanlari','/gizlilik','/kvkk-aydinlatma-metni']){assert.equal((await fetch(base+path)).status,200);console.log('PASS page '+path)}
+for(const path of ['/hakkimda','/en/about','/de/ueber-mich']){
+  const response=await fetch(base+path);assert.equal(response.status,200);const html=await response.text();
+  const image=html.match(/class="about-page-hero__photo"[^>]*>\s*(<img\b[^>]*>)/)?.[1];
+  if(image){assert.ok(image.includes('object-fit:contain'),path);assert.ok(!image.includes('object-fit:cover'),path);console.log('PASS uncropped about portrait '+path)}
+  else {assert.ok(html.includes('about-page-hero--text-only'),path);console.log('PASS hidden about portrait '+path)}
+}
 const missing=await fetch(base+'/design-smoke-missing-page');assert.equal(missing.status,404);assert.ok((await missing.text()).includes('not-found-hero'));console.log('PASS styled 404');

@@ -452,6 +452,11 @@ docker compose down
 - İçerik kaldırma sonrası medya son güncel referansa göre temizlenir; shared/draft/hidden kullanımı korunur. Orijinal/metadata/registry fiziksel temizliği kendi fixture'ıyla doğrulanır. Static repo asset'leri, audit/revision ve eski yedekler ayrı kapsamdır; genel güvenli-imha veya tüm geçmiş purge iddiası yapılmaz.
 - SSR/source/pure helpers testleri gerçek browser modal focus/piksel QA yerine geçmez. Computer helper başarısızlığı açık yazılır. Geçici test account/token/content dosyaları finally temizlenir; müşteri kimlikleri/fotoğrafları veya parolaları değiştirilmez. Frontend/SQL/proxy kaynakları ve Obsidian birlikte tutulur; VPS yayın aşaması ayrı kalır.
 
+### Karar 053 — Fill görselinde gerçek inline stil de test edilir
+
+- Framework fill img'nin varsayılan inline object-fit:cover stili CSS contain'i ezer. Tam görsel gösterilecek Hakkımda slotu explicit style contain kullanır; dosya/admin kaynağı veya ana sayfa karakteri değiştirilmez.
+- Sadece img stub veya stylesheet kuralına bakmak kırpılmama kanıtı değildir. Gerçek yüklü renderer ile HTML inline stil, default/upload kaynak ve hidden frame; canlı üç dil route çıktısı denetlenir. HTML testi gerçek piksel ekran QA yerine geçirilmez.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

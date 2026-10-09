@@ -97,6 +97,10 @@ $env:HTTP_PORT=8081
 docker compose up -d
 ```
 
+## Hakkımda portresinin boyutlandırılması
+
+Hakkımda portresi `fill` görselde açık `style={{ objectFit: "contain" }}` kullanır. Vinext shim'in varsayılan inline `cover` stili stylesheet'teki contain kuralını ezdiğinden yalnız CSS kontrolü yeterli değildir. Fotoğraf/admin yüklemesi değişmez; gerçek shim renderer testi `node --test scripts/tests/about-image.test.mjs`, üç dil HTTP kontrolü `node scripts/tests/public-design-smoke.mjs` ile yapılır.
+
 ## Blog yazısı ve çalışma alanını kalıcı silme
 
 `/bakir → Blog yazıları / Çalışma alanları` listesinde her kayıt için **Sil** düğmesi bulunur. Açılan onay ekranında kaydın adı gösterilir; `SIL` yazmadan **Kalıcı sil** etkinleşmez. Vazgeç/ESC silme yapmaz. İşlem başladıktan sonra çift gönderim ve iptal engellenir. **Gizle** hâlâ ayrı ve geri dönüşlü seçenektir.

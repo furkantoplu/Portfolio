@@ -42,7 +42,7 @@ export default async function AboutPage() {
           <NativeLink className="primary-button" href={localHref("/iletisim")}>{t("İletişim bilgilerini görün")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
         </div>
         {show("image") && (<div className="about-page-hero__portrait">
-          <div className="about-page-hero__photo"><Image src={content.image_path || "/furkan-toplu-hero-white-coat-v1.png"} alt={content.image_alt || t("Fizyoterapist Furkan Toplu'nun portresi")} fill priority sizes="(max-width: 860px) 100vw, 48vw" /></div>
+          <div className="about-page-hero__photo"><Image src={content.image_path || "/furkan-toplu-hero-white-coat-v1.png"} alt={content.image_alt || t("Fizyoterapist Furkan Toplu'nun portresi")} fill priority style={{ objectFit: "contain" }} sizes="(max-width: 860px) 100vw, 48vw" /></div>
           <div><span>{t("Fizyoterapist")}</span><strong>{t("Furkan Toplu")}</strong></div>
         </div>) }
       </section>

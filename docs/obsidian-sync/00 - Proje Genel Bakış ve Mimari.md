@@ -21,6 +21,8 @@ Furkan Toplu için güven veren, sade ve içerik odaklı bir fizyoterapist portf
 
 ## Geliştirme yaklaşımı
 
+Hakkımda portresinin kırpılması 9 Ekim 2026'da düzeltildi: Vinext fill img'ye inline object-fit:cover eklediği için CSS contain etkisiz kalıyordu. Sayfa bileşeninde explicit contain verildi; aynı 4/5 kutu, padding, caption, görünürlük ve admin görsel kaynağı korunur. Ana sayfa karakteri değiştirilmez. Gerçek framework renderer ve TR/EN/DE HTTP HTML testleri eklendi; toplam 84 test geçti, yerel Docker yenilendi. CMS/asset/DB/VPS/DNS değişmedi.
+
 Proje tek seferde tamamlanmayacak. Önce küçük arayüz paketleri hazırlanacak ve her paket görsel olarak kontrol edilecek. Backend, veritabanı ve yönetim paneline ana frontend bütünü tamamlandıktan sonra kontrollü paketlerle geçilecek. Dağıtımı tekrarlanabilir tutmak için frontend, reverse proxy, Directus ve PostgreSQL aynı Docker Compose mimarisine alındı.
 
 Planlanan sıra:
