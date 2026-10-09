@@ -9,6 +9,7 @@ import type { Locale } from "../lib/i18n";
 import { ImageField } from "./image-field";
 import { VisibilityField, VisibilitySwitch, ExtraSectionControls } from "./section-visibility";
 import { practiceSlug } from "../lib/practice-slug";
+import { ContentDeleteControl } from "./content-delete-control";
 
 export type ManagedPracticeArea = ContentItem & {
   section_visibility?: Record<string, boolean>;
@@ -123,7 +124,17 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
   const selectedIdRef = useRef<number | null>(null);
   const [draft, setDraft] = useState<PracticeDraft>(emptyDraft);
   const [busy, setBusy] = useState(false);
+  const [translationBusy, setTranslationBusy] = useState(false);
+  const locked = busy || translationBusy;
   const [message, setMessage] = useState<string | null>(null);
+  const [deletedIds, setDeletedIds] = useState<number[]>([]);
+
+  async function areaDeleted(id: number) {
+    setDeletedIds(current => [...current, id]);
+    if (selectedIdRef.current === id) startNew();
+    try { await onChanged(); setMessage("Çalışma alanı ve tüm dil çevirileri kalıcı silindi."); }
+    catch { setMessage("Çalışma alanı silindi; liste yenilenemedi. Bağlantı düzeldiğinde paneli yenileyin."); }
+  }
 
   function update<K extends keyof PracticeDraft>(field: K, value: PracticeDraft[K]) {
     setDraft((current) => ({ ...current, [field]: value }));
@@ -214,34 +225,35 @@ export function PracticeManager({ areas, onChanged }: { areas: ManagedPracticeAr
           <p className="admin-eyebrow"><Stethoscope size={17} /> Çalışma alanları</p>
           <h2 id="practice-manager-title">Alanları düzenleyin,<br /><em>görünürlüğü yönetin.</em></h2>
         </div>
-        <button type="button" onClick={startNew}><FilePlus2 size={18} /> Yeni alan</button>
+        <button type="button" onClick={startNew} disabled={locked}><FilePlus2 size={18} /> Yeni alan</button>
       </div>
 
       <div className="admin-content-manager__layout">
         <div className="admin-post-list" aria-label="Çalışma alanları">
-          {areas.map((area) => (
+          {areas.filter(area => !deletedIds.includes(area.id)).map((area) => (
             <article className={selectedId === area.id ? "is-selected" : ""} key={area.id}>
-              <button className="admin-post-list__main" type="button" onClick={() => editArea(area)}>
+              <button className="admin-post-list__main" type="button" onClick={() => editArea(area)} disabled={locked}>
                 <span className={`admin-status admin-status--${area.status}`}>{statusLabels[area.status]}</span>
                 <strong>{area.title}</strong>
                 <small>{area.show_on_homepage ? "Ana sayfada gösteriliyor" : "Yalnızca alanlar sayfası"}</small>
               </button>
               <div className="admin-post-list__actions">
-                <button type="button" onClick={() => editArea(area)} title="Düzenle"><PencilLine size={16} /></button>
+                <button type="button" onClick={() => editArea(area)} title="Düzenle" disabled={locked}><PencilLine size={16} /></button>
                 {area.status === "published" ? (
-                  <button type="button" onClick={() => changeStatus(area, "hidden")} title="Gizle" disabled={busy}><EyeOff size={16} /></button>
+                  <button type="button" onClick={() => changeStatus(area, "hidden")} title="Gizle" disabled={locked}><EyeOff size={16} /></button>
                 ) : (
-                  <button type="button" onClick={() => changeStatus(area, "published")} title="Yayınla" disabled={busy}><Check size={16} /></button>
+                  <button type="button" onClick={() => changeStatus(area, "published")} title="Yayınla" disabled={locked}><Check size={16} /></button>
                 )}
                 {area.status === "published" && <NativeLink href={`/calisma-alanlari/${area.slug}`} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></NativeLink>}
+                <ContentDeleteControl collection="practice_areas" id={area.id} title={area.title} disabled={locked} onBusyChange={setBusy} onDeleted={areaDeleted} />
               </div>
             </article>
           ))}
         </div>
 
         <div>
-        <LanguageTabs language={language} onChange={setLanguage} disabled={!selectedId || busy} />
-        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="practice_areas" parentId={selectedId} language={language} onVisibilitySaved={async value => { if (selectedIdRef.current === selectedId) update("section_visibility", value); await onChanged(); }} /> : <form className="admin-post-editor" onSubmit={saveArea}>
+        <LanguageTabs language={language} onChange={setLanguage} disabled={!selectedId || locked} />
+        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="practice_areas" parentId={selectedId} language={language} onBusyChange={setTranslationBusy} onVisibilitySaved={async value => { if (selectedIdRef.current === selectedId) update("section_visibility", value); await onChanged(); }} /> : <form className="admin-post-editor" onSubmit={saveArea}>
           <div className="admin-post-editor__topline">
             <div><PencilLine size={18} /><strong>{selectedId ? "Alanı düzenle" : "Yeni çalışma alanı"}</strong></div>
             <select value={draft.status} onChange={(event) => update("status", event.target.value as ContentItem["status"])} aria-label="Yayın durumu">

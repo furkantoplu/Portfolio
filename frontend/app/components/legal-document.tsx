@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
+import { NativeLink } from "./native-link";
 
 export type LegalSection = {
   title: string;
@@ -22,7 +23,7 @@ export function LegalDocument({ eyebrow, title, intro, updated, sections }: Lega
       <SiteHeader />
 
       <section className="legal-hero" aria-labelledby="legal-title">
-        <a href="/" className="legal-back"><ArrowLeft aria-hidden="true" size={17} />Ana sayfaya dön</a>
+        <NativeLink href="/" className="legal-back"><ArrowLeft aria-hidden="true" size={17} />Ana sayfaya dön</NativeLink>
         <p className="eyebrow"><span aria-hidden="true" />{eyebrow}</p>
         <h1 id="legal-title">{title}</h1>
         <p>{intro}</p>

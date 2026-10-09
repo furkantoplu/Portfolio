@@ -97,6 +97,16 @@ $env:HTTP_PORT=8081
 docker compose up -d
 ```
 
+## Blog yazısı ve çalışma alanını kalıcı silme
+
+`/bakir → Blog yazıları / Çalışma alanları` listesinde her kayıt için **Sil** düğmesi bulunur. Açılan onay ekranında kaydın adı gösterilir; `SIL` yazmadan **Kalıcı sil** etkinleşmez. Vazgeç/ESC silme yapmaz. İşlem başladıktan sonra çift gönderim ve iptal engellenir. **Gizle** hâlâ ayrı ve geri dönüşlü seçenektir.
+
+Kalıcı silme ana kaydı ve EN/DE çevirilerini kaldırır; çalışma alanının eski URL alias'ları da temizlenir. Detay adresi 404 olur, dinamik listeler/sitemap kaydı içermez. Başka içerikte kullanılan fotoğraflar kalır; son güncel kullanımı kalkmış yönetilen upload dosyası ve metadata mevcut medya temizliğiyle kaldırılır. Paketlenmiş repo görselleri silinmez. Directus işlem/revizyon geçmişi ve eski yedekler ayrı saklama kapsamıdır; bu özellik tüm arşivleri silen bir güvenli imha işlemi değildir.
+
+API yalnız `DELETE /bakir-api/items/blog_posts/{pozitif-numerik-id}` ve `practice_areas/{id}` için açılmıştır; Directus oturum/izinleri geçerlidir. Toplu silme, sabit `site_pages`, kullanıcı ve genel dosya DELETE yolları kapalı kalır. `011-content-delete-cleanup.sql` parent/çeviri temizliğini ve öksüz çeviri yazma korumasını kurar; mevcut içerikleri topluca silmez. Çeviri yazımı parent kilidiyle tek transaction'dadır, silme yarışı 404 ile bildirilir.
+
+Kontroller: `node --test scripts/tests/content-delete.test.mjs`, `node scripts/tests/content-delete-db.mjs` (izole schema/rollback), `node scripts/tests/content-delete-smoke.mjs` (yalnız kendi geçici kayıt/fotoğraf/hesabını oluşturur ve temizler). Gerçek kayıtlar test için hedeflenmez.
+
 ## Kendi yönetici hesabını düzenleme
 
 Admin → **Hesabım** bölümünde ad/soyad, giriş e-postası ve isteğe bağlı yeni parola değiştirilebilir. Mevcut parola her kayıtta, aktifse Authenticator kodu da onay için gerekir. Yeni parola ve tekrar alanı eşleşmelidir. Varsayılan kural 10–128 karakter, büyük/küçük harf, rakam ve semboldür. E-posta veya parola değişince yalnızca o hesaba ait tüm oturumlar kapatılır; yeni bilgilerle yeniden giriş yapılır. Sadece ad/soyad değişince mevcut oturum korunur. 2FA anahtarı değiştirilmez; Authenticator uygulamasındaki hesap etiketi eski e-postayı gösterebilir, kod aynı anahtarla çalışmaya devam eder.

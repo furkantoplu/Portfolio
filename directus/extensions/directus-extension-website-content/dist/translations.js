@@ -98,13 +98,16 @@ export function registerTranslations(router, database, adminAccount) {
       } catch (error) { return response.status(400).json({ errors: [{ message: error.message }] }); }
       const record = { collection, parent_id: Number(parentId), language: locale, status, slug: slug || null, content: JSON.stringify(content), updated_at: new Date() };
       const write = async db => {
+        const lockedParent = await db(collection).where("id", Number(parentId)).forUpdate().first();
+        if (!lockedParent) throw Object.assign(new Error("Parent removed"), { code: "23503" });
         const [saved] = await db(table).insert(record).onConflict(["collection", "parent_id", "language"]).merge(["status", "slug", "content", "updated_at"]).returning(["id", "status", "slug", "content"]);
         if (visibility !== undefined) await saveSharedVisibility(db, collection, Number(parentId), visibility);
-        return { ...saved, section_visibility: visibility ?? sharedVisibility(collection, parent) };
+        return { ...saved, section_visibility: visibility ?? sharedVisibility(collection, lockedParent) };
       };
-      const saved = visibility === undefined ? await write(database) : await database.transaction(write);
+      const saved = await database.transaction(write);
       response.set("Cache-Control", "no-store").json({ data: saved });
     } catch (error) {
+      if (error.code === "23503") return response.status(404).json({ errors: [{ message: "İçerik artık bulunmuyor. Listeyi yenileyin." }] });
       if (error.code === "23505") return response.status(409).json({ errors: [{ message: "Bu dilde aynı URL adı kullanılıyor." }] });
       next(error);
     }

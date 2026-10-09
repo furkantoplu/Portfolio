@@ -159,7 +159,7 @@ test('Translation visibility saves with text in one transaction, validates keys 
     const handlers={}, writes=[];
     let transactions=0;
     const parent=collection==='site_pages'?{id:1,page_key:'home',content:{hero_title:'Keep me',section_visibility:{intro:false}}}:{id:1,section_visibility:{faqs:false}};
-    const db=name=>({where(){return this},async first(){return name==='website_content_translations'?null:parent},insert(record){writes.push({name,record});return this},onConflict(){return this},merge(){return this},async returning(){return [{id:1,status:'draft',content:{}}]},async update(record){writes.push({name,record})}});
+    const db=name=>({where(){return this},forUpdate(){return this},async first(){return name==='website_content_translations'?null:parent},insert(record){writes.push({name,record});return this},onConflict(){return this},merge(){return this},async returning(){return [{id:1,status:'draft',content:{}}]},async update(record){writes.push({name,record})}});
     db.transaction=async fn=>{transactions++;return fn(db)};
     db.raw=(sql,bindings)=>({sql,bindings});
     registerTranslations({get(path,fn){handlers.get=fn},patch(path,fn){handlers.patch=fn}},db,async()=>({status:'active',is_admin:true}));

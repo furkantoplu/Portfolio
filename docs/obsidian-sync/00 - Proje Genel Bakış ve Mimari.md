@@ -13,6 +13,12 @@ Furkan Toplu için güven veren, sade ve içerik odaklı bir fizyoterapist portf
 - Geçici Compose fixture'ında dış TCP 80/443 çalıştı, 8080/8055 kapalı kaldı; test container/ağ/imajları kaldırıldı. 443 yalnız plaintext port testiydi, TLS değil. IPv6 dış testine bu bilgisayarda rota olmadığı için onay verilmedi; ilk yayın IPv4 üzerinden hazırlanacak. 75 regresyon testi geçti.
 - Site, veritabanı ve fotoğraflar henüz VPS'ye taşınmadı. DNS, Cloudflare ve TLS değiştirilmedi. Kullanıcı sırası sunucu → site/veri → domain/Cloudflare; sonraki kurulum ve ayrıntılar `deploy/VPS-KURULUM.md` içinde. Sırlar/özel anahtarlar notlara/Git'e alınmaz. Ubuntu'nun phased rollout nedeniyle tuttuğu beş paket zorlanmadı.
 
+## Kalıcı içerik silme — 9 Ekim 2026
+
+- VPS'ye taşımadan önce yerel admin paneline blog yazısı ve çalışma alanı için görünür Sil düğmesi eklendi. Native dialog kaydı gösterir, SIL onayı ve Vazgeç içerir; gizleme ayrı kalır. Yeni/kaydedilmemiş form değil, mevcut kayıt silinir. Seçili kayıt silinince editör/çeviri sekmesi yeni Türkçe forma döner; farklı kayıt taslağı korunur.
+- Native Directus DELETE yalnız iki koleksiyonun tek pozitif numerik ID'sine proxy üzerinden izinlidir. 011 migrasyonu çevirileri parent ile atomik temizler, alias mevcut FK cascade ile gider; parent kilidi/çeviri guard öksüz yeni yazımı önler. İşlem/backup geçmişleri ayrı tutulur, mevcut satırlara geniş purge yapılmaz.
+- Medya temizliği paylaşılan/draft/hidden kullanımı korur; son kullanım kalkınca yönetilen upload dosyası/DB/registry temizlenir. Geçici kayıtlarla üç dil 404, sitemap, alias, anonim deny ve fiziksel dosya kontrolü geçti; gerçek iki fotoğraf korundu. 82 test, TypeScript/lint, Docker build ve HTTP kontrolleri geçti. Tarayıcı yardımcısı başlatılamadığı için popup görsel QA'sı tamamlanmış sayılmaz. VPS ve DNS değiştirilmedi; yerel Docker güncellendi.
+
 ## Geliştirme yaklaşımı
 
 Proje tek seferde tamamlanmayacak. Önce küçük arayüz paketleri hazırlanacak ve her paket görsel olarak kontrol edilecek. Backend, veritabanı ve yönetim paneline ana frontend bütünü tamamlandıktan sonra kontrollü paketlerle geçilecek. Dağıtımı tekrarlanabilir tutmak için frontend, reverse proxy, Directus ve PostgreSQL aynı Docker Compose mimarisine alındı.

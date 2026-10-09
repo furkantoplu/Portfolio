@@ -444,6 +444,14 @@ docker compose down
 - Geçici ağ fixture'ı düşük kaynaklı, no volumes ve açıkça production olmayan yapıdadır. Test sonrası yalnız fixture container/ağı/imajları kaldırılır. Plaintext TCP443 testi TLS onayı değildir; gerçek SSL ve admin HTTPS kabul testi domain aşamasına kalır. TLS öncesi admin giriş testi özel SSH tüneliyle yapılır.
 - Server setup dosyaları Linux LF ile version-control edilir; `.env`/private key/parolalar tutulmaz. Yapılan kontroller ve henüz yapılmayan app/DNS adımları aynı teslim notunda ayrılır.
 
+### Karar 052 — Kalıcı içerik silme gizlemekten ayrı ve tek kayıtlıdır
+
+- Blog/çalışma alanı Sil, native modal + ad görünümü + SIL yazılı onay ile yapılır; gizleme geri dönüşlü kalır. Taslak dahil mevcut kaydı siler, kaydedilmemiş formu değil. Çift submit, busy sırasında iptal ve çeviriyle eşzamanlı UI işlemi engellenir. Request başarısızken kayıt UI'dan kaldırılmış sayılmaz; refresh hatası ile silme hatası ayrıdır.
+- Proxy DELETE yalnız iki içerik koleksiyonunun numerik tek ID'sini geçirir, auth Directus'a aittir. Body/filter/bulk/static pages/users/files delete açılmaz. Onay UI güvenlik yetkisi değildir; server ACL bağımsızdır. Gerçek kullanıcı içerikleri doğrulama için silinmez.
+- Polymorphic translations için parent guard/row lock ve parent delete cleanup aynı DB transaction'ında olmalıdır. Custom translation writer parent'ı child'dan önce kilitler; shared visibility aynı transaction'da kalır. Native/teknik parent silme de çeviri bırakmaz; yok olmuş parent 404 ile bildirilir. Old aliases mevcut FK cascade'le silinir.
+- İçerik kaldırma sonrası medya son güncel referansa göre temizlenir; shared/draft/hidden kullanımı korunur. Orijinal/metadata/registry fiziksel temizliği kendi fixture'ıyla doğrulanır. Static repo asset'leri, audit/revision ve eski yedekler ayrı kapsamdır; genel güvenli-imha veya tüm geçmiş purge iddiası yapılmaz.
+- SSR/source/pure helpers testleri gerçek browser modal focus/piksel QA yerine geçmez. Computer helper başarısızlığı açık yazılır. Geçici test account/token/content dosyaları finally temizlenir; müşteri kimlikleri/fotoğrafları veya parolaları değiştirilmez. Frontend/SQL/proxy kaynakları ve Obsidian birlikte tutulur; VPS yayın aşaması ayrı kalır.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

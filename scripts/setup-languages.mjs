@@ -21,6 +21,7 @@ sql += readFileSync(resolve(root, "scripts/migrations/007-white-coat-hero.sql"),
 sql += readFileSync(resolve(root, "scripts/migrations/008-media-cleanup.sql"), "utf8");
 sql += readFileSync(resolve(root, "scripts/migrations/009-footer-settings.sql"), "utf8");
 sql += readFileSync(resolve(root, "scripts/migrations/010-owner-portrait-defaults.sql"), "utf8");
+sql += readFileSync(resolve(root, "scripts/migrations/011-content-delete-cleanup.sql"), "utf8");
 const result = spawnSync("docker", ["compose", "exec", "-T", "database", "sh", "-c", 'exec psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"'], { cwd: root, input: sql, encoding: "utf8" });
 if (result.error) throw result.error;
 process.stdout.write(result.stdout || "");

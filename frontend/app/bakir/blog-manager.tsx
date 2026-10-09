@@ -8,6 +8,7 @@ import { LanguageTabs, TranslationEditor } from "./translation-editor";
 import type { Locale } from "../lib/i18n";
 import { ImageField } from "./image-field";
 import { VisibilityField, VisibilitySwitch, ExtraSectionControls } from "./section-visibility";
+import { ContentDeleteControl } from "./content-delete-control";
 
 export type ManagedBlogPost = ContentItem & {
   section_visibility?: Record<string, boolean>;
@@ -127,7 +128,17 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
   const selectedIdRef = useRef<number | null>(null);
   const [draft, setDraft] = useState<BlogDraft>(emptyDraft);
   const [busy, setBusy] = useState(false);
+  const [translationBusy, setTranslationBusy] = useState(false);
+  const locked = busy || translationBusy;
   const [message, setMessage] = useState<string | null>(null);
+  const [deletedIds, setDeletedIds] = useState<number[]>([]);
+
+  async function postDeleted(id: number) {
+    setDeletedIds(current => [...current, id]);
+    if (selectedIdRef.current === id) startNew();
+    try { await onChanged(); setMessage("Yazı ve tüm dil çevirileri kalıcı silindi."); }
+    catch { setMessage("Yazı silindi; liste yenilenemedi. Bağlantı düzeldiğinde paneli yenileyin."); }
+  }
 
   function startNew() {
     selectedIdRef.current = null;
@@ -224,34 +235,35 @@ export function BlogManager({ posts, onChanged }: { posts: ManagedBlogPost[]; on
           <p className="admin-eyebrow"><BookOpenText size={17} /> Blog yönetimi</p>
           <h2 id="blog-manager-title">Yazıları hazırlayın,<br /><em>zamanı gelince yayınlayın.</em></h2>
         </div>
-        <button type="button" onClick={startNew}><FilePlus2 size={18} /> Yeni yazı</button>
+        <button type="button" onClick={startNew} disabled={locked}><FilePlus2 size={18} /> Yeni yazı</button>
       </div>
 
       <div className="admin-content-manager__layout">
         <div className="admin-post-list" aria-label="Blog yazıları">
-          {posts.map((post) => (
+          {posts.filter(post => !deletedIds.includes(post.id)).map((post) => (
             <article className={selectedId === post.id ? "is-selected" : ""} key={post.id}>
-              <button className="admin-post-list__main" type="button" onClick={() => editPost(post)}>
+              <button className="admin-post-list__main" type="button" onClick={() => editPost(post)} disabled={locked}>
                 <span className={`admin-status admin-status--${post.status}`}>{statusLabels[post.status]}</span>
                 <strong>{post.title}</strong>
                 <small>{post.category} · {post.reading_minutes} dk.</small>
               </button>
               <div className="admin-post-list__actions">
-                <button type="button" onClick={() => editPost(post)} title="Düzenle"><PencilLine size={16} /></button>
+                <button type="button" onClick={() => editPost(post)} title="Düzenle" disabled={locked}><PencilLine size={16} /></button>
                 {post.status === "published" ? (
-                  <button type="button" onClick={() => changeStatus(post, "hidden")} title="Gizle" disabled={busy}><EyeOff size={16} /></button>
+                  <button type="button" onClick={() => changeStatus(post, "hidden")} title="Gizle" disabled={locked}><EyeOff size={16} /></button>
                 ) : (
-                  <button type="button" onClick={() => changeStatus(post, "published")} title="Yayınla" disabled={busy}><Check size={16} /></button>
+                  <button type="button" onClick={() => changeStatus(post, "published")} title="Yayınla" disabled={locked}><Check size={16} /></button>
                 )}
                 {post.status === "published" && <NativeLink href={`/blog/${post.slug}`} target="_blank" title="Sitede aç"><ArrowUpRight size={16} /></NativeLink>}
+                <ContentDeleteControl collection="blog_posts" id={post.id} title={post.title} disabled={locked} onBusyChange={setBusy} onDeleted={postDeleted} />
               </div>
             </article>
           ))}
         </div>
 
         <div>
-        <LanguageTabs language={language} onChange={setLanguage} disabled={!selectedId || busy} />
-        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="blog_posts" parentId={selectedId} language={language} onVisibilitySaved={async value => { if (selectedIdRef.current === selectedId) update("section_visibility", value); await onChanged(); }} /> : <form className="admin-post-editor" onSubmit={savePost}>
+        <LanguageTabs language={language} onChange={setLanguage} disabled={!selectedId || locked} />
+        {language !== "tr" && selectedId ? <TranslationEditor key={`${selectedId}-${language}`} collection="blog_posts" parentId={selectedId} language={language} onBusyChange={setTranslationBusy} onVisibilitySaved={async value => { if (selectedIdRef.current === selectedId) update("section_visibility", value); await onChanged(); }} /> : <form className="admin-post-editor" onSubmit={savePost}>
           <div className="admin-post-editor__topline">
             <div><PencilLine size={18} /><strong>{selectedId ? "Yazıyı düzenle" : "Yeni yazı oluştur"}</strong></div>
             <select value={draft.status} onChange={(event) => update("status", event.target.value as ContentItem["status"])} aria-label="Yayın durumu">

@@ -73,7 +73,7 @@ services:
       PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
     volumes:
       - ./scripts/migrations:/migrations:ro
-    command: ["psql", "-v", "ON_ERROR_STOP=1", "-f", "/migrations/001-content-translations.sql", "-f", "/migrations/002-page-language-seeds.sql", "-f", "/migrations/003-editable-public-pages.sql", "-f", "/migrations/004-practice-title-urls.sql", "-f", "/migrations/005-password-policy-escaping.sql", "-f", "/migrations/006-section-visibility.sql", "-f", "/migrations/007-white-coat-hero.sql", "-f", "/migrations/008-media-cleanup.sql", "-f", "/migrations/009-footer-settings.sql", "-f", "/migrations/010-owner-portrait-defaults.sql"]
+    command: ["psql", "-v", "ON_ERROR_STOP=1", "-f", "/migrations/001-content-translations.sql", "-f", "/migrations/002-page-language-seeds.sql", "-f", "/migrations/003-editable-public-pages.sql", "-f", "/migrations/004-practice-title-urls.sql", "-f", "/migrations/005-password-policy-escaping.sql", "-f", "/migrations/006-section-visibility.sql", "-f", "/migrations/007-white-coat-hero.sql", "-f", "/migrations/008-media-cleanup.sql", "-f", "/migrations/009-footer-settings.sql", "-f", "/migrations/010-owner-portrait-defaults.sql", "-f", "/migrations/011-content-delete-cleanup.sql"]
 
   frontend:
     build:

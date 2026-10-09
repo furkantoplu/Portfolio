@@ -32,7 +32,7 @@ export function LanguageTabs({ language, onChange, disabled = false }: { languag
   return <div className="admin-language-tabs" aria-label="İçerik dili">{locales.map(locale => <button key={locale} type="button" aria-pressed={language === locale} className={language === locale ? "is-active" : ""} disabled={disabled && locale !== "tr"} onClick={() => onChange(locale)}>{adminLanguageNames[locale]}</button>)}</div>;
 }
 
-export function TranslationEditor({ collection, parentId, language, pageKey, onVisibilitySaved }: { collection: Collection; parentId: number; language: "en" | "de"; pageKey?: PageKey; onVisibilitySaved?: (value: Record<string, boolean>) => void | Promise<void> }) {
+export function TranslationEditor({ collection, parentId, language, pageKey, onVisibilitySaved, onBusyChange }: { collection: Collection; parentId: number; language: "en" | "de"; pageKey?: PageKey; onVisibilitySaved?: (value: Record<string, boolean>) => void | Promise<void>; onBusyChange?: (busy: boolean) => void }) {
   const configuredPage = pageKey === "home" || pageKey === "areas" || pageKey === "blog" ? pageConfig[pageKey] : null;
   const fields: Field[] = configuredPage ? [...configuredPage.fields.filter(field => !("type" in field && field.type === "image")).map(field => ({ key: field.key, label: field.label })), { key: "seo_title", label: labels.seo_title }, { key: "seo_description", label: labels.seo_description }] : `${fieldKeys[collection === "site_pages" ? pageKey === "contact" ? "contact" : "about" : collection]}${pageKey === "about" ? " image_alt" : ""} seo_title seo_description`.split(" ").map(key => ({ key, label: labels[key], columns: arrayFields[key] }));
   const [draft, setDraft] = useState<Record<string, string>>({});
@@ -42,6 +42,7 @@ export function TranslationEditor({ collection, parentId, language, pageKey, onV
   const [slug, setSlug] = useState("");
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  useEffect(() => { onBusyChange?.(busy); return () => onBusyChange?.(false); }, [busy, onBusyChange]);
   const [loadFailed, setLoadFailed] = useState(false);
   const [message, setMessage] = useState("");
   const endpoint = `/website-content/translations/${collection}/${parentId}/${language}`;
