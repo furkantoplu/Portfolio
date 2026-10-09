@@ -4,6 +4,13 @@
 
 Furkan Toplu için güven veren, sade ve içerik odaklı bir fizyoterapist portföy sitesi hazırlanıyor. Site ziyaretçileri için üyelik sistemi bulunmayacak. Site sahibi; blog yazılarını, çalışma alanlarını, görselleri ve temel iletişim bilgilerini kod görmeden yönetebilecek.
 
+## VPS erişim durumu — 9 Ekim 2026
+
+- Kullanıcı OVHcloud Ubuntu 26.04 VPS ve Namecheap üzerinden `furkantoplu.com` domainini aldı. Sunucu IPv4 adresi `149.56.103.60`, Linux kullanıcı adı `ubuntu`; `furkofizyo` yalnız hizmet etiketidir.
+- Sunucuya özel parolalı ED25519 anahtarı kullanıcı tarafından yerelde oluşturuldu; açık anahtar sunucuya eklendi, özel anahtar bilgisayarda kaldı. SSH agent üzerinden Codex'in anahtarlı girişi ve etkileşimsiz sudo erişimi doğrulandı. Mevcut diğer sunucu anahtarları/SSH ayarları değiştirilmedi.
+- KVM'den alınan host parmak izi yerel kayıt ve gerçek SSH el sıkışmasıyla karşılaştırıldı. Sunucuda Git var, Docker henüz yok; yaklaşık 36 GB boş disk ve 3.7 GiB RAM görüldü. Dışarıya açık dinleyici yalnız SSH 22 idi.
+- Site, veritabanı ve fotoğraflar henüz VPS'ye taşınmadı. DNS, Cloudflare, firewall, TLS ve güncelleme ayarları değiştirilmedi. Sonraki kurulum sırası ve erişim ayrıntıları `deploy/VPS-KURULUM.md` içinde; sırlar ve özel anahtarlar notlara/Git'e alınmaz.
+
 ## Geliştirme yaklaşımı
 
 Proje tek seferde tamamlanmayacak. Önce küçük arayüz paketleri hazırlanacak ve her paket görsel olarak kontrol edilecek. Backend, veritabanı ve yönetim paneline ana frontend bütünü tamamlandıktan sonra kontrollü paketlerle geçilecek. Dağıtımı tekrarlanabilir tutmak için frontend, reverse proxy, Directus ve PostgreSQL aynı Docker Compose mimarisine alındı.

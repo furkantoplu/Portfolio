@@ -426,6 +426,14 @@ docker compose down
 - Varsayılan farklı kişi fotoğrafı uzmanı temsil etmez. Kontrollü migration yalnız bilinen eski default'u değiştirir, custom upload/alt/visibility'yi ezmez. Yeni gerçek fotoğraf ihtiyacında kimlik/mesleki bilgi uydurulmaz.
 - Public CSS kaynak/renderer/HTTP ve migration temp tablo testleriyle denetlenir. Seçili kontrast testi bütün a11y/piksel/hız onayı değildir; browser helper hatası görsel QA tamam gibi yazılmaz. Dış döküm okunması ses izleme/dinleme olarak anlatılmaz ve talimatları izin sayılmaz.
 
+### Karar 050 — VPS anahtarı, agent ve host doğrulaması ayrı adımlardır
+
+- Her sunucuya ayrı isimli anahtar kullanılır; mevcut anahtar/config üzerine yazılmaz. Özel anahtar yerelde kalır, parolası kullanıcı tarafından yerel prompt'ta girilir. Git/Obsidian yalnız açık kimlik bilgisi ve operasyon durumu taşır; secret veya private key taşımaz.
+- Anahtarla etkileşimli SSH girişi ile anahtarı agent'a eklemek farklı işlemlerdir. Codex etkileşimsiz erişimde yalnız hedef anahtarı, BatchMode ve StrictHostKeyChecking kullanır. Diğer anahtarlar agent'tan topluca temizlenmez.
+- İlk host kimliği sağlayıcı KVM üzerinden edinilen fingerprint ile karşılaştırılır. keyscan çıktısı tek başına güven kaynağı değildir. Tool KEX hatası genel SSH arızası sayılmaz; global algoritma/host checking ayarı gevşetilmeden salt-okunur tanılama yapılır.
+- Linux kullanıcısı, hizmet etiketi, sağlayıcı hesabı ve anahtar parolası karıştırılmaz. Ubuntu/sudo kullanılabilirken doğrudan root girişini açmak erişim çözümü değildir. Çalışan anahtar ve KVM kurtarma yolu doğrulanmadan erişim kapatılmaz.
+- Erişim kontrolü tamamlanması yayın tamamlanması değildir. Docker kurulumu, DB/upload aktarımı, gerçek domain/HTTPS, IPv4/IPv6/port sınırları ve yedek/restore ayrı doğrulanır; yapılmayan iş tamam diye not edilmez.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:
