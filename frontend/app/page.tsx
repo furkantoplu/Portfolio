@@ -165,7 +165,6 @@ export default async function Home() {
           })}
         </div>
 
-        <p className="practice-section__footnote">{content.practice_note}</p>
       </section>) }
 
       {show("about") && (<section className={`about-section${show("about_image") ? "" : " about-section--text-only"}`} id="hakkimda" aria-labelledby="about-title">
@@ -272,7 +271,6 @@ export default async function Home() {
           ))}
         </div>
 
-        <p className="blog-section__note">{content.blog_note}</p>
       </section>) }
 
       {show("contact") && (<section className="contact-section" id="iletisim" aria-labelledby="contact-title">

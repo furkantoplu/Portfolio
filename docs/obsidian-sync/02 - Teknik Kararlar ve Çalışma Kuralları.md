@@ -412,6 +412,12 @@ docker compose down
 - Tek SiteFooter bütün sayfalarda uygulanır; 404 dahil footer veri hatası güvenli fallback alır. Çoklu linkler mobilde sarılır. Yasal link görünürlüğü belgeyi silmek veya içeriğin gerekliliği hakkında karar değildir.
 - Yeni config migrasyonu mevcut düzenlemeyi ezmez. Gerçek sosyal adres bilinmeden demo hesap uydurulmaz. Form/renderer testleri gerçek admin submit veya screenshot QA yerine geçmiş gibi anlatılmaz.
 
+### Karar 048 — Genel not kaldırma gerçek içerik silme değildir
+
+- Kullanıcının kaldırılmasını istediği genel UI notları component/config/CSS'ten birlikte emekli edilir; eski visibility anahtarları kaydetmeyi bozmaz. Pasif DB metinleri ve revizyonlar geniş migrasyonla silinmez; gerçek blog/SSS içerikleri değiştirilmez.
+- Mesleki örnek cümle sadece bilinen üç dil literal'iyle eşleşirse gizlenir; substring filtresi gerçek qualification metnini yanlışlıkla saklayamaz. Gizlilik/KVKK ve iletişim sağlık verisi uyarıları genel footer/disclaimer cümleleriyle karıştırılmaz.
+- Temizlik sonrasında boş alan/sütun bırakılmaz. İşlevsel boş liste mesajı korunur. Render ve canlı HTML testleri görsel pixel QA yerine geçmiş gibi sunulmaz; UI değişikliği hukuki/yayın uygunluğu onayı değildir.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

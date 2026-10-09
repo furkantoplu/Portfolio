@@ -33,7 +33,6 @@ export async function SiteFooter() {
 
       <div className="site-footer__bottom">
         <p>{t("© 2026 Fzt. Furkan Toplu. Tüm hakları saklıdır.")}</p>
-        <p>{t("Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.")}</p>
         {(settings.menu.kvkk||settings.menu.privacy)&&<div>
           {settings.menu.kvkk&&<a href={localHref("/kvkk-aydinlatma-metni")}>{t("KVKK Aydınlatma Metni")}</a>}
           {settings.menu.privacy&&<a href={localHref("/gizlilik")}>{t("Gizlilik")}</a>}

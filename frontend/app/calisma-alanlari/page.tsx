@@ -66,14 +66,6 @@ export default async function PracticeAreasPage() {
         })}
       </section>) }
 
-      {show("note") && (<section className="practice-directory-note" aria-labelledby="directory-note-title">
-        <p className="section-kicker">{t("Yaklaşım Notu")}</p>
-        <h2 id="directory-note-title">{content.note_title}<em>{" "}{content.note_accent}</em>
-        </h2>
-        <p>{content.note_text}</p>
-        <a href={localHref("/iletisim")}>{t("İletişim bilgilerine gidin")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></a>
-      </section>) }
-
       <SiteFooter />
     </main>
   );

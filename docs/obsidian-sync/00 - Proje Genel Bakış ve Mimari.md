@@ -261,6 +261,12 @@ Admin sidebar'da Footer ekranı vardır. Yedi sosyal/dış hesap HTTPS URL'si ve
 
 Çalışma alanı detayındaki küçük özel footer ortak SiteFooter ile değiştirildi; ayar bütün sayfalara yansır. Birden çok link responsive flex wrap kullanır, mobilde ayrı tam genişlik satırıdır. Footer API geçici çalışmazsa güvenli varsayılanlar 404 sayfasının sırf bu nedenle bozulmasını önler. 60 otomatik test, TypeScript/ESLint ve Docker build geçti; canlı anonim items write 403, public footer/dil sayfaları kontrol edilir. Gerçek admin hesabıyla form submit/screenshot QA yapılmadı; yapay render testleri kullanıldı. Bilgilendirme cümleleri, video konuşması ve kalan dekorlar sonraki pakettir.
 
+## Genel public notlarının temizliği — 9 Ekim 2026, Paket 44
+
+Ana sayfa çalışma alanları/blog alt notları, alan liste yaklaşım notu, blog arşiv bilgi notu, alan detay görselli/görselsiz uyarı ve SSS genel açıklaması, blog detay disclaimer'ı ve footer genel cümlesi render'dan kaldırıldı. İlgili editör/config/CSS alanları temizlendi. Footer alt satırı copyright + yasal linkler için iki kolondur; boş not sütunu kalmaz. Home/areas/blog eski note visibility bayrakları kaydetmeyi bozmadan emekli edilir. DB metin/revizyonları veya yazı içerikleri silinmedi.
+
+Hakkımda'daki bilinen üç dil örnek mesleki notu exact-match/trim ile gizlenir; gerçek kullanıcı mesleki metni ve görünürlük kontrolü korunur. İletişimin gerçek gizlilik/sağlık verisi uyarısı, KVKK/Gizlilik belgeleri ve admin açıklamaları bu kaldırma kapsamına girmez. 62 otomatik test, TypeScript/ESLint, Docker build ve üç dil public HTML taraması uygulanır. UI temizliği hukuki uygunluk değerlendirmesi veya bütün içeriğin yayına hazır olduğunun onayı değildir. Dekor/video işi sonraki paket olarak bekler.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

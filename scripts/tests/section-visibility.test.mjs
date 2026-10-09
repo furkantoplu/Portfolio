@@ -93,12 +93,31 @@ test('Practice FAQ/process/assessment/image can be hidden and restored without d
   const visible=await render('practice',{practice});
   assert.ok(visible.includes('Soru')); assert.ok(visible.includes('Cevap')); assert.ok(visible.includes('detail-faq'));
 });
+test('Retired general notes never render on home, lists or image/no-image practice details',async()=>{
+  for(const page of ['home','areas','blog']){
+    const html=await render(page,{content:{...content,practice_note:'Retired notice sentinel',blog_note:'Retired notice sentinel',note_title:'Retired notice sentinel',note_text:'Retired notice sentinel'},posts:[post]});
+    assert.ok(!html.includes('Retired notice sentinel'),page);
+  }
+  for(const image of ['/test.png',null]){
+    const html=await render('practice',{practice:{...practice,image}});
+    assert.ok(!html.includes('genel bilgilendirme amaçlıdır'));
+    assert.ok(!html.includes('detail-hero__notice'));assert.ok(!html.includes('detail-hero__text-notice'));
+  }
+});
+test('About starter notes are hidden in all languages, real professional text stays editable and visible',async()=>{
+  for(const note of [
+    'Diploma, eğitim ve sertifika bilgileri müşteriden alınacak gerçek içerikle yayın öncesinde bu alana eklenecektir.',
+    'Verified qualifications, training and certificates will be added before the website is launched.',
+    'Geprüfte Angaben zu Ausbildung, Fortbildungen und Zertifikaten werden vor Veröffentlichung der Website ergänzt.',
+  ]){const html=await render('about',{content:{...content,professional_note:note}});assert.ok(!html.includes('about-story__note'));assert.ok(!html.includes(note));}
+  const html=await render('about',{content:{...content,professional_note:'Mesleki bilgi test metni.'}});assert.ok(html.includes('Mesleki bilgi test metni.'));
+});
 test('Blog hidden content never leaves dangling TOC links or an empty cover column',async()=>{
   const html=await render('post',{post:{...post,section_visibility:off(['summary','image','meta','lead','body','quote','tips','closing','cta'])}});
   for(const css of ['article-cover','article-header__meta','article-toc','article-end']) assert.ok(!html.includes(`class="${css}`),css);
   for(const text of ['Özet','Paragraf','Alıntı','Kapanış','href="#']) assert.ok(!html.includes(text),text);
   assert.ok(html.includes('article-layout--no-toc'));
-  assert.ok(html.includes('genel bilgilendirme amaçlıdır'));
+  assert.ok(!html.includes('genel bilgilendirme amaçlıdır'));
 });
 test('Contact independently shows address or hours, including the address-only case',async()=>{
   const html=await render('contact',{content:{...content,section_visibility:{hours:false}}});

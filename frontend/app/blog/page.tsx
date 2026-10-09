@@ -80,7 +80,6 @@ export default async function BlogPage() {
               </article>
             ))}
           </div>
-          {show("note") && (<p className="article-archive__note">{content.note_text}</p>) }
         </section>
       )}
 

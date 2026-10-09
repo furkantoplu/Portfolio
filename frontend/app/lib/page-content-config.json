@@ -17,7 +17,6 @@
       {"key":"practice_title","label":"Çalışma alanları başlığı","default":"Hareketin farklı ihtiyaçlarına"},
       {"key":"practice_accent","label":"Çalışma alanları vurgusu","default":"bütüncül bir bakış."},
       {"key":"practice_intro","label":"Çalışma alanları açıklaması","default":"Her süreç dinlemekle başlar. Değerlendirme sonrasında ihtiyaçlara uygun, anlaşılır ve takip edilebilir bir yol haritası oluşturulur."},
-      {"key":"practice_note","label":"Çalışma alanları bilgi notu","default":"Buradaki içerikler genel bilgilendirme amaçlıdır; kişisel değerlendirme yerine geçmez."},
       {"key":"about_image","label":"Hakkımda bölüm görseli","default":"/about-physiotherapist-v1.png","type":"image"},
       {"key":"about_image_alt","label":"Hakkımda görsel açıklaması","default":"Klinikte duran fizyoterapist portresi"},
       {"key":"about_title","label":"Hakkımda başlığı","default":"Hareketin her insanda"},
@@ -37,7 +36,6 @@
       {"key":"blog_title","label":"Blog bölüm başlığı","default":"Hareketi anlamak için"},
       {"key":"blog_accent","label":"Blog bölüm vurgusu","default":"sade ve güvenilir bilgiler."},
       {"key":"blog_intro","label":"Blog bölüm açıklaması","default":"Günlük yaşamda hareket sağlığını destekleyen, kolay anlaşılır ve kaynak odaklı içerikler."},
-      {"key":"blog_note","label":"Blog bilgi notu","default":"Bilgi Köşesi içerikleri genel bilgilendirme amaçlıdır; tanı veya kişisel tedavi önerisi yerine geçmez."},
       {"key":"contact_title","label":"İletişim bölüm başlığı","default":"İlk adımı birlikte"},
       {"key":"contact_accent","label":"İletişim bölüm vurgusu","default":"sakin ve net atalım."},
       {"key":"contact_intro","label":"İletişim bölüm açıklaması","default":"Görüşme süreci, uygun saatler veya çalışma alanları hakkında bilgi almak için size uygun iletişim kanalını kullanabilirsiniz."}
@@ -50,10 +48,7 @@
       {"key":"hero_accent","label":"Başlık vurgusu","default":"kendi bağlamında bakmak."},
       {"key":"hero_description","label":"Giriş metni","default":"Aynı başlık altında görünen ihtiyaçlar bile her kişide farklı bir hikâyeye sahip olabilir. Süreç, dinleme ve değerlendirmeyle başlar."},
       {"key":"hero_image","label":"Sayfa giriş görseli (isteğe bağlı)","default":"","type":"image"},
-      {"key":"hero_image_alt","label":"Görsel açıklaması","default":"Çalışma Alanları"},
-      {"key":"note_title","label":"Bilgi notu başlığı","default":"Sayfadaki başlıklar bir tanı listesi değil,"},
-      {"key":"note_accent","label":"Bilgi notu vurgusu","default":"değerlendirme kapsamını anlatan genel çerçevelerdir."},
-      {"key":"note_text","label":"Bilgi notu metni","default":"Kişisel ihtiyaçlar ve sürecin uygunluğu ancak bireysel görüşme ve değerlendirme sonrasında ele alınabilir."}
+      {"key":"hero_image_alt","label":"Görsel açıklaması","default":"Çalışma Alanları"}
     ]
   },
   "blog": {
@@ -65,8 +60,7 @@
       {"key":"hero_image","label":"Sayfa giriş görseli (isteğe bağlı)","default":"","type":"image"},
       {"key":"hero_image_alt","label":"Görsel açıklaması","default":"Bilgi Köşesi"},
       {"key":"archive_title","label":"Arşiv başlığı","default":"Bilgi arşivi"},
-      {"key":"archive_intro","label":"Arşiv açıklaması","default":"Yeni içerikler yayınlandıkça bu alan otomatik olarak genişleyecek."},
-      {"key":"note_text","label":"Bilgi notu","default":"Bu içerikler genel bilgilendirme amaçlıdır; tanı, tedavi veya kişisel değerlendirme yerine geçmez."}
+      {"key":"archive_intro","label":"Arşiv açıklaması","default":"Yeni içerikler yayınlandıkça bu alan otomatik olarak genişleyecek."}
     ]
   }
 }

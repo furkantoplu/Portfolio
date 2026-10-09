@@ -7,6 +7,7 @@ import { NativeLink } from "../components/native-link";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { getSitePage } from "../lib/directus";
+import { professionalNoteText } from "../lib/public-copy";
 
 type AboutContent = {
   section_visibility?: Record<string, boolean>;
@@ -27,6 +28,7 @@ const principleIcons = [MessageCircleMore, Eye, Route];
 export default async function AboutPage() {
   const { locale, t, href: localHref } = await getPageTools();
   const { content } = await getSitePage<AboutContent>("about");
+  const professionalNote=professionalNoteText(content.professional_note);
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
   return (
     <main className="site-shell about-page">
@@ -53,7 +55,7 @@ export default async function AboutPage() {
         <div className="about-story__body">
           <p className="about-story__lead">{content.story_lead}</p>
           {content.story_paragraphs.map((paragraph, index) => <p key={index}>{paragraph.text}</p>)}
-          {show("professional_note") && (<div className="about-story__note"><Sparkles aria-hidden="true" size={20} /><span>{content.professional_note}</span></div>) }
+          {show("professional_note") && professionalNote && (<div className="about-story__note"><Sparkles aria-hidden="true" size={20} /><span>{professionalNote}</span></div>) }
         </div>
       </section>) }
 

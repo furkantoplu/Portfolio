@@ -22,6 +22,7 @@ const module={exports:{}};new Function('require','module','exports',result.outpu
 const {readFooterSettings,safeFooterUrl,render,editor}=module.exports;
 test('Empty footer omits fake social profiles and keeps default internal/legal links',async()=>{
   const html=await render({});assert.ok(!html.includes('href="#"'));assert.ok(!html.includes('site-footer__social-links'));assert.ok(html.includes('href="/blog"'));assert.ok(html.includes('href="/gizlilik"'));
+  assert.ok(!html.includes('Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.'));
 });
 test('Only valid HTTPS URLs without credentials become public links; parsers agree',()=>{
   for(const value of ['',null,undefined,'#','javascript:alert(1)','data:text/html,x','http://example.test','//example.test','https://user:pass@example.test', 'https://example.test/'+ 'x'.repeat(2050)]){assert.equal(safeFooterUrl(value),'');assert.equal(backendUrl(value),'')}

@@ -80,7 +80,6 @@ export async function PracticeDetail({
           {show("lead") && (<p className="detail-hero__lead">{content.lead}</p>) }
           <a className="primary-button" href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}<ArrowUpRight aria-hidden="true" size={18} />
           </a>
-          {!hasImage && <p className="detail-hero__text-notice">{t("Bu sayfa genel bilgilendirme amaçlıdır; kişisel değerlendirme ve tanı yerine geçmez.")}</p>}
         </div>
 
         {hasImage && <div className="detail-hero__visual">
@@ -94,7 +93,6 @@ export async function PracticeDetail({
               style={{ objectFit: "contain", objectPosition: "center" }}
             />
           </div>
-          <p className="detail-hero__notice">{t("Bu sayfa genel bilgilendirme amaçlıdır; kişisel değerlendirme ve tanı yerine geçmez.")}</p>
         </div>}
       </section>
 
@@ -145,7 +143,6 @@ export async function PracticeDetail({
         <div className="detail-faq__intro">
           <p className="section-kicker">{t("Merak Edilenler")}</p>
           <h2 id="faq-title">{t("İlk görüşme öncesinde kısa cevaplar.")}</h2>
-          <p>{t("Kişisel durumunuza ilişkin değerlendirme yalnızca görüşme sırasında yapılabilir. Buradaki cevaplar sürecin genel çerçevesini anlatır.")}</p>
         </div>
         <div className="detail-faq__list">
           {content.questions.map((item, index) => (

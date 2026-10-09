@@ -145,11 +145,6 @@
       "key": "listing",
       "label": "Çalışma alanı kartları",
       "field": null
-    },
-    {
-      "key": "note",
-      "label": "Yaklaşım notu",
-      "field": "note_title"
     }
   ],
   "blog": [
@@ -172,11 +167,6 @@
       "key": "archive",
       "label": "Yazı arşivi",
       "field": "archive_title"
-    },
-    {
-      "key": "note",
-      "label": "Arşiv bilgi notu",
-      "field": "note_text"
     }
   ],
   "practice_areas": [

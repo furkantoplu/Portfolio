@@ -95,7 +95,6 @@ export default async function BlogPostPage({ params }: PageProps) {
               </section>
             )}
 
-            <div className="article-disclaimer">{t("Bu yazı genel bilgilendirme amaçlıdır; tanı, tedavi veya kişisel egzersiz önerisi yerine geçmez.")}</div>
             {show("cta") && (<div className="article-end">
               <a href={localHref("/blog")}><ArrowLeft aria-hidden="true" size={17} />{t("Tüm yazılara dön")}</a>
               <a href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></a>
