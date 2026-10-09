@@ -457,6 +457,13 @@ docker compose down
 - Framework fill img'nin varsayılan inline object-fit:cover stili CSS contain'i ezer. Tam görsel gösterilecek Hakkımda sayfası ve ana sayfa Hakkımda slotları explicit style contain kullanır; dosya/admin kaynağı veya üstteki 3D ana sayfa karakteri değiştirilmez. Her slotun gerçek bileşeni ayrı regression ile kapsanır.
 - Sadece img stub veya stylesheet kuralına bakmak kırpılmama kanıtı değildir. Gerçek yüklü renderer ile HTML inline stil, default/upload kaynak ve hidden frame; canlı üç dil route çıktısı denetlenir. HTML testi gerçek piksel ekran QA yerine geçirilmez.
 
+### Karar 054 — Hizmet kapsamı teyitli, içerik importu silmeleri geri almaz
+
+- Genel AI/üçüncü taraf klinik listesi kişisel hizmet/yetkinlik kanıtı değildir. Altı alan kapsamı kullanıcıdan açık teyit gelince yayımlanır. Jargon yerine günlük ve profesyonel başlık; TR/EN/DE anlam eşdeğerliği, özgün detay ve fotoğrafsız payload. Tedavi sonucu, uzmanlık diploması, cihaz veya süre uydurulmaz.
+- Manuel katalog importu transaction + advisory lock + boşluk kontrolü + kalıcı bir defalık marker kullanır. Otomatik başlangıca bağlanmaz; admin'in sonraki edit/delete işlemleri tekrar seed ile ezilmez. Diğer koleksiyon/hesap/medya değiştirilmez, kimlik dizileri resetlenmez.
+- Müşteri dekor talebi tasarım brief'inde dar istisna olarak kaydedilir: tek mat arka kemer/ince kontur, glow/orbit/slogan değil. Mobilde metin/figure katmanı ve hidden image korunur; CSS dekor pointer almaz ve veri/uzmanlık iddiası taşımaz. Kayıt sayısına özel grid responsive kuralları ayrı test edilir.
+- İlk katalog smoke mevcut yayın içeriği için sıkı karşılaştırmadır; admin sonra düzenlerse bu test kodu içeriği geri yazmaz. HTTP/DOM/CSS testi gerçek ekran QA yerine geçirilmez. İçerik/çeviri klinik sahibinin nihai gözden geçirmesine açık tutulur.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

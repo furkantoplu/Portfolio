@@ -32,6 +32,15 @@ test('Blog counts and responsive widths preserve readable cards and full images'
   assert.equal(properties('.site-shell .content-card-image img')['object-fit'],'contain');
   assert.equal(properties('.site-shell .article-cover img')['object-fit'],'contain');
 });
+test('Owner-requested portrait arch stays behind the subject, within mobile bounds, without glow or overlay cards',()=>{
+  const stage=properties('.site-shell .hero__visual::before');
+  assert.equal(stage.content,'""');assert.equal(stage['pointer-events'],'none');assert.equal(stage['z-index'],'0');assert.equal(stage.background,'#e2ebde');
+  assert.equal(properties('.site-shell .hero__visual::before','(max-width: 860px)')['outline-offset'],'8px');
+  assert.equal(properties('.site-shell .hero__character','(max-width: 860px)')['z-index'],'0');
+  assert.equal(properties('.site-shell .practice-grid.practice-grid--six')['grid-template-columns'],'repeat(3, minmax(0, 1fr))');
+  assert.equal(properties('.site-shell .practice-grid.practice-grid--six','(max-width: 860px)')['grid-template-columns'],'repeat(2, minmax(0, 1fr))');
+  assert.equal(properties('.site-shell .practice-grid.practice-grid--six','(max-width: 560px)')['grid-template-columns'],'minmax(0, 1fr)');
+});
 test('Practitioner-first hero has a working contact CTA and no dummy decoration or random featured card',async()=>{
   const source=await readFile(new URL('../../frontend/app/page.tsx',import.meta.url),'utf8');
   assert.ok(source.includes('hero__identity'));assert.ok(source.includes('href={localHref("/iletisim")}>{t("Randevu bilgisi alın")}'));

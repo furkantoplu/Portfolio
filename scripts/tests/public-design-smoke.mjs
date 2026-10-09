@@ -8,6 +8,7 @@ for(const [language,path,contact] of [['tr','/','/iletisim'],['en','/en','/en/co
   const styles=[...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g)].map(match=>match[1]);assert.ok(styles.length);
   let css='';for(const href of styles){const url=new URL(href,base);assert.equal(url.origin,new URL(base).origin);const sheet=await fetch(url);assert.equal(sheet.status,200);css+=await sheet.text()}
   assert.ok(css.includes('--public-paper'));assert.ok(css.includes('.site-shell .hero__identity'));
+  assert.match(css,/\.hero__visual::?before/);
   const aboutImage=html.match(/class="about-section__image"[^>]*>\s*(<img\b[^>]*>)/)?.[1];
   if(aboutImage){assert.ok(aboutImage.includes('object-fit:contain'),path);assert.ok(!aboutImage.includes('object-fit:cover'),path);}
   console.log(`PASS ${language}: practitioner, contact CTA, real public stylesheet, no retired effects`);

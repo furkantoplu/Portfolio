@@ -97,6 +97,10 @@ $env:HTTP_PORT=8081
 docker compose up -d
 ```
 
+## Güncel çalışma alanı içeriği
+
+10 Ekim 2026 kullanıcı hizmet teyidine göre altı alan TR/EN/DE ve fotoğrafsız olarak eklendi. Başlık eşlemesi, kapsam ve manuel/tek seferlik import davranışı [içerik notunda](docs/calisma-alanlari-icerik.md). Normal açılış eski/silinmiş alanları geri getirmez; sonraki düzenlemeler admin'den yapılır. `node scripts/tests/practice-catalogue-smoke.mjs` yeni kataloğun ilk yayın kontrolüdür; admin'in sonraki değişikliklerini otomatik geri yazmaz. Ana portre arkasındaki tek mat kemer/ince kontur müşteri revizyonudur; mobil metin akışı, fade ve gizleme davranışı korunur.
+
 ## Hakkımda portresinin boyutlandırılması
 
 Hakkımda sayfası portresi ve ana sayfadaki Hakkımda bölüm fotoğrafı `fill` görselde açık `style={{ objectFit: "contain" }}` kullanır. Vinext shim'in varsayılan inline `cover` stili stylesheet'teki contain kuralını ezdiğinden yalnız CSS kontrolü yeterli değildir. Fotoğraf/admin yüklemesi ve üstteki 3D karakter değişmez; gerçek shim renderer testi `node --test scripts/tests/about-image.test.mjs`, üç dil HTTP kontrolü `node scripts/tests/public-design-smoke.mjs` ile yapılır.

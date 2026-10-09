@@ -132,7 +132,7 @@ export default async function Home() {
           <p>{content.practice_intro}</p>
         </div>
 
-        <div className="practice-grid">
+        <div className={`practice-grid${practiceAreas.length === 6 ? " practice-grid--six" : ""}`}>
           {practiceAreas.length === 0 && <p>{t("Bu dilde çalışma alanları yakında eklenecek.")}</p>}
           {practiceAreas.map(({ title, summary, slug, image_path, image_alt, section_visibility }, index) => {
             const Icon = practiceIcons[index % practiceIcons.length];

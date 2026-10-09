@@ -10,6 +10,7 @@ Kişisel fizyoterapist portföyü. Ziyaretçi uzmanı tanır, çalışma alanlar
 - Büyük birinci başlıklar Georgia; bölüm/kart başlıkları mevcut sans ailesi. Uzun TR/EN/DE metin için doğal akış ve satır kırılması korunur. Haricî font indirmesi yoktur.
 - Eşit kartlar sadece katalog/yazı keşfi için. Bio ve süreç çizgi/kolon akışı kullanır. Her bölüme ayrı yüzen kutu, bento veya sahte rozet eklenmez.
 - Radius 3–6 px. Mat yüzeyler; dekoratif halo/orbit, glass blur, şekil zinciri ve ağır gölge yok. Yeşil vurgu esas olarak çalışma alanları, iletişim aksiyonları ve footer'dadır.
+- 10 Ekim müşteri revizyonu: ana portre çevresinde yalnız tek mat adaçayı kemer ve ince kontur kullanılabilir. Parıltı/orbit/yüzen slogan kartı geri gelmez; sahne fotoğrafın arkasında ve mobilde kendi alanında kalır. Alt fotoğraf fade'i korunur.
 - Fotoğraf içerikten bağımsız bir uzman iddiası üretmez. Hakkımda'nın varsayılanı Furkan'ın mevcut portresidir; admin'in özel uploadları korunur. Başka kişi uzmanı temsil eden varsayılan görsel olarak kullanılmaz.
 - Kırpma yerine contain ve nötr zemin tercih edilir. Caption fotoğraf üzerinde değil, altında akışta bulunur. Ana portredeki alt fade ve hafif masaüstü derinlik korunur.
 
