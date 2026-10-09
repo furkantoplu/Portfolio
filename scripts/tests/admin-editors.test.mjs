@@ -63,8 +63,10 @@ test("Self account form has credential confirmations and no other-user selector"
   for (const label of ["Giriş e-posta adresi", "Yeni parola", "Mevcut parola ile onaylayın", "Authenticator doğrulama kodu"]) assert.ok(module.exports.account.includes(label));
   assert.ok(!module.exports.account.includes("<select"));
 });
-test("Language selector is last in the header, after appointment and mobile menu", () => {
+test("Desktop language follows appointment; mobile menu is last in DOM", () => {
   const html = module.exports.header;
   assert.ok(html.indexOf('class="header-cta"') < html.indexOf('class="language-dropdown"'));
-  assert.ok(html.indexOf('class="mobile-menu"') < html.indexOf('class="language-dropdown"'));
+  assert.ok(html.indexOf('class="language-dropdown"') < html.indexOf('class="mobile-menu"'));
+  assert.ok(html.includes('class="language-code" aria-hidden="true">TR</span>'));
+  assert.ok(html.includes('aria-label="Dil seçimi: Türkçe"'));
 });

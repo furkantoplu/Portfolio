@@ -397,6 +397,13 @@ docker compose down
 - Test gerçek dosya silmeyi yalnız yeni oluşturduğu yapay PNG/orijinal/varyantlar üzerinde yapar. Gerçek kullanıcı dosyaları ve hesaplar test için değiştirilmez; işlem sonunda kesin ID'lerle test verisi temizlenir.
 - Fiziksel storage ve DB atomik değildir: retired_at storage'dan önce ayrı transaction'da persist edilir. Kısmi silme hatasında metadata rollback olurken işaret kalır, yeni referans reddedilir ve grace beklemeden retry yapılır. DB satırı yeniden var diye fiziksel olarak hasarlı dosya tekrar yayına bağlanamaz.
 
+### Karar 046 — Mobilde portre akışta, menü sağda
+
+- Masaüstü yüksek z-index/perspective/scale mobilde aynı biçimde uygulanmaz. Mobil portre own stacking context/relative aspect-ratio ile normal akıştadır; metin ve konum kartlarını örtmez. Dekorlar mobilde azaltılır, alt fade korunur.
+- Navbar DOM sırası dil → mobil menü olmalıdır. Tam dil adı desktop/aria'da, TR/EN/DE görsel kısaltması mobilde kullanılır. Menü/dil popover birlikte açık kalmaz. Minimum 44 px kontrol ölçüsü korunur.
+- Kaldırılan bölümün public render/editör/config/CSS'i birlikte kaldırılır; eski görünürlük haritası kaydetmeyi bozmamalıdır. Veri kaybı gerektirmeyen pasif eski CMS alanları için geniş silme migrasyonu yapılmaz.
+- Kullanıcı limit nedeniyle küçük paket istediğinde bağımsız istekler sıraya yazılır ve hangi paket yapıldığı açıkça teslim edilir. CSS sözleşme testi gerçek mobil ekran ölçümü yerine geçmez; tam dinlenemeyen video dinlenmiş gibi sunulmaz.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

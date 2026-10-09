@@ -17,5 +17,9 @@ for (const [method, path, status] of cases) {
 }
 const html = await (await fetch(base + "/iletisim")).text();
 assert.ok(html.indexOf('class="header-cta"') < html.indexOf('class="language-dropdown"'));
-assert.ok(html.indexOf('class="mobile-menu"') < html.indexOf('class="language-dropdown"'));
-console.log("PASS header language selector is last");
+assert.ok(html.indexOf('class="language-dropdown"') < html.indexOf('class="mobile-menu"'));
+console.log("PASS header mobile menu is last; desktop language follows appointment");
+const homeHtml=await (await fetch(base+'/')).text();
+assert.ok(!homeHtml.includes('class="hero__note"'));
+assert.ok(homeHtml.includes('class="language-code" aria-hidden="true">TR</span>'));
+console.log('PASS retired portrait note absent; mobile language abbreviation rendered');

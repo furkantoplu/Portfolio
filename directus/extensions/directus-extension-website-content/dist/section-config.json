@@ -16,11 +16,6 @@
       "field": "fact_1"
     },
     {
-      "key": "note",
-      "label": "Görsel yanı not",
-      "field": "hero_note_title"
-    },
-    {
       "key": "location",
       "label": "Konum bilgisi",
       "field": "location"

@@ -9,8 +9,6 @@
       {"key":"hero_description","label":"Ana açıklama","default":"İhtiyaçlarınızı dinleyen, hareket kapasitenizi destekleyen ve süreci sizinle birlikte şekillendiren bilimsel bir yaklaşım."},
       {"key":"hero_image","label":"Ana görsel / 3D karakter","default":"/furkan-toplu-hero-white-coat-v1.png","type":"image"},
       {"key":"hero_image_alt","label":"Ana görsel açıklaması","default":"Beyaz önlüğüyle kollarını bağlayan Fizyoterapist Furkan Toplu"},
-      {"key":"hero_note_title","label":"Görsel yanındaki başlık","default":"Her hareket bir başlangıçtır."},
-      {"key":"hero_note_text","label":"Görsel yanındaki metin","default":"Sizin için doğru olan yerden başlayalım."},
       {"key":"location","label":"Şehir","default":"İstanbul"},
       {"key":"location_note","label":"Görüşme biçimi","default":"Yüz yüze görüşme"},
       {"key":"fact_1","label":"Kısa bilgi 1","default":"Kişiye özel değerlendirme"},

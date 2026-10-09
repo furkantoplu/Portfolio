@@ -167,6 +167,8 @@ Kontrol: `node --test scripts/tests/section-visibility.test.mjs`. Bu test gerçe
 
 ## Frontend geliştirme komutları
 
+Mobilde (860 px ve altı) ana portre normal akışta, kendine ait stacking context içinde gösterilir; masaüstü translate3d/scale/perspective efektleri metin veya konum bilgilerini örtmez. Konum kartı portreden önce akar; dekoratif halkalar/parıltı mobilde kapalıdır. Dil düğmesi/seçenekleri TR/EN/DE gösterir, erişilebilir tam dil isimleri korunur. Menü düğmesi DOM ve görsel sırada en sağdadır; masaüstünde menü gizli olduğu için dil yine randevu düğmesinin sağında kalır. Portre yanındaki “Her hareket bir başlangıçtır” kutusu public ve editörden kaldırıldı. Kontrol: `node --test scripts/tests/mobile-header-hero.test.mjs`; gerçek ekran/piksel ölçümü değildir.
+
 ```powershell
 cd frontend
 npm run dev

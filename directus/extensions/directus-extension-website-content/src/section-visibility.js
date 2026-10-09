@@ -2,6 +2,8 @@ import definitions from "./section-config.json" with { type: "json" };
 export function visibilityScope(collection, pageKey) { return collection === "site_pages" ? pageKey : collection; }
 export function validateVisibility(scope, value) {
   if (!Object.hasOwn(definitions, scope) || !value || typeof value !== "object" || Array.isArray(value)) throw new Error("Bölüm görünürlüğü geçersiz.");
+  // The homepage portrait note was retired; older saved maps must still save.
+  if (scope === "home") { const { note: retiredNote, ...current } = value; value = current; }
   const allowed = new Set(definitions[scope].map(section => section.key));
   for (const [key, flag] of Object.entries(value)) if (!allowed.has(key) || typeof flag !== "boolean") throw new Error("Görünürlük yalnızca tanımlı bölümler için açık/kapalı olabilir.");
   return { ...value };

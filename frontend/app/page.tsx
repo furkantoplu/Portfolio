@@ -116,14 +116,6 @@ export default async function Home() {
             <span className="hero__portrait-floor" aria-hidden="true" />
           </div>
 
-          {show("note") && (<div className="hero__note">
-            <span className="hero__note-icon" aria-hidden="true">✦</span>
-            <p>
-              <strong>{content.hero_note_title}</strong>
-              <span>{content.hero_note_text}</span>
-            </p>
-          </div>) }
-
           {show("location") && (<div className="hero__location">
             <span>{content.location}</span>
             <strong>{content.location_note}</strong>

@@ -247,6 +247,12 @@ Mevcut iki gerçek upload toplam 1.923.046 bayt ve hâlâ kullanılıyor; korunm
 
 Silme iki aşamalıdır: kilit/kullanım kontrolü sonrası retired_at işareti DB'ye commit edilir, ardından dosya/metadata silinir. Kısmi fiziksel silme hatasında DB geri alınsa bile işaret korunur, eski dosyanın yeniden bir içeriğe bağlanması reddedilir. Böylece tekrar deneme sırasında hasarlı/kayıp fotoğrafı kullanan yeni sayfa oluşmaz; işaretli dosya grace süresini beklemeden temizlenir.
 
+## Mobil hero ve navbar — 9 Ekim 2026, Paket 42
+
+860 px altında portre absolute/translate3d büyütmeli masaüstü katmanından çıkarıldı: relative aspect-ratio kutusu, isolation ve normal akış kullanılır. Mobilde gölge hafif, dekoratif halo/orbit/floor kapalıdır; konum kartı fotoğraftan önce akışa girer. Masaüstü portre yapısı korunur. Dil görünümü TR/EN/DE, erişilebilir isimler tamdır; gerçek DOM sırası randevu → dil → menü olup mobil menü en sağdadır. Portre not kutusu public/editör/CSS tanımlarından kaldırıldı; eski home.note görünürlük bayrağı çeviri kaydını bozmadan yok sayılır. Eski CMS metin alanları veri silme migrasyonu olmadan pasif kalır.
+
+Kullanıcının limit isteğine göre yalnız bu ilk paket yapıldı. Sonraki paketler: footer sosyal/diğer bağlantılarının admin yönetimi; genel bilgilendirme metinlerini ve kalan dekorları kapsamıyla ele alma; YouTube videosunun konuşma/altyazısına yeniden erişip tasarım sürecini buna göre değerlendirme. Bu turda video izlenmiş/dinlenmiş gibi raporlanmaz. Mobil son görünüm için gerçek ekran doğrulaması henüz yapılmadı; CSS/SSR sözleşme testleri ve production derleme kontrolü kullanıldı.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.
