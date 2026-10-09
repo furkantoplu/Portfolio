@@ -434,6 +434,16 @@ docker compose down
 - Linux kullanıcısı, hizmet etiketi, sağlayıcı hesabı ve anahtar parolası karıştırılmaz. Ubuntu/sudo kullanılabilirken doğrudan root girişini açmak erişim çözümü değildir. Çalışan anahtar ve KVM kurtarma yolu doğrulanmadan erişim kapatılmaz.
 - Erişim kontrolü tamamlanması yayın tamamlanması değildir. Docker kurulumu, DB/upload aktarımı, gerçek domain/HTTPS, IPv4/IPv6/port sınırları ve yedek/restore ayrı doğrulanır; yapılmayan iş tamam diye not edilmez.
 
+### Karar 051 — Host hazırlığı uygulama ve DNS yayını değildir
+
+- Kullanıcının sunucu → site/veri → domain/Cloudflare sırası korunur. Fresh-server bootstrap yanlış OS/mimari, eksik test edilmiş key veya çalışan container durumunda durur. Uygulama/DB/DNS hiçbir host setup komutunun yan etkisi değildir.
+- Uzun apt işi systemd altında bağımsız çalışır; bekleme transport'u kesilirse unit/journal kontrol edilmeden başarısız diye tekrar başlatılmaz. dpkg lock silinmez, otomatik update kesilmez. Config yedeklenir, paket conffile korunur, phased rollout zorlanmaz. Gelecek başlatıcı --no-block kullanır.
+- Password SSH ve root SSH kapatma yalnız anahtar/KVM doğrulandıktan sonra yapılır. Console parolası korunur, ortak client config ve diğer sunucu anahtarları silinmez. Docker yönetimi sudo ile kalır; Docker TCP API veya yeni grup üyeliği açılmaz.
+- UFW tek başına Docker yayımlanan port güvenliği değildir. Supported iptables/DOCKER-USER + kendi zinciri, conntrack original port ve WAN-interface seçimi kullanılır. Docker'ın zincirleri flush edilmez; runtime restart/boot ve dış negative-port testleri gereklidir. IPv6 yalnız config var diye dış ağdan geçti sayılmaz.
+- Disk için container/journal rotasyonu ve emergency swap tanımlanır; bu tüm disk/DB/upload limit garantisi değildir. Keyfi prune/volume wipe/otomatik reboot yok. Periyodik app backup/restore ve retention, gerçek veri taşındıktan sonra ayrı kurulmalıdır.
+- Geçici ağ fixture'ı düşük kaynaklı, no volumes ve açıkça production olmayan yapıdadır. Test sonrası yalnız fixture container/ağı/imajları kaldırılır. Plaintext TCP443 testi TLS onayı değildir; gerçek SSL ve admin HTTPS kabul testi domain aşamasına kalır. TLS öncesi admin giriş testi özel SSH tüneliyle yapılır.
+- Server setup dosyaları Linux LF ile version-control edilir; `.env`/private key/parolalar tutulmaz. Yapılan kontroller ve henüz yapılmayan app/DNS adımları aynı teslim notunda ayrılır.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

@@ -2,6 +2,10 @@
 
 Fizyoterapist portföyü ve blogu için geliştirilen React/TypeScript tabanlı web sitesi. Frontend, Directus içerik yönetimi ve PostgreSQL veritabanı aynı Docker Compose mimarisinde çalışır.
 
+## VPS hazırlığı ve yayın sırası
+
+Erişim, kurulum durumu ve taşıma/yayın kontrol listesi [deploy/VPS-KURULUM.md](deploy/VPS-KURULUM.md) içindedir. `deploy/vps` altındaki gözden geçirilmiş hazırlık dosyaları yalnız boş Ubuntu 26.04 amd64 sunucuyu hedefler; çalışan container varsa durur. Bu aşama siteyi veya verileri taşımaz ve DNS'i değiştirmez. Sıra: sunucu hazırlığı → PostgreSQL/fotoğraf/site aktarımı → Namecheap/Cloudflare/domain/HTTPS. Yerel `.env` ve özel SSH anahtarları Git'e alınmaz.
+
 ## Docker ile çalıştırma
 
 Docker Desktop açıkken proje kökünde:

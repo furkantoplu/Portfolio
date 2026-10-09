@@ -1,0 +1,2 @@
+# Linux provisioning assets must stay usable after Windows checkouts.
+deploy/vps/* text eol=lf

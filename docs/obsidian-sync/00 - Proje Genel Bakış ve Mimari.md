@@ -8,8 +8,10 @@ Furkan Toplu için güven veren, sade ve içerik odaklı bir fizyoterapist portf
 
 - Kullanıcı OVHcloud Ubuntu 26.04 VPS ve Namecheap üzerinden `furkantoplu.com` domainini aldı. Sunucu IPv4 adresi `149.56.103.60`, Linux kullanıcı adı `ubuntu`; `furkofizyo` yalnız hizmet etiketidir.
 - Sunucuya özel parolalı ED25519 anahtarı kullanıcı tarafından yerelde oluşturuldu; açık anahtar sunucuya eklendi, özel anahtar bilgisayarda kaldı. SSH agent üzerinden Codex'in anahtarlı girişi ve etkileşimsiz sudo erişimi doğrulandı. Mevcut diğer sunucu anahtarları/SSH ayarları değiştirilmedi.
-- KVM'den alınan host parmak izi yerel kayıt ve gerçek SSH el sıkışmasıyla karşılaştırıldı. Sunucuda Git var, Docker henüz yok; yaklaşık 36 GB boş disk ve 3.7 GiB RAM görüldü. Dışarıya açık dinleyici yalnız SSH 22 idi.
-- Site, veritabanı ve fotoğraflar henüz VPS'ye taşınmadı. DNS, Cloudflare, firewall, TLS ve güncelleme ayarları değiştirilmedi. Sonraki kurulum sırası ve erişim ayrıntıları `deploy/VPS-KURULUM.md` içinde; sırlar ve özel anahtarlar notlara/Git'e alınmaz.
+- KVM'den alınan host parmak izi yerel kayıt ve gerçek SSH el sıkışmasıyla karşılaştırıldı. İlk kontrolde Git vardı, Docker yoktu; yaklaşık 36 GB boş disk ve 3.7 GiB RAM görüldü. Sonraki hazırlıkta uygulanabilir Ubuntu güncellemeleri, Docker Engine 29.9.0 / Compose v5.6.0, UFW IPv4/IPv6 ve Docker WAN port filtresi kuruldu. Yeni 7.0.0-38 çekirdeğiyle reboot/SSH ve Docker restart sonrası kurallar test edildi.
+- SSH anahtar-only/root SSH kapalı; 2 GiB swap, container logları 10m × 3/sıkıştırmalı, journal 150M/50M/14 gün. Ubuntu güvenlik güncelleme timer'ları aktif, otomatik reboot kapalı. Yaklaşık 33 GB boş disk var. Boş `/opt/furkantoplu` uygulama dizini ve root erişimli config yedek dizini hazır; gerçek uygulama yedek sistemi henüz yok.
+- Geçici Compose fixture'ında dış TCP 80/443 çalıştı, 8080/8055 kapalı kaldı; test container/ağ/imajları kaldırıldı. 443 yalnız plaintext port testiydi, TLS değil. IPv6 dış testine bu bilgisayarda rota olmadığı için onay verilmedi; ilk yayın IPv4 üzerinden hazırlanacak. 75 regresyon testi geçti.
+- Site, veritabanı ve fotoğraflar henüz VPS'ye taşınmadı. DNS, Cloudflare ve TLS değiştirilmedi. Kullanıcı sırası sunucu → site/veri → domain/Cloudflare; sonraki kurulum ve ayrıntılar `deploy/VPS-KURULUM.md` içinde. Sırlar/özel anahtarlar notlara/Git'e alınmaz. Ubuntu'nun phased rollout nedeniyle tuttuğu beş paket zorlanmadı.
 
 ## Geliştirme yaklaşımı
 
