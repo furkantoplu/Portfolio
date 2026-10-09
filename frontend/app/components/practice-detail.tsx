@@ -10,6 +10,7 @@ import {
   Route,
 } from "lucide-react";
 import { SiteHeader } from "./site-header";
+import { SiteFooter } from "./site-footer";
 import type { Locale } from "../lib/i18n";
 
 type ProcessStep = {
@@ -184,10 +185,7 @@ export async function PracticeDetail({
         </a>
       </section>) }
 
-      <footer className="detail-footer">
-        <p>{t("© 2026 Fzt. Furkan Toplu")}</p>
-        <a href={localHref("/")}>{t("Ana sayfaya dön")}</a>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

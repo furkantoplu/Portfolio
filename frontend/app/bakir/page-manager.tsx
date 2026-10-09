@@ -16,7 +16,7 @@ const pageLabels: Record<PageKey, string> = { home: "Ana sayfa", about: "Hakkım
 
 export type ManagedSitePage = {
   id: number;
-  page_key: PageKey;
+  page_key: PageKey | "footer";
   content: Record<string, unknown>;
   seo_title: string | null;
   seo_description: string | null;

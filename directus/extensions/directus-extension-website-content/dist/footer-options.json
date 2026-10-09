@@ -1,0 +1,19 @@
+{
+  "socials": [
+    {"key":"instagram","label":"Instagram","mark":"@"},
+    {"key":"facebook","label":"Facebook","mark":"f"},
+    {"key":"linkedin","label":"LinkedIn","mark":"in"},
+    {"key":"youtube","label":"YouTube","mark":"▶"},
+    {"key":"x","label":"X","mark":"X"},
+    {"key":"tiktok","label":"TikTok","mark":"♪"},
+    {"key":"website","label":"Web sitesi","mark":"↗"}
+  ],
+  "menu": [
+    {"key":"about","label":"Hakkımda"},
+    {"key":"areas","label":"Çalışma Alanları"},
+    {"key":"blog","label":"Blog"},
+    {"key":"contact","label":"İletişim"},
+    {"key":"kvkk","label":"KVKK Aydınlatma Metni"},
+    {"key":"privacy","label":"Gizlilik"}
+  ]
+}

@@ -253,6 +253,14 @@ Silme iki aşamalıdır: kilit/kullanım kontrolü sonrası retired_at işareti 
 
 Kullanıcının limit isteğine göre yalnız bu ilk paket yapıldı. Sonraki paketler: footer sosyal/diğer bağlantılarının admin yönetimi; genel bilgilendirme metinlerini ve kalan dekorları kapsamıyla ele alma; YouTube videosunun konuşma/altyazısına yeniden erişip tasarım sürecini buna göre değerlendirme. Bu turda video izlenmiş/dinlenmiş gibi raporlanmaz. Mobil son görünüm için gerçek ekran doğrulaması henüz yapılmadı; CSS/SSR sözleşme testleri ve production derleme kontrolü kullanıldı.
 
+## Ortak footer yönetimi — 9 Ekim 2026, Paket 43
+
+Admin sidebar'da Footer ekranı vardır. Yedi sosyal/dış hesap HTTPS URL'si ve görünürlüğü, dört site menüsü ile KVKK/Gizlilik footer linklerinin görünürlüğü tek ortak ayarla yönetilir. Boş link gösterilmez; Instagram için eski # placeholder kaldırılmıştır. Menü hedefleri sabit/dile göre eşlenir, link gizlemek sayfayı silmez. Ayar Türkçe admin'den TR/EN/DE ortak uygulanır; ayrı çeviri gerekmez.
+
+`site_pages.page_key=footer` content JSON'u social/menu haritalarını tutar. 009 migrasyonu yalnız eksik kaydı ekler; diğer sayfa verilerini ve sonradan düzenlenmiş footer'ı ezmez. Yetkili native items PATCH kaydı günceller; public GET website-content/footer yalnız normalize edilmiş ayar döndürür. Formda URL doğrulama ve public sınırda güvenli URL filtreleme vardır. Credentials/protocol-relative/javascript/data/http/uzun adres gösterilmez; sunucu uzaktaki URL'ye fetch yapmaz. Dış link yeni sekmede noopener/noreferrer kullanır.
+
+Çalışma alanı detayındaki küçük özel footer ortak SiteFooter ile değiştirildi; ayar bütün sayfalara yansır. Birden çok link responsive flex wrap kullanır, mobilde ayrı tam genişlik satırıdır. Footer API geçici çalışmazsa güvenli varsayılanlar 404 sayfasının sırf bu nedenle bozulmasını önler. 60 otomatik test, TypeScript/ESLint ve Docker build geçti; canlı anonim items write 403, public footer/dil sayfaları kontrol edilir. Gerçek admin hesabıyla form submit/screenshot QA yapılmadı; yapay render testleri kullanıldı. Bilgilendirme cümleleri, video konuşması ve kalan dekorlar sonraki pakettir.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

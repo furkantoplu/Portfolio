@@ -404,6 +404,14 @@ docker compose down
 - Kaldırılan bölümün public render/editör/config/CSS'i birlikte kaldırılır; eski görünürlük haritası kaydetmeyi bozmamalıdır. Veri kaybı gerektirmeyen pasif eski CMS alanları için geniş silme migrasyonu yapılmaz.
 - Kullanıcı limit nedeniyle küçük paket istediğinde bağımsız istekler sıraya yazılır ve hangi paket yapıldığı açıkça teslim edilir. CSS sözleşme testi gerçek mobil ekran ölçümü yerine geçmez; tam dinlenemeyen video dinlenmiş gibi sunulmaz.
 
+### Karar 047 — Footer ayarı tüm dillerde ortak, bağlantılar güvenli
+
+- Footer kendi site_pages kaydı ve sidebar editöründe yönetilir; ayrı dil sürümleri yoktur. İç menü hedefleri mevcut localizeHref rotalarıdır, URL yeniden adlandırma ayarı değildir. Sosyal hesap URL/visibility ve menü visibility birlikte kaydedilir.
+- Boş/gizli bağlantı # placeholder üretmez. Kullanıcı verisi HTML olarak basılmaz; yalnız bilinen HTTPS URL'leri gösterilir, credentials ve diğer protokoller elenir. Dış URL fetch edilmez; target blank noopener/noreferrer kullanılır.
+- Public endpoint sadece normalize edilmiş link/boolean bilgisini verir. Yazım mevcut native items auth/policy üzerindedir. Raw teknik CMS yazımı frontend form kontrolünü bypass edebilir; public filtre bu durumda da unsafe href göstermez.
+- Tek SiteFooter bütün sayfalarda uygulanır; 404 dahil footer veri hatası güvenli fallback alır. Çoklu linkler mobilde sarılır. Yasal link görünürlüğü belgeyi silmek veya içeriğin gerekliliği hakkında karar değildir.
+- Yeni config migrasyonu mevcut düzenlemeyi ezmez. Gerçek sosyal adres bilinmeden demo hesap uydurulmaz. Form/renderer testleri gerçek admin submit veya screenshot QA yerine geçmiş gibi anlatılmaz.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

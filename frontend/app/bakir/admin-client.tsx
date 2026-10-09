@@ -10,6 +10,7 @@ import {
   FileText,
   KeyRound,
   LayoutDashboard,
+  Link2,
   LoaderCircle,
   LogOut,
   ShieldCheck,
@@ -24,6 +25,7 @@ import { directusRequest, type ContentItem } from "./admin-api";
 import { BlogManager, type ManagedBlogPost } from "./blog-manager";
 import { PracticeManager, type ManagedPracticeArea } from "./practice-manager";
 import { PageManager, type ManagedSitePage } from "./page-manager";
+import { FooterManager } from "./footer-manager";
 import { AuthenticatorQr } from "./authenticator-qr";
 import { createAuthenticatorQr } from "./authenticator-qr-code";
 import { AccountSettings, type AccountProfile } from "./account-settings";
@@ -41,7 +43,7 @@ type AdminUser = {
 };
 
 type AdminMember = Omit<AdminUser, "is_admin">;
-type AdminView = "overview" | "blog" | "practices" | "pages" | "team" | "security" | "account";
+type AdminView = "overview" | "blog" | "practices" | "pages" | "footer" | "team" | "security" | "account";
 
 type ContentSummary = {
   blog: ManagedBlogPost[];
@@ -319,6 +321,7 @@ export function BakirAdmin() {
     { id: "blog", label: "Blog yazıları", icon: BookOpenText },
     { id: "practices", label: "Çalışma alanları", icon: Stethoscope },
     { id: "pages", label: "Sayfa içerikleri", icon: FileText },
+    { id: "footer", label: "Footer", icon: Link2 },
     { id: "team", label: "Yöneticiler", icon: Users, adminOnly: true },
     { id: "security", label: "Hesap güvenliği", icon: ShieldCheck },
     { id: "account", label: "Hesabım", icon: UserRound },
@@ -392,6 +395,7 @@ export function BakirAdmin() {
           {activeView === "practices" && <PracticeManager areas={summary?.practices ?? []} onChanged={loadDashboard} />}
 
           {activeView === "pages" && <PageManager pages={summary?.pages ?? []} onChanged={loadDashboard} />}
+          {activeView === "footer" && <FooterManager key={summary?.pages.find(page=>page.page_key==="footer")?.id} page={summary?.pages.find(page=>page.page_key==="footer")} onChanged={loadDashboard} />}
           {activeView === "account" && user && <AccountSettings key={user.id} user={user} onSaved={async (profile: AccountProfile, credentialsChanged) => {
             if (userIdRef.current !== profile.id) return;
             if (credentialsChanged) { await handleLogout(); setEmail(profile.email); setActiveView("overview"); setMessage("Giriş bilgileriniz güncellendi. Yeni e-posta ve parolanızla tekrar giriş yapın."); }

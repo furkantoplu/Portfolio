@@ -8,6 +8,7 @@ const cases = [
   ["PATCH", "/website-content/account-settings", 401], ["POST", "/website-content/admin-team", 401],
   ["POST", "/website-content/media-discard/12345678-1234-4234-8234-123456789abc", 401],
   ["DELETE", "/files/12345678-1234-4234-8234-123456789abc", 403],
+  ["PATCH", "/items/site_pages/999999999", 403],
   ["POST", "/users/me/tfa/generate", 401], ["POST", "/users/me/tfa/enable", 401],
 ];
 for (const [method, path, status] of cases) {

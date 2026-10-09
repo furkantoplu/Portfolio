@@ -1,6 +1,7 @@
 import { language, translateItems, translatePage, registerTranslations } from "./translations.js";
 import { registerMedia } from "./media.js";
 import { registerMediaCleanup } from "./media-cleanup.js";
+import { readFooterSettings } from "./footer.js";
 import { resolvePracticeUrl } from "./practice-urls.js";
 import { registerAccountSettings } from "./account-settings.js";
 
@@ -206,6 +207,11 @@ export default {
       } catch (error) {
         next(error);
       }
+    });
+
+    router.get("/footer", async (_request, response, next) => {
+      try { const page=await sitePage(database,"footer"); response.set("Cache-Control","no-store").json({data:readFooterSettings(page?.content)}); }
+      catch(error){next(error);}
     });
 
     router.get("/pages/:pageKey", async (request, response, next) => {

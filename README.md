@@ -153,6 +153,14 @@ Yüklenen public görseller için `node scripts/tests/media-smoke.mjs`: yayında
 
 ## Bölüm görünürlüğü
 
+### Footer bağlantıları
+
+Admin sidebar → **Footer**: Instagram, Facebook, LinkedIn, YouTube, X, TikTok ve ek web sitesi için HTTPS adresi girin; yanındaki Görünür/Gizli anahtarını kullanıp **Footer’ı kaydet** düğmesine basın. Boş adres gösterilmez; örnek `#` Instagram bağlantısı kaldırıldı. Site içi footer menüsü ve KVKK/Gizlilik bağlantılarının görünürlüğü de buradan ayarlanır; bu seçim sayfaların kendisini silmez. Site içi hedefler sabittir ve dile göre eşleşir; bu panel sayfa URL'sini yeniden adlandırmaz.
+
+Ayarlar tüm dillerde ortak, admin Türkçedir. `site_pages` içindeki `footer` kaydının `content` JSON'una yazılır; `009-footer-settings.sql` kaydı mevcut değerleri ezmeden ekler. Genel `/items/site_pages/:id` yetkili PATCH yolu kullanılır; yeni anonim yazım izni açılmadı. Public `/website-content/footer` yalnız normalize edilmiş bağlantı/görünürlük bilgisini verir. URL kontrolleri formda ve public render/read sınırında uygulanır; teknik Directus üzerinden geçersiz veri yazılırsa link gösterilmez. JavaScript/data/http adresleri, kullanıcı adı/parola içeren URL'ler ve 2048 karakter üzeri adresler kabul edilmez/gösterilmez. Dış bağlantılar yeni sekmede noopener/noreferrer ile açılır.
+
+Tüm sayfalar (çalışma alanı detayları dahil) ortak footer kullanır. Çoklu sosyal linkler mobilde satırlara sarılır; boş nav grupları render edilmez. Footer servisi geçici yoksa boş sosyal/default menüyle güvenli fallback kullanılır; 404 sayfası sadece footer isteği yüzünden bozulmaz. Kontrol: `node --test scripts/tests/footer-settings.test.mjs`. Genel bilgilendirme metinleri bu pakette değiştirilmedi.
+
 Ana sayfanın varsayılan karakteri beyaz önlüklü, belden yukarı şeffaf `furkan-toplu-hero-white-coat-v1.png` görselidir. Mevcut CSS perspective/katman/gölge ve alt fade efekti korunur; bu gerçek bir 3D model değil, şeffaf portreyle derinlik hissidir. Admin → Sayfa içerikleri → Ana sayfa → Ana görsel üzerinden değiştirilebilir. `007-white-coat-hero.sql` sadece eski paketlenmiş kırmızı tişört görselini değiştirir, özel yükleme/diğer içerik/görünürlüğü korur. Görsel üretim yöntemi ve tam istem `assets/hero-white-coat-prompt.md` içindedir. Kontroller: `node --test scripts/tests/hero-portrait.test.mjs` ve `node scripts/tests/hero-portrait-smoke.mjs`.
 
 Admin → Sayfa içerikleri / Çalışma alanları / Blog yazıları editörlerinde ilgili bölüm adının yanında **Görünür / Gizli** anahtarı vardır. Örneğin çalışma alanındaki **Sık sorulan sorular** anahtarını kapatıp alanı kaydedin: SSS başlığı ve cevapları public detayda görünmez. Yeniden açıp kaydettiğinizde aynı içerik geri gelir. İçerik/görsel silinmez; değişiklik Kaydet veya Çeviriyi kaydet ile uygulanır.

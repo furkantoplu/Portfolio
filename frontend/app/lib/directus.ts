@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import pageConfig from "./page-content-config.json";
 import { getTranslator } from "./i18n";
 import type { SectionVisibility } from "./section-visibility";
+import { readFooterSettings, type FooterSettings } from "./footer-links";
 export type SitePageKey = "home" | "about" | "contact" | "areas" | "blog";
 
 export type PracticeArea = {
@@ -106,6 +107,10 @@ export async function getPracticeArea(slug: string) {
 export function getBlogPosts(options: { homepage?: boolean; locale?: Locale } = {}) {
   const query = options.homepage ? "?homepage=true" : "";
   return fetchDirectus<BlogPost[]>(`/blog-posts${query}`, options.locale);
+}
+export async function getFooterSettings() {
+  try { return await fetchDirectus<FooterSettings>("/footer"); }
+  catch { return readFooterSettings({}); } // Footer must not turn a CMS outage into a broken 404 page.
 }
 
 export function getSitePage<T>(pageKey: SitePageKey, locale?: Locale) {
