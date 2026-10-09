@@ -7,6 +7,7 @@ import { ArrowUpRight, BookOpenText, Clock3 } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { getBlogPosts, getEditablePage } from "../lib/directus";
+import { archiveIntroText } from "../lib/public-copy";
 
 export async function generateMetadata(): Promise<Metadata> { const page = await getEditablePage("blog"); return { title: page.seo_title || "Blog sayfası | Fzt. Furkan Toplu", description: page.seo_description || undefined }; }
 
@@ -14,6 +15,7 @@ export default async function BlogPage() {
   const { locale, t, href: localHref } = await getPageTools();
   const posts = await getBlogPosts();
   const { content } = await getEditablePage("blog");
+  const archiveIntro=archiveIntroText(content.archive_intro);
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
   const featuredPost = show("featured") ? posts[0] : undefined;
   const otherPosts = featuredPost ? posts.slice(1) : posts;
@@ -65,7 +67,7 @@ export default async function BlogPage() {
         <section className="article-archive" aria-labelledby="archive-title">
           <div className="article-archive__heading">
             <div><p className="section-kicker">{t("Son Yazılar")}</p><h2 id="archive-title">{content.archive_title}</h2></div>
-            <p>{content.archive_intro}</p>
+            {archiveIntro&&<p>{archiveIntro}</p>}
           </div>
           <div className="article-archive__grid">
             {otherPosts.map((post, index) => (

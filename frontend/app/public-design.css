@@ -1,0 +1,221 @@
+/* Furkan Toplu — public visual system. Admin intentionally keeps its own styles. */
+.site-shell {
+  --public-paper: #f7f5f0;
+  --public-ink: #173e34;
+  --public-muted: #52665d;
+  --public-accent: #8b4a33;
+  --public-line: #d0d9ce;
+  --public-tone: #e9eee5;
+  --public-sans: "Avenir Next", Avenir, "Segoe UI", Arial, sans-serif;
+  --public-display: Georgia, "Times New Roman", serif;
+  color: var(--public-ink);
+  background: var(--public-paper);
+}
+.site-shell :is(h1, h2, h3, h4, p, strong, a) { overflow-wrap: anywhere; }
+.site-shell :is(section, article, nav, figure, .hero__content, .hero__visual, .about-section__content) { min-width: 0; }
+.site-shell :is(.practice-section, .about-section, .blog-section, .contact-section, .about-story, .about-principles, .detail-overview, .detail-process, .detail-faq, .detail-related, .detail-cta, .contact-flow) :is(h2, h3, h4) { font-family: var(--public-sans); font-weight: 600; letter-spacing: -0.035em; line-height: 1.18; }
+.site-shell :is(.practice-section, .about-section, .blog-section, .contact-section, .about-story, .about-principles, .detail-overview, .detail-process, .detail-faq, .detail-related, .detail-cta) h2 { font-size: clamp(30px, 3.45vw, 48px); }
+.site-shell :is(.practice-section, .about-section, .blog-section, .contact-section, .about-story, .about-principles, .detail-overview, .detail-faq, .detail-cta) h2 em { color: inherit; font-style: normal; font-weight: inherit; }
+.site-shell .section-kicker { color: var(--public-accent); font-size: 11px; letter-spacing: 0.1em; }
+.site-shell :is(.about-principles, .detail-cta, .contact-flow) .section-kicker { color: #e3c9ae; }
+.site-shell .site-header { background: var(--public-paper); box-shadow: none; backdrop-filter: none; border-bottom-color: var(--public-line); }
+.site-shell .desktop-nav { gap: 22px; }
+.site-shell .desktop-nav a { font-size: 13px; }
+.site-shell :is(.header-cta, .language-dropdown__trigger, .language-dropdown__options, .mobile-menu) { border-radius: 5px; box-shadow: none; }
+.site-shell .header-cta { background: var(--public-ink); }
+.site-shell .language-dropdown__options { border-color: var(--public-line); }
+.site-shell .primary-button { min-height: 52px; border-radius: 5px; box-shadow: none; background: var(--public-ink); color: #fffefa; font-size: 14px; }
+.site-shell .primary-button:hover { background: #245947; box-shadow: none; transform: translateY(-1px); }
+.site-shell .text-link { color: var(--public-ink); font-size: 14px; }
+.site-shell :is(a, button):focus-visible { outline: 2px solid var(--public-accent); outline-offset: 4px; }
+
+/* First screen: the practitioner and one clear contact action, not effect layers. */
+.site-shell .hero { width: min(100% - 64px, 1280px); grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); column-gap: 48px; min-height: min(760px, calc(100svh - 92px)); }
+.site-shell .hero__content { padding: 58px 0; }
+.site-shell .hero__identity { display: flex; flex-direction: column; gap: 8px; margin-bottom: 30px; }
+.site-shell .hero__identity strong { font-size: 16px; font-weight: 650; }
+.site-shell .hero__identity span { color: var(--public-muted); font-size: 12px; letter-spacing: 0.025em; }
+.site-shell .hero h1 { font-family: var(--public-display); font-size: clamp(46px, 5vw, 70px); line-height: 1.07; letter-spacing: -0.035em; }
+.site-shell .hero h1 em { color: var(--public-accent); }
+.site-shell .hero h1 em::after { content: none; }
+.site-shell .hero__description { max-width: 550px; color: var(--public-muted); font-size: 16px; line-height: 1.8; margin-top: 28px; }
+.site-shell .hero__actions { gap: 24px; margin-top: 30px; }
+.site-shell .hero__facts { margin-top: 44px; padding-top: 22px; border-color: var(--public-line); gap: 18px; }
+.site-shell .hero__facts dt { color: var(--public-accent); font-family: var(--public-sans); font-size: 12px; }
+.site-shell .hero__facts dd { color: var(--public-muted); }
+.site-shell .hero__visual { display: flex; flex-direction: column; align-items: center; align-self: center; min-height: 0; margin: 28px 0; }
+.site-shell .hero__character { position: relative; inset: auto; width: 100%; max-width: 430px; aspect-ratio: 3 / 4; flex: none; z-index: 120; perspective: 1200px; }
+.site-shell .hero__character img { transform: translate3d(0, -2px, 12px); filter: drop-shadow(-8px 16px 16px rgba(13, 46, 38, 0.13)); }
+.site-shell .hero__visual:hover .hero__character img { transform: translate3d(0, -5px, 18px); filter: drop-shadow(-8px 18px 18px rgba(13, 46, 38, 0.15)); }
+.site-shell .hero__location { position: static; order: 1; align-self: stretch; display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap; gap: 8px 18px; padding: 16px 0 0; margin: 0; border-radius: 0; border-top: 1px solid var(--public-line); background: none; box-shadow: none; color: var(--public-ink); }
+.site-shell .hero__location span { color: var(--public-muted); font-size: 11px; letter-spacing: 0.08em; }
+.site-shell .hero__location strong { font-size: 12px; }
+
+/* Catalogue cards keep equal dimensions; no arbitrary orange first card. */
+.site-shell .practice-section { padding: 84px max(32px, calc((100vw - 1280px) / 2)); background: var(--public-ink); }
+.site-shell .practice-section .section-kicker { color: #e3c9ae; }
+.site-shell .practice-section__intro { margin-bottom: 38px; gap: 52px; }
+.site-shell .practice-section__intro > p { color: #d7e2d9; font-size: 15px; }
+.site-shell .practice-grid { gap: 18px; grid-auto-rows: 1fr; align-items: stretch; }
+.site-shell .practice-grid .practice-card { padding: 24px; gap: 22px; border: 1px solid #dae2d7; border-radius: 6px; background: #f5f6ef; box-shadow: none; color: var(--public-ink); }
+.site-shell .practice-card:hover { background: #fffefa; box-shadow: none; transform: translateY(-2px); }
+.site-shell .practice-card__topline { color: var(--public-ink); }
+.site-shell .practice-card__topline span { font-family: var(--public-sans); font-size: 12px; }
+.site-shell .practice-card--text-only .practice-card__topline svg { width: 34px; height: 34px; padding: 0; border: 0; border-radius: 0; background: none; }
+.site-shell .practice-card--with-image .practice-card__topline svg { display: none; }
+.site-shell .practice-card h3 { max-width: none; font-family: var(--public-sans); font-size: 23px; line-height: 1.23; }
+.site-shell .practice-card p { color: var(--public-muted); font-size: 14px; }
+.site-shell .practice-card__link { margin-top: auto; border-color: var(--public-line); color: var(--public-ink); font-size: 15px; min-height: 44px; }
+.site-shell .practice-grid .practice-card-image { height: 210px; padding: 10px; border: 0; border-radius: 3px; background: var(--public-tone); }
+.site-shell .practice-grid .practice-card-image img { padding: 10px; }
+
+/* Bio: a real owner portrait and a readable editorial column. */
+.site-shell .about-section { width: min(100% - 64px, 1280px); grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 64px; padding: 88px 0; }
+.site-shell .about-section__portrait { display: flex; flex-direction: column; min-height: 0; align-self: start; }
+.site-shell .about-section__image { position: relative; inset: auto; aspect-ratio: 4 / 5; border-radius: 6px; background: var(--public-tone); box-shadow: none; }
+.site-shell .about-section__image img { object-fit: contain; object-position: center bottom; padding: 20px 14px 0; }
+.site-shell .about-section__caption { position: static; min-width: 0; display: flex; flex-direction: row; justify-content: space-between; gap: 12px; padding: 16px 0; border-radius: 0; background: none; box-shadow: none; }
+.site-shell .about-section__caption span { color: var(--public-muted); letter-spacing: 0.06em; }
+.site-shell .about-section__caption strong { font-family: var(--public-sans); font-size: 16px; font-weight: 600; }
+.site-shell .about-section__content { padding: 8px 0; }
+.site-shell .about-section__lead { color: var(--public-ink); font-size: 19px; line-height: 1.7; margin-top: 26px; }
+.site-shell .about-section__body { color: var(--public-muted); line-height: 1.8; }
+.site-shell .about-values { margin-top: 30px; border-color: var(--public-line); }
+.site-shell .about-values span { color: var(--public-accent); font-family: var(--public-sans); font-size: 12px; }
+.site-shell .approach-panel { padding: 32px 0 0; margin-top: 12px; border: 0; border-top: 1px solid var(--public-line); border-radius: 0; box-shadow: none; background: none; gap: 32px; }
+.site-shell .approach-panel__heading h3 { font-size: 28px; }
+.site-shell .approach-steps { gap: 22px; }
+.site-shell .approach-step { padding-left: 18px; border-color: var(--public-line); }
+.site-shell .approach-step__icon { width: auto; height: auto; display: flex; justify-content: flex-start; margin-bottom: 16px; border-radius: 0; background: none; }
+.site-shell .approach-step h4 { font-size: 17px; }
+.site-shell .approach-step p { color: var(--public-muted); }
+
+/* Articles: equal editorial cards instead of a bento/featured bubble. */
+.site-shell .blog-section { background: #eaf0e6; padding: 80px max(32px, calc((100vw - 1280px) / 2)); }
+.site-shell .blog-section__heading { margin-bottom: 34px; gap: 52px; }
+.site-shell .blog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 22px; align-items: stretch; }
+.site-shell .blog-grid.blog-grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.site-shell .blog-grid.blog-grid--single { grid-template-columns: minmax(0, 1fr); max-width: 720px; }
+.site-shell .blog-card { min-height: 330px; padding: 26px; gap: 22px; border: 1px solid var(--public-line); border-radius: 6px; background: #fbfcf7; color: var(--public-ink); box-shadow: none; }
+.site-shell .blog-card:hover { box-shadow: none; transform: translateY(-2px); background: #fffefa; }
+.site-shell .blog-card h3 { font-family: var(--public-sans); color: var(--public-ink); font-size: 24px; font-weight: 600; line-height: 1.27; }
+.site-shell .blog-card__content { flex: 1; }
+.site-shell .blog-card__content > p { color: var(--public-muted); }
+.site-shell .blog-card__meta { color: var(--public-accent); letter-spacing: 0.03em; }
+.site-shell .blog-card__meta span:last-child, .site-shell .blog-card__footer time { color: var(--public-muted); }
+.site-shell .blog-card__footer { margin-top: auto; gap: 12px; flex-wrap: wrap; border-color: var(--public-line); }
+.site-shell .blog-card__footer a { color: var(--public-ink); min-height: 44px; font-size: 16px; }
+.site-shell .content-card-image { height: 190px; min-height: 190px; border-radius: 3px; background: var(--public-tone); }
+.site-shell .content-card-image img { object-fit: contain; padding: 10px; }
+.site-shell :is(.content-card-image, .featured-article__image):hover img { transform: none; }
+
+/* Contact remains prominent, with quiet separators and functional links. */
+.site-shell .contact-section { background: var(--public-paper); padding: 84px max(32px, calc((100vw - 1280px) / 2)); border-top: 1px solid var(--public-line); }
+.site-shell .contact-action { border-radius: 4px; box-shadow: none; border-color: var(--public-line); }
+.site-shell .contact-action--primary { background: var(--public-ink); }
+.site-shell .contact-details { border-color: var(--public-line); }
+.site-shell .site-footer { background: var(--public-ink); }
+.site-shell .site-footer__top { padding-top: 42px; padding-bottom: 42px; }
+.site-shell .site-footer__bottom { min-height: 76px; }
+
+/* Detail and listing pages use the same visual grammar, not a second theme. */
+.site-shell :is(.practice-directory-hero, .editorial-hero, .about-page-hero, .contact-page-hero, .detail-hero, .legal-hero, .not-found-hero) h1 { font-family: var(--public-display); font-size: clamp(44px, 5vw, 72px); line-height: 1.08; letter-spacing: -0.035em; }
+.site-shell :is(.practice-directory-hero, .editorial-hero, .about-page-hero, .contact-page-hero, .detail-hero, .legal-hero) h1 em { color: var(--public-accent); }
+.site-shell :is(.practice-directory-hero, .about-page-hero, .contact-page-hero, .detail-hero) { width: min(100% - 64px, 1280px); gap: 56px; padding-top: 72px; padding-bottom: 64px; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
+.site-shell .practice-directory-grid { width: min(100% - 64px, 1280px); }
+.site-shell .practice-directory-grid .practice-directory-card { border-radius: 6px; box-shadow: none; background: #fbfcf7; padding: 30px; }
+.site-shell .practice-directory-grid .practice-directory-card:hover { box-shadow: none; transform: translateY(-2px); }
+.site-shell .practice-directory-grid .practice-directory-card h2 { font-family: var(--public-sans); font-size: clamp(26px, 2.7vw, 36px); font-weight: 600; }
+.site-shell .practice-directory-card--text-only .practice-directory-card__topline svg { width: 36px; height: 36px; padding: 0; border: 0; border-radius: 0; background: none; }
+.site-shell .practice-directory-card--with-image .practice-directory-card__topline svg { display: none; }
+.site-shell .practice-directory-grid .practice-card-image { border-radius: 3px; border: 0; background: var(--public-tone); }
+.site-shell .detail-hero__image { box-shadow: none; border-radius: 6px; background: var(--public-tone); }
+.site-shell .detail-process__grid article, .site-shell .detail-related__grid a { border-radius: 5px; box-shadow: none; }
+.site-shell .about-page-hero__portrait { display: flex; flex-direction: column; min-height: 0; border-radius: 6px; background: var(--public-tone); }
+.site-shell .about-page-hero__photo { position: relative; inset: auto; display: block; padding: 0; width: 100%; aspect-ratio: 4 / 5; }
+.site-shell .about-page-hero__portrait img { object-fit: contain; object-position: center bottom; padding: 20px 14px 0; }
+.site-shell .about-page-hero__portrait > div:last-child { position: static; display: flex; align-items: baseline; gap: 12px; padding: 18px 22px; border-top: 1px solid var(--public-line); color: var(--public-ink); }
+.site-shell .about-page-hero__portrait strong { font-family: var(--public-sans); font-size: 18px; }
+.site-shell .about-principles__grid article { min-height: 270px; }
+.site-shell .about-principles__grid h3 { margin-top: 56px; font-size: 24px; }
+.site-shell .about-page-cta { background: var(--public-ink); }
+.site-shell .contact-methods > a { min-height: 240px; padding: 30px; }
+.site-shell .contact-methods > a > span { color: var(--public-accent); font-size: 11px; }
+.site-shell .practice-directory-card__topline span, .site-shell .approach-step > span { color: var(--public-accent); }
+.site-shell .contact-details__cards article { border-radius: 5px; box-shadow: none; }
+.site-shell .featured-article { border-radius: 6px; box-shadow: none; background: #fbfcf7; color: var(--public-ink); border: 1px solid var(--public-line); }
+.site-shell .featured-article__content h2 { font-family: var(--public-sans); font-size: clamp(30px, 3vw, 44px); font-weight: 600; }
+.site-shell .featured-article__image img { object-fit: contain; padding: 16px; background: var(--public-tone); }
+.site-shell .featured-article__content h2 { color: var(--public-ink); }
+.site-shell .featured-article__content > p { color: var(--public-muted); }
+.site-shell .featured-article__content .featured-article__label, .site-shell .article-header__meta > span:first-child { color: var(--public-accent); }
+.site-shell .featured-article__footer { border-color: var(--public-line); }
+.site-shell .featured-article__footer a { color: var(--public-ink); }
+.site-shell .featured-article__footer time, .site-shell .article-meta span, .site-shell .archive-card__topline span { color: var(--public-muted); }
+.site-shell .archive-card { border-radius: 6px; box-shadow: none; }
+.site-shell .archive-card h3 { font-family: var(--public-sans); font-size: 26px; font-weight: 600; }
+.site-shell .article-header h1 { font-family: var(--public-display); font-size: clamp(42px, 4.8vw, 70px); line-height: 1.1; letter-spacing: -0.035em; }
+.site-shell .article-body h2, .site-shell .legal-content h2 { font-family: var(--public-sans); font-size: clamp(26px, 3vw, 38px); font-weight: 600; line-height: 1.25; letter-spacing: -0.025em; }
+.site-shell .article-cover { width: min(100% - 64px, 1280px); min-height: 0; border-radius: 6px; box-shadow: none; }
+.site-shell .article-cover__image { position: relative; aspect-ratio: 16 / 9; background: var(--public-tone); }
+.site-shell .article-cover img { object-fit: contain; object-position: center; }
+.site-shell .article-cover__caption { position: static; padding: 16px 20px; background: #eef0e8; color: var(--public-muted); font-size: 12px; line-height: 1.6; }
+.site-shell .article-body blockquote { border-radius: 4px; background: var(--public-tone); color: var(--public-ink); border-left: 3px solid var(--public-accent); padding: 30px; }
+.site-shell .article-body blockquote p, .site-shell .article-body blockquote svg { color: var(--public-ink); }
+.site-shell .not-found-hero__visual { background: var(--public-ink); border-radius: 6px; box-shadow: none; }
+.site-shell .not-found-hero__note { position: static; margin: 0 24px 24px; background: none; backdrop-filter: none; border-radius: 0; border: 0; border-top: 1px solid #456a59; }
+
+/* Visibility variants must still collapse the missing column. */
+.site-shell .hero.hero--text-only, .site-shell .about-section.about-section--text-only, .site-shell .about-page-hero.about-page-hero--text-only, .site-shell .detail-hero.detail-hero--text-only { grid-template-columns: minmax(0, 1fr); }
+
+@media (max-width: 1120px) {
+  .site-shell .hero { column-gap: 32px; }
+  .site-shell .hero h1 { font-size: 54px; }
+  .site-shell .hero__facts { grid-template-columns: 1fr; gap: 12px; }
+  .site-shell .about-section { gap: 40px; }
+  .site-shell .approach-panel { grid-template-columns: 1fr; }
+  .site-shell .blog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .site-shell .hero { width: min(100% - 36px, 720px); grid-template-columns: 1fr; min-height: 0; }
+  .site-shell .hero__content { padding: 46px 0 28px; }
+  .site-shell .hero h1 { font-size: clamp(42px, 8.4vw, 62px); }
+  .site-shell .hero__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 32px; }
+  .site-shell .hero__visual { isolation: isolate; min-height: 0; margin: 8px 0 38px; }
+  .site-shell .hero__character { max-width: 400px; z-index: 0; perspective: none; }
+  .site-shell .hero__character img, .site-shell .hero__visual:hover .hero__character img { transform: none; filter: drop-shadow(0 10px 14px rgba(13, 46, 38, 0.1)); }
+  .site-shell .hero__location { order: 1; position: static; padding-top: 14px; }
+  .site-shell :is(.practice-section, .blog-section, .contact-section) { padding: 62px 18px; }
+  .site-shell .practice-section__intro, .site-shell .blog-section__heading { grid-template-columns: 1fr; gap: 24px; }
+  .site-shell .about-section { width: min(100% - 36px, 720px); grid-template-columns: 1fr; padding: 62px 0; gap: 34px; }
+  .site-shell .about-section__portrait { width: 100%; max-width: 440px; justify-self: center; }
+  .site-shell :is(.practice-directory-hero, .about-page-hero, .contact-page-hero, .detail-hero) { width: min(100% - 36px, 720px); grid-template-columns: 1fr; padding: 48px 0; gap: 32px; }
+  .site-shell :is(.practice-directory-hero, .editorial-hero, .about-page-hero, .contact-page-hero, .detail-hero, .legal-hero) h1 { font-size: clamp(40px, 8.4vw, 62px); }
+  .site-shell .practice-directory-grid { width: min(100% - 36px, 720px); }
+  .site-shell .about-page-hero__portrait { width: 100%; max-width: 440px; justify-self: center; }
+  .site-shell .article-cover { width: min(100% - 36px, 720px); }
+}
+@media (max-width: 560px) {
+  .site-shell .hero__identity { margin-bottom: 24px; }
+  .site-shell .hero__identity span { line-height: 1.5; }
+  .site-shell .hero h1 { font-size: clamp(39px, 10.6vw, 54px); }
+  .site-shell .hero__actions { flex-direction: column; align-items: stretch; gap: 14px; }
+  .site-shell .hero__facts { grid-template-columns: 1fr; gap: 12px; }
+  .site-shell .hero__character { max-width: 340px; }
+  .site-shell .practice-grid .practice-card { padding: 22px; }
+  .site-shell .blog-grid, .site-shell .blog-grid.blog-grid--two { grid-template-columns: 1fr; }
+  .site-shell .blog-card { padding: 24px; }
+  .site-shell .approach-steps { grid-template-columns: 1fr; }
+  .site-shell .approach-step { padding: 0 0 22px; border-left: 0; border-bottom: 1px solid var(--public-line); }
+  .site-shell .about-section__caption { flex-wrap: wrap; }
+  .site-shell .practice-directory-grid .practice-directory-card { padding: 24px; }
+  .site-shell .contact-methods > a { min-height: 220px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-shell a:hover svg { transform: none; }
+  .site-shell .text-link:hover span,
+  .site-shell :is(.contact-action, .contact-methods > a, .featured-article__image img):hover { transform: none; transition: none; }
+  .site-shell .hero__character img, .site-shell .hero__visual:hover .hero__character img,
+  .site-shell .primary-button:hover, .site-shell .practice-card:hover,
+  .site-shell .blog-card:hover, .site-shell .practice-directory-grid .practice-directory-card:hover { transform: none; transition: none; }
+}

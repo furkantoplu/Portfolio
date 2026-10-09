@@ -38,8 +38,6 @@ export default async function NotFound() {
         </div>
 
         <div className="not-found-hero__visual" aria-hidden="true">
-          <div className="not-found-orbit not-found-orbit--outer" />
-          <div className="not-found-orbit not-found-orbit--inner" />
           <SearchX size={42} strokeWidth={1.25} />
           <strong>404</strong>
           <div className="not-found-hero__note">

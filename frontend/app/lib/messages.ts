@@ -11,6 +11,7 @@ export const messages: Record<string, { en: string; de: string }> = {
   "Alt menü": { en: "Footer navigation", de: "Footernavigation" },
   "Sosyal bağlantılar": { en: "Social links", de: "Social-Media-Links" },
   "Web sitesi": { en: "Website", de: "Webseite" },
+  "Fizyoterapist Furkan Toplu'nun portresi": { en: "Portrait of physiotherapist Furkan Toplu", de: "Porträt des Physiotherapeuten Furkan Toplu" },
   "Randevu Bilgisi": { en: "Appointment information", de: "Termininformationen" },
   "Randevu bilgisi alın": { en: "Ask about appointments", de: "Informationen zu Terminen" },
   "Menüyü kapat": { en: "Close menu", de: "Menü schließen" },

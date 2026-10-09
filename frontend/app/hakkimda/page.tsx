@@ -2,7 +2,7 @@ import { getPageTools } from "../lib/i18n-server";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { isSectionVisible } from "../lib/section-visibility";
-import { ArrowUpRight, Eye, MessageCircleMore, Route, Sparkles } from "lucide-react";
+import { ArrowUpRight, Eye, MessageCircleMore, Route, FileText } from "lucide-react";
 import { NativeLink } from "../components/native-link";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
@@ -42,7 +42,7 @@ export default async function AboutPage() {
           <NativeLink className="primary-button" href={localHref("/iletisim")}>{t("İletişim bilgilerini görün")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
         </div>
         {show("image") && (<div className="about-page-hero__portrait">
-          <Image src={content.image_path || "/about-physiotherapist-v1.png"} alt={content.image_alt || t("Klinik ortamında fizyoterapist Furkan Toplu")} fill priority sizes="(max-width: 860px) 100vw, 48vw" />
+          <div className="about-page-hero__photo"><Image src={content.image_path || "/furkan-toplu-hero-white-coat-v1.png"} alt={content.image_alt || t("Fizyoterapist Furkan Toplu'nun portresi")} fill priority sizes="(max-width: 860px) 100vw, 48vw" /></div>
           <div><span>{t("Fizyoterapist")}</span><strong>{t("Furkan Toplu")}</strong></div>
         </div>) }
       </section>
@@ -55,7 +55,7 @@ export default async function AboutPage() {
         <div className="about-story__body">
           <p className="about-story__lead">{content.story_lead}</p>
           {content.story_paragraphs.map((paragraph, index) => <p key={index}>{paragraph.text}</p>)}
-          {show("professional_note") && professionalNote && (<div className="about-story__note"><Sparkles aria-hidden="true" size={20} /><span>{professionalNote}</span></div>) }
+          {show("professional_note") && professionalNote && (<div className="about-story__note"><FileText aria-hidden="true" size={20} /><span>{professionalNote}</span></div>) }
         </div>
       </section>) }
 
@@ -66,7 +66,7 @@ export default async function AboutPage() {
         </div>
         <div className="about-principles__grid">
           {content.principles.map(({ title, text }, index) => {
-            const Icon = principleIcons[index] || Sparkles;
+            const Icon = principleIcons[index] || FileText;
             return (
             <article key={title}>
               <div><span>{String(index + 1).padStart(2, "0")}</span><Icon aria-hidden="true" size={28} strokeWidth={1.4} /></div>

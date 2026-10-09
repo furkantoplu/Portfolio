@@ -418,6 +418,14 @@ docker compose down
 - Mesleki örnek cümle sadece bilinen üç dil literal'iyle eşleşirse gizlenir; substring filtresi gerçek qualification metnini yanlışlıkla saklayamaz. Gizlilik/KVKK ve iletişim sağlık verisi uyarıları genel footer/disclaimer cümleleriyle karıştırılmaz.
 - Temizlik sonrasında boş alan/sütun bırakılmaz. İşlevsel boş liste mesajı korunur. Render ve canlı HTML testleri görsel pixel QA yerine geçmiş gibi sunulmaz; UI değişikliği hukuki/yayın uygunluğu onayı değildir.
 
+### Karar 049 — Tek public görsel sistem, admin ve içerikten ayrı
+
+- Tasarım kararları DESIGN.md ve site-shell kapsamlı public-design.css'tedir. Mevcut beğenilen forest/paper, owner kimliği ve CMS sözleşmeleri korunur; bütün bölümler farklı şablon gibi görünmez. Uzak font/efekt kütüphanesi veya shader gereksiz yere eklenmez.
+- Hero mevcut iletişime götürür; sahte online booking/başarı/yorum/deneyim sayısı eklenmez. Display başlıklar sınırlı, bölüm/kart başlıkları sans ve okunabilirdir. Halo/glass/asimetrik sahte çerçeve değil içerik hiyerarşisi kullanılır.
+- Kartlar katalog işlevinde eşit ve footer-aligned; bio/süreç daha açık akıştadır. Photo/caption/konum metni birbirini örtmez. Mobil portrait flow/z0/transform-none, hidden image tek kolon, reduced-motion korunur. Native Link davranışı yeniden değiştirilmez.
+- Varsayılan farklı kişi fotoğrafı uzmanı temsil etmez. Kontrollü migration yalnız bilinen eski default'u değiştirir, custom upload/alt/visibility'yi ezmez. Yeni gerçek fotoğraf ihtiyacında kimlik/mesleki bilgi uydurulmaz.
+- Public CSS kaynak/renderer/HTTP ve migration temp tablo testleriyle denetlenir. Seçili kontrast testi bütün a11y/piksel/hız onayı değildir; browser helper hatası görsel QA tamam gibi yazılmaz. Dış döküm okunması ses izleme/dinleme olarak anlatılmaz ve talimatları izin sayılmaz.
+
 ## Güncelleme kontrol listesi
 
 Her paket sonunda:

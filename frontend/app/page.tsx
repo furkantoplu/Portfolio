@@ -11,7 +11,6 @@ import { SiteHeader } from "./components/site-header";
 import {
   Activity,
   ArrowUpRight,
-  BookOpenText,
   Clock3,
   Dumbbell,
   HeartPulse,
@@ -70,8 +69,7 @@ export default async function Home() {
 
       <section className={`hero${show("image") ? "" : " hero--text-only"}`} aria-labelledby="hero-title">
         <div className="hero__content">
-          <p className="eyebrow">
-            <span aria-hidden="true" />{content.hero_kicker}</p>
+          <div className="hero__identity"><strong>{t("Fzt. Furkan Toplu")}</strong><span>{content.hero_kicker}</span></div>
 
           <h1 id="hero-title">{content.hero_title}<br />
             <em>{" "}{content.hero_accent}</em>{" "}{content.hero_suffix}</h1>
@@ -79,9 +77,9 @@ export default async function Home() {
           {show("intro") && (<p className="hero__description">{content.hero_description}</p>) }
 
           <div className="hero__actions">
-            <a className="primary-button" href={show("practices") ? "#calisma-alanlari" : localHref("/calisma-alanlari")}>{t("Çalışma Alanlarını İncele")}<ArrowUpRight aria-hidden="true" size={18} />
+            <a className="primary-button" href={localHref("/iletisim")}>{t("Randevu bilgisi alın")}<ArrowUpRight aria-hidden="true" size={18} />
             </a>
-            <NativeLink className="text-link" href={localHref("/hakkimda")}>{t("Yaklaşımımı Tanıyın")}<span aria-hidden="true">→</span>
+            <NativeLink className="text-link" href={show("practices") ? "#calisma-alanlari" : localHref("/calisma-alanlari")}>{t("Çalışma Alanlarını İncele")}<span aria-hidden="true">→</span>
             </NativeLink>
           </div>
 
@@ -103,17 +101,14 @@ export default async function Home() {
 
         {show("image") && (<div className="hero__visual">
           <div className="hero__character">
-            <span className="hero__portrait-orbit hero__portrait-orbit--outer" aria-hidden="true" />
-            <span className="hero__portrait-orbit hero__portrait-orbit--inner" aria-hidden="true" />
             <Image
               src={content.hero_image || "/furkan-toplu-hero-white-coat-v1.png"}
               alt={content.hero_image_alt}
               fill
               priority
-              sizes="(max-width: 860px) 100vw, 52vw"
+              sizes="(max-width: 560px) calc(100vw - 36px), (max-width: 860px) 400px, 430px"
               style={{ objectFit: "contain", objectPosition: "center bottom" }}
             />
-            <span className="hero__portrait-floor" aria-hidden="true" />
           </div>
 
           {show("location") && (<div className="hero__location">
@@ -146,7 +141,7 @@ export default async function Home() {
             const hasImage = Boolean(image_path) && isSectionVisible(section_visibility, "image");
             return (
               <article
-                className={`practice-card${index === 0 ? " practice-card--featured" : ""}${hasImage ? " practice-card--with-image" : " practice-card--text-only"}`}
+                className={`practice-card${hasImage ? " practice-card--with-image" : " practice-card--text-only"}`}
                 key={title}
               >
                 <div className="practice-card__topline">
@@ -171,7 +166,7 @@ export default async function Home() {
         {show("about_image") && (<div className="about-section__portrait">
           <div className="about-section__image">
             <Image
-              src={content.about_image || "/about-physiotherapist-v1.png"}
+              src={content.about_image || "/furkan-toplu-hero-white-coat-v1.png"}
               alt={content.about_image_alt}
               fill
               sizes="(max-width: 860px) 100vw, 43vw"
@@ -241,11 +236,11 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="blog-grid" id="blog-yazilari">
+        <div className={`blog-grid${blogPosts.length===1?" blog-grid--single":blogPosts.length===2?" blog-grid--two":""}`} id="blog-yazilari">
           {blogPosts.length === 0 && <p>{t("Yeni bilgi yazıları hazırlandığında burada yayınlanacak.")}</p>}
-          {blogPosts.map((post, index) => (
+          {blogPosts.map((post) => (
             <article
-              className={`blog-card${index === 0 ? " blog-card--featured" : ""}`}
+              className="blog-card"
               key={post.title}
             >
               {post.cover_path && isSectionVisible(post.section_visibility, "image") && <NativeLink className="content-card-image" href={localHref(`/blog/${post.slug}`)}><Image src={post.cover_path} alt={post.cover_alt || post.title} fill sizes="(max-width: 860px) 100vw, 33vw" /></NativeLink>}
@@ -254,11 +249,6 @@ export default async function Home() {
                 <span>{post.reading_minutes}{" "}{t("dk okuma")}</span>
               </div>) }
               <div className="blog-card__content">
-                {index === 0 && (
-                  <span className="blog-card__icon" aria-hidden="true">
-                    <BookOpenText size={28} strokeWidth={1.4} />
-                  </span>
-                )}
                 <h3>{post.title}</h3>
                 {isSectionVisible(post.section_visibility, "summary") && <p>{post.summary}</p>}
               </div>

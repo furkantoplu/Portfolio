@@ -267,6 +267,16 @@ Ana sayfa çalışma alanları/blog alt notları, alan liste yaklaşım notu, bl
 
 Hakkımda'daki bilinen üç dil örnek mesleki notu exact-match/trim ile gizlenir; gerçek kullanıcı mesleki metni ve görünürlük kontrolü korunur. İletişimin gerçek gizlilik/sağlık verisi uyarısı, KVKK/Gizlilik belgeleri ve admin açıklamaları bu kaldırma kapsamına girmez. 62 otomatik test, TypeScript/ESLint, Docker build ve üç dil public HTML taraması uygulanır. UI temizliği hukuki uygunluk değerlendirmesi veya bütün içeriğin yayına hazır olduğunun onayı değildir. Dekor/video işi sonraki paket olarak bekler.
 
+## Public görsel sistem revizyonu — 9 Ekim 2026, Paket 45
+
+DESIGN.md artık public kararları kalıcılaştırır; public-design.css yalnız site-shell kapsamındadır, admin görünümünü/işleyişini değiştirmez. Forest/paper temel paleti korunarak kontrastı yüksek muted/accent seçildi. Display serif birinci başlıkta, sans bölüm/kart başlıklarında kullanılır; radius 3–6 px, daha kısa/ölçülü başlık ve bölüm aralıkları vardır. Halo, orbit, glass blur, çizgi şekilleri ve keyfi ilk kart renklendirmesi emekli edildi. Teknik arşiv başlangıç cümlesi üç dil exact-match filtreyle gizlenir.
+
+Hero uzman adı/portre ve mevcut iletişim aksiyonuna odaklanır. Country bilgisi fotoğraf altında satırdır. Bio ve süreçler yüzen kutu yerine akış/kolon/çizgiler kullanır. Blog kartları eşit, kayıt sayısına göre kolonludur. Kapak figcaption'ı fotoğraf altındadır. Liste, detay, iletişim, yasal ve 404 ekranları aynı dilde; mobil/hidden-column/reduced-motion durumları korunur. Native link davranışı değişmez.
+
+010 migrasyonu yalnız eski paketlenmiş farklı kişi görselini Hakkımda varsayılanından çıkarır; Furkan'ın mevcut portresini kullanır, özel upload/alt metin/visibility korunur. Varsayılan altlar EN/DE'ye uyarlanır. Yeni bitmap, yeni bağımlılık, WebGL/uzak font veya hasta/deneyim/sayısal güven iddiası eklenmedi. Gerçek CMS içerikleri/hesaplar/kalıcı uploadlar değişmedi; gerçek upload sayısı hâlâ ikidir.
+
+68 otomatik test, TypeScript/ESLint, production Docker build, gerçek CSS/CTA/3 dil/404/not/medya/erişim smoke uygulanır. 010 testi geçici tabloda tekrar ve özel veri korumasını doğrular. Seçili palet kontrastı ölçüldü; browser screenshot/piksel QA tamamlanmadı. Computer Use helper yeniden sandbox setup hatası verdi. Video ses oynatımı değil, public konuşma dökümünün okunmasıyla incelendi; kaynak DESIGN.md/README'dedir. Haricî skill veya üçüncü taraf talimat kurulumu yapılmadı.
+
 ## Sağlık ve veri güvenliği sınırları
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./public-design.css";
 import { getLocale } from "./lib/i18n-server";
 import { headers } from "next/headers";
 import { routes, localeFromPath } from "./lib/i18n";
@@ -9,9 +10,6 @@ const defaultMetadata: Metadata = {
   title: "Fzt. Furkan Toplu | Fizyoterapi",
   description:
     "Kişiye özel değerlendirme ve bilimsel yaklaşımla fizyoterapi süreci.",
-  other: {
-    "codex-preview": "development",
-  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

@@ -8,3 +8,12 @@ export function professionalNoteText(value:unknown):string {
   if(typeof value!=='string')return '';
   const text=value.trim();return retiredProfessionalExamples.has(text)?'':text;
 }
+const retiredArchiveExamples=new Set([
+  'Yeni içerikler yayınlandıkça bu alan otomatik olarak genişleyecek.',
+  'This section grows as new articles are published.',
+  'Dieser Bereich wächst mit jedem neuen Beitrag.',
+]);
+export function archiveIntroText(value:unknown):string {
+  if(typeof value!=='string')return '';
+  const text=value.trim();return retiredArchiveExamples.has(text)?'':text;
+}

@@ -54,10 +54,12 @@ export default async function BlogPostPage({ params }: PageProps) {
           {show("summary") && (<p>{post.summary}</p>) }
         </header>
 
-        {post.cover_path && show("image") && <div className="article-cover">
+        {post.cover_path && show("image") && <figure className="article-cover">
+          <div className="article-cover__image">
           <Image src={post.cover_path} alt={post.cover_alt || post.title} fill priority sizes="(max-width: 860px) 100vw, 1200px" />
-          {post.cover_caption && <div className="article-cover__caption">{post.cover_caption}</div>}
-        </div>}
+          </div>
+          {post.cover_caption && <figcaption className="article-cover__caption">{post.cover_caption}</figcaption>}
+        </figure>}
 
         <div className={`article-layout${hasToc ? "" : " article-layout--no-toc"}`}>
           {hasToc && (<aside className="article-toc" aria-label={t("Yazı içeriği")}>

@@ -17,8 +17,8 @@
       {"key":"practice_title","label":"Çalışma alanları başlığı","default":"Hareketin farklı ihtiyaçlarına"},
       {"key":"practice_accent","label":"Çalışma alanları vurgusu","default":"bütüncül bir bakış."},
       {"key":"practice_intro","label":"Çalışma alanları açıklaması","default":"Her süreç dinlemekle başlar. Değerlendirme sonrasında ihtiyaçlara uygun, anlaşılır ve takip edilebilir bir yol haritası oluşturulur."},
-      {"key":"about_image","label":"Hakkımda bölüm görseli","default":"/about-physiotherapist-v1.png","type":"image"},
-      {"key":"about_image_alt","label":"Hakkımda görsel açıklaması","default":"Klinikte duran fizyoterapist portresi"},
+      {"key":"about_image","label":"Hakkımda bölüm görseli","default":"/furkan-toplu-hero-white-coat-v1.png","type":"image"},
+      {"key":"about_image_alt","label":"Hakkımda görsel açıklaması","default":"Fizyoterapist Furkan Toplu'nun portresi"},
       {"key":"about_title","label":"Hakkımda başlığı","default":"Hareketin her insanda"},
       {"key":"about_accent","label":"Hakkımda vurgusu","default":"farklı bir hikâyesi var."},
       {"key":"about_lead","label":"Hakkımda giriş metni","default":"Her bireyin ihtiyaçlarının, günlük yaşamının ve hedeflerinin farklı olduğuna inanıyorum. Bu nedenle sürece hazır kalıplarla değil, dinleyerek ve değerlendirerek başlıyorum."},
@@ -60,7 +60,7 @@
       {"key":"hero_image","label":"Sayfa giriş görseli (isteğe bağlı)","default":"","type":"image"},
       {"key":"hero_image_alt","label":"Görsel açıklaması","default":"Bilgi Köşesi"},
       {"key":"archive_title","label":"Arşiv başlığı","default":"Bilgi arşivi"},
-      {"key":"archive_intro","label":"Arşiv açıklaması","default":"Yeni içerikler yayınlandıkça bu alan otomatik olarak genişleyecek."}
+      {"key":"archive_intro","label":"Arşiv açıklaması","default":""}
     ]
   }
 }
