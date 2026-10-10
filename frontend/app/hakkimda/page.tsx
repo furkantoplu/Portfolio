@@ -1,6 +1,6 @@
 import { getPageTools } from "../lib/i18n-server";
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "../components/site-image";
 import { isSectionVisible } from "../lib/section-visibility";
 import { ArrowUpRight, Eye, MessageCircleMore, Route, FileText } from "lucide-react";
 import { NativeLink } from "../components/native-link";

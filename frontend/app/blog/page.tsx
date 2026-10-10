@@ -1,7 +1,7 @@
 import { getPageTools } from "../lib/i18n-server";
 import { formatDate } from "../lib/i18n";
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "../components/site-image";
 import { isSectionVisible } from "../lib/section-visibility";
 import { ArrowUpRight, BookOpenText, Clock3 } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";

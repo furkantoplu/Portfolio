@@ -2,7 +2,7 @@ import { getPageTools } from "../../lib/i18n-server";
 import { getSiteUrl } from "../../lib/site-url";
 import { contentLanguageLinks, formatDate } from "../../lib/i18n";
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "../../components/site-image";
 import { isSectionVisible } from "../../lib/section-visibility";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Clock3, Quote } from "lucide-react";

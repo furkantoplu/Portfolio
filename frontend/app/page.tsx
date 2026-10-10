@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getPageTools } from "./lib/i18n-server";
 import { formatDate } from "./lib/i18n";
-import Image from "next/image";
+import Image from "./components/site-image";
 import { isSectionVisible } from "./lib/section-visibility";
 import { NativeLink } from "./components/native-link";
 import { type ContactContent, phoneHref } from "./lib/contact";

@@ -1,5 +1,5 @@
 import { getPageTools } from "../lib/i18n-server";
-import Image from "next/image";
+import Image from "./site-image";
 import { isSectionVisible } from "../lib/section-visibility";
 import {
   ArrowLeft,
