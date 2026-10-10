@@ -4,7 +4,11 @@ Fizyoterapist portföyü ve blogu için geliştirilen React/TypeScript tabanlı 
 
 ## VPS hazırlığı ve yayın sırası
 
-Erişim, kurulum durumu ve taşıma/yayın kontrol listesi [deploy/VPS-KURULUM.md](deploy/VPS-KURULUM.md) içindedir. `deploy/vps` altındaki gözden geçirilmiş hazırlık dosyaları yalnız boş Ubuntu 26.04 amd64 sunucuyu hedefler; çalışan container varsa durur. Bu aşama siteyi veya verileri taşımaz ve DNS'i değiştirmez. Sıra: sunucu hazırlığı → PostgreSQL/fotoğraf/site aktarımı → Namecheap/Cloudflare/domain/HTTPS. Yerel `.env` ve özel SSH anahtarları Git'e alınmaz.
+10 Ekim 2026: site ve mevcut PostgreSQL/veri/hesaplar VPS'e taşındı; dört Docker servisi çalışıyor. Üretim frontend Node standalone'dır, yerel Wrangler düzeni korunur. Henüz domain/Cloudflare/HTTPS bağlanmadı; kurulum yalnız özel SSH tünelinden erişilebilir. Gerçek admin/OTP kabul testi ve düzenli yedekler yayın öncesi kalan işlerdir.
+
+Erişim/tünel komutu, test sonuçları ve taşıma/yayın kontrol listesi [deploy/VPS-KURULUM.md](deploy/VPS-KURULUM.md) içindedir. Özel tünel açıkken site `http://localhost:9090`, admin `/bakir`; yerel geliştirme ise8080 portudur. İki ortamın DB'leri ayrıdır; artık VPS panelinden yapılan değişiklikler yerel DB'ye otomatik gelmez.
+
+Host bootstrap yalnız boş sunucu içindir; `restore-initial.sh` dolu hedefe tekrar çalıştırılmaz. Production operasyonunda `sudo docker compose --env-file .env -f compose.vps.yaml` kullanılır, `.env` root erişimlidir. `down -v` volume/veri siler, kullanılmaz. Yerel `.env`, snapshot/runtime credentials ve özel SSH anahtarları Git'e alınmaz.
 
 ## Docker ile çalıştırma
 

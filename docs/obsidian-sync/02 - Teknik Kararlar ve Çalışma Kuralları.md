@@ -466,6 +466,15 @@ docker compose down
 
 ## Güncelleme kontrol listesi
 
+### Karar 056 — Başarılı restore özel staging'dir, domain teslimi değildir
+
+- Açık hedef/veri kapsamlı kullanıcı onayı ardından strict host SSH/SCP yapılır. Sekiz aktarım hash'i ve gerçek restore 14 tablo/upload/appsecret eşitliği teyit edilir; sırlar hiçbir not/log/Git'te gösterilmez. Root erişimli backup ve yerel özel off-server kopya korunur. Tek diskte ikinci yedek off-server koruma sayılmaz.
+- Hesap/TOTP korunur, yalnız hedef kopya session'ları iptal edilir. İnsan giriş testi yöneticinin parola/OTP'siyle kendisi tarafından yapılır; sırdan OTP üretilmez. Browser login formunun renderı ve anonim API401/403 gerçek auth/CRUD kabulü yerine geçmez. Client admin SSR loading shell kontrolüyle doğrulanır.
+- VPS loopback/SSH tüneli9090 ile kabul edilir; public HTTP login yok. DNS/origin HTTPS/Cloudflare Full(strict)/secure cookie ayrı aşamadır. Canonical/robots hedef domaini gösterebilir, bu domainin gerçekten bağlı olduğunu kanıtlamaz. Ek yasal/çeviri/gerçek iletişim verileri onayı hosting aktarımıyla karıştırılmaz.
+- Yerel8080 ve VPS9090 farklı DB; staging sonrası yönetici editleri VPS'tedir. Sonraki deploy volume'leri korur; seed, restore-initial, down-v veya kör PG dump overwrite tekrarlanmaz. Restore ortasında hata varsa ilgili aşama incelenir, dolu DB silinmez.
+- Üretim HTTP testleri, seçili browser akışları ve pixel QA kapsamları ayrılır. 91 regresyon/HTTP/API/18 detay ve browser404 sonrası geçiş/dil menüsü geçti; uploaded files0 iken gerçek upload testi geçti denmez. Düzenli günlük backup/retention/off-server/restore provası sonraki yayın kabulünde ayrıca doğrulanır. Geçici test tüneli/sekmesi kapanır, kalıcı app container'ları kapanmaz.
+
+
 ### Karar 055 — VPS runtime, snapshot ve hassas aktarım sınırı
 
 - Yerel Wrangler düzeni ve VPS Node standalone ayrı config/Dockerfile kullanır; starter eklentisi korunur, açık VPS talebi başka hosting'e çevrilmez. Non-root frontend/internal network/loopback staging; TLS öncesi public admin login yok. Ayrı cookie adı local/VPS çakışmasını önler, secure=false sadece özel aşamadır.

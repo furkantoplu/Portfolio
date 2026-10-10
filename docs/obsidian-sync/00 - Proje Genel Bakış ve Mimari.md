@@ -1,5 +1,15 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Güncel yayın durumu — 10 Ekim 2026 / Paket 53
+
+Kullanıcının açık hassas aktarım onayıyla site `149.56.103.60` VPS'ine taşındı. `/opt/furkantoplu` içinde PostgreSQL16/Directus12.4/Node standalone/Caddy çalışıyor, dört servis sağlıklı. Yerel düzen aynen durur; production runtime non-root Node, Wrangler dev değil. Transfer SHA256,14 tablo içerik/hesap/rol/TOTP parmak izi, upload bytes ve appsecret hash eşit.2 yönetici/6 alan/3 blog/6 sayfa/22 çeviri korundu; yalnız hedefte4 eski session iptal edildi. Yeni giriş mevcut bilgiler/Google Authenticator koduyla yapılır, gerçek kullanıcı giriş testi bekliyor.
+
+Staging sadece loopback8080/8055, dışarıda yalnızSSH22; public domain yayını yok. Özel SSH tüneliyle bilgisayar9090→VPS8080, admin9090/bakir. Yerel8080 ve VPS9090 farklı DB: yeni içerik düzenlemeleri VPS panelinden yapılmalı. DNS/Namecheap/Cloudflare/originHTTPS ve secure cookie=true henüz yapılmadı.
+
+91 regresyon ve gerçek VPS proxy HTTP smoke'ları geçti: üç dil sayfalar/18 alan detayı,404/sitemap/robots, admin cache/index engeli, yetkisiz erişim, gizli dosya404 ve image optimizer. In-app browser mobil menü/Hakkımda,404 sonrasıBlog/detay/ana sayfa ve TR→EN→DE çalıştı; yakalanan JavaScript error/warn yok. Admin client formu açıldı; gerçek parola/OTP/CRUD ve kapsamlı pixel QA yapılmış sayılmaz. Uploaded file0; statik portreler çalışır, yeni upload kabulü bekliyor.
+
+İlk geri dönüş yedeği root700 `/var/backups/furkantoplu/migration-20261010-a94723c2a8`; yerel özel ACL'li kopya AppData'da korunur, Git/OneDrive'a secrets girmez. Yeni editler için günlük backup/retention/off-server ve restore provası henüz kurulmadı. Anlık disk31GB boş, dört app yaklaşık344MiB RAM; kapasite garantisi değil. Operasyon/tünel/geri dönüş uyarıları `deploy/VPS-KURULUM.md`; aşağıdaki9Ekim/52.paket notları geçmiş aşamalardır.
+
 ## Projenin amacı
 
 Furkan Toplu için güven veren, sade ve içerik odaklı bir fizyoterapist portföy sitesi hazırlanıyor. Site ziyaretçileri için üyelik sistemi bulunmayacak. Site sahibi; blog yazılarını, çalışma alanlarını, görselleri ve temel iletişim bilgilerini kod görmeden yönetebilecek.

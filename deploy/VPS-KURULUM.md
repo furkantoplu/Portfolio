@@ -1,5 +1,42 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Güncel durum — 10 Ekim 2026 / Paket 53: VPS'ye taşıma tamamlandı
+
+Kullanıcı bu turda hassas paket aktarımını açıkça onayladı. Paket strict host kontrolüyle SSH/SCP üzerinden `149.56.103.60` hedefine gönderildi. Domain/Cloudflare/TLS değişmedi; bu **özel staging** kurulumudur, henüz public domain yayını değildir.
+
+- Kaynak arşivi `68b5736`, üretim etiketi `fizyoterapist-frontend:vps-20261010`; VPS Node imaj kimliği `sha256:ca823662972d6165533f8bd8ce360f297a768d54d9f759d31dc975f75a488005`. Runtime kullanıcısı node; Node standalone çalışıyor, Wrangler dev kullanılmıyor. PostgreSQL/Directus/Caddy yereldeki aynı sürümlerle çalışır.
+- Transfer manifestindeki sekiz dosyanın SHA256 kontrolü geçti. `fizyoterapi-restore.service` oneshot/RemainAfterExit olarak başarıyla tamamlandı, journal `PRIVATE_VPS_TRANSFER_COMPLETE` işaretini verdi. SSH kopsa da restore bağımsız çalışır. Yeniden başlatma sonrası transient unit geçmişi kaybolabilir; container restart policy ve volume'ler kalıcıdır. Bu unit'i dolu DB üzerine tekrar çalıştırma.
+- PostgreSQL custom dump gerçek boş hedefe single-transaction ile restore edildi. 14 tablonun kaynak/hedef parmak izleri aynı: hesaplar/parola hashleri/TOTP, rol/policy/access, içerikler/çeviriler/medya metadata dahil. Uygulama secret hash ve upload byte manifest eşit. İki yönetici, altı alan, üç blog, altı sayfa ve 22 çeviri korundu. Upload files0 mevcut durumdur; statik portreler imajda. Kaynak veri/hesap değiştirilmedi. Yalnız hedefe kopyalanan dört eski session silindi; yeni giriş gerekir.
+- Dört servis çalışıyor; database/directus/frontend healthy, proxy HTTP kabulü geçti. VPS RAM anlık yaklaşık: frontend66MiB, Directus224MiB, PostgreSQL40MiB, Caddy14MiB; toplam disk boşluğu31GB. Bunlar anlık ölçüm, kapasite/yoğun trafik garantisi değildir.
+- Hostta yalnız SSH22 public dinliyor; web127.0.0.1:8080 ve Directus127.0.0.1:8055. DB5432/frontend3000 internete yayımlanmıyor. Dış bilgisayardan8055/8080 erişimi başarısız, tünelden site başarılı. HTTP staging olduğu için Caddy'nin TLS/HTTP2/HTTP3 uyarıları beklenen durumdur; origin HTTPS henüz kurulmadı.
+- `/opt/furkantoplu/.env` root600; `.migration` ubuntu700, özel bundle dosyaları600. İlk geri dönüş paketi ayrıca `/var/backups/furkantoplu/migration-20261010-a94723c2a8` root700 altında korundu. Yerel özel yedek bilgisayarda kalır; bu off-server kopya da OneDrive/Git dışındadır. Sunucunun tek diskindeki ikinci kopya disk arızasına karşı ayrı off-server yedek değildir. Periyodik uygulama backup/retention ve geri yükleme provası yayın öncesi tamamlanmalı; bu pakette timer kurulmadı.
+
+### Özel siteyi bilgisayardan açma
+
+Codex'in geçici test tüneli/sekmesi test sonunda kapatılır; VPS container'ları çalışmaya devam eder. CMD veya PowerShell'de aşağıdaki komutu çalıştır, terminali açık bırak:
+
+```powershell
+ssh -i "C:\Users\Lenovo\.ssh\furkantoplu_vps" -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -N -L 127.0.0.1:9090:127.0.0.1:8080 ubuntu@149.56.103.60
+```
+
+Anahtar agent'ta değilse yerel passphrase prompt'u çıkabilir; özel anahtar/parola sohbete yazılmaz. Başarılı `-N` tüneli terminalde sessiz bekler. Tarayıcı: `http://localhost:9090/`, admin: `http://localhost:9090/bakir`. Bunlar yerel8080 sitesi değil, VPS'e şifreli tünellenmiş bağlantıdır. Giriş için mevcut e-posta/parola ve Google Authenticator kodu kullanılır; gerçek OTP testi kullanıcı tarafından yapılmalı. Ctrl+C yalnız tüneli kapatır, VPS sitesini durdurmaz.
+
+İçerik düzenlemelerini artık VPS panelinde yap. Yerel8080 ile VPS9090 ayrı DB'lerdir; yerelden yeni dump ile VPS verisinin üzerine yazma. Sonraki deploy'lar mevcut volume'leri korumalıdır; `down -v`, seed ve `restore-initial.sh` tekrar çalıştırılmaz.
+
+### Gerçek kabul testleri
+
+- 91 Node regresyon testi geçti. SSH tünelinden gerçek Caddy/Directus/Node zincirinde languages, practice-catalogue, public-design, account-access, hero-portrait ve media smoke geçti. Üç dil ana/list/about/contact, altı hizmetin18 detayı, blog ve yasal sayfalar, custom404, sitemap/hreflang, portre contain ve no-image kartlar doğrulandı.
+- `vps-deployment-smoke.mjs`: production canonical/robots URL'leri `https://furkantoplu.com`, proxy güvenlik başlıkları, admin no-store/noindex, `.env/runtime.env/database.dump/.migration` yolları404, gerçek Node image optimizer200, dış8055/8080 kapalı. İlk test SSR'de password input varsaydı; admin formu client-rendered olduğundan test shell kontrolüne düzeltildi. Site kodunda değişiklik gerektiren hata değildi.
+- Gerçek in-app browser artık erişilebildi: mobil menü→Hakkımda, yanlış URL→404→Blog→yazı→ana sayfa, ana dil dropdown TR→EN→DE akışları çalıştı; yakalanan error/warn logları boştu. Admin yükleme shell'inden giriş formuna geçti; e-posta/parola/6hane OTP alanları görüldü. Bu yalnız seçili viewport/akışların kontrolüdür, kapsamlı desktop/mobile pixel QA veya gerçek kullanıcı OTP login/CRUD testi değildir.
+- Published uploaded file yok; media smoke bunu açıkça bildirdi. Raw/optimized statik portre ve gerçek Directus runtime kullanıcısının upload dizinine yazma izni test edildi. VPS'te yeni dosya upload/replace/delete gerçek kullanıcı kabulü henüz yapılmadı. HTTP testindeki yetkisiz POST/PATCH/DELETE girişimleri401/403 beklenen sonuçları verdi; gerçek içerik silinmedi, yönetici hesabı eklenmedi.
+
+### Yayın öncesi kalanlar
+
+1. Kullanıcı özel VPS panelinde gerçek parola/OTP girişi ve bir içerik/görsel düzenleme kabul testi yapar. Canlı telefon/WhatsApp/e-posta/konum verileri son kez doğrulanır; blog EN/DE çevirileri ayrıca yayımlanmadıkça listelenmez.
+2. Düzenli DB/upload/appsecret yedek, retention/off-server kapsamı ve restore provası tamamlanır. Şimdiki iki lokasyondaki ilk snapshot geçmiş başlangıç durumudur, yeni editleri otomatik yedeklemez.
+3. Cloudflare zone/mevcut DNS/mail kayıtları incelenir; Namecheap nameserver ve A kaydı kullanıcıyla bağlanır. IPv6 dış ağ testi yokken AAAA eklenmez.
+4. Origin sertifikası/HTTPS + Cloudflare Full(strict), admin/API cache bypass ve secure cookie=true; domain üzerinden üç dil/admin/medya/404/SEO kabulü yapılır. TLS doğrulanmadan public admin girişi açılmaz.
+
 ## Taşıma hazırlığı — 10 Ekim 2026 / Paket 52
 
 **Yerel paket hazır; VPS'ye henüz dosya/veri aktarılmadı.** Hedefte yalnız boş `/opt/furkantoplu/.migration/20261010-a94723c2a8` dizini oluşturuldu. Güvenlik denetimi hassas aktarımı durdurdu; DB, yönetici parola hashleri/TOTP anahtarları ve uygulama sırrının `149.56.103.60` hedefine gönderilmesi için açık kullanıcı onayı bekleniyor. Red başka araç/betikle aşılmaz.
@@ -26,7 +63,7 @@ Onaydan sonra: SSH/SCP özel paket → checksum/boş hedef kontrolü → image l
 - Git kurulu; Docker henüz kurulu değil. TCP 22 dışında dış arayüzlerde dinleyen servis görülmedi. DNS ve zaman servislerinin yerel dinleyicileri mevcut.
 - Bu aşama yalnız erişim ve salt-okunur envanter kontrolüdür. Sunucu güncellemesi, firewall değişikliği, Docker kurulumu, site/veri aktarımı veya DNS/TLS değişikliği yapılmadı.
 
-## Güncel durum — sunucu hazırlığı tamamlandı, site henüz taşınmadı
+## Önceki aşama — 9 Ekim 2026: host hazırlığı tamamlandı
 
 Kullanıcı sıra olarak önce sunucu hazırlığını, ardından site/veri aktarımını ve en son domain/Cloudflare bağlantısını seçti. Cloudflare hesabı var; bu pakette hesap/DNS erişimi kullanılmadı.
 
@@ -78,7 +115,7 @@ Sunucu anahtarı KVM üzerinden alınan, kullanıcı tarafından paylaşılan pa
 
 Windows OpenSSH 9.5'in `ssh-keyscan` aracı bu sunucuda `unsupported KEX method sntrup761x25519-sha512@openssh.com` hatası verdi. Bu, gerçek SSH girişinin çalışmadığı anlamına gelmiyor. Kimlik kontrolünde yalnız o tanılama komutuna `KexAlgorithms=curve25519-sha256` verildi; kalıcı SSH ayarı değiştirilmedi. Son gerçek giriş bu override olmadan da başarılı oldu.
 
-## Sıradaki işler — site ve domain için henüz yapılmadı
+## İlk host hazırlığı sonundaki kontrol listesi — güncel sonuçlar üsttedir
 
 1. Yerel PostgreSQL ve `directus_uploads` için tutarlı yedek/aktarımı hazırla. Yalnız container imajı içerikleri ve yöneticileri taşımaz. `.env`, anahtarlar, oturum/uygulama sırları Git'e girmez.
 2. Production Compose/Caddy yapılandırması ve gerçek `SITE_PUBLIC_URL=https://furkantoplu.com` değeriyle derleme/çalıştırma hazırla. Mevcut localhost düzenini bozma; HTTPS oturum çerezi `secure` olmalı. TLS öncesi özel yönetim testi yalnız SSH tünelinden yapılmalı, public HTTP'den parola girilmemeli.
