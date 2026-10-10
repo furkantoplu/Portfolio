@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Güncel fotoğraf yerleşimi — 10 Ekim 2026 / Paket 56
+
+Kullanıcı fotoğrafların tamamının kırpılmadan gösterilmesini onayladı. SiteImage default inline contain/center uygular; Vinext fill'in inline cover varsayılanı artık blog/managed page fotoğraflarını kesmez. Hero özel bottom hizası, admin/private preview, mevcut visibility ve medya temizliği korunur. Nötr fotoğraf çerçeveleri ve ortak240px blog kart kutusu,1100px maksimum detay genişliği ve ayrı caption; telefon kapak yüksekliği300–440px.
+
+Sonra gelen public-design tema override'ları da uyumlandı: width100%/aspect-ratio:auto ve gerçek240px. Desktop1440, telefon390/360 browser kontrolünde fotoğraf tam görünür, yatay taşma yok, seçili error/warn boş. Çalışma alanlarında canlı fotoğraf yok; gerçek bileşen/CSS/JPEG ile salt-okunur localhost9123 fixture kart/detay kontrolü yapıldı, production kayıtlarına dokunulmadı. Fixture/server/tablar test sonrası kapatılır ve viewport reset edilir.
+
+Canlı imaj `vps-20261010-fit2`, kaynak0b920d5, runtime node;100 test/TypeScript başarılı. Sadece frontend güncellendi, DB/Directus/Caddy/hesap/TOTP/sessions/fotoğraflar değişmedi. Eski imajlar ve root700 photo-fit01/02 config/source yedeği korunur; kaynak/imaj checksum geçti. Yerel frontend aynı düzeltmeyle rebuild. Docker/CloudflareFullstrict/ikiCompose aynı; gerçek yeni upload/delete ve periyodik/off-server backup hâlâ ayrı işlerdir. Önceki bölümler tarihsel aşamaları kaydeder.
+
 ## Güncel medya düzeltmesi — 10 Ekim 2026 / Paket 55
 
 Kullanıcı uygulamayı onayladı; CMS fotoğraf 400 sorunu canlı VPS'te giderildi. Ortak SiteImage exact `/site-media/<UUID>` kaynaklarını mevcut güvenli medya route'undan doğrudan gösterir; statik portre optimizasyonu, contain/fill/priority/lazy ve tüm bölüm görünürlükleri korunur. Ana sayfa/about/blog/practice yüzeylerinin tamamı bu bileşeni kullanır; admin private preview/QR, Directus erişim kontrolü ve medya temizliği aynı kalır.

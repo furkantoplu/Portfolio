@@ -1,5 +1,23 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Güncel frontend — 10 Ekim 2026 / Paket 56: Kırpmasız fotoğraf ve responsive çerçeveler
+
+- Kullanıcı fotoğrafın tamamını göstermeyi, dik fotoğrafta kenar boşluğu olmasını ve ortak kart ölçülerini açıkça onayladı. Sorun tekrar eden400 değil, gerçek Vinext Image fill bileşeninin inline cover varsayılanıydı. CSS'teki contain tek başına bunu ezemiyordu. Ortak SiteImage artık default inline contain/center uygular, özel hero objectPosition=center bottom gibi explicit stiller korunur. Yükleme/publish/visibility/alt/sizes/priority/lazy/medya silme sistemi değişmedi.
+- Blog kartları240px ortak kutu; featured görsel contain ve nötr zemin, fotoğrafı büyüten hover yok. Article cover image ve caption ayrı akışta, desktop genişlik en çok1100px/yükseklik320–620px, telefon yüksekliği300–440px. Son yüklenen `public-design.css` de güncellendi:240px kutu kuralı ve article image width100%/aspect-ratio:auto. İlk fit1 kabulünde bu katmanın190px ve16/9 override'ı fark edildi, fit2 ile tamamlandı. Geometrinin gerçek browser'da ölçülmesi yalnız kaynak regex testiyle yetinilmesini önledi.
+- İki ayrı kontrollü release: `fit-20261010-01` (kaynak e300c00, imajfit1), ardından `fit-20261010-02` (kaynak0b920d5, son imajfit2). Son image ID `sha256:85600949a684c9d4db23f4a61ca848e378157a6bf9f54aa1d90dfd793e890514`, runtime node. İki pakette source/image strict SHA256 kontrolü geçti. AppData release ve VPS `.releases` transferlerinde env/DB/user/upload dosyası yok; yalnız Git kaynak dosyaları ve imaj. Önce private Docker preflight, sonra iki Compose dosyasıyla --no-deps frontend recreate.
+- Config/source yedekleri `/var/backups/furkantoplu/photo-fit-20261010-01` ve `photo-fit-20261010-02`, root700/dosyalar600. Son env yalnız FRONTEND_IMAGE=fit2; önceki media1/fit1 imajları korunur. PostgreSQL/Directus/Caddy yeniden başlatılmadı; content/translation/hesap/TOTP/sessions/medya değiştirilmedi. Yerel frontend de aynı kaynaklarla rebuild; DB'ler ayrı kalır.
+- Gerçek browser: desktop1440 ve telefon390/360 istek ölçüleri; scrollbar nedeniyle içerik1425/375/345px. Ana sayfa iki blog kartı masaüstünde aynı621.4×567.45px, görsel240px/contain. Mobil kart görsel259.2×240px; viewport scrollWidth=clientWidth, yatay taşma yok. Blog listesi/detayı contain/center ve JPEG yüklemesi gerçek. Article desktop img1098.4×620px (figure1100), telefonda337.6×370.875 ve307.2×342px, caption static. Sayfa aşağı kaydırılıp fotoğrafın tamamı görsel olarak da incelendi; seçili error/warn logları boş.
+- Canlı6 çalışma alanında fotoğraf yoktu. Bu nedenle production kaydı oluşturmak yerine `workarea-photo-preview.mjs` ile gerçek Areas/PracticeDetail/Image ve mevcut local stylesheet kullanılarak yalnız loopback9123 fixture oluşturuldu. Yayındaki seçili JPEG salt okunur aktarıldı; sahte önizleme metinleri yalnız bu localhost belleğinde, gerçek CMS/DB/Git content'e yazılmadı. Fotoğraflı kartlar ortak ölçülü/contain; mobil detay339.2×300px ve taşmasız375px, fotoğraf tam görünür. Bu fixture testini canlıda yeni çalışma alanı fotoğrafı yükleme/CRUD kabulü olarak sunma.
+- 100 Node testi/TypeScript ve production build geçti. Final domain media/blog-images/practice-images/vps-deployment/languages HTTP kontrolleri; statik portrait optimizer ve private ports/canonical/admin koruması korunur. Yerel önizleme sunucusu ve iki volumesiz VPS preflight container test sonunda kapatıldı; eski image/yedekler tutuldu, broad prune yapılmadı. Viewport override sonrasında reset edilir, test tabları kapatılır.
+
+Fotoğraflı çalışma alanı görünümünü veri değiştirmeden tekrar kontrol etmek için local8080 frontend açıkken:
+
+```powershell
+node scripts/tests/workarea-photo-preview.mjs "/site-media/YAYINLANMIS-FOTOGRAF-UUID"
+```
+
+Fixture `http://localhost:9123/` liste ve `/preview` detay; argüman exactUUID olarak doğrulanır, mevcut public JPEG gerekir. Ctrl+C ile kapat. Görseli üretimden silme/yeniden bağlama veya test için public çalışma alanı açma gerekmez. Gerçek admin upload/delete kabulü ve düzenli/off-server backup ayrı kalan işlerdir.
+
 ## Güncel frontend — 10 Ekim 2026 / Paket 55: CMS görsel 400 düzeltmesi
 
 - Kullanıcı teşhis ardından uygulamayı açıkça onayladı. Ortak `frontend/app/components/site-image.tsx` exact `/site-media/<UUID>` kaynaklarını `unoptimized` ile mevcut public medya route'undan gösterir. Ana sayfa hero/about/kartlar, Hakkımda, blog sayfa/list/detay ve çalışma alanı sayfa/list/detay aynı bileşeni kullanır. Alt/fill/priority/lazy/style/contain/visibility korunur. Admin private asset önizlemesi/QR bileşeni, Directus yayın erişimi ve fiziksel medya temizliği değişmedi. Framework optimizer veya SVG/type güvenlik allowlist'i gevşetilmedi.

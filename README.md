@@ -4,6 +4,8 @@ Fizyoterapist portföyü ve blogu için geliştirilen React/TypeScript tabanlı 
 
 ## VPS hazırlığı ve yayın sırası
 
+Güncel frontend / Paket 56: fotoğraflar ana sayfa, blog liste/detay ve çalışma alanlarında kırpılmadan gösterilir. Son imaj `fizyoterapist-frontend:vps-20261010-fit2`, kaynak `0b920d5`. Blog görsel kutuları240px, detay kapak/caption ayrıdır; telefon ve masaüstü gerçek browser kontrolü yapıldı. 100 test ve TypeScript geçti; gerçek içerik/fotoğraf/DB değiştirilmedi. Aşağıdaki Paket55 önceki yükleme düzeltmesidir.
+
 10 Ekim 2026: site mevcut PostgreSQL/veri/hesaplarla VPS'te çalışıyor ve `https://furkantoplu.com` üzerinden erişilebilir. Namecheap nameserver'ları Cloudflare'e geçti; kullanıcı Full(strict) seçimini tamamladığını bildirdi. Origin'de apex/www için doğrulanmış Let’s Encrypt sertifikaları ve otomatik yenileme, HTTP→HTTPS ve www→apex yönlendirmeleri aktif. Üretim frontend Node standalone'dır; yerel Wrangler düzeni korunur. Gerçek admin/OTP/medya kabulü, gerçek iletişim bilgileri ve düzenli yedekler teslim öncesi kalan işlerdir.
 
 Paket 55: admin'den yüklenen CMS fotoğraflarının Node standalone Image 400 sorunu düzeltildi. Ortak `SiteImage` yalnız `/site-media/<UUID>` için doğrudan güvenli medya route'unu kullanır; statik portreler aynı optimizer'da kalır. Canlı imaj `fizyoterapist-frontend:vps-20261010-media1`, kaynak `b9b41cc`. Gerçek yüklenmiş JPEG ana sayfa/blog/detayda ve tarayıcıda doğrulandı; 98 test/TypeScript geçti. Bu düzeltme yeni admin upload/delete kabulünün veya düzenli yedeğin tamamlandığı anlamına gelmez.

@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 10 Ekim 2026: Fotoğrafın tamamı, sabit çerçeve ve gerçek responsive ölçüm
+
+Kullanıcı tercihi kırpmasız tamfotoğraf. Public SiteImage inline contain/center default kullanır; CSS contain tek başına framework inline cover'ı yenemez. Explicit hero objectPosition/style korunur. Blog kart fotoğraf alanları240px ortak, dik kaynaklar nötr yan boşlukla ortalanır. Detay kapağı max1100px; image yüksekliği desktop320–620/mobil300–440, caption fotoğrafın üstünde değil normal akıştadır. Statikoptimizer ve CMS directmedia ayrımı/visibility/medya silme davranışı değişmez.
+
+Layout hemglobals hemson yüklenen public-designCSS ile kontrol edilir. Specificity/son tema aspect-ratio kuralı source testinde doğru görünen ölçüyü bozabilir; actualcomputedStyle ve DOMrect/clientWidth/scrollWidth browser kabulünün parçasıdır. Viewport değişince gerçek clientWidth okunur; yeni sekmeye override geçmiş varsayılmaz. Lazy/offscreen görsel loaded=false ise görüntüye scroll/yükleme sonrası tamamlandığı doğrulanır; hata sayılmaz.
+
+Canlı koleksiyonda görsel yoksa yalnız CSS kaynağına dayanarak görsel kabulü tamam denmez. Publicyayında testkayıt açmadan gerçek bileşen/CSS ve seçili public fotoğrafı kullanan loopback read-onlyfixture ile desktop/mobile kontrol yapılır; fixture canlıupload/CRUD testinin yerine geçmez. Yeni release ayrı tag/checksum/privatepreflight/backup; sadecefrontend güncellenir, DB/medya hiçbirtest için silinmez. Fixture/tab/viewport kapat/reset, broad Docker prune yok.
+
 ## Karar — 10 Ekim 2026: CMS fotoğrafları için ortak SiteImage
 
 Node standalone'ın statik-only Image hattı uzantısız `/site-media/<UUID>` kaynaklarını desteklemiyor. Ortak SiteImage yalnız exact yönetilen UUID yolu için unoptimized=true kullanır; diğer kaynaklar/portreler ve isteğe bağlı explicit unoptimized davranışı korunur. Yeni public CMS fotoğraf yüzeyi bu bileşeni kullanmalıdır. Private admin preview hâlâ oturumlu `/bakir-api/assets/UUID`; public dosya kitaplığı açılmaz. Framework güvenlik/type kontrolü değiştirilmez, sahte uzantı veya node_modules yaması yapılmaz.
