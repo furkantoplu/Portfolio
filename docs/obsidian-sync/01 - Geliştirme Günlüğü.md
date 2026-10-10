@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Geliştirme Günlüğü
 
+## 10 Ekim 2026 — Paket 57: Salt-okunur güvenlik ve yayın raporu
+
+- Kullanıcı kendi mimarisine uygun güvenlik sorunlarını raporlamayı ve Google/Search Console yayın işlerini birlikte değerlendirmeyi istedi. Security scan becerisi/masaüstü kuralları okundu; native başlangıç60 saniyede authoritative context vermedi. Tam otomatik rapor veya scan completion iddiası yok; sınırlı manuel kontrol ve SEO için Sites kaynak yönergesi kullanıldı.
+- İlgili auth/admin/ownership/çeviri/media/cleanup/Compose/Caddy kaynakları, seçili kurulu Directus env/upload kodu, frontend runtime bağımlılıkları ve canlı HTTP/DNS kontrol edildi. Npm audit salt-okunur çalıştı; build/runtime ve advisory önkoşulları ayrı değerlendirildi. Gerçek sırlar/hashler/OTP'ler alınmadı; yalnız politika/2FA toplamları ve whitelist env alanları okundu. Bazı tanılama komutlarının paket export/PowerShell quoting sorunları düzeltilip tekrarlandı; bunlar uygulama mutasyonu değildi.
+- Robots/sitemap/canonical/indexleme işaretleri, metadata ve37 sitemap adresinin HTTP durumu ölçüldü. Google/WhatsApp/Directus ve ilgili advisory birincil dokümanları kontrol edildi. Search Console/Cloudflare dashboard veya provider backup ayarlarına erişilmedi; gerçek Google indeks durumu ve tam container/OS CVE kapsamı tamam denmedi.
+- Ayrıntılı bulgular/riskler ve iyileştirme sırası özel proje raporuna yazıldı; public repoya rapor/kanıt push edilmez. Yerel kopya mevcut backups ignore kuralı içinde; Obsidian03 tarihli raporla hash eşitliği korunur. Üç genel notta yalnız bu işlem özeti tutulur, kapatılmamış ayrıntılar kopyalanmaz.
+- Bu tur application code/lockfile/runtime/DB/fotoğraf/hesap/DNS/Google değişikliği veya exploit/brute-force/zararlı upload yok. Yalnız rapor ve proje notları oluşturuldu/güncellendi. GitHub'a push yapılmadı; düzeltme ve yayın kayıtları sonraki ayrı onaylı paketlerdir.
+
 ## 10 Ekim 2026 — Paket 56: Tam fotoğraf görünümü, desktop/mobile kabulü
 
 - Kullanıcı ana sayfa/blog liste/detay fotoğraflarında yüzün kesildiğini bildirdi; çalışma alanlarını ve mobil görünümü kontrol istedi. Sites kaynak/Computer Use browser talimatları okundu. Önce salt-okunur ölçüm yapıldı; ardından kullanıcı fotoğrafın tamamı/ortak kart ölçüsü/kenar boşluğu seçimini açıkça onayladı. İlk browser handle adı yoktu; mevcut browser ID2'ye bağlanıp belgelenmiş viewport capability kullanıldı. Native apps, gerçek admin login veya DB değişikliği yok.

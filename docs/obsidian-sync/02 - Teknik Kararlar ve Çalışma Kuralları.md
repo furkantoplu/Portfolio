@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 10 Ekim 2026: Güvenlik raporu ile düzeltme/yayın yetkisini ayır
+
+Kontrol/rapor isteği deploy, dependency upgrade, auth policy, DNS veya Google hesabı yazımı için yetki değildir. Native scan tamamlanmadığında canonical rapor/complete veya tam pentest iddiası yapılmaz; alternatif manuel kontrolün kapsamı ve belirsizlikleri açıkça yazılır. Advisory paket etiketi gerçek uygulama saldırı yolu olarak otomatik kabul edilmez; build/runtime/vendor ve önkoşullar ayrılır.
+
+Kapanmamış değerlendirmeler özel/Git ignored raporda ve kullanıcının Obsidian notunda tutulur; public GitHub'a otomatik push edilmez. Ortak mimari/günlük notları yalnız işlemin genel kaydını içerir. Google doğrulama veya sitemap gönderimi indeks/sıra garantisi değildir; owner hesabı ve gerekli DNS yazımı ayrı onaylı akışla yapılır.
+
 ## Karar — 10 Ekim 2026: Fotoğrafın tamamı, sabit çerçeve ve gerçek responsive ölçüm
 
 Kullanıcı tercihi kırpmasız tamfotoğraf. Public SiteImage inline contain/center default kullanır; CSS contain tek başına framework inline cover'ı yenemez. Explicit hero objectPosition/style korunur. Blog kart fotoğraf alanları240px ortak, dik kaynaklar nötr yan boşlukla ortalanır. Detay kapağı max1100px; image yüksekliği desktop320–620/mobil300–440, caption fotoğrafın üstünde değil normal akıştadır. Statikoptimizer ve CMS directmedia ayrımı/visibility/medya silme davranışı değişmez.

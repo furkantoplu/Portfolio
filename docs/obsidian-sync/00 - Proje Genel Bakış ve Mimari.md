@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Güvenlik ve Google yayın değerlendirmesi — 10 Ekim 2026 / Paket 57
+
+Kullanıcının ilgili güvenlik kontrolleri ve Google hazırlığı raporu isteği salt-okunur incelendi. Uygulama/deploy/DB/hesap/Cloudflare/DNS/Search Console ayarları değiştirilmedi. Native Security başlangıç cevabı alınamadığından tamamlanmış otomatik scan iddiası yok; kapsamı sınırlı manuel kaynak ve canlı metadata/politika/HTTP kontrolü yapıldı.
+
+Kapanmamış güvenlik değerlendirmesi public GitHub'a gönderilmez. Ayrıntılı proje raporu yalnız Git ignored `backups/reports/2026-10-10-guvenlik-google-kontrolu.md` ve Obsidian'daki `03 - Güvenlik ve Google Yayın Kontrolü - 2026-10-10.md` içinde tutulur. Bu rapor formal Codex Security canonical report değildir. Mevcut site fit2 olarak çalışır; iyileştirme paketleri ayrı kullanıcı onayıyla uygulanır.
+
 ## Güncel fotoğraf yerleşimi — 10 Ekim 2026 / Paket 56
 
 Kullanıcı fotoğrafların tamamının kırpılmadan gösterilmesini onayladı. SiteImage default inline contain/center uygular; Vinext fill'in inline cover varsayılanı artık blog/managed page fotoğraflarını kesmez. Hero özel bottom hizası, admin/private preview, mevcut visibility ve medya temizliği korunur. Nötr fotoğraf çerçeveleri ve ortak240px blog kart kutusu,1100px maksimum detay genişliği ve ayrı caption; telefon kapak yüksekliği300–440px.
