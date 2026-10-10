@@ -60,6 +60,9 @@ test('Blog frames remain consistent, featured photo has no crop-on-hover and det
   assert.match(css,/\.article-cover__caption \{ position: static;/);
   assert.match(css,/\.article-cover__image \{ height: clamp\(300px, 95vw, 440px\)/);
   assert.match(css,/\.featured-article__image \{ min-height: 0; height: clamp\(300px, 95vw, 440px\)/);
+  const theme = await readFile(new URL('../../frontend/app/public-design.css',import.meta.url),'utf8');
+  assert.match(theme,/\.site-shell :is\(\.blog-card, \.archive-card\) \.content-card-image \{ height: 240px; min-height: 240px;/);
+  assert.match(theme,/\.site-shell \.article-cover__image \{[^}]*width: 100%;[^}]*aspect-ratio: auto;/);
 });
 
 test('Static portraits remain optimized; only exact managed UUID paths bypass it', () => {

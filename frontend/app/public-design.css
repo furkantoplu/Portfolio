@@ -108,6 +108,7 @@
 .site-shell .blog-card__footer { margin-top: auto; gap: 12px; flex-wrap: wrap; border-color: var(--public-line); }
 .site-shell .blog-card__footer a { color: var(--public-ink); min-height: 44px; font-size: 16px; }
 .site-shell .content-card-image { height: 190px; min-height: 190px; border-radius: 3px; background: var(--public-tone); }
+.site-shell :is(.blog-card, .archive-card) .content-card-image { height: 240px; min-height: 240px; }
 .site-shell .content-card-image img { object-fit: contain; padding: 10px; }
 .site-shell :is(.content-card-image, .featured-article__image):hover img { transform: none; }
 
@@ -158,8 +159,8 @@
 .site-shell .archive-card h3 { font-family: var(--public-sans); font-size: 26px; font-weight: 600; }
 .site-shell .article-header h1 { font-family: var(--public-display); font-size: clamp(42px, 4.8vw, 70px); line-height: 1.1; letter-spacing: -0.035em; }
 .site-shell .article-body h2, .site-shell .legal-content h2 { font-family: var(--public-sans); font-size: clamp(26px, 3vw, 38px); font-weight: 600; line-height: 1.25; letter-spacing: -0.025em; }
-.site-shell .article-cover { width: min(100% - 64px, 1280px); min-height: 0; border-radius: 6px; box-shadow: none; }
-.site-shell .article-cover__image { position: relative; aspect-ratio: 16 / 9; background: var(--public-tone); }
+.site-shell .article-cover { width: min(100% - 64px, 1100px); min-height: 0; border-radius: 6px; box-shadow: none; }
+.site-shell .article-cover__image { position: relative; width: 100%; height: clamp(320px, 45vw, 620px); aspect-ratio: auto; background: var(--public-tone); }
 .site-shell .article-cover img { object-fit: contain; object-position: center; }
 .site-shell .article-cover__caption { position: static; padding: 16px 20px; background: #eef0e8; color: var(--public-muted); font-size: 12px; line-height: 1.6; }
 .site-shell .article-body blockquote { border-radius: 4px; background: var(--public-tone); color: var(--public-ink); border-left: 3px solid var(--public-accent); padding: 30px; }
@@ -200,6 +201,7 @@
   .site-shell .article-cover { width: min(100% - 36px, 720px); }
 }
 @media (max-width: 560px) {
+  .site-shell .article-cover__image { height: clamp(300px, 95vw, 440px); }
   .site-shell .practice-grid.practice-grid--six { grid-template-columns: minmax(0, 1fr); }
   .site-shell .hero__identity { margin-bottom: 24px; }
   .site-shell .hero__identity span { line-height: 1.5; }
