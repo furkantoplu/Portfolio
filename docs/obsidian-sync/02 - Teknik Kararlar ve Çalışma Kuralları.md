@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 10 Ekim 2026: CMS fotoğrafları için ortak SiteImage
+
+Node standalone'ın statik-only Image hattı uzantısız `/site-media/<UUID>` kaynaklarını desteklemiyor. Ortak SiteImage yalnız exact yönetilen UUID yolu için unoptimized=true kullanır; diğer kaynaklar/portreler ve isteğe bağlı explicit unoptimized davranışı korunur. Yeni public CMS fotoğraf yüzeyi bu bileşeni kullanmalıdır. Private admin preview hâlâ oturumlu `/bakir-api/assets/UUID`; public dosya kitaplığı açılmaz. Framework güvenlik/type kontrolü değiştirilmez, sahte uzantı veya node_modules yaması yapılmaz.
+
+Görsel ölçü/style/loading/visibility aynı kalır; verinin yayın/hidden/draft erişimi ve kaldırıldığında fiziksel/DB temizliği mevcut route/CMS'ye aittir. SSR gerçek framework renderer testi ve live smoke actual img.src/currentSrc/naturalWidth ölçümüyle doğrulanır; yalnız JSON'da görsel yolunu görmek başarılı render sayılmaz. Yeni JPEG/PNG/WebP dosyaları orijinal baytlarıyla gösterilir; resize pipeline ayrıca tasarlanır.
+
+Frontend hotfix deploy yeni ayrı image tag + checksum/private preflight + eski image/config/source yedeği + iki Compose dosyasıyla --no-deps frontend update şeklinde yapılır. DB restore/seed/upload silme yok; gerçek secrets veya yönetici OTP okunmaz. Başarıdan sonra yalnız kendi volumesiz fixture'ı temizle, broad Docker prune yapma. Rootconfig/source yedeği günlük veri yedeği yerine geçmez.
+
 ## Karar — 10 Ekim 2026: Public HTTPS override ve sertifika öncesi kapalı upstream
 
 Private VPS base korunur; canlı kullanım `-f compose.vps.yaml -f compose.vps.https.yaml` zorunlu. Compose>=2.24.4 ports !override eski 8080'i kaldırır; yalnız IPv4 TCP 80/443 ve UDP 443 public. Directus Secure cookie=true; 8055 loopback ve DB/frontend/Caddy yönetim portu internal kalır. Base-only up normal operasyonda kullanılmaz. Eski HTTP 9090 tüneli artık giriş için değildir; canlı domain/bakir kullanılır.

@@ -1,6 +1,14 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
-## Açık hata — 10 Ekim 2026: VPS'te yüklenen görselin Image isteği 400
+## Güncel medya düzeltmesi — 10 Ekim 2026 / Paket 55
+
+Kullanıcı uygulamayı onayladı; CMS fotoğraf 400 sorunu canlı VPS'te giderildi. Ortak SiteImage exact `/site-media/<UUID>` kaynaklarını mevcut güvenli medya route'undan doğrudan gösterir; statik portre optimizasyonu, contain/fill/priority/lazy ve tüm bölüm görünürlükleri korunur. Ana sayfa/about/blog/practice yüzeylerinin tamamı bu bileşeni kullanır; admin private preview/QR, Directus erişim kontrolü ve medya temizliği aynı kalır.
+
+Kod `b9b41cc`, Node imaj `vps-20261010-media1`, node runtime. İki dosyalı HTTPS Compose ile yalnız frontend recreate; DB/Directus/Caddy/upload/hesap/TOTP/oturumlar değiştirilmedi. Gerçek JPEG yeni imajın private loopback preflight'ında, sonra domain ana sayfa/blog/detay HTML'inde ve browser complete=true/862×1320 ile doğrulandı; seçili JavaScript error/warn yok. Preflight container geçicidir ve test sonrası kaldırılır; eski imaj ve root700 config/source geri dönüş yedeği tutulur.
+
+98 regresyon/TypeScript ve gerçek HTTPS smoke'ları geçti. Local frontend de rebuild edildi; ayrı DB korunur. Node'un statik-only optimizer endpoint'i hâlâ dinamik kaynağa400 verebilir, ancak public bileşen artık bu isteği üretmez; eski açık sekme yenilenmelidir. CMS görselleri orijinal baytlarıyla gelir, resize pipeline kurulmadı. Gerçek admin yeni upload/delete kabulü ve periyodik/off-server backup hâlâ ayrı işlerdir. Aşağıdaki teşhis bölümü düzeltme öncesinin tarihsel kaydıdır.
+
+## Teşhis geçmişi — 10 Ekim 2026: VPS'te yüklenen görselin Image isteği 400
 
 Kullanıcının canlı panelden yükleyip bloga bağladığı JPEG, Directus public media ve frontend `/site-media/<UUID>` yollarında 200 / image/jpeg olarak geliyor; baytlar eşit. Ancak `/_next/image?url=%2Fsite-media%2F<UUID>&w=640&q=75` 400, gövde `The requested resource is not an allowed image type`. Aynı hata Node container'ın localhost3000 isteğinde de var; Cloudflare/DNS/TLS kaynaklı değil.
 
