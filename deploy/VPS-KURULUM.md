@@ -1,5 +1,18 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Taşıma hazırlığı — 10 Ekim 2026 / Paket 52
+
+**Yerel paket hazır; VPS'ye henüz dosya/veri aktarılmadı.** Hedefte yalnız boş `/opt/furkantoplu/.migration/20261010-a94723c2a8` dizini oluşturuldu. Güvenlik denetimi hassas aktarımı durdurdu; DB, yönetici parola hashleri/TOTP anahtarları ve uygulama sırrının `149.56.103.60` hedefine gönderilmesi için açık kullanıcı onayı bekleniyor. Red başka araç/betikle aşılmaz.
+
+- Yerel Compose ve Dockerfile korunur. `frontend/Dockerfile.vps` / `vite.vps.config.ts` ayrı Node standalone üretim imajı oluşturur; VPS'de Wrangler geliştirme sunucusu kullanılmaz. Non-root runtime, `fizyoterapist-frontend:vps-20261010`, yaklaşık100MB. Public üç dil rotaları,404,görsel optimizasyonu/sitemap yerel üretim container'ında HTTP ile doğrulandı. Geçici test container'ı kaldırıldı, imaj/yedek ve yerel site korunur.
+- `compose.vps.yaml`: PostgreSQL16, Directus12.4, Node frontend, Caddy; kaynak sınırları ve yalnız loopback8080/8055. İlk kabul testi SSH tünelinden; public HTTP admin login açılmaz. Ayrı cookie adı local oturumuyla çakışmayı önler. Secure cookie şimdilikfalse, HTTPS yayında true zorunlu. Seed/admin hesabı oluşturma yok; mevcut DB restore edilir.
+- Tutarlı snapshot için kaynak proxy/Directus kısa süre durduruldu, finally tekrar başlatıldı. İlk checksum yardımcı komutu hatası düzeltildi; yeni tam yedek başarılı. Kaynak veri/volume silinmedi. Tam özel yedek `C:\Users\Lenovo\AppData\Local\fizyoterapi-backups\20261010-a94723c2a8`; OneDrive/Git dışında kullanıcı/SYSTEM ACL korumalı. Önceki eksik paket kullanılmaz.
+- Envanter:2 yönetici,6 çalışma alanı,3 blog,6 sayfa,22 çeviri. Uploaded file kayıtları ve volume boş olduğundan boş upload checksum beklenir. Statik portreler kaynak/imajda. Gerçek uygulama secret korunur, VPS PostgreSQL parolası yeni rastgeledir; sırlar log/Git/notlara yazılmaz. SSH özel anahtarı aktarılmaz.
+- `prepare-vps-migration.mjs` snapshot; `package-vps-migration.mjs` Git HEAD kaynak arşivi, Docker image save ve SHA256 manifest üretir. Kaynak arşivi68b5736; kullanıcı untracked prototip görselleri eklenmedi. `restore-initial.sh` yalnız boş hedefe restore eder,14 tablo parmak izi/upload byte hash/appsecret hash karşılaştırır, yalnız hedef kopya session'larını iptal eder. Betik VPS'de henüz çalıştırılmadı. Dolu hedefe kör retry veya DB/volume silme yok.
+- 91 Node regresyon geçti; üretim frontend'in Caddy olmayan doğrudan portundaki API404 tam sistem kabulü sayılmaz. Gerçek restore/proxy/admin/TOTP/medya testleri ve periyodik backup henüz yapılmadı. DNS/nameserver/Cloudflare/sertifika değişmedi; site yayında değildir.
+
+Onaydan sonra: SSH/SCP özel paket → checksum/boş hedef kontrolü → image load/restore → özel tünel testleri → düzenli yedek/retention → domain/origin HTTPS/Cloudflare Full(strict). Kaynak yerel site çalışmaya devam eder.
+
 ## İlk erişim kontrolü — 9 Ekim 2026
 
 - Domain: `furkantoplu.com`; kayıt firması Namecheap.

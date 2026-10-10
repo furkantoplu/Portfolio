@@ -1,5 +1,14 @@
 # Fizyoterapist Web Sitesi — Geliştirme Günlüğü
 
+## 10 Ekim 2026 — Paket 52: Taşıma paketi hazır, hassas aktarım onayı bekliyor
+
+- Kullanıcı Docker ile VPS'ye taşımanın başlamasını istedi. Sites kaynak hazırlığı yönergesi kullanıldı; mevcut starter/local önizleme korundu, hosting kullanıcının VPS'si. Node standalone ayrı VPS config/Dockerfile, non-root yaklaşık100MB imaj; local Wrangler düzeni değiştirilmedi. Public rotalar/404/görsel/sitemap HTTP kontrolü ve91 regresyon geçti. Caddy'siz API404 tam sistem testi sayılmaz; browser/piksel ve gerçek OTP login testi yapılmadı.
+- VPS Compose PG16/Directus12.4/Node/Caddy, loopback8080/8055 ve ayrı cookie adı kullanır. Admin/seed yeniden oluşturulmaz. Secure cookie false sadece SSH tünel staging içindir; gerçekHTTPS'te true yapılacak.
+- Kaynak proxy/Directus kısa süre durdurulup tutarlı snapshot alındı, finally açıldı. İlk checksum komutu hatası düzeltildi ve yeni tam snapshot başarılı. Kaynak veri silinmedi. Tam özel paket `C:\Users\Lenovo\AppData\Local\fizyoterapi-backups\20261010-a94723c2a8`: OneDrive/Git dışında ACL korumalı,2 yönetici/6 alan/3 blog/6 sayfa/22 çeviri; uploaded files0, statik portreler imajda. Secret korunur, yeni güçlü VPS DB parolası üretildi; sırların kendisi not/loglara yazılmadı.
+- Kaynak arşivi68b5736, image save/SHA256 manifest hazır. Boş hedef restore betiği14 tablo parmak izi, upload bytes ve appsecret hash kontrolü yapacak; yalnız hedef session kopyasını iptal edecek. Gerçek hesap/TOTP değişmez; gerçek kullanıcı sırrıyla OTP üretip test yapılmaz.
+- SSH hedefi kontrol edildi,33GB boş disk; sadece boş özel `/opt/furkantoplu/.migration/20261010-a94723c2a8` oluşturuldu. SCP çalıştırılmadan güvenlik denetimi reddetti: DB/parola hashleri/TOTP/secret'ın149.56.103.60'a aktarımı için açık kullanıcı onayı bekleniyor. Red başka araçla aşılmadı; dosya/DB aktarımı, restore, VPS container startup ve DNS/CF/TLS yapılmadı.
+- Geçici yerel üretim test container'ı kaldırıldı; imaj/yedekler ve asıl yerel site korunur. Bekleyenler onay→aktarım/restore→özel tünel/proxy/admin kabulü→düzenli yedek→domain/HTTPS/CF. Üç Obsidian notu eşitlik guard/hash ile senkronlanır, yalnız paket dosyaları Git'e alınır.
+
 ## 20 Eylül 2026
 
 ### Araştırma ve kapsam

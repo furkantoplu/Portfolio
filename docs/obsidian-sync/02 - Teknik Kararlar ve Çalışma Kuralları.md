@@ -466,6 +466,15 @@ docker compose down
 
 ## Güncelleme kontrol listesi
 
+### Karar 055 — VPS runtime, snapshot ve hassas aktarım sınırı
+
+- Yerel Wrangler düzeni ve VPS Node standalone ayrı config/Dockerfile kullanır; starter eklentisi korunur, açık VPS talebi başka hosting'e çevrilmez. Non-root frontend/internal network/loopback staging; TLS öncesi public admin login yok. Ayrı cookie adı local/VPS çakışmasını önler, secure=false sadece özel aşamadır.
+- İmaj veri/hesap taşımaz. DB/upload snapshot için yazıcı servisler kısa dondurulur, finally kaynak açılır. Yedekler OneDrive/Git dışında özel ACL'li; secrets not/loglarda bulunmaz. Account/TOTP/appsecret korunur, server DB parolası yeni; copied sessions yalnız hedefte iptal edilir.
+- Restore boş DB/volume şartı ve SHA256/table parmak iziyle ilerler. Dolu hedefe kör retry/overwrite veya volume wipe yok. Files0 ise boş upload manifest beklenir; statik portreler ayrı imaj/kaynakta korunur.
+- Güvenlik denetimi hassas DB/TOTP/secret egress'ini reddederse hedef ve veri kapsamıyla açık kullanıcı onayı istenir; red başka araç/betikle aşılmaz. Hazır paket ile gerçekten taşınan/yayımlanan veri ayrı raporlanır. SSH özel anahtarı paylaşılmaz.
+- Frontend HTTP testi proxy/admin/TOTP kabulü değildir; veri hashleri gerçek OTP/login yerine geçmez. Gerçek kullanıcı TOTP sırrıyla test kodu üretilmez. Domain/HTTPS/Cloudflare ve düzenli backup/restore tamamlanmadan production teslimi iddia edilmez.
+
+
 Her paket sonunda:
 
 1. Masaüstü görünüm kontrol edilir.

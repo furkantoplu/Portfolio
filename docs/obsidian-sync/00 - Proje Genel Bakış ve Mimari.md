@@ -249,6 +249,14 @@ Bayraklar tüm dillerde ortak düzen bilgisidir. `practice_areas` ve `blog_posts
 
 Bu bir gizlilik/yetkilendirme sistemi değildir. Public içerik API'si gizli bölüm metinlerini, public referanslı dosya URL'si görselleri sunmaya devam edebilir. Hassas içerik konulmamalıdır. Bölüm kapatma URL/sitemap/SEO veya yazının yayın durumunu kaldırmaz. Gerçek admin hesabı/şifre/2FA test için değiştirilmez. Otomatik render/kayıt testleri sahte içerik kullanır. Bu pakette Computer Use yardımcısı sandbox başlatma hatası verdiğinden masaüstü/mobil görsel doğrulaması tamamlanamadı; production build, TypeScript/ESLint ve canlı HTTP kontrolleri geçti.
 
+## 10 Ekim 2026 / Paket 52 — VPS taşıma hazırlığı
+
+Yerel düzen korunarak ayrı Node standalone üretim imajı ve `compose.vps.yaml` hazırlandı: PostgreSQL16/Directus12.4/Node/Caddy, non-root frontend, loopback staging. DNS/HTTPS/Cloudflare ayrı aşama; secure cookie özel tüneldefalse, yayındatrue. Seed mevcut veriyi ezmez.
+
+Özel ACL'li snapshot ve transfer paketi: `C:\Users\Lenovo\AppData\Local\fizyoterapi-backups\20261010-a94723c2a8` (OneDrive/Git dışında).2 yönetici/6 alan/3 blog/6 sayfa/22 çeviri; upload files0, statik portreler imajda. Uygulama secret/TOTP korunacak, server DB parolası yeni; gerçek sırlar notlara yazılmaz. Kaynak arşivi68b5736.14 tablo/upload/secret hash kontrollü boş hedef restore betiği hazır, çalıştırılmadı.
+
+**VPS'ye dosya/DB gönderilmedi.** Güvenlik denetimi hassas paketin149.56.103.60'a aktarımı için açık onay istiyor; sadece boş özel hedef dizini oluşturuldu.91 regresyon ve yerel üretim HTTP kontrolleri geçti; proxy/admin gerçek login/restore/backup/domain kabulü bekliyor. Site yerelde çalışıyor, yayın tamamlanmış değil. Ayrıntı `deploy/VPS-KURULUM.md`.
+
 ## Beyaz önlüklü ana karakter — 8 Ekim 2026
 
 Kullanıcının sağladığı yeni fotoğraf ana sayfada önceki kırmızı tişörtlü portrenin yerine geçti. Yerleşik image_gen ile kişi belden yukarı çıkarıldı, klinik arka planı kaldırıldı; `frontend/public/furkan-toplu-hero-white-coat-v1.png` şeffaf PNG'dir. Perspektif, z-index 120, drop-shadow ve alttan kaybolan maske mevcut CSS'ten gelir, yeni 3D motor/model eklenmedi. Önceki asset dosyası geri dönüş için korunur. Admin görsel yönetimi ve üç dilde ortak görsel kullanımı devam eder.
