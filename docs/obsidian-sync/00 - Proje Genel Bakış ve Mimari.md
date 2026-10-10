@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Açık hata — 10 Ekim 2026: VPS'te yüklenen görselin Image isteği 400
+
+Kullanıcının canlı panelden yükleyip bloga bağladığı JPEG, Directus public media ve frontend `/site-media/<UUID>` yollarında 200 / image/jpeg olarak geliyor; baytlar eşit. Ancak `/_next/image?url=%2Fsite-media%2F<UUID>&w=640&q=75` 400, gövde `The requested resource is not an allowed image type`. Aynı hata Node container'ın localhost3000 isteğinde de var; Cloudflare/DNS/TLS kaynaklı değil.
+
+Gerçek çalışan Vinext 1.0.0-beta.5 Node standalone `prod-server.js`, App Router optimizer dalında URL uzantısından `contentTypeForPath` kullanıyor, ardından yalnız build statik dosyalarını `tryServeStatic` ile okuyor. Uzantısız dinamik Directus görsel yolunu route handler'a geçirmeden reddediyor. Güvenli öneri: sadece yönetilen `/site-media/<UUID>` görsellerinde optimizer'ı atlayarak mevcut doğrulanmış medya route'unu kullanmak; statik portre optimizer'ını, Directus yayın yetkisini ve dosya temizliğini korumak. URL'ye sahte uzantı eklemek yeterli değil; static dosya varsayımı da var. Global tür/güvenlik kontrolü gevşetilmeyecek.
+
+Bu tur yalnız kontrol/teşhis istendi: kaynak/runtime/config/DB/görsel değiştirilmedi, deploy yapılmadı; düzeltme onayı bekleniyor. Önceki medya kabulünde uploaded file0 olduğundan yalnız statik fotoğraf senaryosu geçmişti; Paket54'teki diğer 94 test başarısı bu yeni dinamik yükleme hatasının çözüldüğü anlamına gelmez. Gerçek yüklenen fotoğraf smoke artık hatayı yeniden üretiyor. Ayrıntılar günlükte.
+
 ## Güncel yayın durumu — 10 Ekim 2026 / Paket 54
 
 Canlı site `https://furkantoplu.com`, yönetim `https://furkantoplu.com/bakir`. Kullanıcı Namecheap nameserver'larını daisy/elliot Cloudflare'e geçirdi; recursive NS ve yetkili apex/www proxy A yanıtları doğrulandı. Kullanıcı Full(strict) kaydettiğini teyit etti; VPS origin ve Cloudflare üzerinden HTTPS 200, gerçek alan adı sertifika doğrulaması geçti. DNSSEC kapalı, AAAA yok; mail MX/TXT değiştirilmedi.
