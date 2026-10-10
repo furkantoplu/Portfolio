@@ -1,0 +1,11 @@
+[Unit]
+Description=Nightly private site backup (Turkey 04:15)
+
+[Timer]
+OnCalendar=*-*-* 04:15:00 Europe/Istanbul
+AccuracySec=1min
+Persistent=true
+Unit=furkantoplu-backup.service
+
+[Install]
+WantedBy=timers.target

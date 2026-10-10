@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 10 Ekim 2026: Küçük, özel ve sınırları açık VPS yedeği
+
+İyileştirmeler küçük paketlerle uygulanır. İlk paketin başarı koşulu günlük yerel backup/time/retention/servis kurtarma ve arşiv doğrulamasıdır; dependency/auth/SEO/DNS değişikliği buna eklenmez. Takvim açık Europe/Istanbul04.15, kaçırılmış işi açılışta yapabilen Persistenttrue; son7 başarılı çalıştırma saklanır. Düşük disk veya sağlıksız CMS durumunda başlamadan güvenli ret verilir.
+
+DB ve uploads birlikte ele alınır; büyük imaj/config paketi önce, Directus yazımsız pencere sonra. Normal iki HTTPS Compose birlikte kullanılır; deploy/doğrudan veri yazımı yedek penceresiyle çakışmamalıdır. Root-only bundles ve lock/state; trap+ExecStopPost yalnız aynı işaretli container'ı açıp health bekler. Kurtarma da kilit alır; başka aktif yedeği erken çözmez. İmaj/volume silme ve live restore yapılmaz.
+
+Retention yalnız aracın tamamlanmış canonical direkt alt klasörlerini hedefler; symlink/manual/partial/migration/config yedekleri korunur. Eski görüntüler yedek süresi dolana kadar kalabilir. Partial'lar failure diagnosis için saklanır; bunlar otomatik temizlenmiş sayılmaz. pg_restore --list/tar/checksum kontrolü gerçek restore testi değildir. Aynı VPS kopyası off-server koruma değildir. Özel DB/secret/TOTP paketinin sunucu dışı hedefi ve şifreli saklaması ayrı kapsam/onayla seçilir; hassas veri Git/log/Obsidian'a yazılmaz. İzole geri yükleme kanıtı ve dış hata bildirimi sonraki küçük işlerdir.
+
 ## Karar — 10 Ekim 2026: Güvenlik raporu ile düzeltme/yayın yetkisini ayır
 
 Kontrol/rapor isteği deploy, dependency upgrade, auth policy, DNS veya Google hesabı yazımı için yetki değildir. Native scan tamamlanmadığında canonical rapor/complete veya tam pentest iddiası yapılmaz; alternatif manuel kontrolün kapsamı ve belirsizlikleri açıkça yazılır. Advisory paket etiketi gerçek uygulama saldırı yolu olarak otomatik kabul edilmez; build/runtime/vendor ve önkoşullar ayrılır.

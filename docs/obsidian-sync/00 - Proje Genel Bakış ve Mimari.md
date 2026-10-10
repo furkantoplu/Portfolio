@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Günlük VPS yedeği — 10 Ekim 2026 / Paket 58
+
+Kullanıcı önerilen sırayı kabul edip küçük adımlarla başlamamızı istedi. Yalnız ilk yerel VPS yedekleme paketi uygulandı; güvenlik/dependency/SEO/Search Console değişiklikleri yapılmadı. Türkiye04.15 günlük systemd timer, son7 başarılı arşiv; PostgreSQL custom dump, uploads, özel runtime config/extensions ve çalışan frontend imajı `/var/backups/furkantoplu/daily` altında root erişimiyle tutulur. İmaj önce hazırlanır, DB/uploads tutarlılığı için Directus kısa süre durur; hata/sonlandırma kurtarması ve çakışma kilidi vardır.
+
+İlk gerçek yedek100927055bayt, arşiv/SHA256 kontrolleri başarılı; DB/Directus/frontend healthy, publicHTTPS200. Mevcut kullanıcı/şifre/TOTP/içerik/fotoğraflar değiştirilmedi, önceki manual yedekler korunur. Yedek aynı VPS'tedir ve henüz gerçek restore testi yapılmamıştır; ayrı yerde şifreli kopya/izole restore/hata bildirimi sonraki küçük işlerdir. Ayrıntılı işletim belgesi `deploy/YEDEKLEME.md`; günlük Paket58 kaydı test ve kurulum ayrımlarını içerir.
+
 ## Güvenlik ve Google yayın değerlendirmesi — 10 Ekim 2026 / Paket 57
 
 Kullanıcının ilgili güvenlik kontrolleri ve Google hazırlığı raporu isteği salt-okunur incelendi. Uygulama/deploy/DB/hesap/Cloudflare/DNS/Search Console ayarları değiştirilmedi. Native Security başlangıç cevabı alınamadığından tamamlanmış otomatik scan iddiası yok; kapsamı sınırlı manuel kaynak ve canlı metadata/politika/HTTP kontrolü yapıldı.

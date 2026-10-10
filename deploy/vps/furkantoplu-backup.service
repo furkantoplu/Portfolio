@@ -1,0 +1,18 @@
+[Unit]
+Description=Furkan Toplu private database, uploads and runtime backup
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+ExecStart=/usr/local/sbin/furkantoplu-backup
+ExecStopPost=/usr/local/sbin/furkantoplu-backup --recover
+TimeoutStartSec=900
+TimeoutStopSec=180
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+StandardOutput=journal
+StandardError=journal

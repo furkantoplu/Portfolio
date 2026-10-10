@@ -1,5 +1,14 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Güncel altyapı — 10 Ekim 2026 / Paket 58: Düzenli yerel VPS yedeği
+
+- Küçük adımlarla başlama talebiyle yalnız yedekleme uygulandı. İmaj/uygulama tasarımı, dependency/auth politikası, DNS/Cloudflare ve Google hesabı değişmedi. Operasyon açıklaması [YEDEKLEME.md](YEDEKLEME.md).
+- `/usr/local/sbin/furkantoplu-backup`, iki root-owned yardımcı, systemd service/timer kuruldu. Türkiye04.15 takvimi doğrulandı; ilk otomatik çalışma11 Ekim2026 01.15UTC/04.15TR. Timer boot'ta etkin; henüz gece otomatik tetiklemesi gözlenmedi. Kaçırılmış çalışma Persistent=true ile açılışta yapılabilir.
+- İlk manuel aynı-unit çalışması `20261010T153341Z` başarılı:100927055bayt (~96.3MiB), toplam32.7s; içerik durdurma→healthy yaklaşık24s. DB/medya/config/frontend-imaj arşivleri, SHA256 ve pg_restore --list/tar okuma geçti. Gerçek restore denemesi değildir. Root700 dizin/600 hassas dosyalar doğrulandı; özel içerik sunucu dışına çıkmadı.
+- Yalnız son7 tamamlanmış kendi arşivi retention'a girer. Fixture testleri eski2 kendi kopyasını sildi, kalan7/manual/partial/symlink korundu; canlıda eski elle alınmış yedekler silinmedi. Kurtarma testleri invalid/changed container/start fail/health timeout/success ve gerçek flock çakışmasını kapsar; yapay test arızaları canlı serviste oluşturulmadı.
+- Üç uygulama servisi healthy, proxy running; publicHTTPS200, kurtarma işareti temiz, boş disk30GB. Kurulum verify'daki XFS CPUAccounting uyarıları Ubuntu'nun mevcut unit'lerinden; yeni yedek unit'lerinde hata yok. Kaynak/testler `/opt/furkantoplu/deploy/vps` içinde de saklandı; frontend rebuild/deploy yapılmadı.
+- Eksikler bilinçli olarak sonraki paket: ayrı yerde şifreli kopya, izole geri yükleme kanıtı, hata bildirimi. Aynı sunucudaki yedek sunucu/disk kaybına karşı yeterli değildir. Başarısız partial arşivler elle incelenir; düşük disk güvenli şekilde yeni yedeği reddeder.
+
 ## Güncel frontend — 10 Ekim 2026 / Paket 56: Kırpmasız fotoğraf ve responsive çerçeveler
 
 - Kullanıcı fotoğrafın tamamını göstermeyi, dik fotoğrafta kenar boşluğu olmasını ve ortak kart ölçülerini açıkça onayladı. Sorun tekrar eden400 değil, gerçek Vinext Image fill bileşeninin inline cover varsayılanıydı. CSS'teki contain tek başına bunu ezemiyordu. Ortak SiteImage artık default inline contain/center uygular, özel hero objectPosition=center bottom gibi explicit stiller korunur. Yükleme/publish/visibility/alt/sizes/priority/lazy/medya silme sistemi değişmedi.
