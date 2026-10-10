@@ -1,0 +1,12 @@
+# Always combine with compose.vps.yaml; Compose >= 2.24.4 (!override).
+services:
+  directus:
+    environment:
+      SESSION_COOKIE_SECURE: "true"
+  proxy:
+    ports: !override
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+      - "0.0.0.0:443:443/udp"
+    volumes:
+      - ${VPS_CADDYFILE:-./deploy/Caddyfile.vps}:/etc/caddy/Caddyfile:ro

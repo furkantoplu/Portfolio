@@ -1,5 +1,15 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 10 Ekim 2026: Public HTTPS override ve sertifika öncesi kapalı upstream
+
+Private VPS base korunur; canlı kullanım `-f compose.vps.yaml -f compose.vps.https.yaml` zorunlu. Compose>=2.24.4 ports !override eski 8080'i kaldırır; yalnız IPv4 TCP 80/443 ve UDP 443 public. Directus Secure cookie=true; 8055 loopback ve DB/frontend/Caddy yönetim portu internal kalır. Base-only up normal operasyonda kullanılmaz. Eski HTTP 9090 tüneli artık giriş için değildir; canlı domain/bakir kullanılır.
+
+Let’s Encrypt public CA sertifikaları Caddy tarafından kalıcı caddy_data'da yönetilir; Cloudflare Full strict seçimi kullanıcı tarafından teyit edilmiştir. HTTP-01 açık, TLS-ALPN kapalı; Cloudflare token/wildcard/Origin CA private key gerekmez. İlk sertifika bootstrap HTTPS 503 ile uygulamadan bağımsız edinilir/doğrulanır; final upstream ancak başarılı trust/SAN testinden sonra açılır. Renewal otomatik yapılandırılmıştır, ileri tarihteki olay henüz gözlenmedi; port 80 ACME erişimi ve volume korunmalıdır.
+
+Private/public Caddy aynı method/path API allowlist ve admin no-store/noindex davranışını taşımalı; yeni route iki dosyaya beraber eklenir, regresyon route gövdesi eşitliğini denetler. HTTP→HTTPS ve www→apex 308 query/path korur. Cloudflare Cache Everything eklenirse admin/API bypass şarttır; anlık DYNAMIC/no-HIT doğrulaması dashboard kalıcı kuralının yerine geçmez. Sırlar/özel sertifika anahtarı/TOTP okunmaz veya Git/notlara girmez. IPv6/AAAA/DNSSEC/mail kapsamları ayrıca doğrulanır.
+
+Canlı teknik erişim ile tam teslim ayrıdır: örnek iletişim verisi, gerçek kullanıcı login/OTP/medya, düzenli/off-server backup/restore ve SEO teslim kontrolleri bitmeden tam teslim denmez. Eski snapshot dolu DB'ye restore edilmez; sonraki deployment volume'leri korur.
+
 ## Karar 001 — Önce arayüz
 
 Backend ve veritabanı geliştirmesine ana frontend bütünü hazırlandıktan sonra kontrollü paketlerle geçilecek. Bunun nedeni müşteri tarafında en fazla geri bildirimin görsel tasarım üzerinden gelmesinin beklenmesi. 23 Eylül 2026 tarihinde arayüzü bozmadan Directus ve PostgreSQL çalışma temeli kurulmuştur.

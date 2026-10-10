@@ -1,5 +1,39 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Güncel durum — 10 Ekim 2026 / Paket 54: Cloudflare ve gerçek HTTPS aktif
+
+Site `https://furkantoplu.com`, Türkçe yönetim `https://furkantoplu.com/bakir`. Kullanıcı Namecheap→Custom DNS adımını yaptı; 1.1.1.1/8.8.8.8 NS sorguları `daisy.ns.cloudflare.com` / `elliot.ns.cloudflare.com` döndürdü. Yetkili Cloudflare DNS'inde apex/www A yanıtları proxy adresleri; canlı yanıtta `CF-RAY` ve `Server: cloudflare` var. Önceki Namecheap parking kayıtlarının yerini VPS'ye giden proxied A ve www CNAME aldı. MX/TXT/mail değişikliği bu paket kapsamında yapılmadı. DNSSEC ekranında kapalıydı; Cloudflare DNSSEC daha sonra ayrı DS eşlemesiyle ele alınacak. Dış IPv6 doğrulanmadığından AAAA eklenmedi.
+
+- Kullanıcı SSL/TLS ekranı başlangıçta **Full** gösterdi. VPS cert hazırlığı için ayrı 503/no-store Caddy yapılandırması açıldı; upstream uygulama/admin yoktu. Port80 yalnız ACME HTTP-01 ve HTTPS yönlendirmesi için. Cloudflare TLS-ALPN geçirmediğinden bu challenge kapalı; DNS API tokenı veya Origin CA özel anahtarı kullanıcıdan istenmedi. İki alan için Let’s Encrypt sertifikası başarıyla alındı. Doğrudan149.56.103.60→alan adı/SNI curl doğrulaması `--insecure` olmadan geçti; bootstrap beklenen503 döndü. Ardından public siteye geçildi.
+- Origin sertifikaları apexYE1/wwwYE2 issuer, SAN doğru; geçerlilik10Ekim2026 12:03UTC–8Ocak2027 12:03UTC. `caddy_data` kalıcı volume'de; Caddy otomatik yenilemesi aktif, gerçek ileri tarih yenileme henüz gözlenmiş sayılmaz. HTTP challenge/port80 erişimi ve volume korunmalı. Sertifika özel anahtarları okunmadı/loglanmadı/Git'e alınmadı.
+- Kullanıcı **Full(strict)** seçip kaydettiğini bildirdi; bundan sonra canlı HTTPS tekrar200. Dashboard/API üzerinden ayar ayrıca okunmadı; kullanıcı teyidi ve doğrulanmış origin/edge bağlantısı kaydedilir. HTTP→aynı path/query HTTPS308, wwwHTTPS→apexHTTPS308 çalışır. IP adresinden sertifika eşleşmesi beklenmez; site domain üzerinden açılır.
+- `compose.vps.https.yaml` base ile birleşir: ports `!override` (Compose>=2.24.4) ile eski8080 kalkar, yalnız IPv4TCP80/443 veUDP443 public olur. Directus8055 loopback, DB5432/frontend3000/adminCaddy2019 internal kalır. Secure cookie true override gerçek Directus env üzerinden doğrulandı. Gerçek kullanıcı login response çerez/TOTP kabulü henüz yapılmadı.
+- `deploy/Caddyfile.vps` private proxy güvenlik başlıkları ve aynı method/path API allowlist'ini korur. Regresyon testi iki route gövdesinin eşitliğini zorunlu tutar. `/bakir` no-store/noindex, API no-store; gerçek Cloudflare cevapları DYNAMIC ve HIT değil. Cloudflare hesabında ayrıca Cache Rule eklenmedi/okunmadı; ileride Cache Everything kuralı eklenirse admin/API bypass mutlaka korunmalı.
+- Eski config ve `.env` `/var/backups/furkantoplu/https-20261010` root700/dosyalar600 altında. Yedekleme ilk izin adımında ubuntu'nun root dizinindeki wildcard'ı açamaması nedeniyle durdu; kesin dosya yollarıyla düzeltildi, o anda servis değişikliği henüz yapılmamıştı. Dosya/sır içeriği çıktıya yazılmadı. DB/hesap/TOTP/upload/içerikler restore edilmedi veya silinmedi; yalnız Directus/proxy recreate edildi, frontend imajı aynı kaldı.
+- 94 Node regresyon geçti. Gerçek HTTPS domaininde vps-deployment, languages, practice-catalogue, account-access, public-design, hero-portrait ve vps-https smoke geçti: 16 sayfa,18 alan detayı,404,canonical/hreflang/sitemap/robots, gizli dosya404,optimizer200, dış8055/8080 engeli, anonymous401/403, HTTP/www yönlendirmeleri ve CF cache koruması. Yeni smoke ilk kez var olmayan `/website-content/session` yolunu401 sanıyordu;404 doğruydu, test mevcut korumalı translation endpoint'e düzeltildi. Uygulama endpoint'i eklenmedi.
+- Gerçek tarayıcı kontrolü: mobil menüden Hakkımda, dil menüsünden English, İngilizce custom404→ana sayfa ve canlı admin giriş formu açıldı. Seçili geçişlerde yakalanan JavaScript error/warn logları boştu. Beklenen404/oturumsuz401 HTTP durumları uygulama çökmesi değildir. Gerçek kullanıcı parolası/TOTP girilmedi; kapsamlı her viewport/pixel testi yapılmış sayılmaz.
+
+### Canlı operasyon — iki Compose dosyası zorunlu
+
+```bash
+cd /opt/furkantoplu
+sudo docker compose --env-file .env -f compose.vps.yaml -f compose.vps.https.yaml ps
+sudo docker compose --env-file .env -f compose.vps.yaml -f compose.vps.https.yaml up -d
+```
+
+`VPS_CADDYFILE` bootstrap override'ı aktif oturumda bırakılmaz; normal default `./deploy/Caddyfile.vps`. Base-only `up` private staging'e geri döner ve Secure=false olabilir; normal operasyonda kullanılmaz. Site artık eski HTTP8080/9090 tünelinden açılmaz. SSH ve KVM erişimi korunur; yerel8080 ayrı geliştirme DB'sidir.
+
+HTTPS sorunu halinde önce Caddy logları/sertifika ve iki dosyalı Compose config testi incelenir. Certifikayı/sırları/volume'leri silme, `down -v`, seed veya restore yapma. Gerekirse public upstream'i kapatmak için yalnız proxy'yi `VPS_CADDYFILE=./deploy/Caddyfile.tls-bootstrap` seçeneğiyle recreate ederek HTTPS503 bakımına al; Directus secure ayarı ve veri korunur. Private staging'e geri dönüş yalnız public proxy kapatılarak ve kullanıcıya HTTP tünelinin güvenli sınırı açıklanarak yapılabilir.
+
+### Teslim öncesi hâlâ kalanlar
+
+1. Kullanıcı kendi parola/Google Authenticator koduyla canlı admin girişi, oturum yenileme ve fotoğraf upload/replace/delete kabulünü yapmalı. Gerçek sırlarla Codex giriş/OTP üretimi yapılmadı.
+2. Telefon/WhatsApp/e-posta/konum ve mesleki/gerçek içerikler kontrol edilmeli; site üzerinde örnek iletişim değerleri hâlâ görülüyor. E-posta domain satın alındığı için kendiliğinden çalışan posta kutusu değildir. Blog çevirileri ayrıca yayımlanır.
+3. Düzenli uygulama/DB/upload/secret backup, retention/off-server ve restore provası tamamlanmalı. Şimdiki root config ve ilk migration snapshot'ları periyodik yedek değildir.
+4. Cloudflare cache bypass kurallarını dashboard'da açıkça teyit etmek, DNSSEC/DS ve Search Console/sitemap gönderimi ayrı son kontrollerdir. “Tam teslim” bu kabul maddeleri bitmeden söylenmez.
+
+Aşağıdaki Paket53/52 kayıtları geçmiş özel staging aşamasıdır; güncel bağlantı/Compose komutları yukarıdadır.
+
 ## Güncel durum — 10 Ekim 2026 / Paket 53: VPS'ye taşıma tamamlandı
 
 Kullanıcı bu turda hassas paket aktarımını açıkça onayladı. Paket strict host kontrolüyle SSH/SCP üzerinden `149.56.103.60` hedefine gönderildi. Domain/Cloudflare/TLS değişmedi; bu **özel staging** kurulumudur, henüz public domain yayını değildir.

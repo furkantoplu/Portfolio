@@ -1,0 +1,15 @@
+# No application or admin requests reach upstreams before origin TLS validation.
+furkantoplu.com, www.furkantoplu.com {
+  tls {
+    issuer acme {
+      # Cloudflare proxies HTTP-01, not the ACME TLS-ALPN protocol.
+      disable_tlsalpn_challenge
+    }
+  }
+  header {
+    Cache-Control "no-store"
+    X-Robots-Tag "noindex, nofollow, noarchive"
+    -Server
+  }
+  respond "HTTPS kurulumu devam ediyor." 503
+}

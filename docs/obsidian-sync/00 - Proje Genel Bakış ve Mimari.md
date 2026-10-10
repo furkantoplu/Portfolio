@@ -1,5 +1,15 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Güncel yayın durumu — 10 Ekim 2026 / Paket 54
+
+Canlı site `https://furkantoplu.com`, yönetim `https://furkantoplu.com/bakir`. Kullanıcı Namecheap nameserver'larını daisy/elliot Cloudflare'e geçirdi; recursive NS ve yetkili apex/www proxy A yanıtları doğrulandı. Kullanıcı Full(strict) kaydettiğini teyit etti; VPS origin ve Cloudflare üzerinden HTTPS 200, gerçek alan adı sertifika doğrulaması geçti. DNSSEC kapalı, AAAA yok; mail MX/TXT değiştirilmedi.
+
+Docker aynı dört servistir. `compose.vps.yaml` + `compose.vps.https.yaml` birlikte kullanılır. Public portlar IPv4 TCP 80/443 ve UDP 443; Directus loopback 8055, DB/frontend internal. Eski 8080/9090 HTTP tüneli artık kullanılmaz; yerel 8080 ayrı DB ile korunur. Caddy apex/www Let’s Encrypt sertifika/SAN doğrulaması geçti; geçerlilik 10 Ekim 2026–8 Ocak 2027. Kalıcı data volume ve otomatik yenileme aktif; ileri tarihteki gerçek yenileme henüz gözlenmedi. Cloudflare için HTTP-01 kullanılır, TLS-ALPN challenge kapalıdır. API token veya özel sertifika anahtarı aktarımı gerekmedi.
+
+Sertifika öncesi uygulamasız HTTPS 503 bakım uç noktası açıldı; doğrulama sonrası site upstream'e geçirildi. HTTP→HTTPS / www→apex 308, path/query korunur. Secure cookie=true gerçek Directus environment üzerinden doğrulandı; admin no-store/noindex ve aynı API method/path allowlist korundu. Cloudflare yönetim/API DYNAMIC, HIT yok; dashboard cache rule ayrıca ayarlanmadı. Config/env yedeği root 700 `https-20261010` içinde, dosyalar 600. DB/hesap/TOTP/içerikler değiştirilmedi veya yeniden restore edilmedi; frontend imajı aynı.
+
+94 regresyon ve 7 gerçek HTTPS smoke geçti. Gerçek tarayıcıda mobil menü/Hakkımda, English dil geçişi, 404→ana sayfa ve admin giriş formu açıldı; seçili akışların JavaScript error/warn logları boş. Gerçek parola/OTP girilmedi. Teslim kalanları: kullanıcı admin/OTP/medya kabulü, örnek iletişim bilgilerinin gerçek değerlerle düzenlenmesi, düzenli/off-server backup ve restore provası, Cloudflare cache bypass/DNSSEC ve Search Console son kontrolü. Teknik erişimin açılması bu kalanların tamamlandığı anlamına gelmez. Sites becerisi mevcut kaynak/VPS dağıtımını korumak için kullanıldı; native Sites hosting'e taşıma yok. Ayrıntılar `deploy/VPS-KURULUM.md`; aşağıdaki aşamalar tarihlendirilmiş geçmiş kayıtlardır.
+
 ## Güncel yayın durumu — 10 Ekim 2026 / Paket 53
 
 Kullanıcının açık hassas aktarım onayıyla site `149.56.103.60` VPS'ine taşındı. `/opt/furkantoplu` içinde PostgreSQL16/Directus12.4/Node standalone/Caddy çalışıyor, dört servis sağlıklı. Yerel düzen aynen durur; production runtime non-root Node, Wrangler dev değil. Transfer SHA256,14 tablo içerik/hesap/rol/TOTP parmak izi, upload bytes ve appsecret hash eşit.2 yönetici/6 alan/3 blog/6 sayfa/22 çeviri korundu; yalnız hedefte4 eski session iptal edildi. Yeni giriş mevcut bilgiler/Google Authenticator koduyla yapılır, gerçek kullanıcı giriş testi bekliyor.

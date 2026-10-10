@@ -4,11 +4,11 @@ Fizyoterapist portföyü ve blogu için geliştirilen React/TypeScript tabanlı 
 
 ## VPS hazırlığı ve yayın sırası
 
-10 Ekim 2026: site ve mevcut PostgreSQL/veri/hesaplar VPS'e taşındı; dört Docker servisi çalışıyor. Üretim frontend Node standalone'dır, yerel Wrangler düzeni korunur. Henüz domain/Cloudflare/HTTPS bağlanmadı; kurulum yalnız özel SSH tünelinden erişilebilir. Gerçek admin/OTP kabul testi ve düzenli yedekler yayın öncesi kalan işlerdir.
+10 Ekim 2026: site mevcut PostgreSQL/veri/hesaplarla VPS'te çalışıyor ve `https://furkantoplu.com` üzerinden erişilebilir. Namecheap nameserver'ları Cloudflare'e geçti; kullanıcı Full(strict) seçimini tamamladığını bildirdi. Origin'de apex/www için doğrulanmış Let’s Encrypt sertifikaları ve otomatik yenileme, HTTP→HTTPS ve www→apex yönlendirmeleri aktif. Üretim frontend Node standalone'dır; yerel Wrangler düzeni korunur. Gerçek admin/OTP/medya kabulü, gerçek iletişim bilgileri ve düzenli yedekler teslim öncesi kalan işlerdir.
 
-Erişim/tünel komutu, test sonuçları ve taşıma/yayın kontrol listesi [deploy/VPS-KURULUM.md](deploy/VPS-KURULUM.md) içindedir. Özel tünel açıkken site `http://localhost:9090`, admin `/bakir`; yerel geliştirme ise8080 portudur. İki ortamın DB'leri ayrıdır; artık VPS panelinden yapılan değişiklikler yerel DB'ye otomatik gelmez.
+Erişim, test sonuçları ve teslim kontrol listesi [deploy/VPS-KURULUM.md](deploy/VPS-KURULUM.md) içindedir. Canlı yönetim `https://furkantoplu.com/bakir`; eski HTTP9090 tüneli artık geçerli değildir. Yerel geliştirme8080 portunda ayrı DB ile devam eder; VPS panelindeki değişiklikler yerel DB'ye otomatik gelmez.
 
-Host bootstrap yalnız boş sunucu içindir; `restore-initial.sh` dolu hedefe tekrar çalıştırılmaz. Production operasyonunda `sudo docker compose --env-file .env -f compose.vps.yaml` kullanılır, `.env` root erişimlidir. `down -v` volume/veri siler, kullanılmaz. Yerel `.env`, snapshot/runtime credentials ve özel SSH anahtarları Git'e alınmaz.
+Host bootstrap yalnız boş sunucu içindir; `restore-initial.sh` dolu hedefe tekrar çalıştırılmaz. Production operasyonunda `/opt/furkantoplu` içinde **iki dosya birlikte** kullanılır: `sudo docker compose --env-file .env -f compose.vps.yaml -f compose.vps.https.yaml`. Yalnız base dosyayla `up` yapmak HTTPS'i geri alır; kullanılmaz. `.env` root erişimlidir. `down -v` volume/veri siler, kullanılmaz. Yerel `.env`, snapshot/runtime credentials ve özel SSH anahtarları Git'e alınmaz.
 
 ## Docker ile çalıştırma
 

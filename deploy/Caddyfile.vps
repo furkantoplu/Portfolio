@@ -1,0 +1,57 @@
+(origin_tls) {
+  tls {
+    issuer acme {
+      disable_tlsalpn_challenge
+    }
+  }
+}
+
+furkantoplu.com {
+  import origin_tls
+  encode zstd gzip
+
+  header {
+    X-Content-Type-Options "nosniff"
+    Referrer-Policy "strict-origin-when-cross-origin"
+    X-Frame-Options "SAMEORIGIN"
+    -Server
+  }
+
+  @privateAdmin path /bakir /bakir/*
+  header @privateAdmin {
+    Cache-Control "no-store"
+    X-Robots-Tag "noindex, nofollow, noarchive"
+  }
+
+  @chromeDevTools path /.well-known/appspecific/com.chrome.devtools.json
+  handle @chromeDevTools {
+    respond 204
+  }
+
+  handle_path /bakir-api/* {
+    header Cache-Control "no-store"
+    @deleteContent {
+      method DELETE
+      path_regexp contentDelete ^/items/(blog_posts|practice_areas)/[1-9][0-9]*$
+    }
+    handle @deleteContent {
+      reverse_proxy directus:8055
+    }
+    @adminApiAllowed expression "((method('GET') || method('HEAD')) && path('/website-content/*', '/assets/*', '/items/practice_areas', '/items/practice_areas/*', '/items/blog_posts', '/items/blog_posts/*', '/items/site_pages', '/items/site_pages/*')) || (method('POST') && path('/auth/login', '/auth/logout', '/auth/refresh', '/users/me/tfa/generate', '/users/me/tfa/enable', '/files', '/website-content/admin-team', '/website-content/media-discard/*')) || ((method('POST') || method('PATCH')) && path('/items/practice_areas', '/items/practice_areas/*', '/items/blog_posts', '/items/blog_posts/*', '/items/site_pages', '/items/site_pages/*')) || (method('PATCH') && path('/website-content/account-settings', '/website-content/translations/*'))"
+    handle @adminApiAllowed {
+      reverse_proxy directus:8055
+    }
+    handle {
+      respond "Bu API yolu yönetim panelinde kullanılamaz." 403
+    }
+  }
+
+  handle {
+    reverse_proxy frontend:3000
+  }
+}
+
+www.furkantoplu.com {
+  import origin_tls
+  redir https://furkantoplu.com{uri} 308
+}
