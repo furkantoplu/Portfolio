@@ -41,6 +41,27 @@ test('CMS photos retain fill/contain, priority, lazy loading, accessibility and 
   assert.ok(lazy.includes('width="600"')); assert.ok(lazy.includes('height="210"'));
 });
 
+test('Default public photo layout shows the whole photo instead of the framework inline cover default', () => {
+  for (const src of [path,'/furkan-toplu-hero-white-coat-v1.png']) {
+    const html = image({src,alt:'Uncropped photo',fill:true});
+    assert.ok(html.includes('object-fit:contain'));
+    assert.ok(html.includes('object-position:center'));
+    assert.ok(!html.includes('object-fit:cover'));
+  }
+  const hero = image({src:path,alt:'Hero',fill:true,style:{objectPosition:'center bottom'}});
+  assert.ok(hero.includes('object-position:center bottom'),'Homepage 3D portrait positioning is preserved');
+});
+
+test('Blog frames remain consistent, featured photo has no crop-on-hover and detail caption is outside the image', async () => {
+  const css = await readFile(new URL('../../frontend/app/globals.css',import.meta.url),'utf8');
+  assert.match(css,/\.blog-card \.content-card-image, \.archive-card \.content-card-image \{[^}]*height: 240px;[^}]*min-height: 240px/);
+  assert.doesNotMatch(css,/\.featured-article__image:hover img/);
+  assert.match(css,/\.article-cover__image \{ position: relative; height: clamp\(320px, 45vw, 620px\)/);
+  assert.match(css,/\.article-cover__caption \{ position: static;/);
+  assert.match(css,/\.article-cover__image \{ height: clamp\(300px, 95vw, 440px\)/);
+  assert.match(css,/\.featured-article__image \{ min-height: 0; height: clamp\(300px, 95vw, 440px\)/);
+});
+
 test('Static portraits remain optimized; only exact managed UUID paths bypass it', () => {
   for (const src of ['/furkan-toplu-hero-white-coat-v1.png','/site-media/not-a-uuid','/site-media/12345678-1234-4234-8234-123456789abc/other.jpg','/another/image.jpg']) {
     const html = image({src,alt:'Static',fill:true});
