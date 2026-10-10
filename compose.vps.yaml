@@ -1,0 +1,92 @@
+name: furkantoplu
+services:
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    mem_limit: 512m
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?required}
+      POSTGRES_USER: ${POSTGRES_USER:?required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+  directus:
+    image: directus/directus:12.4.0
+    restart: unless-stopped
+    mem_limit: 896m
+    depends_on:
+      database: {condition: service_healthy}
+    ports:
+      - "127.0.0.1:8055:8055"
+    environment:
+      SECRET: ${DIRECTUS_SECRET:?required}
+      DB_CLIENT: pg
+      DB_HOST: database
+      DB_PORT: "5432"
+      DB_DATABASE: ${POSTGRES_DB:?required}
+      DB_USER: ${POSTGRES_USER:?required}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?required}
+      PUBLIC_URL: https://furkantoplu.com/bakir-api
+      PROJECT_OWNER_ENABLED: "false"
+      SESSION_COOKIE_TTL: 1d
+      SESSION_COOKIE_NAME: furkantoplu_session
+      SESSION_COOKIE_SECURE: ${DIRECTUS_SESSION_COOKIE_SECURE:-false}
+      SESSION_COOKIE_SAME_SITE: lax
+      LOGIN_STALL_TIME: "750"
+      TELEMETRY: "false"
+      FILES_MAX_UPLOAD_SIZE: 10mb
+      WEBSOCKETS_ENABLED: "true"
+      NODE_OPTIONS: --max-old-space-size=640
+    volumes:
+      - directus_uploads:/directus/uploads
+      - ./directus/extensions:/directus/extensions:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8055/admin/').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 60s
+  frontend:
+    image: ${FRONTEND_IMAGE:?required}
+    restart: unless-stopped
+    mem_limit: 768m
+    pids_limit: 150
+    depends_on:
+      directus: {condition: service_healthy}
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3000"
+      DIRECTUS_URL: http://directus:8055
+      SITE_PUBLIC_URL: https://furkantoplu.com
+      NODE_OPTIONS: --max-old-space-size=512
+    expose: ["3000"]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 30s
+  proxy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    mem_limit: 128m
+    depends_on:
+      frontend: {condition: service_healthy}
+    ports:
+      # Private until DNS/origin HTTPS is configured. No public HTTP admin login.
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+volumes:
+  postgres_data:
+  directus_uploads:
+  caddy_data:
+  caddy_config:

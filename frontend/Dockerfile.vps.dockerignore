@@ -1,0 +1,13 @@
+node_modules
+dist
+.next
+.vinext
+.wrangler
+.sites-runtime
+.git
+.env*
+npm-debug.log*
+README.md
+# Untracked prototype images are not part of the agreed site release.
+public/furkan-toplu-hero-3d-v1.png
+public/furkan-toplu-hero-3d-v2.png
