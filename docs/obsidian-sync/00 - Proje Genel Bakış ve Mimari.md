@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## İzole geri yükleme doğrulaması — 10 Ekim2026 / Paket59
+
+Kullanıcı devam isteğiyle yalnız sıradaki küçük restore testi yapıldı. İlk günlük yedek ayrı PostgreSQL16 instance'ında ağnone/read-only/tmpfs/no-publicport ile gerçekten geri yüklendi.40 public tablonun arşiv→geri yüklenen COPY satır sayımı ve SHA256 multiset parmak izi eşit;1 fotoğraf61993bayt ayrı private klasörde çıkarılıp hash/boyut/DBkaydı doğrulandı. İlk doğrulama aracının explicit pg_restore --file=- eksiği giderilip6 regresyon ve gerçek tam karşılaştırma geçti.
+
+Geçici container/tmpfsDB/özel test parolası/inventory/fotoğraf kopyası temizlendi; canlı DB/hesap/servisler değiştirilmedi, HTTPS200. DB/medya restore kanıtıdır; tüm webuygulaması/adminlogin/başka sunucuda HTTPS test edilmedi. Günlük backup timer/son7 arşiv aynı; ayrı yerde şifreli kopya ve hata bildirimi henüz yok. Ayrıntı `deploy/YEDEKLEME.md`, özel özet/log root altında. Güvenlik/SEO/Google değişiklikleri bu pakete eklenmedi.
+
 ## Günlük VPS yedeği — 10 Ekim 2026 / Paket 58
 
 Kullanıcı önerilen sırayı kabul edip küçük adımlarla başlamamızı istedi. Yalnız ilk yerel VPS yedekleme paketi uygulandı; güvenlik/dependency/SEO/Search Console değişiklikleri yapılmadı. Türkiye04.15 günlük systemd timer, son7 başarılı arşiv; PostgreSQL custom dump, uploads, özel runtime config/extensions ve çalışan frontend imajı `/var/backups/furkantoplu/daily` altında root erişimiyle tutulur. İmaj önce hazırlanır, DB/uploads tutarlılığı için Directus kısa süre durur; hata/sonlandırma kurtarması ve çakışma kilidi vardır.

@@ -1,5 +1,29 @@
 # VPS yedekleme — ilk küçük paket
 
+## Geri yükleme kanıtı — 10 Ekim 2026 / Paket 59
+
+`20261010T153341Z` yedeği aynı VPS'teki ayrı, ağsız PostgreSQL16 container'ına gerçekten geri yüklendi.40 public tablonun tüm COPY satırları arşivden türetilen sayım/sıralamadan bağımsız SHA256 parmak izleriyle eşleşti.1 fotoğraf (61993bayt) ayrı özel klasöre çıkarıldı; byte hash'i ve `directus_files` dosya/boyut eşleşmesi geçti. Test11.3s sürdü; geçici container/tmpfs DB/veri/parola/çıkarılan dosyalar kaldırıldı. Canlı DB'ye yazılmadı, servisler yeniden başlatılmadı; HTTPS200 teyit edildi.
+
+Bu, **bu yedeğin şema/veri ve fotoğraf geri yükleme testidir**. Bütün web uygulamasını başka sunucuda açma, yönetici/Google Auth ile giriş veya felaket kurtarma tatbikatı değildir. Runtime/imaj arşivleri önceki checksum/tar kontrolünden geçti; burada yeni TLS/Directus/frontend instance'ı açılmadı. Aynı VPS yedeği hâlâ ayrı yerde yedek değildir.
+
+### Manuel test komutu
+
+```bash
+sudo /usr/local/sbin/furkantoplu-restore-check 20261010T153341Z
+```
+
+Argüman, var olan `.complete` işaretli yedeğin UTC klasör adıdır; serbest dosya yolu kabul edilmez. Yedek silinmişse bu örnek çalışmaz. Backup ile aynı kilit tutulur; aktif backup varsa test reddedilir. En az1.5GiB kullanılabilir RAM,384MiB tmpfs test DB ve en fazla512MiB çıkarılmış medya sınırı vardır; veri büyüdüğünde test kapasitesi ayrıca planlanır. Üretim `restore-initial.sh` değildir ve onun yerine kullanılmaz.
+
+Test hedefi yayınlanmış port, üretim Docker ağı veya üretim DB/uploads mount'u almaz; ağnone, read-only rootfs,0.75CPU/768MiB memory/no-container-swap/pids100 sınırları vardır. PGDATA tmpfs kullanır; host swap'ı mümkün olduğu için adli anlamda güvenli imha garantisi verilmez. Yalnız kendi label/containerID ve canonical mktemp `/run/furkantoplu-restore-check.*` hedefleri temizlenir; mevcut yedek/volume'ler silinmez. Başarısız SQL detayları yalnız root erişimli `/var/backups/furkantoplu/restore-checks/<UTC-random>/` loglarında kalır; terminale özel satır/hash/şifre/TOTP yazılmaz. Başarılı rapor da burada kalır.
+
+Test aracındaki6 regression senaryosu COPY kaçış/boş/duplicate/truncated akış, sıradan bağımsız/duplicate satır hash'i, fotoğraf byte roundtrip, traversal/symlink/hardlink/device retleri, DB dosya/boyut/storage eşleşmesi ve explicit pg_restore SQL çıktı hedefini kapsar. İlk denemenin restore'u geçti ama arşiv→SQL incelemesinde eksik `--file=-` yüzünden karşılaştırma durdu; düzeltildi ve tam gerçek test sonra geçti. Eski başarısız denemeler gerçek yedek arızası diye raporlanmaz.
+
+Tekrar çalıştırma manuel ve gözetimlidir; kalıcı restore timer'ı eklenmedi. SIGTERM/normal hata cleanup trap'i vardır; ani SIGKILL/host çökmesinde otomatik temizlik garantisi yoktur, leftover fixture label/path kontrol edilmelidir. İzole hedef kaynakları yetersizse canlı veriyi silerek alan açılmaz.
+
+Dayanaklar: [pg_restore](https://www.postgresql.org/docs/16/app-pgrestore.html), [Docker none ağı](https://docs.docker.com/engine/network/drivers/none/), [tmpfs sınırları](https://docs.docker.com/engine/storage/tmpfs/).
+
+---
+
 Bu düzen yalnız `/opt/furkantoplu` üretim kurulumu içindir. Yerel geliştirme DB'sini, DNS/Cloudflare hesabını veya SSH anahtarını değiştirmez. **Tek sunucudaki yedek, sunucu/disk kaybına karşı ayrı yerde yedek değildir.**
 
 ## Zaman ve kapsam
@@ -19,7 +43,7 @@ Başlamadan önce servis sağlığı, upload volume bağlaması ve disk alanı k
 
 EXIT/TERM/INT kurtarması ve systemd `ExecStopPost`, yalnız betiğin işaretlediği aynı Directus container'ını açıp sağlıklı olmasını bekler. Container deploy ile değişmişse körlemesine açmaz. Kurtarma başarısızsa `/run/furkantoplu-backup/directus-stopped` kalır ve sonraki normal yedek reddedilir. `/run` reboot'ta temizlenir; Docker restart policy servisleri açar.
 
-Başarılı arşivlerde `pg_restore --list`, tar okuma ve SHA256 kontrolü yapılır; sonrasında `.complete` işareti ve atomik klasör adı değişimi gelir. **Arşivi okumak gerçek geri yükleme testi değildir.** İzole restore denemesi sonraki küçük pakettir. Hatalı `.partial-*` kopyalar tanı için kalır; otomatik başarılı retention'a girmez ve elle incelenmelidir.
+Başarılı arşivlerde `pg_restore --list`, tar okuma ve SHA256 kontrolü yapılır; sonrasında `.complete` işareti ve atomik klasör adı değişimi gelir. **Arşivi okumak gerçek geri yükleme testi değildir.** Paket59'da seçili ilk yedek için ayrı gerçek restore testi yapıldı; her gece yeni yedeğin otomatik restore edildiği anlamına gelmez. Hatalı `.partial-*` kopyalar tanı için kalır; otomatik başarılı retention'a girmez ve elle incelenmelidir.
 
 Format/geri yükleme araçları için [PostgreSQL16 pg_dump dokümanı](https://www.postgresql.org/docs/16/app-pgdump.html). Bu projede DB snapshot'ına ek olarak dosya ve runtime arşivleri gerekir; yalnız imaj taşımak içerikleri yedeklemez.
 
@@ -43,4 +67,4 @@ sudo systemctl stop furkantoplu-backup.timer
 sudo /usr/local/sbin/furkantoplu-backup --recover
 ```
 
-Gerçek DB'ye `pg_restore`, `restore-initial.sh`, `down -v` veya volume silme komutu uygulanmaz. Geri yükleme önce izole hedefte test edilir; ayrı kullanıcı kararı gerekir. Bu ilk pakette dışarıya hata bildirimi yoktur: başarısızlık unit/journal üzerinden görünür. Ayrı yerde şifreli kopya, restore kanıtı ve hata bildirimi sonraki işlerdir.
+Gerçek DB'ye `pg_restore`, `restore-initial.sh`, `down -v` veya volume silme komutu uygulanmaz. Gerçek kurtarma/değişim ayrı kullanıcı kararı gerektirir. Şu an dışarıya hata bildirimi yoktur: başarısızlık unit/journal üzerinden görünür. Seçili yedeğin izole restore kanıtı Paket59'da alındı; ayrı yerde şifreli kopya ve hata bildirimi sonraki işlerdir.

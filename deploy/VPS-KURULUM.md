@@ -1,5 +1,13 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Güncel doğrulama — 10 Ekim2026 / Paket59: İzole DB/medya restore
+
+- Seçili yedek `20261010T153341Z`, başarılı check `20261010T194809Z-12173b09` (22.48Türkiye). Aynı PostgreSQL16 imageID kullanıldı; ayrı ağnone/portsiz/read-only/tmpfs fixture. Production container/ağ/volume'e restore yapılmadı; gerçek Directus oturumu/hesapları/fotoğraf/ayarlar değiştirilmedi.
+- Gerçek pg_restore tek transaction/no-owner/no-acl/exit-on-error ile boş test DB'ye başarılı. Arşivdata COPY→beklenen satır SHA256, test DB COPY→gerçek satır SHA256; sıra bağımsız40 public tabloda tamamen eşit.1 local upload61993bayt ayrı private klasörde byte hash/stat eşit, directus_files kaydıyla boyut/dosya eşleşti.
+- İki ilk denemede restore başarılı ama SQL inventory çıktısı explicit --file=- eksik olduğundan pg_restore usage hatası verdi. Özel logdan yalnız sabit hata eşleşmesiyle teyit edildi; betik/regresyon düzeltildi, p59c gerçek test tamamlandı. Üç denemenin de kendi fixture'ları temizlendi; failed transient unit durumu yalnız kendi unit adlarında sıfırlanır, geçmiş journal/root report korunur.
+-6 unit/regression testi/bash syntax/local-remote hash ve invalid-backup-name guard geçti. Gerçek test11.3s; private rapor `/var/backups/furkantoplu/restore-checks/...` içinde. Container/tmpfsDB/password/privateinventory/upload kopyaları kaldırıldı; Docker label filtresi ve /run prefix araması boş. Canlı3 servis healthy/proxyrunning, HTTPS200. Backup timer/saklama politikası değişmedi.
+- Kalıcı restore scheduler veya uygulama rebuild/deploy yok. Runtime/Caddy/Directus/frontend yeniden kurulum/adminTOTP girişi test edilmedi; aynı-VPS DB/medya restore kanıtı ayrı yerde felaket kurtarma kanıtı değildir. Kaynaklar `deploy/vps/restore-check*` ve fixture testi; işletim [YEDEKLEME.md](YEDEKLEME.md). Ayrı yerde şifreli yedek/hata bildirimi sonraki küçük adım.
+
 ## Güncel altyapı — 10 Ekim 2026 / Paket 58: Düzenli yerel VPS yedeği
 
 - Küçük adımlarla başlama talebiyle yalnız yedekleme uygulandı. İmaj/uygulama tasarımı, dependency/auth politikası, DNS/Cloudflare ve Google hesabı değişmedi. Operasyon açıklaması [YEDEKLEME.md](YEDEKLEME.md).

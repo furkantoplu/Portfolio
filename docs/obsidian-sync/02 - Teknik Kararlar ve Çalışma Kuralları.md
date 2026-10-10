@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 10 Ekim2026: Restore kanıtını canlı veri ve tam uygulama kabulünden ayır
+
+Yedek doğrulaması yalnız archive-list/hash değildir; seçili immutableprivatebackup boş/ağsız ayrı instance'a actualrestore edilir. ÜretimID/network/volume yazma açılmaz, mevcut günlük backupkilidi paylaşılır. DB publictableset ve bütünCOPYrow count/SHA256 multiset eşitliği, ayrıfotoğraf bytehash/metadata eşitliği şarttır; rawsecret/credential/TOTP satırları terminal/not/Git'e dökülmez. Kaynak timestamp inventory'si arşivden türetilir; güncel canlıDB kullanıcıeditleri nedeniyle snapshot'la kör karşılaştırılmaz.
+
+Normal hata/TERM/EXIT sonunda yalnız kendi label/containerID ve doğrulanmışcanonicalmktemp path temizlenir; gerçekvolume/snapshot silinmez. SIGKILL/crash temizlik garantisi değildir, leftovercheck yapılır. Tempdatabase ağnone/rootfsreadonly/kısıtlıCPU/RAM/tmpfs; tmpfs hostswap'a gidebilir, güvenli-imha iddiası yok. Arşivextract strict path/kind/bytebudget/emptytarget korumasıyla yapılır. Testkapasitesi bütüngelecekbackupboyutlarına garanti değildir.
+
+ActualDB/medya restore başarı, frontend/Directus/TLS yenidenyayın/adminTOTPlogin veya başka sunucuda off-server kurtarma başarı demek değildir. Privatefailureloglar root altında kalır; yalnız sabit kontrolnedenleri/type adı gösterilir. pg_restoredataSQL için explicit --file=- gerekir; guardcontractregresyonla korunur. Hergece otomatikrestore/test veya dışuyarıkurulmadı; küçükpaket sınırı korunur.
+
 ## Karar — 10 Ekim 2026: Küçük, özel ve sınırları açık VPS yedeği
 
 İyileştirmeler küçük paketlerle uygulanır. İlk paketin başarı koşulu günlük yerel backup/time/retention/servis kurtarma ve arşiv doğrulamasıdır; dependency/auth/SEO/DNS değişikliği buna eklenmez. Takvim açık Europe/Istanbul04.15, kaçırılmış işi açılışta yapabilen Persistenttrue; son7 başarılı çalıştırma saklanır. Düşük disk veya sağlıksız CMS durumunda başlamadan güvenli ret verilir.
