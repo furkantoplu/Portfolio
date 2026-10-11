@@ -4,6 +4,8 @@ Fizyoterapist portföyü ve blogu için geliştirilen React/TypeScript tabanlı 
 
 ## VPS hazırlığı ve yayın sırası
 
+Paket 62 — 11 Ekim 2026: WhatsApp bağlantısı uluslararası numaraya normalleştirildi. Eksik/geçersiz CMS değeri kırık `wa.me` linki olarak yayımlanmaz; admin gerçek, WhatsApp'ta kayıtlı ülke kodlu numarayı girmelidir. Yerel ve VPS frontend yenilendi; kullanıcıya ait gerçek numara henüz verilmediği için canlı WhatsApp kartı şimdilik gizli. Gizlilik/KVKK sayfaları hâlâ taslak içeriktedir; sahibin gerçek veri sorumlusu ve iletişim bilgileri gelmeden onaylı hukuk metni gibi değiştirilmeyecek. Ayrıntı Obsidian geliştirme günlüğü ve [deploy/VPS-KURULUM.md](deploy/VPS-KURULUM.md).
+
 Paket 60 — 11 Ekim 2026: `/bakir` yönetiminde Authenticator her yönetici için zorunlu. İlk şifreli giriş yalnız kişinin kendi QR/TOTP kurulumuna izin verir; içerik ve ekip yönetimi kodlu yeni oturumdan sonra açılır. Canlı ve izole API testleri geçti, mevcut iki yöneticinin anahtarı değiştirilmedi. Kullanım, sınırlar ve işletim kontrolü: [deploy/ADMIN-TFA.md](deploy/ADMIN-TFA.md). Site sahibinin kendi telefonuyla son kabulü, ayrı yerde yedek tercihi ve Google Search Console sonraki küçük adımlardır.
 
 Paket59 — 10 Ekim2026: İlk günlük yedek ağsız geçici PostgreSQL'e gerçekten geri yüklendi.40 tablonun tüm satır parmak izleri ve1 fotoğraf/dosya kaydı eşleşti; geçici ortam temizlendi, canlı site kesilmedi. Bu DB/medya restore kanıtıdır; bütün siteyi başka sunucuda açma/admin-login veya ayrı yerde şifreli yedek değildir. Ayrıntılar ve güvenli manuel komut [deploy/YEDEKLEME.md](deploy/YEDEKLEME.md).

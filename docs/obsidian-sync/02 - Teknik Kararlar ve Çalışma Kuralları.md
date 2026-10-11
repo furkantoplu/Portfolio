@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 11 Ekim 2026: WhatsApp numarası biçimini kayıtlı hesap doğrulamasından ayır
+
+`wa.me` için yalnız tam ülke kodlu rakamlar kullanılır; Türkiye yerel 0/10 haneli cep biçimi 90'a dönüştürülür, uluslararası +/00 girdisi temizlenir. Bozuk/kısa CMS değeri tıklanabilir public kart üretmez; admin alanı geçerli ülke kodlu girişi şart koşar veya boş bırakılabilir. Bu biçim doğrulaması WhatsApp'ın o numarayı kaydetmiş olduğunu, bütün ülkelerde uygulamanın kurululuğunu veya mesaj teslimini kanıtlamaz; gerçek hedef hesap sahibi cihazıyla kontrol edilir. Kullanıcı numarası/fotoğraf/mesaj içerikleri test için üretilmez veya loglanmaz.
+
+Yasal sayfaların “taslak” sözcüklerini silmek, KVKK'nın veri sorumlusu kimliği, işleme amacı/hukuki sebebi, aktarım, toplama yöntemi ve haklar gibi gerçek unsurlarını doldurmaz. Kullanıcı iletişim/iş adresi bilgilerini ayrıca sağlayacağını söyledi. O zamana kadar hukuk metinlerinin tamamlandığı iddiası veya sessiz değişiklik yok; mevcut risk kullanıcıya açıkça bildirilir. Resmî kaynaklar: https://faq.whatsapp.com/5913398998672934 ve https://www.kvkk.gov.tr/Icerik/2033/Aydinlatma-Yukumlulugu-.
+
 ## Karar — 11 Ekim 2026: Search Console'u gerçek yayın içeriğinden ayır
 
 `robots.txt`/`sitemap.xml` ve canonical/hreflang teknik kontrolleri, Google Search Console mülkiyet doğrulaması veya indeks garantisi değildir. Domain property doğrulaması site sahibinin seçeceği Google hesabıyla, Google'ın o hesaba verdiği benzersiz DNS TXT değeri kullanılarak Cloudflare yetkili DNS'te yapılır; token repo, Obsidian ve loglara yazılmaz. Site haritasını Search Console'a göndermek ve URL Inspection sonuçlarını değerlendirmek ayrı kabul adımıdır; gönderim/yeniden tarama indeks garantisi değildir.

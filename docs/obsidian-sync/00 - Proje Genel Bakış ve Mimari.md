@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## WhatsApp bağlantısı ve yasal içerik sınırı — 11 Ekim 2026 / Paket 62
+
+Ana sayfa ve TR/EN/DE iletişim sayfası artık ortak WhatsApp helper'ı kullanır. Türkiye yerel numarası uluslararası `90...` biçimine dönüştürülür; zaten ülke kodlu giriş korunur. Eksik/geçersiz CMS numarası public `wa.me` linki oluşturmaz. `/bakir` ülke kodunu açıklar ve kayıtta biçimi doğrular; gerçek WhatsApp hesabına mesaj teslimi ancak sahibin gerçek numarası ve cihaz testiyle onaylanır. Canlı örnek kayıt geçersiz olduğundan WhatsApp kartı geçici gizli; diğer iletişim seçenekleri korunur. Yerel/VPS frontend build,112 test, private preflight ve canlı smoke geçti. Yalnız frontend imajı `vps-20261011-whatsapp1`; önceki imaj ve root geri dönüş yedeği korundu.
+
+Gizlilik ve KVKK metinleri kullanıcının isteğiyle yeniden yazılacak, ancak kullanıcı gerçek veri sorumlusu iş adresi ve başvuru iletişim bilgilerini sonra verecek. KVKK aydınlatma asgari öğeleri ve Kanada VPS/Cloudflare/WhatsApp/e-posta işleme gerçekleri onaylanmadan “taslak” etiketini kaldırıp metni bitmiş göstermek yanıltıcı olur. Bu yüzden yasal sayfalar ve sitemap henüz değişmedi; talep kısmen açık. Ayrıntılı tarihçe `01`, operasyonel geri dönüş `deploy/VPS-KURULUM.md`.
+
 ## Google arama hazırlığı — 11 Ekim 2026 / Paket 61
 
 Mevcut VPS sitesi için canlı robots/sitemap/dil/canonical ve erişim testi tekrarlandı; 37 benzersiz HTTPS sitemap URL'si ve üç dil alternatifleri tutarlı. Yönetim `/bakir` noindex, yönetim yolları robots dışında; temel rotalar ve 18 alan detayı smoke testlerinden geçti. Kod/DNS/VPS/Google hesabı değişmedi, Search Console doğrulaması ve Google indeks durumu henüz bilinmiyor.
