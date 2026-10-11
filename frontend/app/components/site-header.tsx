@@ -149,7 +149,7 @@ export function SiteHeader({ active, locale = "tr", languageLinks }: SiteHeaderP
             <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.7} />
           </NativeLink>
 
-          <p className="mobile-nav__meta">{t("İstanbul · Yüz yüze görüşme")}</p>
+          <p className="mobile-nav__meta">{t("Uzaktan iletişim")}</p>
         </nav>
       </div>
     </>

@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 11 Ekim 2026: Doğrulanmış iletişim verisini görünürlükten ayrı yönet
+
+Site sahibi gerçek telefon/e-posta/WhatsApp bilgisini ve fiziksel klinik bulunmadığını doğruladı. Eski placeholder'lar guarded/idempotent migration ile gerçek ve uluslararası biçimli numaraya, konum metinleri uzaktan iletişime çevrilir. `section_visibility` asla migration tarafından değiştirilmez: CMS veri doğruluğu, public kartların yayımlanması için örtük izin değildir. Kullanıcı canlı kartların gizli kalmasını seçti. Yerel DB'de görünürlük farklıysa bu bir yayın kararı değildir; canlı bayraklar korunur. WhatsApp URL biçimi doğru olsa bile hesap/mesaj teslimi sahibin cihazından ayrıca test edilir.
+
+Yasal metindeki “taslak”ı kaldırmak, web ziyareti ve ilk iletişime ilişkin gerçek bilgilerle metni doldurma kararıdır; tam KVKK uygunluğu onayı değildir. Site dışı sağlayıcılar ve Kanada VPS nedeniyle yurt dışına aktarımın 2024 sonrası hukuki mekanizması ve sağlayıcı sözleşmeleri, ayrıca sağlık verisi için ayrı aydınlatma/işleme koşulları site sahibi ve hukuk incelemesine tabidir. Hukuki başvuru yolu sıradan e-posta ile resmî başvuru arasındaki farkı belirtir. Kamuya açık olmayan fiziksel adres uydurulmaz. Resmî kaynaklar: https://www.kvkk.gov.tr/Icerik/2033/Aydinlatma-Yukumlulugu- ve https://www.kvkk.gov.tr/Icerik/2051/Ozel-Nitelikli-Kisisel-Veriler. Search Console ve site dışı şifreli yedek ayrıca bekler.
+
 ## Karar — 11 Ekim 2026: WhatsApp numarası biçimini kayıtlı hesap doğrulamasından ayır
 
 `wa.me` için yalnız tam ülke kodlu rakamlar kullanılır; Türkiye yerel 0/10 haneli cep biçimi 90'a dönüştürülür, uluslararası +/00 girdisi temizlenir. Bozuk/kısa CMS değeri tıklanabilir public kart üretmez; admin alanı geçerli ülke kodlu girişi şart koşar veya boş bırakılabilir. Bu biçim doğrulaması WhatsApp'ın o numarayı kaydetmiş olduğunu, bütün ülkelerde uygulamanın kurululuğunu veya mesaj teslimini kanıtlamaz; gerçek hedef hesap sahibi cihazıyla kontrol edilir. Kullanıcı numarası/fotoğraf/mesaj içerikleri test için üretilmez veya loglanmaz.

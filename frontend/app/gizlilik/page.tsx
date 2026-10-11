@@ -1,34 +1,36 @@
 import type { Metadata } from "next";
 import { LegalDocument, type LegalSection } from "../components/legal-document";
+import { getSiteUrl } from "../lib/site-url";
 
 export const metadata: Metadata = {
   title: "Gizlilik | Fzt. Furkan Toplu",
-  description: "Web sitesinin gizlilik ve teknik veri kullanımı hakkında taslak bilgilendirme.",
+  description: "Fzt. Furkan Toplu web sitesinde iletişim bağlantıları, teknik veriler ve çerez kullanımı hakkında bilgi.",
+  alternates: { canonical: `${getSiteUrl()}/gizlilik` },
 };
 
 const sections: LegalSection[] = [
   {
-    title: "Site kapsamı",
-    content: <p>Bu web sitesi fizyoterapi çalışma alanları ve genel bilgilendirici içerikler sunar. Ziyaretçiler için üyelik, kullanıcı profili veya çevrim içi hasta dosyası özelliği bulunmaz.</p>,
+    title: "Bu sitede neler bulunur?",
+    content: <p>furkantoplu.com, Fizyoterapist Furkan Toplu’nun çalışma alanlarını ve yazılarını tanıtır. Ziyaretçi hesabı, çevrim içi hasta dosyası veya sağlık bilgisi göndermeye yönelik bir web formu bulunmaz. Görüşme ve genel bilgi talepleri telefon, e-posta veya WhatsApp üzerinden iletilebilir.</p>,
   },
   {
-    title: "İletişim bağlantıları",
-    content: <p>Telefon, e-posta ve WhatsApp bağlantıları harici iletişim kanallarını açar. Bu kanallarda paylaşılan bilgiler ilgili hizmetin kendi koşulları ve gerçek veri sorumlusunun süreçleri kapsamında değerlendirilir.</p>,
+    title: "İletişim kanalları",
+    content: <><p>E-posta bağlantısı cihazınızdaki e-posta uygulamasını, WhatsApp bağlantısı ise WhatsApp hizmetini açar. Mesaj göndermeyi seçtiğinizde paylaştığınız bilgiler ilgili iletişim kanalında işlenir; yalnızca bağlantıya bakmanız bize mesaj göndermez.</p><p>İlk mesajınızda sağlık raporu veya ayrıntılı sağlık bilgisi göndermemenizi rica ederiz. Uzaktan iletişimle başlayan hizmet sürecinin ayrıntıları sizinle ayrıca görüşülür.</p></>,
   },
   {
-    title: "Teknik kayıtlar ve güvenlik",
-    content: <p>Site yayına alındığında güvenlik, hata tespiti ve hizmet sürekliliği amacıyla IP adresi, istek zamanı ve teknik tarayıcı bilgileri gibi sınırlı sunucu kayıtları oluşabilir. Saklama süresi ve hizmet sağlayıcılar production altyapısı kesinleştiğinde açıkça belirtilecektir.</p>,
+    title: "Teknik veriler ve hizmet sağlayıcılar",
+    content: <p>Siteye erişim sırasında IP adresi, istek zamanı ve tarayıcıya ilişkin teknik bilgiler bağlantının kurulması, güvenlik ve hata tespiti için işlenebilir. Site Cloudflare üzerinden sunulur; uygulama ve veritabanı OVHcloud’un Kanada’daki sunucusunda barındırılır. Bu nedenle site trafiğine ait teknik veriler yurt dışındaki altyapı üzerinden geçebilir. E-posta veya WhatsApp ile iletişimi seçerseniz ilgili hizmet sağlayıcının kendi gizlilik koşulları da geçerli olur.</p>,
   },
   {
-    title: "Çerezler ve ölçüm araçları",
-    content: <p>Mevcut arayüz taslağında reklam veya davranışsal takip amacıyla kurulmuş bir ölçüm aracı bulunmaz. İleride zorunlu olmayan çerez veya analiz aracı eklenirse tercih ve bilgilendirme mekanizması ayrıca tasarlanacaktır.</p>,
+    title: "Çerezler",
+    content: <p>Ziyaretçilere reklam veya davranışsal analiz amacıyla bir çerez yerleştiren araç kurulu değildir. Yönetim paneline giriş yapan yetkili kişiler için oturum çerezi kullanılır. Altyapı ve güvenlik hizmetleri, hizmetin çalışması için gerekli teknik tanımlayıcılar kullanabilir. Zorunlu olmayan bir ölçüm veya reklam aracı eklenirse bu sayfa ve gerekli tercih mekanizması güncellenir.</p>,
   },
   {
-    title: "Güncelleme ve iletişim",
-    content: <p>Bu metin kullanılan altyapı ve hizmetler değiştikçe güncellenebilir. Yayın öncesinde gerçek alan adı, veri sorumlusu, barındırma sağlayıcısı ve iletişim bilgileriyle son kontrol yapılacaktır.</p>,
+    title: "İletişim ve kişisel veriler",
+    content: <p>Bu siteyle ilgili gizlilik sorularınızı Fizyoterapist Furkan Toplu’ya <a href="mailto:toplu.furkan0220@gmail.com">toplu.furkan0220@gmail.com</a> adresinden veya <a href="tel:+905522903902">+90 552 290 39 02</a> numarasından iletebilirsiniz. Kişisel veri işleme faaliyeti ve haklarınız için ayrıca <a href="/kvkk-aydinlatma-metni">KVKK Aydınlatma Metni</a>ni okuyabilirsiniz.</p>,
   },
 ];
 
 export default function PrivacyPage() {
-  return <LegalDocument eyebrow="Site Politikası" title="Gizlilik Bilgilendirmesi" intro="Sitenin iletişim bağlantıları, teknik kayıtları ve gelecekte kullanılabilecek çerezler hakkında sade bir arayüz taslağı." updated="22 Eylül 2026" sections={sections} />;
+  return <LegalDocument eyebrow="Site Politikası" title="Gizlilik Bilgilendirmesi" intro="Web sitesinde kullanılan iletişim kanalları ve teknik altyapı hakkında bilgi." updated="11 Ekim 2026" sections={sections} />;
 }

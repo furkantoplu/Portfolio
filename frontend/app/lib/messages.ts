@@ -37,6 +37,7 @@ export const messages: Record<string, { en: string; de: string }> = {
   "İstanbul": { en: "Istanbul", de: "Istanbul" },
   "Yüz yüze görüşme": { en: "In-person appointments", de: "Persönliche Termine" },
   "İstanbul · Yüz yüze görüşme": { en: "Istanbul · In-person appointments", de: "Istanbul · Persönliche Termine" },
+  "Uzaktan iletişim": { en: "Remote contact", de: "Kontakt aus der Ferne" },
   "Hareketin farklı ihtiyaçlarına": { en: "Different movement needs,", de: "Unterschiedliche Bewegungsbedürfnisse," },
   "bütüncül bir bakış.": { en: "a holistic perspective.", de: "ein ganzheitlicher Blick." },
   "Her süreç dinlemekle başlar. Değerlendirme sonrasında ihtiyaçlara uygun, anlaşılır ve takip edilebilir bir yol haritası oluşturulur.": { en: "Every process starts with listening. Assessment leads to a clear, individual plan whose progress we can review together.", de: "Jeder Weg beginnt mit Zuhören. Nach der Untersuchung entsteht ein verständlicher, individueller Plan mit nachvollziehbaren Schritten." },

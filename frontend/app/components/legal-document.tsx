@@ -28,15 +28,16 @@ export function LegalDocument({ eyebrow, title, intro, updated, sections }: Lega
         <h1 id="legal-title">{title}</h1>
         <p>{intro}</p>
         <div className="legal-hero__meta">
-          <span>Son taslak güncellemesi</span>
+          <span>Güncelleme tarihi</span>
           <strong>{updated}</strong>
         </div>
       </section>
 
       <div className="legal-layout">
         <aside>
-          <p>Taslak metin</p>
-          <strong>Yayın öncesinde gerçek veri işleme envanterine göre hukuk uzmanı tarafından kontrol edilmelidir.</strong>
+          <p>Veri sorumlusu</p>
+          <strong>Fizyoterapist Furkan Toplu</strong>
+          <a href="mailto:toplu.furkan0220@gmail.com">toplu.furkan0220@gmail.com</a>
           <a href="https://www.kvkk.gov.tr/Icerik/2033/Aydinlatma-Yukumlulugu-" target="_blank" rel="noreferrer">
             Resmî KVKK bilgisi <ExternalLink aria-hidden="true" size={15} />
           </a>

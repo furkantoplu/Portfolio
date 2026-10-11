@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Canlı iletişim ve yasal kapsam — 11 Ekim 2026 / Paket 63
+
+Site sahibi Fizyoterapist Furkan Toplu gerçek e-posta (`toplu.furkan0220@gmail.com`) ve telefon/aktif WhatsApp (`+90 552 290 39 02`) bilgisini verdi; fiziksel klinik adresi yok, iletişim uzaktan. Guarded CMS migration ana sayfa ve iletişim içeriğini TR/EN/DE uzak çalışma biçimine getirdi. Kullanıcının talebiyle canlı telefon/e-posta/WhatsApp/adres/saat kartlarının gizlilik bayrakları aynen korundu. Yerel DB ayrı olduğundan görünürlük yerelde farklı olabilir.
+
+Gizlilik/KVKK sayfalarından taslak ibareleri çıkarıldı; veri sorumlusu, teknik ziyaret ve ilk temas verileri, Kanada OVHcloud/Cloudflare, e-posta/WhatsApp alıcıları ve hak/başvuru yolu metinlerde yer alır. İki yasal rota self-canonical taşır. Bu site ziyareti/ilk temas bilgilendirmesidir, tam KVKK uygunluğu veya klinik sağlık verisi aydınlatması değildir. Sınır ötesi aktarım mekanizması ve sağlık verisi işleme politikası site sahibi/hukuk incelemesi bekler. Site dışı yedek de sahibi hazır olana kadar ertelendi.
+
+Yalnız frontend `vps-20261011-legal1` imajına güncellendi; canlı DB için ayrı root-only tablo yedeği, frontend için kaynak/env geri dönüş kopyası alındı. 114 test/TypeScript, private preflight, yerel ve canlı TR/EN/DE/HTTPS smoke geçti. Public kartlar gizli olduğundan WhatsApp linki görünmez; doğru uluslararası numara CMS'te saklıdır. Google Search Console mülkiyet doğrulaması ve sitemap gönderimi hâlâ bekler. Operasyon ayrıntısı `deploy/VPS-KURULUM.md`, tarihçe `01` notunda.
+
 ## WhatsApp bağlantısı ve yasal içerik sınırı — 11 Ekim 2026 / Paket 62
 
 Ana sayfa ve TR/EN/DE iletişim sayfası artık ortak WhatsApp helper'ı kullanır. Türkiye yerel numarası uluslararası `90...` biçimine dönüştürülür; zaten ülke kodlu giriş korunur. Eksik/geçersiz CMS numarası public `wa.me` linki oluşturmaz. `/bakir` ülke kodunu açıklar ve kayıtta biçimi doğrular; gerçek WhatsApp hesabına mesaj teslimi ancak sahibin gerçek numarası ve cihaz testiyle onaylanır. Canlı örnek kayıt geçersiz olduğundan WhatsApp kartı geçici gizli; diğer iletişim seçenekleri korunur. Yerel/VPS frontend build,112 test, private preflight ve canlı smoke geçti. Yalnız frontend imajı `vps-20261011-whatsapp1`; önceki imaj ve root geri dönüş yedeği korundu.
