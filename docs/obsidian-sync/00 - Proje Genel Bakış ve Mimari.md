@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Google arama hazırlığı — 11 Ekim 2026 / Paket 61
+
+Mevcut VPS sitesi için canlı robots/sitemap/dil/canonical ve erişim testi tekrarlandı; 37 benzersiz HTTPS sitemap URL'si ve üç dil alternatifleri tutarlı. Yönetim `/bakir` noindex, yönetim yolları robots dışında; temel rotalar ve 18 alan detayı smoke testlerinden geçti. Kod/DNS/VPS/Google hesabı değişmedi, Search Console doğrulaması ve Google indeks durumu henüz bilinmiyor.
+
+İki önemli açık konu var: `/gizlilik` ve `/kvkk-aydinlatma-metni` canlıda hâlâ “taslak” ibareli, tamamlanmamış gerçek veri sorumlusu/altyapı bilgileriyle sunuluyor ve sitemap'te yer alıyor; self canonical da yok. Gerçek metinler site sahibi ve uygun hukuk incelemesiyle tamamlanmadan sitemap'i Google'a göndermek teslim kabulü sayılmaz. Sonraki adım sahip Google hesabında Domain property + Cloudflare kök TXT doğrulaması; doğrulama token'ı kaynak/notlara konmaz. Onaylı yasal metin ve son iletişim bilgileri, gerçek admin telefon kabulü ve off-server yedek ayrıca bekliyor.
+
 ## İzole geri yükleme doğrulaması — 10 Ekim2026 / Paket59
 
 Kullanıcı devam isteğiyle yalnız sıradaki küçük restore testi yapıldı. İlk günlük yedek ayrı PostgreSQL16 instance'ında ağnone/read-only/tmpfs/no-publicport ile gerçekten geri yüklendi.40 public tablonun arşiv→geri yüklenen COPY satır sayımı ve SHA256 multiset parmak izi eşit;1 fotoğraf61993bayt ayrı private klasörde çıkarılıp hash/boyut/DBkaydı doğrulandı. İlk doğrulama aracının explicit pg_restore --file=- eksiği giderilip6 regresyon ve gerçek tam karşılaştırma geçti.

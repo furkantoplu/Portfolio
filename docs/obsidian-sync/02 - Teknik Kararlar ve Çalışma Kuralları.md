@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 11 Ekim 2026: Search Console'u gerçek yayın içeriğinden ayır
+
+`robots.txt`/`sitemap.xml` ve canonical/hreflang teknik kontrolleri, Google Search Console mülkiyet doğrulaması veya indeks garantisi değildir. Domain property doğrulaması site sahibinin seçeceği Google hesabıyla, Google'ın o hesaba verdiği benzersiz DNS TXT değeri kullanılarak Cloudflare yetkili DNS'te yapılır; token repo, Obsidian ve loglara yazılmaz. Site haritasını Search Console'a göndermek ve URL Inspection sonuçlarını değerlendirmek ayrı kabul adımıdır; gönderim/yeniden tarama indeks garantisi değildir.
+
+Canlı iki yasal sayfada taslak ve henüz kesinleşmemiş veri sorumlusu/işleme bilgileri bulunduğu için yalnız SEO etiketleriyle yayın hazır ilan edilmez. Hukuk ve site sahibinin gerçek metin/iletişim/onay kararı gerekir; uydurma metin veya sessizce noindex/sitemap değişikliği yapılmaz. Bu paket sadece salt-okunur bulguları kaydeder. Google'a aktif sitemap gönderimi onaylı içerikten sonra yapılır; mevcut canlı erişim değişmeden kalır.
+
 ## Karar — 10 Ekim2026: Restore kanıtını canlı veri ve tam uygulama kabulünden ayır
 
 Yedek doğrulaması yalnız archive-list/hash değildir; seçili immutableprivatebackup boş/ağsız ayrı instance'a actualrestore edilir. ÜretimID/network/volume yazma açılmaz, mevcut günlük backupkilidi paylaşılır. DB publictableset ve bütünCOPYrow count/SHA256 multiset eşitliği, ayrıfotoğraf bytehash/metadata eşitliği şarttır; rawsecret/credential/TOTP satırları terminal/not/Git'e dökülmez. Kaynak timestamp inventory'si arşivden türetilir; güncel canlıDB kullanıcıeditleri nedeniyle snapshot'la kör karşılaştırılmaz.
