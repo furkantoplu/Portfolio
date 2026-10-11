@@ -2,7 +2,7 @@
 
 import { FormEvent, useRef, useState } from "react";
 import { FileText, LoaderCircle, Save } from "lucide-react";
-import { phoneToDialValue } from "../lib/contact";
+import { normalizeWhatsAppNumber, phoneToDialValue } from "../lib/contact";
 import { directusRequest } from "./admin-api";
 import { LanguageTabs, TranslationEditor } from "./translation-editor";
 import type { Locale } from "../lib/i18n";
@@ -90,6 +90,14 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
       const phoneDisplay = String(content.phone_display || "").trim();
       content.phone_display = phoneDisplay;
       content.phone_value = phoneToDialValue(phoneDisplay);
+      const whatsappInput = String(content.whatsapp_value || "").trim();
+      const whatsappNumber = normalizeWhatsAppNumber(whatsappInput);
+      if (whatsappInput && !whatsappNumber) {
+        setMessage("WhatsApp için gerçek, ülke kodlu numara girin (ör. +90 5XX XXX XX XX) veya alanı boş bırakın.");
+        setBusy(false);
+        return;
+      }
+      content.whatsapp_value = whatsappNumber || "";
     }
     try {
       await directusRequest(`/items/site_pages/${current.id}`, { method: "PATCH", body: JSON.stringify({ content, seo_title: draft.seo_title ?? current.seo_title, seo_description: draft.seo_description ?? current.seo_description }) });
@@ -133,7 +141,7 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
             <VisibilityField label="Giriş açıklaması" section="intro" className="admin-field--wide" visibility={sectionVisibility} onChange={setVisibilityDraft} disabled={busy}><textarea rows={3} value={value("intro")} onChange={(e) => update("intro", e.target.value)} /></VisibilityField>
             <label className="admin-field--wide"><span>Gizlilik uyarısı</span><input value={value("privacy_note")} onChange={(e) => update("privacy_note", e.target.value)} /></label>
             <VisibilityField label="Telefon numarası" section="phone" visibility={sectionVisibility} onChange={setVisibilityDraft} disabled={busy}><input type="tel" value={value("phone_display")} onChange={(e) => update("phone_display", e.target.value)} placeholder="+90 555 123 45 67" /><small>Arama bağlantısı bu numaradan otomatik oluşturulur.</small></VisibilityField>
-            <VisibilityField label="WhatsApp numarası" section="whatsapp" visibility={sectionVisibility} onChange={setVisibilityDraft} disabled={busy}><input value={value("whatsapp_value")} onChange={(e) => update("whatsapp_value", e.target.value.replace(/\D/g, ""))} /></VisibilityField>
+            <VisibilityField label="WhatsApp numarası" section="whatsapp" visibility={sectionVisibility} onChange={setVisibilityDraft} disabled={busy}><input type="tel" value={value("whatsapp_value")} onChange={(e) => update("whatsapp_value", e.target.value)} placeholder="+90 5XX XXX XX XX" /><small>WhatsApp'ta kayıtlı gerçek numarayı ülke koduyla girin. Numara boş veya geçersizse public bağlantı gösterilmez.</small></VisibilityField>
             <VisibilityField label="E-posta" section="email" visibility={sectionVisibility} onChange={setVisibilityDraft} disabled={busy}><input type="email" value={value("email")} onChange={(e) => update("email", e.target.value)} /></VisibilityField>
             <VisibilityField label="Adres başlığı" section="address" visibility={sectionVisibility} onChange={setVisibilityDraft} disabled={busy}><input value={value("address_title")} onChange={(e) => update("address_title", e.target.value)} /></VisibilityField>
             <VisibilityField label="Çalışma günleri" section="hours" visibility={sectionVisibility} onChange={setVisibilityDraft} disabled={busy}><input value={value("working_days")} onChange={(e) => update("working_days", e.target.value)} /></VisibilityField>

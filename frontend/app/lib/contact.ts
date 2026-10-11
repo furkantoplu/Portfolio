@@ -32,3 +32,25 @@ export function phoneToDialValue(value: string) {
 export function phoneHref(content: Pick<ContactContent, "phone_display" | "phone_value">) {
   return `tel:${phoneToDialValue(content.phone_display) || content.phone_value || ""}`;
 }
+
+export function normalizeWhatsAppNumber(value: string | null | undefined): string | null {
+  const input = (value || "").trim();
+  if (!input || !/^\+?[\d\s().-]+$/.test(input)) return null;
+
+  let digits = input.replace(/\D/g, "");
+  if (input.startsWith("+") && digits.startsWith("0")) return null;
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  if (digits.startsWith("0")) {
+    if (!/^0[1-9]\d{9}$/.test(digits)) return null;
+    digits = `90${digits.slice(1)}`;
+  } else if (!input.startsWith("+") && /^5\d{9}$/.test(digits)) {
+    digits = `90${digits}`;
+  }
+
+  return /^[1-9]\d{7,14}$/.test(digits) ? digits : null;
+}
+
+export function whatsAppHref(value: string | null | undefined): string | null {
+  const number = normalizeWhatsAppNumber(value);
+  return number ? `https://wa.me/${number}` : null;
+}

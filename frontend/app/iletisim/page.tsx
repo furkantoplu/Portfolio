@@ -4,7 +4,7 @@ import { isSectionVisible } from "../lib/section-visibility";
 import { ArrowUpRight, Clock3, Mail, MapPin, MessageCircleMore, Phone, ShieldCheck } from "lucide-react";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
-import { type ContactContent, phoneHref } from "../lib/contact";
+import { type ContactContent, phoneHref, whatsAppHref } from "../lib/contact";
 import { getSitePage } from "../lib/directus";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,11 +16,12 @@ export default async function ContactPage() {
   const { locale, t } = await getPageTools();
   const { content } = await getSitePage<ContactContent>("contact");
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
+  const whatsappUrl = whatsAppHref(content.whatsapp_value);
   const methods = [
     { key: "phone", icon: Phone, label: "Telefon", value: content.phone_display, note: content.working_days, href: phoneHref(content) },
-    { key: "whatsapp", icon: MessageCircleMore, label: "WhatsApp", value: "Mesaj gönderin", note: "Uygun olduğunda dönüş yapılır", href: `https://wa.me/${content.whatsapp_value}` },
+    { key: "whatsapp", icon: MessageCircleMore, label: "WhatsApp", value: "Mesaj gönderin", note: "Uygun olduğunda dönüş yapılır", href: whatsappUrl },
     { key: "email", icon: Mail, label: "E-posta", value: content.email, note: "Genel bilgi talepleri için", href: `mailto:${content.email}` },
-  ].filter(method => show(method.key));
+  ].filter((method): method is typeof method & { href: string } => show(method.key) && Boolean(method.href));
   return (
     <main className="site-shell contact-page">
       <SiteHeader locale={locale} active="contact" />

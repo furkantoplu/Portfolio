@@ -4,7 +4,7 @@ import { formatDate } from "./lib/i18n";
 import Image from "./components/site-image";
 import { isSectionVisible } from "./lib/section-visibility";
 import { NativeLink } from "./components/native-link";
-import { type ContactContent, phoneHref } from "./lib/contact";
+import { type ContactContent, phoneHref, whatsAppHref } from "./lib/contact";
 import { getBlogPosts, getPracticeAreas, getHomeContact, getEditablePage } from "./lib/directus";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
@@ -60,6 +60,7 @@ export default async function Home() {
     getEditablePage("home"),
   ]);
   const contact = contactPage.content;
+  const whatsappUrl = whatsAppHref(contact.whatsapp_value);
   const content = homePage.content;
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
   const contactShow = (key: string) => isSectionVisible(contact.section_visibility, key);
@@ -265,7 +266,7 @@ export default async function Home() {
       </section>) }
 
       {show("contact") && (<section className="contact-section" id="iletisim" aria-labelledby="contact-title">
-        <div className={`contact-section__main${contactShow("phone") || contactShow("whatsapp") || contactShow("email") ? "" : " contact-section__main--text-only"}`}>
+        <div className={`contact-section__main${contactShow("phone") || (contactShow("whatsapp") && whatsappUrl) || contactShow("email") ? "" : " contact-section__main--text-only"}`}>
           <div className="contact-section__copy">
             <p className="section-kicker">{t("İletişim")}</p>
             <h2 id="contact-title">{content.contact_title}<em>{" "}{content.contact_accent}</em>
@@ -282,9 +283,9 @@ export default async function Home() {
               </span>
               <ArrowUpRight aria-hidden="true" size={19} />
             </a>) }
-            {contactShow("whatsapp") && (<a
+            {contactShow("whatsapp") && whatsappUrl && (<a
               className="contact-action"
-              href={`https://wa.me/${contact.whatsapp_value}`}
+              href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
             >
