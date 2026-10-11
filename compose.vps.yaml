@@ -40,7 +40,8 @@ services:
       LOGIN_STALL_TIME: "750"
       TELEMETRY: "false"
       FILES_MAX_UPLOAD_SIZE: 10mb
-      WEBSOCKETS_ENABLED: "true"
+      CACHE_ENABLED: "false"
+      WEBSOCKETS_ENABLED: "false"
       NODE_OPTIONS: --max-old-space-size=640
     volumes:
       - directus_uploads:/directus/uploads

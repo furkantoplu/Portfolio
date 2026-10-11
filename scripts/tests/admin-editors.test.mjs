@@ -12,6 +12,7 @@ const result = await build({
     import { BlogManager } from './app/bakir/blog-manager';
     import { PracticeManager } from './app/bakir/practice-manager';
     import { AuthenticatorQr } from './app/bakir/authenticator-qr';
+    import { SecurityPanel } from './app/bakir/security-panel';
     import { AccountSettings } from './app/bakir/account-settings';
     import { SiteHeader } from './app/components/site-header';
     import config from './app/lib/page-content-config.json';
@@ -23,6 +24,7 @@ const result = await build({
     export const manual = renderToStaticMarkup(<AuthenticatorQr qrDataUrl={null} secret="TEST_ONLY" />);
     export const account = renderToStaticMarkup(<AccountSettings user={{id:'test-only',first_name:'Test',last_name:'Owner',email:'test@example.test',tfa_enabled:true}} onSaved={async()=>{}} />);
     export const header = renderToStaticMarkup(<SiteHeader locale="tr" />);
+    export const mandatoryTfa = renderToStaticMarkup(<SecurityPanel email="test@example.test" enabled={false} mandatory busy={false} password="" secret={null} qr={null} otp="" message={null} onPassword={()=>{}} onOtp={()=>{}} onGenerate={async()=>{}} onEnable={async()=>{}} />);
   `, resolveDir: fileURLToPath(new URL("../../frontend/", import.meta.url)), loader: "tsx" },
   write: false, bundle: true, format: "cjs", platform: "node", jsx: "automatic",
   external: ["react", "react/jsx-runtime", "react-dom/server", "lucide-react"],
@@ -58,6 +60,14 @@ test("Authenticator displays a local QR plus manual fallback, opened if QR is un
   assert.ok(module.exports.qr.includes("anahtarı elle gir"));
   assert.ok(module.exports.manual.includes('<details class="admin-authenticator-manual" open="">'));
   assert.ok(!module.exports.manual.includes("<img"));
+});
+test("Mandatory enrollment has a real password form and no content/team controls",()=>{
+  const html=module.exports.mandatoryTfa;
+  assert.ok(html.includes("Authenticator kurulumu zorunlu"));
+  assert.ok(html.includes('autoComplete="current-password"') || html.includes('autoComplete="current-password"'.toLowerCase()));
+  assert.ok(html.includes('<form'));
+  assert.ok(!html.includes('admin-sidebar'));
+  assert.ok(!html.includes('Yeni yönetici ekle'));
 });
 test("Self account form has credential confirmations and no other-user selector", () => {
   for (const label of ["Giriş e-posta adresi", "Yeni parola", "Mevcut parola ile onaylayın", "Authenticator doğrulama kodu"]) assert.ok(module.exports.account.includes(label));

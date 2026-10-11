@@ -1,0 +1,53 @@
+# Disposable LOCAL-only fixture. No production volumes/networks; secret values enter via environment.
+services:
+  database:
+    image: postgres:16-alpine
+    mem_limit: 512m
+    environment:
+      POSTGRES_DB: tfa_fixture
+      POSTGRES_USER: tfa_fixture
+      POSTGRES_PASSWORD: ${TEST_PG_PASSWORD:?test secret required}
+    tmpfs: [/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U tfa_fixture -d tfa_fixture']
+      interval: 2s
+      retries: 30
+  directus:
+    image: directus/directus:12.4.0
+    mem_limit: 896m
+    depends_on:
+      database: {condition: service_healthy}
+    environment:
+      SECRET: ${TEST_APP_SECRET:?test secret required}
+      DB_CLIENT: pg
+      DB_HOST: database
+      DB_PORT: '5432'
+      DB_DATABASE: tfa_fixture
+      DB_USER: tfa_fixture
+      DB_PASSWORD: ${TEST_PG_PASSWORD:?test secret required}
+      PROJECT_OWNER_ENABLED: 'false'
+      TELEMETRY: 'false'
+      PUBLIC_URL: http://localhost:19081/bakir-api
+      SESSION_COOKIE_NAME: tfa_fixture_session
+      SESSION_COOKIE_SECURE: 'false'
+      LOGIN_STALL_TIME: '0'
+      CACHE_ENABLED: 'false'
+      WEBSOCKETS_ENABLED: 'false'
+    volumes:
+      - ../../directus/extensions/directus-extension-website-content:/directus/extensions/directus-extension-website-content:ro
+      - ../../directus/extensions/directus-extension-account-ownership:/directus/extensions/directus-extension-account-ownership:ro
+      - ../../directus/extensions/directus-extension-media-cleanup:/directus/extensions/directus-extension-media-cleanup:ro
+    tmpfs: [/directus/uploads]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:8055/admin/').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 2s
+      retries: 60
+      start_period: 10s
+  proxy:
+    image: caddy:2.10-alpine
+    mem_limit: 128m
+    volumes: ['../Caddyfile:/etc/caddy/Caddyfile:ro']
+    tmpfs: [/data, /config]
+networks:
+  default:
+    internal: true

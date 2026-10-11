@@ -512,7 +512,19 @@ docker compose down
 - Müşteri dekor talebi tasarım brief'inde dar istisna olarak kaydedilir: tek mat arka kemer/ince kontur, glow/orbit/slogan değil. Mobilde metin/figure katmanı ve hidden image korunur; CSS dekor pointer almaz ve veri/uzmanlık iddiası taşımaz. Kayıt sayısına özel grid responsive kuralları ayrı test edilir.
 - İlk katalog smoke mevcut yayın içeriği için sıkı karşılaştırmadır; admin sonra düzenlerse bu test kodu içeriği geri yazmaz. HTTP/DOM/CSS testi gerçek ekran QA yerine geçirilmez. İçerik/çeviri klinik sahibinin nihai gözden geçirmesine açık tutulur.
 
+## Yönetici güvenliği
+
+### Karar 060 — Yönetici TOTP sunucu sınırında zorunludur
+
+- Gizli `/bakir` yolu veya sadece UI paneli yetki değildir. Native Directus kimlik doğrulamasından sonra admin HTTP isteği, aktif kullanıcı ve mevcut TFA sürümüne bağlı kodlu oturum kanıtını taşımalıdır. Yeni kullanıcı yalnız kendi hesap/TFA kurulum yollarında kalır. Kurulum bitince eski oturum/JWT yetkili hâle gelmez; yeni kodlu giriş gerekir.
+- Native TFA sırrı doğrudan okunmaz, kullanıcıların gerçek kodları test için kullanılmaz. Çoklu yönetici kendi QR/TOTP ve kendi hesap ayarını yönetir. Geçerli, önceden TFA kurmuş hesapların statik otomasyon token'ı tanınır; sır değişince iptal edilir. Native politika işareti tek başına enforcement sayılmaz.
+- Cache, HTTP hook'undan önce yanıt döndürebildiği ve WebSocket upgrade HTTP middleware'i geçmediği için iki kullanılmayan özellik Compose'ta açıkça false'tur. Gelecekte açmak yeni güvenlik tasarımı/testi gerektirir. Caddy'nin dar native API allowlist'i ayrıca korunur.
+- Runtime yüklemesi dosya kopyasıyla kanıtlanmaz. Root olmayan container'ın yeni extension dizinlerinde traversal izni (`755`) gerekir; logda eklenti adı ve geçici hesapla canlı yetki testi görülmelidir. İlk canlı deneme bu izin eksikliğini yakaladı, hesap temizlendi; düzeltme sonrası test geçti.
+- Yayından hemen önce `20261010T205349Z` VPS içi yedek alındı ve mevcut backup flock ile rollout çakışması önlendi. Bu, kullanıcı tarafından ertelenmiş off-server yedek kararını değiştirmez. `.env`/eski runtime root erişimli rollback'te, secret/TOTP Git/Obsidian dışında tutulur. Eski imaja dönüş güvenlik sınırını kaldırabileceğinden ayrı inceleme gerektirir.
+- 109 regresyon, izole eski açık davranış+fix API, geçici canlı yönetici TFA akışı, public üç dil, Cloudflare/HTTPS ve anonim erişim geçti. Gerçek yönetici telefonuyla kabul ve ilerideki SEO/Search Console ayrıdır.
+
 ## Güncelleme kontrol listesi
+
 
 ### Karar 056 — Başarılı restore özel staging'dir, domain teslimi değildir
 

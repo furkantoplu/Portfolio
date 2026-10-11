@@ -112,7 +112,10 @@ export default {
       try {
         const account = await adminAccount(database, request.accountability?.user);
         if (!account) return response.status(401).json({ errors: [{ message: "Oturum gerekli." }] });
-        response.json({ data: account });
+        response.set("Cache-Control", "no-store").json({ data: { ...account,
+          is_admin: Boolean(request.accountability?.admin),
+          tfa_session_verified: Boolean(request.accountability?.website_tfa_epoch),
+        } });
       } catch (error) {
         next(error);
       }

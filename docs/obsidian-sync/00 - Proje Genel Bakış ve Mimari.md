@@ -371,7 +371,16 @@ Hero uzman adı/portre ve mevcut iletişim aksiyonuna odaklanır. Country bilgis
 
 68 otomatik test, TypeScript/ESLint, production Docker build, gerçek CSS/CTA/3 dil/404/not/medya/erişim smoke uygulanır. 010 testi geçici tabloda tekrar ve özel veri korumasını doğrular. Seçili palet kontrastı ölçüldü; browser screenshot/piksel QA tamamlanmadı. Computer Use helper yeniden sandbox setup hatası verdi. Video ses oynatımı değil, public konuşma dökümünün okunmasıyla incelendi; kaynak DESIGN.md/README'dedir. Haricî skill veya üçüncü taraf talimat kurulumu yapılmadı.
 
+## Zorunlu yönetici Authenticator sınırı — 11 Ekim 2026, Paket 60
+
+`/bakir` Türkçe yönetim ekranı her yeni yöneticiye ilk şifreli girişte yalnız kendi Google Authenticator kurulumunu açar. QR/elle anahtar ile altı haneli TOTP etkinleştirilince eski oturum kapanır; tekrar kodlu giriş gerekir. İçerik/medya/ekip/sayfa yönetimi o ana kadar hem panelde hem Directus API'sinde kapalıdır. Mevcut iki yöneticinin TFA sırrı ve parolası korunmuştur; eski oturumlar yeni sunucu kanıtı için yeniden giriş ister.
+
+Directus `12.4.0` özel `admin-tfa` hook'u yetkili HTTP isteklerini native kimlik doğrulamadan sonra denetler. `012` SQL migrasyonu TFA sürümü ve native politika işaretini ekler; TFA değişince eski oturum ve statik token iptal edilir. Kullanılmayan cache/WebSocket Compose'ta kapalıdır. Public site/API okuma, çoklu yöneticinin kendi hesap ayarları ve mevcut fotoğraf/çeviri mimarisi korunur. Mimari ve canlı test ayrıntısı `deploy/ADMIN-TFA.md` içindedir.
+
+Yayın öncesi yedek, izole eski davranış tekrarı/düzeltme testi, bir geçici hesapla canlı native test ve public/Cloudflare kontrolü yapıldı; test kullanıcıları temizlendi. Sahibin kendi Authenticator cihazıyla son kabulü ayrıca yapılacaktır. Ayrı yerde yedek sahibi yanında değilken beklemededir; VPS günlük yedek sürer. SEO/Search Console bu güvenlik paketine dahil değildir.
+
 ## Sağlık ve veri güvenliği sınırları
+
 
 - Kesin sonuç, garanti iyileşme, en iyi veya bir numara gibi ifadeler kullanılmayacak.
 - Kampanya, indirim ve fiyat odaklı sağlık reklamı dili kullanılmayacak.

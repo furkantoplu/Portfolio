@@ -4,6 +4,8 @@ Fizyoterapist portföyü ve blogu için geliştirilen React/TypeScript tabanlı 
 
 ## VPS hazırlığı ve yayın sırası
 
+Paket 60 — 11 Ekim 2026: `/bakir` yönetiminde Authenticator her yönetici için zorunlu. İlk şifreli giriş yalnız kişinin kendi QR/TOTP kurulumuna izin verir; içerik ve ekip yönetimi kodlu yeni oturumdan sonra açılır. Canlı ve izole API testleri geçti, mevcut iki yöneticinin anahtarı değiştirilmedi. Kullanım, sınırlar ve işletim kontrolü: [deploy/ADMIN-TFA.md](deploy/ADMIN-TFA.md). Site sahibinin kendi telefonuyla son kabulü, ayrı yerde yedek tercihi ve Google Search Console sonraki küçük adımlardır.
+
 Paket59 — 10 Ekim2026: İlk günlük yedek ağsız geçici PostgreSQL'e gerçekten geri yüklendi.40 tablonun tüm satır parmak izleri ve1 fotoğraf/dosya kaydı eşleşti; geçici ortam temizlendi, canlı site kesilmedi. Bu DB/medya restore kanıtıdır; bütün siteyi başka sunucuda açma/admin-login veya ayrı yerde şifreli yedek değildir. Ayrıntılar ve güvenli manuel komut [deploy/YEDEKLEME.md](deploy/YEDEKLEME.md).
 
 Paket 58 — 10 Ekim 2026: VPS günlük yedekleme etkin. Türkiye saatiyle04.15'te PostgreSQL, uploads, özel çalışma ayarları ve frontend imajı root erişimli arşivlenir; son7 başarılı yedek saklanır. İlk gerçek yedek/arşiv/hash kontrolleri başarılı, site tekrar sağlıklı. Kısa Directus duraklaması vardır. Bu **aynı sunucuda** yedektir; izole geri yükleme testi, ayrı yerde şifreli kopya ve hata bildirimi sonraki küçük paketlerdir. İşletim/sınırlar: [deploy/YEDEKLEME.md](deploy/YEDEKLEME.md).

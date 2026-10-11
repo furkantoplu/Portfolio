@@ -26,7 +26,7 @@ import { BlogManager, type ManagedBlogPost } from "./blog-manager";
 import { PracticeManager, type ManagedPracticeArea } from "./practice-manager";
 import { PageManager, type ManagedSitePage } from "./page-manager";
 import { FooterManager } from "./footer-manager";
-import { AuthenticatorQr } from "./authenticator-qr";
+import { SecurityPanel } from "./security-panel";
 import { createAuthenticatorQr } from "./authenticator-qr-code";
 import { AccountSettings, type AccountProfile } from "./account-settings";
 
@@ -39,10 +39,11 @@ type AdminUser = {
   role: string;
   role_name: string | null;
   tfa_enabled: boolean;
+  tfa_session_verified: boolean;
   is_admin: boolean;
 };
 
-type AdminMember = Omit<AdminUser, "is_admin">;
+type AdminMember = Omit<AdminUser, "is_admin" | "tfa_session_verified">;
 type AdminView = "overview" | "blog" | "practices" | "pages" | "footer" | "team" | "security" | "account";
 
 type ContentSummary = {
@@ -83,8 +84,25 @@ export function BakirAdmin() {
   }, [activeView]);
 
   const loadDashboard = useCallback(async () => {
-    const [{ data: currentUser }, { data: members }, { data: blog }, { data: practices }, { data: pages }] = await Promise.all([
-      directusRequest<{ data: AdminUser }>("/website-content/admin-account"),
+    const { data: currentUser } = await directusRequest<{ data: AdminUser }>("/website-content/admin-account");
+    if (!currentUser.is_admin) throw new Error("Yönetici yetkisi gerekli.");
+    if (currentUser.tfa_enabled && !currentUser.tfa_session_verified) {
+      await directusRequest("/auth/logout", { method: "POST", body: JSON.stringify({ mode: "session" }) }).catch(() => undefined);
+      setUser(null); setSummary(null); setTeam([]); userIdRef.current = null;
+      setTfaSecret(null); setTfaQrDataUrl(null); setTfaOtp(""); setSetupPassword("");
+      setMessage("Güvenlik güncellemesi nedeniyle Authenticator kodunuzla yeniden giriş yapın.");
+      throw Object.assign(new Error("Yeniden giriş gerekli."), { name: "TFA_LOGIN_REQUIRED" });
+    }
+    if (userIdRef.current !== currentUser.id) {
+      setTfaSecret(null); setTfaQrDataUrl(null); setTfaOtp(""); setSetupPassword(""); setTfaMessage(null);
+    }
+    userIdRef.current = currentUser.id;
+    setUser(currentUser);
+    if (!currentUser.tfa_enabled) {
+      setTeam([]); setSummary(null); setActiveView("security"); setSessionState("signed-in");
+      return;
+    }
+    const [{ data: members }, { data: blog }, { data: practices }, { data: pages }] = await Promise.all([
       directusRequest<{ data: AdminMember[] }>("/website-content/admin-team"),
       directusRequest<{ data: ManagedBlogPost[] }>("/items/blog_posts?fields=id,status,sort,featured,category,title,slug,summary,cover_path,cover_alt,cover_caption,published_at,reading_minutes,section_visibility,tips_title,tips,lead,body_paragraphs,quote,closing_title,closing_body,seo_title,seo_description&sort=-published_at,sort&limit=-1"),
       directusRequest<{ data: ManagedPracticeArea[] }>("/items/practice_areas?fields=id,status,sort,show_on_homepage,section_visibility,title,slug,summary,image_path,image_alt,hero_title,hero_accent,lead,overview_title,overview_accent,overview,assessment_points,process_steps,faqs,seo_title,seo_description&sort=sort,id&limit=-1"),
@@ -138,6 +156,8 @@ export function BakirAdmin() {
       const code = error instanceof Error ? error.name : "";
       if (code === "INVALID_OTP") {
         setMessage("Doğrulama kodu hatalı veya süresi dolmuş. Yeni 6 haneli kodu girin.");
+      } else if (code === "TFA_LOGIN_REQUIRED") {
+        setMessage("Authenticator kodunuzla yeniden giriş yapın.");
       } else if (code === "INVALID_CREDENTIALS" || code === "401") {
         setMessage("E-posta, parola veya doğrulama kodu doğru değil.");
       } else {
@@ -157,6 +177,8 @@ export function BakirAdmin() {
     }).catch(() => undefined);
     setUser(null);
     setSummary(null);
+    setTeam([]);
+    setNewAdmin({ first_name: "", last_name: "", email: "", password: "" });
     setTfaSecret(null);
     setTfaQrDataUrl(null);
     setTfaOtp("");
@@ -211,8 +233,10 @@ export function BakirAdmin() {
       setTfaSecret(null);
       setTfaQrDataUrl(null);
       setTfaOtp("");
-      setUser((current) => current ? { ...current, tfa_enabled: true } : current);
-      setTfaMessage("İki adımlı doğrulama etkinleştirildi. Bundan sonraki girişlerde 6 haneli kod istenecek.");
+      const currentEmail = user?.email || "";
+      await handleLogout();
+      setEmail(currentEmail);
+      setMessage("Authenticator kuruldu. E-posta, parola ve güncel 6 haneli kodunuzla yeniden giriş yapın.");
     } catch {
       setTfaMessage("Kod doğrulanamadı. Uygulamadaki yeni kodla tekrar deneyin.");
     } finally {
@@ -237,7 +261,7 @@ export function BakirAdmin() {
       const { data } = await directusRequest<{ data: AdminMember[] }>("/website-content/admin-team");
       setTeam(data);
       setNewAdmin({ first_name: "", last_name: "", email: "", password: "" });
-      setTeamMessage("Yeni yönetici oluşturuldu. İlk girişinden sonra kendi Authenticator kurulumunu yapabilir.");
+      setTeamMessage("Yeni yönetici oluşturuldu. İlk girişte yalnız Authenticator kurulumu açılır; kurulum tamamlanmadan içeriklere erişemez.");
     } catch (error) {
       const code = error instanceof Error ? error.name : "";
       setTeamMessage(code === "RECORD_NOT_UNIQUE" ? "Bu e-posta adresiyle zaten bir hesap var." : error instanceof Error ? error.message : "Yönetici oluşturulamadı. Bilgileri ve parola kurallarını kontrol edin.");
@@ -296,7 +320,7 @@ export function BakirAdmin() {
               </label>
 
               <label>
-                <span>6 haneli doğrulama kodu <small>Etkinse</small></span>
+                <span>6 haneli doğrulama kodu <small>Kurulumdan sonra zorunlu</small></span>
                 <input className="admin-otp" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={otp} onChange={(event) => setOtp(event.target.value.replace(/\D/g, ""))} autoComplete="one-time-code" placeholder="000000" />
               </label>
 
@@ -315,6 +339,18 @@ export function BakirAdmin() {
   }
 
   const userName = [user?.first_name, user?.last_name].filter(Boolean).join(" ") || "Yönetici";
+  const securityPanel = <SecurityPanel email={user?.email || ""} enabled={Boolean(user?.tfa_enabled)} mandatory={!user?.tfa_enabled}
+    busy={tfaBusy} password={setupPassword} secret={tfaSecret} qr={tfaQrDataUrl} otp={tfaOtp} message={tfaMessage}
+    onPassword={setSetupPassword} onOtp={setTfaOtp} onGenerate={generateTfa} onEnable={enableTfa} />;
+  if (!user?.tfa_enabled) {
+    return <main className="admin-shell admin-dashboard">
+      <header className="admin-dashboard__header">
+        <NativeLink className="admin-brand admin-brand--light" href="/"><BrandMark /><span><strong>Furkan Toplu</strong><small>Hesap güvenliği kurulumu</small></span></NativeLink>
+        <div className="admin-user"><span><strong>{userName}</strong><small>{user?.email}</small></span><button type="button" onClick={handleLogout} disabled={busy || tfaBusy}><LogOut size={17} /> Çıkış</button></div>
+      </header>
+      <div className="admin-dashboard__content">{securityPanel}</div>
+    </main>;
+  }
 
   const navigation: Array<{ id: AdminView; label: string; icon: typeof LayoutDashboard; adminOnly?: boolean }> = [
     { id: "overview", label: "Genel bakış", icon: LayoutDashboard },
@@ -402,36 +438,7 @@ export function BakirAdmin() {
             else { setUser(current => current ? { ...current, ...profile } : current); setTeam(current => current.map(member => member.id === profile.id ? { ...member, ...profile } : member)); }
           }} />}
 
-          {activeView === "security" && (
-            <section className={`admin-security${user?.tfa_enabled ? " admin-security--enabled" : ""}`} aria-labelledby="tfa-title">
-              <div className="admin-security__copy">
-                <p className="admin-eyebrow"><ShieldCheck size={17} /> Hesap güvenliği</p>
-                <h2 id="tfa-title">{user?.tfa_enabled ? "İki adımlı doğrulama aktif" : "Google Authenticator kurulumu"}</h2>
-                <p>{user?.tfa_enabled ? `${user.email} hesabı her girişte telefonunuzdaki 6 haneli kodla korunuyor.` : "Kurulum tamamlandığında e-posta ve parolaya ek olarak, her girişte telefonunuzdaki 6 haneli kod gerekir."}</p>
-              </div>
-
-              <form className="admin-security__form" onSubmit={event => { event.preventDefault(); if (!tfaBusy) void (tfaSecret ? enableTfa() : generateTfa()); }}>
-                {user?.tfa_enabled ? (
-                  <div className="admin-security__active">
-                    <CheckCircle2 size={34} aria-hidden="true" />
-                    <div><strong>Authenticator bağlı</strong><span>Her yönetici bu güvenliği kendi hesabı ve kendi telefonu için ayrı kurar.</span></div>
-                  </div>
-                ) : !tfaSecret ? (
-                  <>
-                    <label><span>Mevcut parola</span><input type="password" value={setupPassword} onChange={(event) => setSetupPassword(event.target.value)} autoComplete="current-password" placeholder="Kurulumu doğrulamak için" required /></label>
-                    <button type="submit" disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <KeyRound size={18} />} Kurulum anahtarı ve QR oluştur</button>
-                  </>
-                ) : (
-                  <>
-                    <AuthenticatorQr qrDataUrl={tfaQrDataUrl} secret={tfaSecret} />
-                    <label><span>Uygulamadaki 6 haneli kod</span><input className="admin-otp" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={tfaOtp} onChange={(event) => setTfaOtp(event.target.value.replace(/\D/g, ""))} autoComplete="one-time-code" placeholder="000000" required /></label>
-                    <button type="submit" disabled={tfaBusy}>{tfaBusy ? <LoaderCircle className="admin-spinner" size={18} /> : <ShieldCheck size={18} />} İki adımlı doğrulamayı etkinleştir</button>
-                  </>
-                )}
-                {tfaMessage && <p className="admin-security__message" role="status">{tfaMessage}</p>}
-              </form>
-            </section>
-          )}
+          {activeView === "security" && securityPanel}
 
           {activeView === "team" && user?.is_admin && (
             <section className="admin-team" aria-labelledby="admin-team-title">

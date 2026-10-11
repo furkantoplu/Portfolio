@@ -39,6 +39,16 @@ if(!role)throw new Error('No existing admin role');
 const token=${JSON.stringify(randomBytes(32).toString('hex'))};
 const service=new UsersService({knex:db,schema:await getSchema(),accountability:null});
 const id=await service.createOne({email:${JSON.stringify(`codex-delete-${tag}@example.com`)},status:'active',role:role.id,token});
+// Automation is permitted only for an enrolled temporary account, never a password-only admin.
+const {createRequire}=await import('node:module');
+const root=createRequire('/directus/node_modules/directus/package.json');
+const native=createRequire(root.resolve('@directus/api/package.json'));
+const {TFAService}=await import('/directus/node_modules/@directus/api/dist/services/tfa.js');
+const {authenticator}=native('otplib');
+const tfa=new TFAService({knex:db,schema:await getSchema(),accountability:null});
+const {secret}=await tfa.generateTFA(id);
+await tfa.enableTFA(id,authenticator.generate(secret),secret);
+await db('directus_users').where('id',id).update({token});
 return {id,token};
 `);
   state.user=identity.id;state.token=identity.token;

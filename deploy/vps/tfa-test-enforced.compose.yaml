@@ -1,0 +1,4 @@
+services:
+  directus:
+    volumes:
+      - ../../directus/extensions/directus-extension-admin-tfa:/directus/extensions/directus-extension-admin-tfa:ro
