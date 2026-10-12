@@ -12,7 +12,7 @@ export async function directusRequest<T>(path: string, init?: RequestInit): Prom
     credentials: "include",
     headers: {
       Accept: "application/json",
-      ...(init?.body && !(init.body instanceof FormData) ? { "Content-Type": "application/json" } : {}),
+      ...(init?.body && !(init.body instanceof FormData) && !(init.body instanceof Blob) ? { "Content-Type": "application/json" } : {}),
       ...init?.headers,
     },
   });

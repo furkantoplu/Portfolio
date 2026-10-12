@@ -28,8 +28,7 @@ export function ImageField({ label, value, onChange, disabled = false, visibilit
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 10 * 1024 * 1024) { setMessage("En fazla 10 MB boyutunda JPG, PNG veya WebP seçin."); return; }
     setBusy(true); setMessage("");
     try {
-      const body = new FormData(); body.append("description", "fizyoterapi-site-image:v1"); body.append("file", file);
-      const { data } = await directusRequest<{ data: { id: string } }>("/files", { method: "POST", body });
+      const { data } = await directusRequest<{ data: { id: string } }>("/website-content/image-upload", { method: "POST", body: file });
       const path=`/site-media/${data.id}`;
       pendingPaths.current.add(path);
       if (!mounted.current) {await discard(path);return;}

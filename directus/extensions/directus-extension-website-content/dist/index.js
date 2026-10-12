@@ -4,6 +4,7 @@ import { registerMediaCleanup } from "./media-cleanup.js";
 import { readFooterSettings } from "./footer.js";
 import { resolvePracticeUrl } from "./practice-urls.js";
 import { registerAccountSettings } from "./account-settings.js";
+import { registerImageUpload } from "./image-upload.js";
 
 const publicFields = [
   "id",
@@ -105,6 +106,7 @@ export default {
     const { database } = context;
     registerMedia(router, context);
     registerMediaCleanup(router, context, adminAccount);
+    registerImageUpload(router, context, adminAccount);
     registerTranslations(router, database, adminAccount);
     registerAccountSettings(router, context, adminAccount);
     router.use((request, response, next) => language(request) ? next() : response.status(400).json({ errors: [{ message: "Geçersiz dil." }] }));

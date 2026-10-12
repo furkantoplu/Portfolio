@@ -19,7 +19,7 @@ finally {await db.destroy();}
   assert.ok(line,'Internal test helper returned no result');return JSON.parse(line.slice(10));
 }
 async function api(path,init={}) {
-  const response=await fetch(base+'/bakir-api'+path,{...init,headers:{Authorization:'Bearer '+state.token,...(init.body instanceof FormData?{}:{'Content-Type':'application/json'}),...init.headers}});
+  const response=await fetch(base+'/bakir-api'+path,{...init,headers:{Authorization:'Bearer '+state.token,...(init.body instanceof FormData || Buffer.isBuffer(init.body)?{}:{'Content-Type':'application/json'}),...init.headers}});
   if(!response.ok){const error=await response.json().catch(()=>null);assert.fail(`API ${init.method||'GET'} ${path}: ${response.status} / ${(error?.errors||[]).map(item=>item.extensions?.code+':'+(item.extensions?.field||'')).join(',')}`);}
   return response.status===204?null:(await response.json()).data;
 }
@@ -52,10 +52,10 @@ await db('directus_users').where('id',id).update({token});
 return {id,token};
 `);
   state.user=identity.id;state.token=identity.token;
-  const upload=new FormData();upload.append('description','fizyoterapi-site-image:v1');
-  upload.append('file',new Blob([Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a4x8AAAAASUVORK5CYII=','base64')],{type:'image/png'}),`codex-delete-${tag}.png`);
-  const uploaded=await api('/files',{method:'POST',body:upload});
-  state.file=uploaded.id;state.diskName=uploaded.filename_disk;
+  const upload=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADElEQVQImWP4//8/AAX+Av5Y8msOAAAAAElFTkSuQmCC','base64');
+  const uploaded=await api('/website-content/image-upload',{method:'POST',body:upload,headers:{'Content-Type':'image/png'}});
+  state.file=uploaded.id;
+  state.diskName=internal(`return (await db('directus_files').where('id',${JSON.stringify(state.file)}).first('filename_disk')).filename_disk;`);
   assert.match(state.diskName,/^[0-9a-f-]{36}\.png$/i);
   const image='/site-media/'+state.file;
   const blog=await api('/items/blog_posts',{method:'POST',body:JSON.stringify({status:'published',title:'Geçici silme testi '+tag,slug:'codex-delete-'+tag,category:'Geçici test',summary:'Yalnız otomatik doğrulama için oluşturulmuş geçici kayıt.',reading_minutes:1,featured:false,cover_path:image,published_at:'2026-10-09'})});

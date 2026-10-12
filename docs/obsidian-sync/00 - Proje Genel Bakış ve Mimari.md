@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 12 Ekim 2026 — Görsel yükleme doğrulaması ve Cloudflare bot koruması
+
+Kullanıcı dosya yüklemede yalnız `/bakir` panelinin kullanılacağını doğruladı. Panel, `POST /bakir-api/website-content/image-upload` yoluna geçirildi; TFA'lı aktif yönetici kontrolünden sonra en fazla 10 MB JPG/PNG/WebP baytı Sharp ile tam çözümlenir, tür ve en fazla 5000 px kenar/16 MP sınırı doğrulanır, sonra Directus FilesService'e kaydedilir. Yerel ve VPS Caddy'de genel `POST /bakir-api/files` geçişi kapatıldı. Mevcut medyaya dokunulmadı. İlk aktarım girişimi otomatik onay 429 sınırında kalmıştı; kullanıcının sonraki onayıyla doğrulanmış kaynaklar ve yeni frontend imajı VPS'e taşındı, Directus/frontend/proxy yenilendi. Canlı altı rota 200, eski anonim upload 403 ve yeni anonim upload 401; tam yerel regresyon 120/120. Gerçek girişli yükleme ve sahte dosya ret kabul testi yönetici/TOTP gerektirdiğinden henüz yapılmadı. Eski imaj ile root-only geri dönüş kopyası korunur; dağıtım ayrıntısı `deploy/VPS-KURULUM.md` içinde.
+
+Cloudflare Free için Bot Fight Mode, `Security → Settings → Bot traffic` altında tüm alan adına uygulanan otomatik bot challenge seçeneğidir; ücretsiz modda yol bazlı `Skip` istisnası yoktur. `robots.txt` şu an public sayfalara izin verip `/bakir` ve `/bakir-api` yollarını dışlıyor; bu güvenlik duvarı değildir. Search Console/Googlebot ve gerçek ziyaretçi etkisi izlenmeden Cloudflare ayarı değiştirilmedi. AI bot davranış ayarları ayrı bir tercihtir. Ayrıntı günlük ve teknik kararlarda.
+
 ## Dosya yükleme yüzeyi — 12 Ekim 2026 / Paket 64
 
 Directus dosya kitaplığı için `FILES_MIME_TYPE_ALLOW_LIST=image/jpeg,image/png,image/webp` artık yerel ve VPS Compose'da eşit. Admin resim bileşeninin desteklediği üç MIME türü korunur; diğer beyan edilen türler Directus yükleme sınırında reddedilir. Canlıda yalnız Directus yeniden oluşturuldu; mevcut DB/medya/frontend/proxy korunur. Gerçek Directus 12.4.0 env/eşleştirici denemesi ve canlı HTTPS kontrolleri başarılı. Bu yalnız MIME etiketini sınırlar; gerçek resim baytlarının çözülmesi ve piksel sınırı ayrıca uygulanmalıdır. Git dışı root-only geri dönüş dosyası ve komut ayrıntıları `deploy/VPS-KURULUM.md` içinde. Search Console, site dışı yedek ve bağımlılık uyarıları bu paketle kapanmadı.

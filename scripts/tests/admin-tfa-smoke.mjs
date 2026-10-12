@@ -40,7 +40,7 @@ try{
     assert.equal((await api('/items/blog_posts',pending)).status,200);
     console.log('REPRODUCED: newly created password-only admin can read private content before enrollment.');
   }else{
-    for(const credential of [pending,weakJwt])for(const [method,path] of [['GET','/items/blog_posts'],['GET','/website-content/admin-team'],['POST','/website-content/admin-team'],['POST','/files'],['PATCH','/items/practice_areas/999999999'],['POST','/website-content/media-discard/12345678-1234-4234-8234-123456789abc']]) assert.equal((await api(path,credential,method==='GET'?undefined:{},method)).status,403,path);
+    for(const credential of [pending,weakJwt])for(const [method,path] of [['GET','/items/blog_posts'],['GET','/website-content/admin-team'],['POST','/website-content/admin-team'],['POST','/files'],['POST','/website-content/image-upload'],['PATCH','/items/practice_areas/999999999'],['POST','/website-content/media-discard/12345678-1234-4234-8234-123456789abc']]) assert.equal((await api(path,credential,method==='GET'?undefined:{},method)).status,403,path);
     const account=await api('/website-content/admin-account',pending);assert.equal(account.status,200);assert.equal(account.data.data.tfa_enabled,false);assert.equal(account.data.data.tfa_session_verified,false);
     const generated=await api('/users/me/tfa/generate',pending,{password:created[0].password});assert.equal(generated.status,200);
     const secret=generated.data.data.secret;

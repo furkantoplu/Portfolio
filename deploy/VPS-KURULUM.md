@@ -1,5 +1,13 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Canlı görsel yükleme sınırı — 12 Ekim 2026
+
+`/bakir` fotoğrafları artık TFA'lı aktif yöneticiye özel `POST /bakir-api/website-content/image-upload` üzerinden yüklenir. İstek 10 MB ile sınırlanır; JPG/PNG/WebP'nin gerçek baytları Sharp ile tamamen çözülür, bildirilen türle eşleşir ve en fazla 5000 px kenar/16 MP denetimi geçmeden Directus depolamasına yazılmaz. Eski public `POST /bakir-api/files` proxy geçişi kapatıldı. DB, mevcut medya ve içerik değiştirilmedi.
+
+- Kullanıcının onayından sonra yalnız yedi ilgili kaynak dosyası SHA256 eşleşen arşivle VPS özel staging'e aktarıldı. Yeni `fizyoterapist-frontend:vps-20261012-image1` imajı orada üretildi (ID `sha256:e574797be647fd2347f1d17b816f61927df5aba028f6dedde8a6a9967b55ebea`); ayrı loopback önizlemede `/`, `/bakir`, `/blog`, `/calisma-alanlari`, `/en`, `/de` 200. Caddy yapılandırması izole konteynerde geçerli bulundu.
+- Önceki `.env`, Caddy, Directus giriş dosyaları ve iki frontend kaynak dosyası root-only `700/600` izinlerle `/var/backups/furkantoplu/image-verify-20261012-01` altına alındı; önceki frontend imajı korunur. İki Compose dosyasının birleşimi `config -q` geçti. Yalnız Directus, frontend ve proxy `--no-deps --force-recreate` ile yenilendi; DB konteyneri ve volume'ler korunur. Directus/frontend `healthy`, proxy çalışıyor.
+- Canlı HTTPS altı temel rota 200; eski upload yolu anonim POST 403, yeni yol anonim POST 401. Directus günlüklerinde uzantı yüklenmesi başarılı ve test isteklerinde sunucu hatası yok. Yerel tam regresyon 120/120, hedefli upload+TFA 12/12 geçti. Gerçek girişli JPG/PNG/WebP yükleme ve sahte resim ret denemesi yönetici hesabı/TOTP gerektirdiği için yapılmadı; kullanıcı panelden kabul testini yapmalı. Yalnız bu yayına ait önizleme konteyneri ve `/tmp/furkantoplu-image-verify.7SZJRvgK` staging klasörü kimlik/yol doğrulamasından sonra kaldırıldı; yedek ve eski imaj korunur.
+
 ## Dosya yükleme MIME sınırı — 12 Ekim 2026 / Paket 64
 
 - Directus 12.4.0 `POST /files` yüklemesinde global `FILES_MIME_TYPE_ALLOW_LIST` hem yerel hem VPS Compose'a `image/jpeg,image/png,image/webp` olarak eklendi. Bu, istemcinin beyan ettiği başka MIME türlerini depolamadan önce reddeder; kullanıcı panelinin kabul ettiği üç resim türü aynı kalır. Directus env ayrıştırıcısı ve gerçek MIME eşleştiricisi ağsız geçici konteynerde geçerli üç türü kabul, HTML/SVG'yi ret testiyle doğrulandı. Beyan edilen MIME dosya içeriğinin gerçek biçimini kanıtlamaz; byte/decode/piksel doğrulaması bu pakette yapılmadı.

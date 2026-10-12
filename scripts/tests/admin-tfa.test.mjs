@@ -15,7 +15,7 @@ async function gate(path, method='GET', options={}) {
   return {error,request};
 }
 test('Pending administrators cannot use native or custom management routes',async()=>{
-  for(const [method,path] of [['GET','/items/blog_posts'],['PATCH','/items/practice_areas/1'],['POST','/files'],['DELETE','/items/blog_posts/1'],['GET','/website-content/admin-team'],['POST','/website-content/admin-team'],['PATCH','/website-content/account-settings'],['PATCH','/website-content/translations/blog_posts/1'],['POST','/website-content/media-discard/x'],['POST','/graphql']]) {
+  for(const [method,path] of [['GET','/items/blog_posts'],['PATCH','/items/practice_areas/1'],['POST','/files'],['POST','/website-content/image-upload'],['DELETE','/items/blog_posts/1'],['GET','/website-content/admin-team'],['POST','/website-content/admin-team'],['PATCH','/website-content/account-settings'],['PATCH','/website-content/translations/blog_posts/1'],['POST','/website-content/media-discard/x'],['POST','/graphql']]) {
     const {error}=await gate(path,method,{row:{tfa_enabled:false}});assert.equal(error.code,'TFA_SETUP_REQUIRED',path);
   }
 });
