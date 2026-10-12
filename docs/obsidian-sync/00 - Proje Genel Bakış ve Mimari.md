@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 12 Ekim 2026 — İlk dar bağımlılık güvenlik yaması
+
+Vinext'in named `image-size` bağımlılığı yalnız ilgili npm override/lock kaydıyla 2.0.3'e sabitlendi. Bozuk ICNS girdisi eski 2.0.2'de kontrollü timeout, yeni CJS/ESM'de hızlı ret verdi; normal fotoğraf boyutları ve mevcut site davranışı korunur. 122 regresyon, TypeScript ve üretim build sonrası VPS `vps-20261012-dep1` frontend imajıyla yenilendi; canlı üç dil/HTTPS/medya/erişim smoke geçti. Npm audit 30 → 29; Next'in ayrı gömülü kopyası ve diğer paket uyarıları açık. Cloudflare bot ayarı kullanıcıda, DB/medya/hesap değişikliği yok. Ayrıntılı kaynak ve geri dönüş bilgisi günlük ile `deploy/VPS-KURULUM.md` içinde.
+
 ## 12 Ekim 2026 — Görsel yükleme doğrulaması ve Cloudflare bot koruması
 
 Kullanıcı dosya yüklemede yalnız `/bakir` panelinin kullanılacağını doğruladı. Panel, `POST /bakir-api/website-content/image-upload` yoluna geçirildi; TFA'lı aktif yönetici kontrolünden sonra en fazla 10 MB JPG/PNG/WebP baytı Sharp ile tam çözümlenir, tür ve en fazla 5000 px kenar/16 MP sınırı doğrulanır, sonra Directus FilesService'e kaydedilir. Yerel ve VPS Caddy'de genel `POST /bakir-api/files` geçişi kapatıldı. Mevcut medyaya dokunulmadı. İlk aktarım girişimi otomatik onay 429 sınırında kalmıştı; kullanıcının sonraki onayıyla doğrulanmış kaynaklar ve yeni frontend imajı VPS'e taşındı, Directus/frontend/proxy yenilendi. Canlı altı rota 200, eski anonim upload 403 ve yeni anonim upload 401; tam yerel regresyon 120/120. Gerçek girişli yükleme ve sahte dosya ret kabul testi yönetici/TOTP gerektirdiğinden henüz yapılmadı. Eski imaj ile root-only geri dönüş kopyası korunur; dağıtım ayrıntısı `deploy/VPS-KURULUM.md` içinde.
