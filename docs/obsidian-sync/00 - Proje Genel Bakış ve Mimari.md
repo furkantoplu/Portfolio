@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## Dosya yükleme yüzeyi — 12 Ekim 2026 / Paket 64
+
+Directus dosya kitaplığı için `FILES_MIME_TYPE_ALLOW_LIST=image/jpeg,image/png,image/webp` artık yerel ve VPS Compose'da eşit. Admin resim bileşeninin desteklediği üç MIME türü korunur; diğer beyan edilen türler Directus yükleme sınırında reddedilir. Canlıda yalnız Directus yeniden oluşturuldu; mevcut DB/medya/frontend/proxy korunur. Gerçek Directus 12.4.0 env/eşleştirici denemesi ve canlı HTTPS kontrolleri başarılı. Bu yalnız MIME etiketini sınırlar; gerçek resim baytlarının çözülmesi ve piksel sınırı ayrıca uygulanmalıdır. Git dışı root-only geri dönüş dosyası ve komut ayrıntıları `deploy/VPS-KURULUM.md` içinde. Search Console, site dışı yedek ve bağımlılık uyarıları bu paketle kapanmadı.
+
 ## Canlı iletişim ve yasal kapsam — 11 Ekim 2026 / Paket 63
 
 Site sahibi Fizyoterapist Furkan Toplu gerçek e-posta (`toplu.furkan0220@gmail.com`) ve telefon/aktif WhatsApp (`+90 552 290 39 02`) bilgisini verdi; fiziksel klinik adresi yok, iletişim uzaktan. Guarded CMS migration ana sayfa ve iletişim içeriğini TR/EN/DE uzak çalışma biçimine getirdi. Kullanıcının talebiyle canlı telefon/e-posta/WhatsApp/adres/saat kartlarının gizlilik bayrakları aynen korundu. Yerel DB ayrı olduğundan görünürlük yerelde farklı olabilir.

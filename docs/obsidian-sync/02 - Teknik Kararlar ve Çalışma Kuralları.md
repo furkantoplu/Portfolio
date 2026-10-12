@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 12 Ekim 2026: MIME allowlist'i içerik doğrulaması diye sunma
+
+Admin'in desteklediği JPEG/PNG/WebP türleri Directus'un global yükleme sınırında da uygulanır; yalnız tarayıcıdaki `File.type` kontrolüne güvenilmez. Yerel ve VPS Compose aynı listeyi taşır. Native kontrol depolama öncesinde çalışır; uzaktan URL ile dosya içe alma dâhil başka Directus yükleme yollarında global liste korunur. Bu kural yalnız beyan edilen MIME'ı denetler, dosya imzasını/decode edilebilirliğini veya piksel sayısını doğrulamaz. Gerçek bayt doğrulaması sonraki ayrı paket ve mümkünse depolama öncesi sınır gerektirir; upload sonrası hook ile “reddedildi” iddiası yapılmaz.
+
+Canlı değişiklikte önce mevcut dosya Git bazına eşit olmalı; root-only geri dönüş kopyası ve yeni dosya SHA256, iki HTTPS Compose `config -q` geçmeli. Yalnız Directus yeniden oluşturulur; DB/volumeler silinmez. Geçerli admin medya akışı ve public site sağlığı kontrol edilir. Sır/TOTP ya da gerçek kullanıcı yüklemesi test için istenmeden erişim sınırı aşılmaz. Gerçek upload E2E yapılmadıysa bu belirsizlik açık kalır; statik test bunu ikame etmez. Bağımlılık advisory listesi uygulama etkisi açısından ayrıca incelenir.
+
 ## Karar — 11 Ekim 2026: Doğrulanmış iletişim verisini görünürlükten ayrı yönet
 
 Site sahibi gerçek telefon/e-posta/WhatsApp bilgisini ve fiziksel klinik bulunmadığını doğruladı. Eski placeholder'lar guarded/idempotent migration ile gerçek ve uluslararası biçimli numaraya, konum metinleri uzaktan iletişime çevrilir. `section_visibility` asla migration tarafından değiştirilmez: CMS veri doğruluğu, public kartların yayımlanması için örtük izin değildir. Kullanıcı canlı kartların gizli kalmasını seçti. Yerel DB'de görünürlük farklıysa bu bir yayın kararı değildir; canlı bayraklar korunur. WhatsApp URL biçimi doğru olsa bile hesap/mesaj teslimi sahibin cihazından ayrıca test edilir.
