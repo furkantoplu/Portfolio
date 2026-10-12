@@ -26,6 +26,12 @@ Kullanılmayan Directus önbelleği ve WebSocket özelliği hem yerel hem VPS Co
 
 ## İşletim ve sorun giderme
 
+### Login401 ve otomatik askıya alma
+
+Kurulu Directus12.4.0, `auth_login_attempts=5` sınırı aşıldığında ilgili kullanıcıyı `suspended` durumuna geçirir. Bu durumdaki hesaba doğru parola/kod girilse de genel `INVALID_CREDENTIALS`401 döner; mevcut oturumdan içerik istekleri401/403 olabilir. Rol veya TFA kaldırarak çözmeyin. Önce yalnız status/rol/TFA açık boolean ve status değişiklik kaydı denetlenir; gerçek parola/hash/TOTP/token okunmaz. Sınır kaydının yalnız suspended değişimi ve kullanıcı aktörüyle eşleşmesi otomatik kilitlenme kanıtıdır; başlangıçtaki hatanın yanlış parola mı kod mu olduğunu tek başına söylemez.
+
+12 Ekim2026 ikinci yönetici bu şekilde askıya alınmış bulundu. Hesabı yeniden aktif yapmak erişim kontrolü değişikliğidir; otomatik onay incelemesi bu kullanıcı adına açık hesap-statüsü onayı gerektiği için hazırlanan kurtarma komutunu çalıştırmadan reddetti. Onay sonrası yalnız hedef status değiştirilip hedef sessions iptal edilir; parola/rol/Authenticator korunur ve kişi kendi güncel koduyla giriş yapar. Çalışan diğer yöneticiye dokunulmaz. Bu not pending kurtarmadır; hesap açıldı diye yorumlanmaz.
+
 Üretim Compose için her zaman `compose.vps.yaml` ile `compose.vps.https.yaml` birlikte kullanılmalıdır. TFA eklentisi Directus loglarında yüklenmiş olmalı; yalnız dosyanın hostta bulunması yeterli değildir. Eklenti dizinleri container'ın root olmayan kullanıcısınca okunabilir olmalıdır. Yeni yönetici kurulumdan önce içerik görebiliyorsa öncelikle eklenti yükleme listesi, klasör izinleri ve servis sağlığı incelenir. Bu durumda başarılı test yapılana dek güvenlik paketi tamamlanmış sayılmaz.
 
 Rollout betiği tek seferliktir; aynı adla yeniden çalıştırılmaz. Mevcut root erişimli snapshot ve rollback kopyaları korunur. Geri alma veya veritabanı restore işlemi, etkin içerik yazımlarının ve mevcut hesapların durumu görülerek ayrı planlanır; eski imaja gelişigüzel dönmek kurulum zorunluluğunu kaldırabilir. Gizli `.env` veya yedekler Git/Obsidian'a taşınmaz.

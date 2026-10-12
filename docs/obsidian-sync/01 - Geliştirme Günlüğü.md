@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Geliştirme Günlüğü
 
+## 12 Ekim 2026 — İkinci yönetici giriş hatası araştırması
+
+- Kullanıcı iki yöneticiden birinin giriş yapamadığını; admin-account/admin-team401, içerik403 ve login401 gördüğünü bildirdi. Başlangıç tracked Git temiz, üç kullanıcı görseli korunur. Kodda oturum okuma/TFA/çoklu yönetici akışı ve canlı Directus'un yalnız hesap durumu/rol/2FA booleans alanları salt-okunur incelendi; parola/hash/TOTP anahtarı veya session token okunmadı.
+- İki hesabın Administrator rolü var; çalışan aktif, hata veren suspended. Hata verenin TFA'sı açık. 12 Ekim20.52.06UTC (23.52.06Türkiye) activity/revision kaydı yalnız status=suspended değişimi ve hesabın kendisini actor gösteriyor. auth_login_attempts=5. Kurulu Directus12.4.0 AuthenticationService'in başarısız giriş sınırı aşıldığında yazdığı kayıtla eşleşir; suspended kullanıcı login'de INVALID_CREDENTIALS401 döner. Böylece içerik401/403'leri ayrı rol eksiklikleri sayılmadı. Parolanın veya kodun başlangıçta neden reddedildiği bu salt-okunur kontrolden kanıtlanamaz.
+- Dar kurtarma işlemi hazırlandı: yalnız doğrulanan suspended yönetici status=active, aynı rol/parola/TFA korunarak yalnız kendi eski sessions iptal edilecek. Otomatik onay denetimi açık hesap-statüsü değişikliği yetkisi olmadığı gerekçesiyle komutu **çalıştırmadan reddetti**. Kullanıcıdan bu tek hesabı yeniden açma onayı istenecek; bypass/indirect deneme yok. Şu anda hesap hâlâ suspended, canlı kaynak/DB/session/diğer hesap değişmedi. Yeniden giriş kabulü ve gerekirse hesap kurtarma/hız sınırı sonraki adım.
+
 ## 12 Ekim 2026 — Küçük paket: Vinext image-size güvenlik yaması
 
 - Kullanıcı kademeli iyileştirmelere devam etmemizi, Cloudflare bot korumasını kendisinin yönetmesini istedi. `fix-finding` yönergeleri okundu; yeni salt-okunur sınır incelemesi ve bağımsız aday incelemesi yapıldı. Kullanıcının üç untracked fotoğrafı korunur. Güncel npm audit30 kaydı verdi; bu 30 doğrulanmış site açığı olarak yorumlanmadı. Resmî iki image-size advisory 2.0.3'ü yamalı sürüm olarak gösterdi.
