@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 13 Ekim 2026 — Next/React bağımlılık paketi
+
+Canlı frontend `fizyoterapist-frontend:vps-20261013-react1`. Next ve ESLint yapılandırması 16.3.8, React/React DOM/React Server DOM 19.2.8, Vite RSC eklentisi 0.5.29. Vinext/Vite sürümü, sayfa kodu, DB, Directus ve CMS içeriği değişmedi. Önemli mimari nokta: Vinext, RSC eklentisinin kendi `dist/vendor/react-server-dom` kopyasını kullanır; yalnız kök React paketini güncellemek yeterli değildir. Linux build'de bu gömülü kopya 19.2.8 doğrulandı. 122 regresyon, TypeScript, iki üretim derlemesi, özel önizleme ve canlı üç dil/HTTPS/erişim smoke geçti. Npm audit 29 → 27; kritik 1 → 0. Kalan uyarı ve Next'in ayrı gömülü image-size kopyası kapanmış sayılmaz. Geri dönüş `/var/backups/furkantoplu/react-20261013-01` ve eski frontend imajıyla mümkün; işletim ayrıntısı `deploy/VPS-KURULUM.md`.
+
 ## 13 Ekim 2026 — Güncel iş e-postası
 
 Sitede yayımlanan iletişim/başvuru adresi `fzt.furkantoplu@gmail.com`. Canlı iletişim kaydı kullanıcı tarafından bu değere getirilmiş; TR/EN/DE ana sayfa ve iletişim ortak alanı kullanır. Gizlilik, KVKK ve ortak yasal bilgi kutusu aynı adrese geçirildi; tarih13Ekim. Frontend `vps-20261013-email1` ile canlı; hedefli8test, önizleme8rota ve dış11public sayfa kontrolü başarılı. Kullanıcının mevcut kart görünürlükleri ve yönetici giriş e-postası bu pakette değiştirilmedi. Önceki tarihli notlardaki adresler tarihî işlem kayıtlarıdır.

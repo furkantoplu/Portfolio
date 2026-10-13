@@ -1,5 +1,11 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 13 Ekim 2026: Next ve React kopyalarını birlikte güncelle
+
+Next/React advisory'leri paket sürümüne uygulanır; kurulu Vinext sunucusunun o yolu çağırdığı ayrıca incelenir. Bu projede uygulama `next/og`, `ImageResponse` veya `use server` kullanmıyor; yama, kanıtlanmış canlı istismarın giderildiği iddiasıyla sunulmaz. `@vitejs/plugin-rsc` kendi React Server DOM kopyasını vendor dizinine yerleştirir ve Vinext o kopyadan çalışır. Bu yüzden Next/React/React DOM/RSC ve RSC eklentisi uyumlu yama sürümlerinde birlikte sabitlenir; lockfile, yerel gerçek node_modules, Linux build-stage vendor ve son canlı imaj ayrı doğrulanır. `npm audit` toplamı kalan sorunların öncelik/erişilebilirlik sırasını tek başına belirlemez.
+
+Dağıtım kuralı: öncesinde VPS kaynakları Git bazına eşit olmalı; checksum'lı iki dosya arşivi staging'de uygulanmalı, yeni Docker imajı ve özel loopback önizleme çalışmalı, eski `.env`/kaynaklar root-only yedeklenmeli, yalnız frontend iki HTTPS Compose dosyasıyla yenilenmeli. Eski imaj geri dönüş için korunur. `npm run lint` bu paket sırasında değişmeyen iki JSX satırında hata ve bir uyarı verdi; bunlar sonraki UI/lint paketi için kayıtlıdır. Named image-size override'ı Next'in gömülü ayrıştırıcısını yamamaz; mevcut Vinext request yolundan bu kopyaya girdi ulaşması gösterilmedikçe uzaktan sömürülebilirlik iddia edilmez. Resmî advisory'ler: [React](https://github.com/advisories/GHSA-wx67-qw84-cm4g), [Next ImageResponse](https://github.com/advisories/GHSA-vcvr-r3jv-pc5j), [Next Image Optimization](https://github.com/advisories/GHSA-cjq9-62q9-8jv4).
+
 ## Karar — 13 Ekim 2026: Public iş e-postası ile admin girişi ayrı
 
 Public iletişim ve yasal başvuru adresi `fzt.furkantoplu@gmail.com`. İletişimin dil sürümleri ortak CMS email alanını korur; yasal metin ve ortak bilgi kutusunun görünen adresi/mailto birlikte güncellenir. Kullanıcının bu isteği directus_users giriş e-postasını, parolasını veya Authenticator kimliğini değiştirme yetkisi olarak yorumlanmaz. Canlı CMS alanı zaten yeniyse DB'ye gereksiz yazılmaz; o andaki görünürlük tercihleri korunur. Eski migrasyonları değiştirmek yerine geçmiş uygulama kayıtları tarihî haliyle tutulur; güncel durum en yeni notta belirtilir.
