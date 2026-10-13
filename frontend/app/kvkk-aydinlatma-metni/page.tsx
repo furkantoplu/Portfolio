@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const sections: LegalSection[] = [
   {
     title: "Veri sorumlusu",
-    content: <p>Bu web sitesi ve site üzerinden başlatılan iletişim süreçleri bakımından veri sorumlusu Fizyoterapist Furkan Toplu’dur. İletişim: <a href="mailto:toplu.furkan0220@gmail.com">toplu.furkan0220@gmail.com</a> · <a href="tel:+905522903902">+90 552 290 39 02</a>. Ziyaretçilere açık bir fiziksel klinik adresi bulunmaz; iletişim uzaktan yürütülür.</p>,
+    content: <p>Bu web sitesi ve site üzerinden başlatılan iletişim süreçleri bakımından veri sorumlusu Fizyoterapist Furkan Toplu’dur. İletişim: <a href="mailto:fzt.furkantoplu@gmail.com">fzt.furkantoplu@gmail.com</a> · <a href="tel:+905522903902">+90 552 290 39 02</a>. Ziyaretçilere açık bir fiziksel klinik adresi bulunmaz; iletişim uzaktan yürütülür.</p>,
   },
   {
     title: "Hangi veriler, nasıl elde edilir?",
@@ -27,10 +27,10 @@ const sections: LegalSection[] = [
   },
   {
     title: "İlgili kişinin hakları ve başvuru",
-    content: <><p>6698 sayılı Kanun’un 11. maddesi kapsamındaki haklarınız için Furkan Toplu’ya başvurabilirsiniz. Bilgi almak için <a href="mailto:toplu.furkan0220@gmail.com">toplu.furkan0220@gmail.com</a> adresine yazabilirsiniz. Resmî başvurular, <a href="https://www.kvkk.gov.tr/Icerik/6938/Kurumumuza-Yapilan-Sikayetlerin-Usul-Sartlarina-Iliskin-Kamuoyu-Duyurusu" target="_blank" rel="noopener noreferrer">KVKK’nın açıkladığı usullerle</a> yapılmalıdır; normal e-posta ile başvuru için gönderen adresin daha önce tarafımıza bildirilmiş ve sistemimizde kayıtlı olması gerekir.</p><p>Bu metin yalnızca web sitesi ziyareti ve site aracılığıyla başlatılan ilk iletişim kapsamını açıklar; fizyoterapi hizmetinin kendisine ilişkin ayrı veri işleme süreçlerinin yerine geçmez.</p></>,
+    content: <><p>6698 sayılı Kanun’un 11. maddesi kapsamındaki haklarınız için Furkan Toplu’ya başvurabilirsiniz. Bilgi almak için <a href="mailto:fzt.furkantoplu@gmail.com">fzt.furkantoplu@gmail.com</a> adresine yazabilirsiniz. Resmî başvurular, <a href="https://www.kvkk.gov.tr/Icerik/6938/Kurumumuza-Yapilan-Sikayetlerin-Usul-Sartlarina-Iliskin-Kamuoyu-Duyurusu" target="_blank" rel="noopener noreferrer">KVKK’nın açıkladığı usullerle</a> yapılmalıdır; normal e-posta ile başvuru için gönderen adresin daha önce tarafımıza bildirilmiş ve sistemimizde kayıtlı olması gerekir.</p><p>Bu metin yalnızca web sitesi ziyareti ve site aracılığıyla başlatılan ilk iletişim kapsamını açıklar; fizyoterapi hizmetinin kendisine ilişkin ayrı veri işleme süreçlerinin yerine geçmez.</p></>,
   },
 ];
 
 export default function KvkkNoticePage() {
-  return <LegalDocument eyebrow="Yasal Bilgilendirme" title="KVKK Aydınlatma Metni" intro="Web sitesi ziyaretiniz ve site üzerinden başlattığınız iletişim için kişisel verilerin nasıl işlendiği." updated="11 Ekim 2026" sections={sections} />;
+  return <LegalDocument eyebrow="Yasal Bilgilendirme" title="KVKK Aydınlatma Metni" intro="Web sitesi ziyaretiniz ve site üzerinden başlattığınız iletişim için kişisel verilerin nasıl işlendiği." updated="13 Ekim 2026" sections={sections} />;
 }

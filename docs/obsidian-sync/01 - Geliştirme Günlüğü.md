@@ -1,5 +1,19 @@
 # Fizyoterapist Web Sitesi — Geliştirme Günlüğü
 
+## 13 Ekim 2026 — Public iş e-postası güncellendi
+
+- Kullanıcı giriş sorununun yanlış parola yazmalarından olduğunu, çözüldüğünü bildirdi. Parola sıfırlama veya ek hesap değişikliği yapılmadı. Ardından gizlilik/KVKK ve diğer public adresleri `fzt.furkantoplu@gmail.com` yapmamızı istedi; admin giriş hesabı bu scope'a dahil edilmedi.
+- Canlı salt-okunur CMS incelemesinde contact email zaten yeni adresti ve kullanıcı email kartını görünür yapmıştı. Diğer phone/whatsapp/address/hours gizliydi; bu güncel görünürlükler aynen korundu. site_pages/website_content_translations/blog_posts/practice_areas row metninde eski adres sıfır sonuç verdi. CMS veya directus_users yazımı gerekmedi.
+- Kaynakta eski public adres üç dosyada kaldı: gizlilik, KVKK ve ortak legal-document. Görünen metin ve mailto yeni adrese geçirildi; iki yasal belgenin tarihi13Ekim2026 oldu. Mevcut legal-contact beklentisi güncellendi, yeni düşük etkili test eklenmedi. Hedefli legal/contact/translations8test ve diffcheck başarılı; frontend/app eski adres araması boş.
+- Üç eski VPS dosyası Git başlangıcıyla normalleştirilmiş hash eşleşti. Üç kaynak dosyasını taşıyan arşiv SHA256strict eşleşti; sır/DB/medya/hesap aktarılmadı. VPS staging build `vps-20261013-email1` başarılı; shared-network/loopback önizlemede TR/EN/DE home/contact ve iki yasal rota8adet200, yeni mailto/eski yok/tarih kontrolleri geçti.
+- Root-only rollback `/var/backups/furkantoplu/email-20261013-01` eski env/üç kaynak ve dep1imajıyla korundu. İki Compose config başarılı; yalnız frontend recreate edildi. Dış bilgisayardan11publicrota200, ilgili8rota yeni mailto ve tümrotalarda eskiadresyok doğrulandı. Frontend/Directus/DB healthy, backup timer aktif; geçici label/path doğrulanıp önizleme/staging kaldırıldı. SMTP teslim ve gerçek mesaj gönderimi yapılmadı; link hedefi doğrulandı. Obsidian guard hash'leri başlangıçta alındı; günlüğün önceki yarım kalan parola teşhis notu korunarak kullanıcı çözüm bildirimi eklendi.
+
+## 13 Ekim 2026 — Açılan yönetici hesabında giriş401 kontrolü
+
+- Kullanıcı mevcut şifrenin ne olduğunu kontrol etmemizi ve doğru olması gerekirken girişte hata aldığını söyledi. Şifre geri okunabilir düz metin olarak tutulmadığından mevcut şifreyi bulma/deşifre veya gerçek hash/TOTP/token okuma yapılmadı. Önceki kurtarma yalnız status ve sessions içindi; parola değiştirilmedi.
+- Canlı salt-okunur kontrolde hedef hesap active, Administrator ve tfa_enabled=true; yeniden suspended olmamış. Son native auth/login denemesi401; server request logu INVALID_OTP veya INVALID_CREDENTIALS ayrıntısını göstermedi. Bu kanıt parola hatasıyla OTP hatasını ayırmaya yetmez. Kullanıcıdan tarayıcı Network→auth/login→Response içindeki güvenli errors/extensions/code bilgisi istenecek; request payload, parola, kod veya cookie paylaşması istenmez. Yeni parola sıfırlama veya hesap ayarı mutasyonu yapılmadı.
+- Kullanıcı sonraki mesajında yanlış parola yazdıklarını ve giriş sorununun çözüldüğünü bildirdi; ek tanılama/kurtarma yapılmadı.
+
 ## 12 Ekim 2026 — İkinci yönetici giriş hatası araştırması
 
 - Kullanıcı iki yöneticiden birinin giriş yapamadığını; admin-account/admin-team401, içerik403 ve login401 gördüğünü bildirdi. Başlangıç tracked Git temiz, üç kullanıcı görseli korunur. Kodda oturum okuma/TFA/çoklu yönetici akışı ve canlı Directus'un yalnız hesap durumu/rol/2FA booleans alanları salt-okunur incelendi; parola/hash/TOTP anahtarı veya session token okunmadı.

@@ -27,10 +27,10 @@ const sections: LegalSection[] = [
   },
   {
     title: "İletişim ve kişisel veriler",
-    content: <p>Bu siteyle ilgili gizlilik sorularınızı Fizyoterapist Furkan Toplu’ya <a href="mailto:toplu.furkan0220@gmail.com">toplu.furkan0220@gmail.com</a> adresinden veya <a href="tel:+905522903902">+90 552 290 39 02</a> numarasından iletebilirsiniz. Kişisel veri işleme faaliyeti ve haklarınız için ayrıca <a href="/kvkk-aydinlatma-metni">KVKK Aydınlatma Metni</a>ni okuyabilirsiniz.</p>,
+    content: <p>Bu siteyle ilgili gizlilik sorularınızı Fizyoterapist Furkan Toplu’ya <a href="mailto:fzt.furkantoplu@gmail.com">fzt.furkantoplu@gmail.com</a> adresinden veya <a href="tel:+905522903902">+90 552 290 39 02</a> numarasından iletebilirsiniz. Kişisel veri işleme faaliyeti ve haklarınız için ayrıca <a href="/kvkk-aydinlatma-metni">KVKK Aydınlatma Metni</a>ni okuyabilirsiniz.</p>,
   },
 ];
 
 export default function PrivacyPage() {
-  return <LegalDocument eyebrow="Site Politikası" title="Gizlilik Bilgilendirmesi" intro="Web sitesinde kullanılan iletişim kanalları ve teknik altyapı hakkında bilgi." updated="11 Ekim 2026" sections={sections} />;
+  return <LegalDocument eyebrow="Site Politikası" title="Gizlilik Bilgilendirmesi" intro="Web sitesinde kullanılan iletişim kanalları ve teknik altyapı hakkında bilgi." updated="13 Ekim 2026" sections={sections} />;
 }

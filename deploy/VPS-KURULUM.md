@@ -1,5 +1,12 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Public iş e-postası — 13 Ekim 2026
+
+- Kullanıcı yeni public adresi `fzt.furkantoplu@gmail.com` olarak belirledi. Canlı CMS iletişim kaydında adres zaten bu değerdi; email görünürlüğütrue, phone/whatsapp/address/hours false bulundu. Site sayfaları, çeviriler, blog ve çalışma alanı tablolarında eski public adres taraması sıfır sonuç verdi. Bu pakette DB/görünürlük veya yönetici hesabı değiştirilmedi.
+- Üç kaynak dosyası güncellendi: gizlilik, KVKK ve ortak `legal-document` bilgi kutusu; hem görünen metin hem mailto değişti, iki yasal sayfanın tarihi13Ekim2026 oldu. İlgili8test geçti. Üç eski VPS kaynak dosyası CRLF normalizasyonundan sonra Git HEAD ile eşleşti. Üç dosyalı aktarım SHA256 `ba9c675a6cdc01c8b608f3a7a6c28793e22f311747ba592636b157d0f1881060` strict doğrulandı.
+- Yeni `fizyoterapist-frontend:vps-20261013-email1` imajı VPS staging'de üretildi; ID `sha256:1387c0a53534d32d9c09a512149b7fcbec110f5a96fe8e113d01daecc1cd828d`. Önizleme8rota200/yeni mailto/eski yok/tarih kontrolü başarılı. Eski `.env`/üç kaynak root700/600 `/var/backups/furkantoplu/email-20261013-01` ve eski dep1 imajı geri dönüş için tutuldu. Compose config sonrası yalnız frontend recreate edildi; Directus/DB/proxy yerinde kaldı.
+- Dış alan adından11sayfa200, ilgili8sayfada yeni mailto, tüm11sayfada eski adres yok, yasal sayfalarda doğru tarih doğrulandı. Frontend/Directus/DB healthy, günlük backup timer aktif. Exact label/path doğrulaması sonrası yalnız bu paketin geçici önizleme/staging'i kaldırıldı. SMTP kurulumu, e-posta gönderme/teslim testi veya admin login rename bu paket değildir.
+
 ## Dar bağımlılık yaması — 12 Ekim 2026
 
 - Kullanıcı kademeli iyileştirmelere devam istedi ve Cloudflare bot korumasını kendisi üstlendi. İlk küçük paket yalnız Vinext'in npm `image-size` kopyasını 2.0.2 → 2.0.3 olarak değiştirir; Next/Vinext/Vite/React sürümleri aynı. `frontend/package.json` kapsamlı olmayan `vinext@1.0.0-beta.5` override'ı ve lockfile'da tek paket kaydı değişti. Node >=18 gereksinimi projedeki Node22 ile uyumludur.

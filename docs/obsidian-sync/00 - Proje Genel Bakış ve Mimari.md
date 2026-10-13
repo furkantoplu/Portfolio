@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 13 Ekim 2026 — Güncel iş e-postası
+
+Sitede yayımlanan iletişim/başvuru adresi `fzt.furkantoplu@gmail.com`. Canlı iletişim kaydı kullanıcı tarafından bu değere getirilmiş; TR/EN/DE ana sayfa ve iletişim ortak alanı kullanır. Gizlilik, KVKK ve ortak yasal bilgi kutusu aynı adrese geçirildi; tarih13Ekim. Frontend `vps-20261013-email1` ile canlı; hedefli8test, önizleme8rota ve dış11public sayfa kontrolü başarılı. Kullanıcının mevcut kart görünürlükleri ve yönetici giriş e-postası bu pakette değiştirilmedi. Önceki tarihli notlardaki adresler tarihî işlem kayıtlarıdır.
+
 ## 12 Ekim 2026 — İlk dar bağımlılık güvenlik yaması
 
 Vinext'in named `image-size` bağımlılığı yalnız ilgili npm override/lock kaydıyla 2.0.3'e sabitlendi. Bozuk ICNS girdisi eski 2.0.2'de kontrollü timeout, yeni CJS/ESM'de hızlı ret verdi; normal fotoğraf boyutları ve mevcut site davranışı korunur. 122 regresyon, TypeScript ve üretim build sonrası VPS `vps-20261012-dep1` frontend imajıyla yenilendi; canlı üç dil/HTTPS/medya/erişim smoke geçti. Npm audit 30 → 29; Next'in ayrı gömülü kopyası ve diğer paket uyarıları açık. Cloudflare bot ayarı kullanıcıda, DB/medya/hesap değişikliği yok. Ayrıntılı kaynak ve geri dönüş bilgisi günlük ile `deploy/VPS-KURULUM.md` içinde.

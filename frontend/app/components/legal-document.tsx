@@ -37,7 +37,7 @@ export function LegalDocument({ eyebrow, title, intro, updated, sections }: Lega
         <aside>
           <p>Veri sorumlusu</p>
           <strong>Fizyoterapist Furkan Toplu</strong>
-          <a href="mailto:toplu.furkan0220@gmail.com">toplu.furkan0220@gmail.com</a>
+          <a href="mailto:fzt.furkantoplu@gmail.com">fzt.furkantoplu@gmail.com</a>
           <a href="https://www.kvkk.gov.tr/Icerik/2033/Aydinlatma-Yukumlulugu-" target="_blank" rel="noreferrer">
             Resmî KVKK bilgisi <ExternalLink aria-hidden="true" size={15} />
           </a>

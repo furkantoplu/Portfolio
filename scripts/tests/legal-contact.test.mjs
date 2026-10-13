@@ -11,7 +11,7 @@ test("public legal pages identify the owner and do not display draft copy", asyn
     "frontend/app/components/legal-document.tsx",
   ].map(source));
   for (const content of files) assert.doesNotMatch(content, /taslak|yayın öncesinde/i);
-  assert.match(files[0], /toplu\.furkan0220@gmail\.com/);
+  assert.match(files[0], /fzt\.furkantoplu@gmail\.com/);
   assert.match(files[1], /Fizyoterapist Furkan Toplu/);
   assert.match(files[1], /Cloudflare/);
   assert.match(files[1], /Kanada/);

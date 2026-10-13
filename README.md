@@ -4,6 +4,8 @@ Fizyoterapist portföyü ve blogu için geliştirilen React/TypeScript tabanlı 
 
 ## VPS hazırlığı ve yayın sırası
 
+13 Ekim 2026 — Public iletişim/başvuru e-postası `fzt.furkantoplu@gmail.com`. Canlı CMS kaydı kullanıcı tarafından zaten güncellenmişti; aynı ortak alan Türkçe/İngilizce/Almanca ana sayfa ve iletişimde doğrulandı. Gizlilik/KVKK metinleri ve ortak yasal bilgi kutusu yeni adrese geçirildi; metin tarihi13Ekim. Yeni frontend `vps-20261013-email1`, hedefli8test ve canlı11sayfa kontrolü başarılı. Bu public e-posta değişikliği yönetici giriş hesabını değiştirmez; tarihî migrasyon ve geçmiş notlar önceki durumu korur.
+
 12 Ekim 2026 — Küçük bağımlılık güvenlik paketi: yalnız Vinext 1.0.0-beta.5'in `image-size` bağımlılığı npm override ile 2.0.2 → 2.0.3'e sabitlendi. Bozuk ICNS girdisinin eski sürümdeki sonsuz döngüsü zaman sınırlı alt süreçte doğrulandı; yamada CJS/ESM ret ve normal JPEG/PNG/WebP/SVG boyutları geçti. 122 regresyon testi, TypeScript, yerel ve VPS Docker build ile canlı üç dil/HTTPS/medya kontrolleri başarılı. Güncel frontend `fizyoterapist-frontend:vps-20261012-dep1`. Npm audit 30 → 29; Next'in ayrı vendored ayrıştırıcısı ve diğer uyarılar bu paketle kapanmadı. Cloudflare bot ayarını kullanıcı yönetir. Ayrıntı [deploy/VPS-KURULUM.md](deploy/VPS-KURULUM.md).
 
 12 Ekim 2026 — Panelde fotoğraf kaydından önce gerçek Sharp decode, MIME eşleşmesi ve 10 MB/5000 px/16 MP sınırı canlıya alındı. Genel `POST /bakir-api/files` kapalı; panel TFA korumalı `website-content/image-upload` kullanır. Gerçek yöneticiyle upload kabulü açık; mevcut fotoğraflar korunur.

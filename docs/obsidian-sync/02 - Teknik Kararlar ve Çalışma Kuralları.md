@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 13 Ekim 2026: Public iş e-postası ile admin girişi ayrı
+
+Public iletişim ve yasal başvuru adresi `fzt.furkantoplu@gmail.com`. İletişimin dil sürümleri ortak CMS email alanını korur; yasal metin ve ortak bilgi kutusunun görünen adresi/mailto birlikte güncellenir. Kullanıcının bu isteği directus_users giriş e-postasını, parolasını veya Authenticator kimliğini değiştirme yetkisi olarak yorumlanmaz. Canlı CMS alanı zaten yeniyse DB'ye gereksiz yazılmaz; o andaki görünürlük tercihleri korunur. Eski migrasyonları değiştirmek yerine geçmiş uygulama kayıtları tarihî haliyle tutulur; güncel durum en yeni notta belirtilir.
+
 ## Karar — 12 Ekim 2026: Bağımlılık yamalarını dar kapsamla ilerlet
 
 Npm audit önerisi her zaman uyumlu güncelleme veya doğrulanmış uygulama açığı değildir. İlk paket yalnız Vinext'in tam 2.0.2 pin'ini `vinext@1.0.0-beta.5` override ile 2.0.3'e geçirir; diğer paketler yükseltilmez. Parser güvenlik kuralı bozuk girdide ilerleme veya ret olmasıdır; senkron döngü ana test runner'ında denenmez, timeout'lu alt süreç kullanılır. CJS ve ESM export'ları ayrı dosyalardan test edilir; 2.0.3'teki `dist/cjs` → `dist/esm` değişimi hesaba katılır. Npm gizli lock metadata'sı actual node_modules içeriğini yanlış gösterebildiği için gerçek paket manifest/resolve ve Docker içindeki sürüm ayrıca kontrol edilir.
