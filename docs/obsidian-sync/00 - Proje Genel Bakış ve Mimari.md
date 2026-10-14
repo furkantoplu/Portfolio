@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 14 Ekim 2026 — Hakkımda ve blog çevirilerinin tamamlanması
+
+Canlı Hakkımda sayfasındaki yeni Türkçe eğitim/mesleki vizyon biyografisinin EN/DE metni güncellendi. Blog sayfasının yabancı dil giriş/SEO metinleri düzeltildi; iki yayımlı yazının EN/DE sürümleri artık ayrı URL ve çevrilmiş içerikle görünür. Üçüncü yazının EN/DE sürümleri hazırlanıp Türkçe aslı gibi taslak tutulur. CMS çevirileri `website_content_translations` tablosundadır ve Git kodundan ayrı canlı veridir. `scripts/content-updates/2026-10-14-about-blog-translations.sql` yalnız bir kez uygulanan, kaynak parmak izi kontrollü kayıt olarak Git'te tutulur; otomatik deploy migrasyonu değildir. Türkçe metinler, görseller, Docker ve yayın durumları korunmuştur. Canlı rota/sitemap ve root-only geri dönüş kopyası günlük ile `deploy/VPS-KURULUM.md` içinde. Yeni biyografide devam eden lisans eğitimi ve sitenin `Fzt.` unvanı arasındaki editoryal tutarlılık site sahibine bırakılmıştır.
+
 ## 14 Ekim 2026 — Kodun VPS ile eşitlenmesi
 
 Yerel depo ve GitHub `main` `eea020f38a6f331c9605ed4e24c66707518e179b` commit'inde aynı. VPS canlı klasörü Git deposu olmadığından sunucuda doğrudan `git pull` yapılmaz. Kod karşılaştırmasında canlıdaki eski admin arayüz dosyası ve eksik güvenlik paneli Git HEAD'e getirildi; diğer üretim kaynakları, aktif Caddyfile ve statik görseller eşleşiyordu. Yalnız frontend Docker imajı `fizyoterapist-frontend:vps-20261014-adminsync1` ile yenilendi. Directus, PostgreSQL, içerik ve yüklenen görseller korunur. Admin tarafından eklenen yazı/fotoğraflar Git'te değil, VPS volume'lerindedir; kodun bilgisayarda ve GitHub'da olması tam veri yedeği değildir. Eski imaj ve root-only `.env`/kaynak geri dönüş kopyası saklanır. Dağıtım ve test kanıtı `deploy/VPS-KURULUM.md` ile günlükte.

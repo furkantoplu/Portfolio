@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 14 Ekim 2026: Canlı CMS çevirisi Git kodundan ayrı tutulur
+
+Admin tarafından sonradan yazılan Türkçe metni seed veya yerel DB'den değil, canlı `site_pages`/`blog_posts` kayıtlarından okuyup hedef dil çevirisini üret. Mevcut EN/DE JSON'u tümden değiştirme; yalnız değişen anahtarları birleştir. Eksik blog çevirisini ana kaydın yayın durumuna göre oluştur; taslağı çevirmek onu yayımlamak değildir. İşlem için kaynak parmak izi, çeviri yokluğu, tek transaction ve dry-run ROLLBACK koruması kullan; yazmadan önce ilgili canlı tabloların kısıtlı erişimli geri dönüş kopyasını al. SQL'i otomatik migrasyona koyma, çünkü sonraki admin düzenlemeleri önceliklidir. Public rota, taslak 404, sitemap ve Türkçe parmak iziyle doğrula. Klinik/mesleki unvan çelişkisi çeviri sırasında sessizce değiştirilmez; site sahibine editoryal inceleme olarak iletilir.
+
 ## Karar — 14 Ekim 2026: Kod eşitleme ve veri sınırını ayrı tut
 
 VPS `/opt/furkantoplu` içine `.git` ekleyip mevcut canlı klasörde kör `git pull` çalıştırma. GitHub/yerel `main` önce aynı commit ile doğrulanır, üretimde farklı kalan dosyalar listelenir ve yalnız gerekli kaynaklar byte/blob hash kontrolüyle staging'e aktarılır. Windows `git archive` satır sonlarını dönüştürebildiği için arşiv SHA256 eşitliği tek başına Git blob eşitliği değildir; her aktarılan kaynak ayrıca doğrulanır. İmaj üret, izole loopback önizle, eski `.env`/kaynak ve imajı koru, HTTPS Compose çiftini kullanarak yalnız ilgili servisi yenile, canlı smoke yap. CMS DB/upload/TOTP verisi imaj veya Git eşitlemesinin parçası değildir; `down -v`, yeniden seed veya kör restore uygulanmaz. GitHub ve yerel dosyalar site kodunun kopyasıdır, canlı CMS verisinin otomatik yedeği değildir.
