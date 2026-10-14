@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 14 Ekim 2026 — Kodun VPS ile eşitlenmesi
+
+Yerel depo ve GitHub `main` `eea020f38a6f331c9605ed4e24c66707518e179b` commit'inde aynı. VPS canlı klasörü Git deposu olmadığından sunucuda doğrudan `git pull` yapılmaz. Kod karşılaştırmasında canlıdaki eski admin arayüz dosyası ve eksik güvenlik paneli Git HEAD'e getirildi; diğer üretim kaynakları, aktif Caddyfile ve statik görseller eşleşiyordu. Yalnız frontend Docker imajı `fizyoterapist-frontend:vps-20261014-adminsync1` ile yenilendi. Directus, PostgreSQL, içerik ve yüklenen görseller korunur. Admin tarafından eklenen yazı/fotoğraflar Git'te değil, VPS volume'lerindedir; kodun bilgisayarda ve GitHub'da olması tam veri yedeği değildir. Eski imaj ve root-only `.env`/kaynak geri dönüş kopyası saklanır. Dağıtım ve test kanıtı `deploy/VPS-KURULUM.md` ile günlükte.
+
 ## 13 Ekim 2026 — Next/React bağımlılık paketi
 
 Canlı frontend `fizyoterapist-frontend:vps-20261013-react1`. Next ve ESLint yapılandırması 16.3.8, React/React DOM/React Server DOM 19.2.8, Vite RSC eklentisi 0.5.29. Vinext/Vite sürümü, sayfa kodu, DB, Directus ve CMS içeriği değişmedi. Önemli mimari nokta: Vinext, RSC eklentisinin kendi `dist/vendor/react-server-dom` kopyasını kullanır; yalnız kök React paketini güncellemek yeterli değildir. Linux build'de bu gömülü kopya 19.2.8 doğrulandı. 122 regresyon, TypeScript, iki üretim derlemesi, özel önizleme ve canlı üç dil/HTTPS/erişim smoke geçti. Npm audit 29 → 27; kritik 1 → 0. Kalan uyarı ve Next'in ayrı gömülü image-size kopyası kapanmış sayılmaz. Geri dönüş `/var/backups/furkantoplu/react-20261013-01` ve eski frontend imajıyla mümkün; işletim ayrıntısı `deploy/VPS-KURULUM.md`.

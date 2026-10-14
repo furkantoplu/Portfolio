@@ -1,5 +1,12 @@
 # Fizyoterapist Web Sitesi — Geliştirme Günlüğü
 
+## 14 Ekim 2026 — GitHub kaynak/VPS admin arayüzü eşitlemesi
+
+- Kullanıcı VPS kodunun bilgisayar ve GitHub ile eşit olup olmadığını sordu ve yalnız kod eşitlemesine onay verdi; mevcut fotoğraf ve metinleri ayrı sakladığını belirtti. Yerel/GitHub `main` commit'i `eea020f38a6f331c9605ed4e24c66707518e179b`. VPS `/opt/furkantoplu` Git checkout'u değil. Seçili 201 üretim dosyası karşılaştırmasında 194 metin ve dört PNG eşleşti; `admin-client.tsx` eski, `security-panel.tsx` eksikti. Jenerik Caddyfile farklı ama aktif `Caddyfile.vps` eşti. DB/Directus/proxy kaynaklarına değişiklik gerekmedi.
+- Git arşivinin SHA256'sı yerel/VPS aynı olmasına rağmen Windows Git arşivinde CRLF dönüşümü iki blob'u değiştirdi; canlıya aktarılmadan tespit edildi. Dosyalar doğrudan SCP ile aktarılıp HEAD blob'ları `62aa5f74c83f31db9aecc03761c3b93f70c4f671` ve `8a8506059121a1c08da6865fcba334589e76675a` eşleşti. 24 hedefli yerel admin test geçti. VPS'te yeni Docker imajı `vps-20261014-adminsync1` üretildi; izole 3001 önizlemede sekiz ana rota 200, bilinmeyen rota 404; TFA kodu bundle'da bulundu.
+- Önceki `.env` ve admin-client `/var/backups/furkantoplu/admin-sync-20261014-01` içinde 700/600 izinli yedeklendi, önceki imaj tutuldu. Yalnız frontend konteyneri yenilendi ve healthy oldu; Directus/DB healthy, Caddy up, backup timer active. Canlı üç dil, yasal/404, public tasarım, admin erişim sınırları, HTTPS ve özel port smoke geçti. Gerçek admin giriş/TOTP bu turda denenmedi. İzole test konteyneri, staging ve yerel geçici arşiv yalnız kendi hedefleri doğrulanarak temizlendi. CMS verisi, hesap, upload, DNS/Cloudflare değişmedi.
+- Kod eşitlemesi CMS veri yedeği değildir: metinler DB'de, yüklenen fotoğraflar Directus volume'ündedir. VPS içi yedek sürer; ayrı yerde doğrulanmış tam DB+upload kopyası için site sahibinin daha önce ertelediği karar hâlâ gerekir.
+
 ## 13 Ekim 2026 — Paket 67: Next/React yama sürümleri ve canlı dağıtım
 
 - Kullanıcı kademeli bağımlılık güncellemesine devam etmemizi istedi. Altı doğrudan paket değişti: Next/ESLint config 16.3.4→16.3.8, React/React DOM/React Server DOM 19.2.6→19.2.8, `@vitejs/plugin-rsc` 0.5.26→0.5.29. Vinext 1.0.0-beta.5 ve Vite 8.0.13 sabit kaldı. Lockfile yalnız bunlar ve zorunlu alt bağımlılıklarıyla yenilendi. `npm ci` sonrası gerçek manifestler ile eklenti içindeki `dist/vendor/react-server-dom` 19.2.8 doğrulandı; bağımsız salt-okunur yama incelemesi belirgin uyumsuzluk bulmadı.

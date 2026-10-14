@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Teknik Kararlar ve Çalışma Kuralları
 
+## Karar — 14 Ekim 2026: Kod eşitleme ve veri sınırını ayrı tut
+
+VPS `/opt/furkantoplu` içine `.git` ekleyip mevcut canlı klasörde kör `git pull` çalıştırma. GitHub/yerel `main` önce aynı commit ile doğrulanır, üretimde farklı kalan dosyalar listelenir ve yalnız gerekli kaynaklar byte/blob hash kontrolüyle staging'e aktarılır. Windows `git archive` satır sonlarını dönüştürebildiği için arşiv SHA256 eşitliği tek başına Git blob eşitliği değildir; her aktarılan kaynak ayrıca doğrulanır. İmaj üret, izole loopback önizle, eski `.env`/kaynak ve imajı koru, HTTPS Compose çiftini kullanarak yalnız ilgili servisi yenile, canlı smoke yap. CMS DB/upload/TOTP verisi imaj veya Git eşitlemesinin parçası değildir; `down -v`, yeniden seed veya kör restore uygulanmaz. GitHub ve yerel dosyalar site kodunun kopyasıdır, canlı CMS verisinin otomatik yedeği değildir.
+
 ## Karar — 13 Ekim 2026: Next ve React kopyalarını birlikte güncelle
 
 Next/React advisory'leri paket sürümüne uygulanır; kurulu Vinext sunucusunun o yolu çağırdığı ayrıca incelenir. Bu projede uygulama `next/og`, `ImageResponse` veya `use server` kullanmıyor; yama, kanıtlanmış canlı istismarın giderildiği iddiasıyla sunulmaz. `@vitejs/plugin-rsc` kendi React Server DOM kopyasını vendor dizinine yerleştirir ve Vinext o kopyadan çalışır. Bu yüzden Next/React/React DOM/RSC ve RSC eklentisi uyumlu yama sürümlerinde birlikte sabitlenir; lockfile, yerel gerçek node_modules, Linux build-stage vendor ve son canlı imaj ayrı doğrulanır. `npm audit` toplamı kalan sorunların öncelik/erişilebilirlik sırasını tek başına belirlemez.
