@@ -1,5 +1,13 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Onaylanan ana sayfa zemin rengi — 21 Ekim 2026
+
+Kullanıcı yerel denemedeki ilk seçeneği (`#F3F0E8`) seçip canlıya uygulanmasını istedi. `page.tsx` ana sayfa kabuğu `home-page` sınıfını taşır; `public-design.css` yalnız bu sınıfta paper değişkenini değiştirir. TR/EN/DE aynı Home bileşenini kullanır. Diğer sayfaların `#F7F5F0` zemini, admin, kartlar, yeşil alanlar, CMS ve medya korunur.
+
+İmaj `fizyoterapist-frontend:vps-20261021-homepaper1`, ID `sha256:05202d6db5e31f8424339e47ebf37a86f3161b65ed8d98217130233fc969d9a1`. İki kaynak dosyası SCP öncesi/sonrası SHA256 eşleşti. Mevcut VPS kaynak kopyasından izole build ve portsuz özel önizleme kullanıldı. Root-only geri dönüş `/var/backups/furkantoplu/homepaper-20261021-01` eski `.env`, page.tsx ve CSS'i içerir; önceki sharefix1 imajı saklanır. Ortak backup kilidi altında yalnız frontend recreate edildi ve healthy doğrulandı; hata halinde önceki kaynak/env/imajı geri yükleyen trap hazırdı, gerekmedi.
+
+8 tasarım testi (seçilen renk ve 4.5:1 metin kontrastı dahil), TypeScript, hedef lint ve Linux Docker üretim build geçti. Kapalı önizleme 10 rota ve mevcut paylaşım görselini; canlı smoke TR/EN/DE ana sayfalar, altı genel sayfa, üç dil hakkında portresi ve özel 404'ü doğruladı. Gerçek IAB masaüstü görünümünde shell/navbar `rgb(243, 240, 232)` ve yatay taşma yok. Yerel görsel deneme scripti üretime gönderilmez. DB/medya/Directus/DNS/Cloudflare değiştirilmedi.
+
 ## WhatsApp fotoğraf önizlemesi düzeltmesi — 20 Ekim 2026
 
 Kullanıcıda başlık/açıklama var, fotoğraf yok. Büyük PNG yerine varsayılan fotoğraf için ayrı 600×600/17.692 bayt `furkan-toplu-share-v1.jpg`; OG boyut/tür bilgisi eklendi. Özel admin fotoğrafları önceki kaynak yolunu kullanır. Kod: page.tsx, public JPEG, scripts/export-share-image.mjs. Yerel tip/lint, üretim build, özel ve canlı üç dil/WhatsApp ilk head, JPEG imzası/GET/HEAD kontrolleri geçti; gerçek cihaz sonucu ayrıca bekliyor.

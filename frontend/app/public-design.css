@@ -11,6 +11,8 @@
   color: var(--public-ink);
   background: var(--public-paper);
 }
+/* Owner-approved warmer paper, homepage only (including its EN/DE routes). */
+.site-shell.home-page { --public-paper: #f3f0e8; }
 .site-shell :is(h1, h2, h3, h4, p, strong, a) { overflow-wrap: anywhere; }
 .site-shell :is(section, article, nav, figure, .hero__content, .hero__visual, .about-section__content) { min-width: 0; }
 .site-shell :is(.practice-section, .about-section, .blog-section, .contact-section, .about-story, .about-principles, .detail-overview, .detail-process, .detail-faq, .detail-related, .detail-cta, .contact-flow) :is(h2, h3, h4) { font-family: var(--public-sans); font-weight: 600; letter-spacing: -0.035em; line-height: 1.18; }

@@ -7,6 +7,7 @@ Kişisel fizyoterapist portföyü. Ziyaretçi uzmanı tanır, çalışma alanlar
 ## Görsel dil
 
 - Paper: #f7f5f0; ink/forest: #173e34; muted: #52665d; accent: #8b4a33; line: #d0d9ce; tone: #e9eee5.
+- 21 Ekim müşteri seçimi: yalnız ana sayfa (TR/EN/DE) paper zemini ve bunu kullanan navbar `#f3f0e8`. `.site-shell.home-page` değişkeniyle sınırlı; diğer sayfalar/admin, yeşil bölümler ve kart yüzeyleri korunur.
 - Büyük birinci başlıklar Georgia; bölüm/kart başlıkları mevcut sans ailesi. Uzun TR/EN/DE metin için doğal akış ve satır kırılması korunur. Haricî font indirmesi yoktur.
 - Eşit kartlar sadece katalog/yazı keşfi için. Bio ve süreç çizgi/kolon akışı kullanır. Her bölüme ayrı yüzen kutu, bento veya sahte rozet eklenmez.
 - Radius 3–6 px. Mat yüzeyler; dekoratif halo/orbit, glass blur, şekil zinciri ve ağır gölge yok. Yeşil vurgu esas olarak çalışma alanları, iletişim aksiyonları ve footer'dadır.

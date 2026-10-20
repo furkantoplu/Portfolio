@@ -100,7 +100,7 @@ export default async function Home() {
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
   const contactShow = (key: string) => isSectionVisible(contact.section_visibility, key);
   return (
-    <main className="site-shell">
+    <main className="site-shell home-page">
       <SiteHeader locale={locale} active="home" />
 
       <section className={`hero${show("image") ? "" : " hero--text-only"}`} aria-labelledby="hero-title">

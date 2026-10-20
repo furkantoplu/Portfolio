@@ -7,6 +7,19 @@ const requireFrontend=createRequire(new URL('../../frontend/package.json',import
 const postcss=requireFrontend('postcss');
 const sheet=postcss.parse(await readFile(new URL('../../frontend/app/public-design.css',import.meta.url),'utf8'));
 function properties(selector,media=null){const found={};sheet.walkRules(selector,rule=>{if(media===null?rule.parent.type==='root':rule.parent.type==='atrule'&&rule.parent.params===media)rule.walkDecls(decl=>found[decl.prop]=decl.value)});return found}
+
+test('Selected warm paper applies only to the homepage, including the shared localized component',async()=>{
+  assert.equal(properties('.site-shell')['--public-paper'],'#f7f5f0');
+  assert.equal(properties('.site-shell.home-page')['--public-paper'],'#f3f0e8');
+  const home=await readFile(new URL('../../frontend/app/page.tsx',import.meta.url),'utf8');
+  assert.ok(home.includes('<main className="site-shell home-page">'));
+  for(const path of ['hakkimda','blog','iletisim','calisma-alanlari','bakir']) {
+    const source=await readFile(new URL(`../../frontend/app/${path}/page.tsx`,import.meta.url),'utf8');
+    assert.ok(!source.includes('site-shell home-page'),path);
+  }
+  const localized=await readFile(new URL('../../frontend/app/[locale]/[[...path]]/page.tsx',import.meta.url),'utf8');
+  assert.ok(localized.includes('return <Home />;'));
+});
 test('Public theme cannot leak to admin; source has no halo, glass or remote font dependency',()=>{
   sheet.walkRules(rule=>assert.ok(rule.selector.startsWith('.site-shell'),rule.selector));
   sheet.walkDecls(decl=>{assert.ok(!decl.value.includes('radial-gradient'));assert.ok(!/blur\(/.test(decl.value))});
@@ -51,6 +64,7 @@ test('Practitioner-first hero has a working contact CTA and no dummy decoration 
 function luminance(hex){const channels=hex.slice(1).match(/../g).map(value=>parseInt(value,16)/255).map(value=>value<=0.04045?value/12.92:((value+0.055)/1.055)**2.4);return channels[0]*0.2126+channels[1]*0.7152+channels[2]*0.0722}
 function contrast(a,b){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05)}
 test('Normal text colors have at least 4.5:1 contrast in the chosen palette',()=>{
+  for(const color of ['#173e34','#52665d','#8b4a33'])assert.ok(contrast(color,'#f3f0e8')>=4.5,`${color} on homepage paper`);
   for(const pair of [['#173e34','#f7f5f0'],['#52665d','#f7f5f0'],['#8b4a33','#f7f5f0'],['#52665d','#f5f6ef'],['#fffefa','#173e34'],['#d7e2d9','#173e34'],['#e3c9ae','#173e34'],['#91a69d','#173e34']])assert.ok(contrast(...pair)>=4.5,`${pair}: ${contrast(...pair)}`);
 });
 test('Archive starter self-description is hidden, real editorial text is preserved',()=>{

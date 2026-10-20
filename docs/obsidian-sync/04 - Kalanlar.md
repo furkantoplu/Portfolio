@@ -12,6 +12,12 @@ Ana envanter: **19 Ekim 2026**. Son güncelleme: **21 Ekim 2026**, Türkiye saat
 - Blog: iki yazı yayında, bir yazı taslak. İki yayımlı yazının EN/DE çevirileri yayında, üçüncünün çevirileri taslak. İkinci yayımlı yazıda gövde paragrafı yok; ilkinde iki paragraf var.
 - Kaynak ve canlı sayfa kontrolleri yapıldı. Bu kontrol yeni bir güvenlik taraması, PageSpeed ölçümü veya gerçek cihaz/WhatsApp kabul testi değildir.
 
+## Tamamlanan renk seçimi — ana sayfa zemin rengi
+
+- [x] **21 Ekim:** Site sahibi zemini fazla beyaz bulduğu için kullanıcı `#F3F0E8` ve `#FBFAF6` tonlarını yalnız yerel ana sayfada sırayla denemek istedi. `http://localhost:4175/?renk=F3F0E8` renk önizlemesi açıldı; alt panelde ikinci seçenek, ek öneri `#EAE6DB` ve mevcut `#F7F5F0` karşılaştırılabilir. `#FBFAF6` mevcut zeminden daha açık olduğu kullanıcıya belirtildi.
+- [x] **21 Ekim:** Kullanıcı ilk seçeneği `#F3F0E8` seçti ve canlıya yayın onayı verdi. Gerçek TR/EN/DE ana sayfa kaynağına `.site-shell.home-page` değişkeni uygulandı; yalnız ana sayfa zemini ve navbar değişir, diğer sayfa/admin renkleri korunur. Canlı `vps-20261021-homepaper1` healthy; test/build/özel preview/canlı smoke ve tarayıcıda gerçek renk kontrolü geçti. Geri dönüş kopyası saklanır. Renk işi tamamlandı, aşağıdaki diğer işler açık.
+- Önizleme `scripts/preview-home-colors.mjs` ile güncel public ana sayfayı belleğe alır; yalnız zemin/navbar değişkenini yerelde ezer. Site JS'i ve sayfa geçişleri kapalı statik görsel kopyadır; asıl uygulama/DB/VPS değişmez. Başlatma: `node scripts/preview-home-colors.mjs`. Yerel sunucu seçim süresince açık tutulur.
+
 ## 1. Sıradaki küçük paket: fotoğraflı paylaşım önizlemesi
 
 - [x] **21 Ekim, gerçek WhatsApp kabulü:** Kullanıcı `https://furkantoplu.com/?paylasim=2` bağlantısını WhatsApp mesaj alanına yapıştırınca fotoğrafın göründüğünü doğruladı. Ana sayfa fotoğraf sorunu bu denemede çözüldü. Eski önizlemelerin yeniden yüklenmesi ve diğer sayfa/dil bağlantılarının cihaz testi bu onaydan çıkarılmaz; bu tur ek deploy yapılmadı.

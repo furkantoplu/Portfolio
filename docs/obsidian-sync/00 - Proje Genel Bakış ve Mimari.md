@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 21 Ekim 2026 — Seçilen ana sayfa tonu canlıda
+
+Kullanıcı ilk seçenek `#F3F0E8` için canlı yayın onayı verdi. Ana sayfanın TR/EN/DE ortak `Home` bileşenine `home-page` sınıfı eklendi; yalnız bu sınıfın `--public-paper` değeri değişir. Zemin ve navbar daha sıcak/koyu olur; diğer sayfalar/admin ve kart/yeşil bölüm renkleri korunur. Canlı imaj `fizyoterapist-frontend:vps-20261021-homepaper1`; geri dönüş `/var/backups/furkantoplu/homepaper-20261021-01`. Kod yerel/VPS eşleşir, CMS/medya/DNS değişmez. Build, 8 tasarım testi, TypeScript/lint, kapalı önizleme ve canlı smoke geçti; tarayıcıda gerçek shell/navbar rengi doğrulandı. Yerel deneme scripti yalnız geliştirme aracıdır. Ayrıntı [[01 - Geliştirme Günlüğü]] ve `deploy/VPS-KURULUM.md`.
+
+## 21 Ekim 2026 — Yalnız yerel ana sayfada renk denemesi
+
+Kullanıcı site sahibinin fazla beyaz bulduğu zeminde iki tonu (`#F3F0E8`, `#FBFAF6`) denemek istedi. Yerel `localhost:4175` renk önizlemesi, güncel public ana sayfanın bellekteki statik kopyasında zemin/navbar tonunu değiştirir. Ek öneri `#EAE6DB`, mevcut referans `#F7F5F0`; varsayılan ilk seçenek. Uygulama CSS'i, CMS ve canlı VPS değiştirilmedi. Kullanıcı seçiminden sonra gerçek kaynak ve canlıya uygulama yapılacak. Ayrıntı [[04 - Kalanlar]].
+
 ## 21 Ekim 2026 — WhatsApp fotoğrafı kullanıcı tarafından doğrulandı
 
 Kullanıcı `https://furkantoplu.com/?paylasim=2` deneme bağlantısında fotoğraf önizlemesinin göründüğünü bildirdi. Küçük JPEG düzeltmesinin ana sayfa WhatsApp cihaz kabulü tamamlandı. Yeni kod/servis değişikliği yapılmadı. Blog/alan paylaşım kartları ve ayrı admin paylaşım görseli ayarı [[04 - Kalanlar]] içinde açık kalır; diğer URL/dillerin cihaz kabulü yapılmış sayılmaz.
