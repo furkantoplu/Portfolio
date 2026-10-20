@@ -1,5 +1,11 @@
 # VPS erişimi ve yayın hazırlığı
 
+## WhatsApp fotoğraf önizlemesi düzeltmesi — 20 Ekim 2026
+
+Kullanıcıda başlık/açıklama var, fotoğraf yok. Büyük PNG yerine varsayılan fotoğraf için ayrı 600×600/17.692 bayt `furkan-toplu-share-v1.jpg`; OG boyut/tür bilgisi eklendi. Özel admin fotoğrafları önceki kaynak yolunu kullanır. Kod: page.tsx, public JPEG, scripts/export-share-image.mjs. Yerel tip/lint, üretim build, özel ve canlı üç dil/WhatsApp ilk head, JPEG imzası/GET/HEAD kontrolleri geçti; gerçek cihaz sonucu ayrıca bekliyor.
+
+Yeni imaj `fizyoterapist-frontend:vps-20261020-sharefix1`, ID `sha256:64a0de17f36d9e5623e052f61099547aa2548e9063fc1d44c974622a9ffb9c11`. Root-only geri dönüş `/var/backups/furkantoplu/sharefix-20261020-01`, önceki share1 imajı saklanır. Ortak yedek kilidi/config/yalnız frontend recreate/health yolu kullanıldı. Veritabanı, orijinal hero resmi ve Cloudflare değişmedi. Geçici test alanları temizlendi.
+
 ## Ana sayfa paylaşımı — 20 Ekim 2026, küçük paket 1
 
 Yalnız `frontend/app/page.tsx`: mevcut CMS ana fotoğrafı/SEO metniyle TR/EN/DE OG ve X metadatası. TypeScript/hedef lint, VPS build, özel önizleme ve canlı WhatsApp/Meta/Twitterbot istekleri geçti; fotoğraf HTTPS PNG 200. Normal istemcide Vinext metadata streaming, sınırlı HTML botlarında ilk head davranışı korunur. Gerçek WhatsApp cihaz kabulü ve özel yatay görsel sonraki işler.

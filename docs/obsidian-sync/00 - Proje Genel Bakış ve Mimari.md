@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 20 Ekim 2026 — WhatsApp paylaşım görselinin küçük JPEG kopyası
+
+Kullanıcı gerçek WhatsApp denemesinde yazı gelip fotoğraf gelmediğini bildirdi. Varsayılan portre artık 1,3 MB kaynak PNG yerine 600×600, 17.692 bayt JPEG paylaşım kopyasıyla sunulur; asıl hero görseli aynı kalır. İlk HTML head içinde OG image/type/width/height ve JPEG GET/HEAD erişimi üç dilde doğrulandı. Canlı frontend `fizyoterapist-frontend:vps-20261020-sharefix1`. Kullanıcının yeni deneme bağlantısıyla cihaz kabulü bekleniyor; HTTP başarısı tek başına WhatsApp uygulamasında fotoğraf görüldüğü anlamına gelmez.
+
 ## 20 Ekim 2026 — Ana sayfa paylaşımı, küçük paket 1
 
 Üç dilde ana sayfa mevcut CMS fotoğrafı ve SEO metinlerinden OG/X paylaşım bilgisi üretir. Yeni görsel oluşturulmadı; ayrı paylaşım alanı/blog/çalışma alanı kartları sonraki paketler. Canlı frontend `fizyoterapist-frontend:vps-20261020-share1`; TypeScript, ilgili lint, üretim derlemesi, özel önizleme ve canlı önizleme botu istekleri geçti. Gerçek WhatsApp uygulamasındaki kart görünümü ayrıca kontrol edilmeli. Ayrıntı [[04 - Kalanlar]] ve günlükte.

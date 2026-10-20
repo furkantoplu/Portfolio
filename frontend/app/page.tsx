@@ -57,16 +57,19 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = page.seo_title || "Furkan Toplu";
   const description = page.seo_description?.trim() || page.content.hero_description;
   const url = new URL(localHref("/"), base).href;
-  const fallbackImage = new URL("/furkan-toplu-hero-white-coat-v1.png", base);
+  const fallbackImage = new URL("/furkan-toplu-share-v1.jpg", base);
   let image = fallbackImage;
   const imagePath = page.content.hero_image?.trim();
   if (imagePath?.startsWith("/") && !imagePath.startsWith("//")) {
     try {
       const candidate = new URL(imagePath, base);
-      if (candidate.origin === base) image = candidate;
+      if (candidate.origin === base) {
+        image = candidate.pathname === "/furkan-toplu-hero-white-coat-v1.png" ? fallbackImage : candidate;
+      }
     } catch { /* Keep the bundled portrait when the CMS path is invalid. */ }
   }
-  const imageAlt = image === fallbackImage ? "Furkan Toplu" : page.content.hero_image_alt || "Furkan Toplu";
+  const imageAlt = page.content.hero_image_alt || "Furkan Toplu";
+  const compactPortrait = image === fallbackImage;
   return {
     title,
     description,
@@ -77,7 +80,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url,
       locale: { tr: "tr_TR", en: "en_GB", de: "de_DE" }[locale],
-      images: [{ url: image.href, alt: imageAlt }],
+      images: [{ url: image.href, alt: imageAlt, ...(compactPortrait ? { width: 600, height: 600, type: "image/jpeg" } : {}) }],
     },
     twitter: { card: "summary_large_image", title, description, images: [{ url: image.href, alt: imageAlt }] },
   };
