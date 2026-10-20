@@ -1,5 +1,11 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Ana sayfa paylaşımı — 20 Ekim 2026, küçük paket 1
+
+Yalnız `frontend/app/page.tsx`: mevcut CMS ana fotoğrafı/SEO metniyle TR/EN/DE OG ve X metadatası. TypeScript/hedef lint, VPS build, özel önizleme ve canlı WhatsApp/Meta/Twitterbot istekleri geçti; fotoğraf HTTPS PNG 200. Normal istemcide Vinext metadata streaming, sınırlı HTML botlarında ilk head davranışı korunur. Gerçek WhatsApp cihaz kabulü ve özel yatay görsel sonraki işler.
+
+Canlı imaj `fizyoterapist-frontend:vps-20261020-share1`, ID `sha256:104f13a15265c3113ad46c719f211eadb548cca0cbed0445bbe218c80a5e13eb`. Önceki `.env` ve page.tsx root-only `/var/backups/furkantoplu/share-20261020-01`; eski adminsync1 imajı saklanır. Ortak backup flock + Compose config kontrolü + yalnız frontend recreate + health doğrulama kullanıldı. Başarısız deploy için kaynak/env/eski imaj geri alma adımı hazırdı; gerekmedi. DB/CMS/medya/proxy/DNS değişmedi. Geçici test konteyneri ve staging temizlendi. Yeni arayüz/görsel üretilmedi.
+
 ## Hakkımda ve blog EN/DE içeriği — 14 Ekim 2026
 
 - Kullanıcının admin panelinde yenilediği Hakkımda Türkçe biyografisi canlı DB'den okundu. EN/DE `hero_description` eskiydi; dört sayfa çeviri kaydından Hakkımda EN/DE ve Blog sayfa EN/DE açıklama/SEO alanları hedefli güncellendi. Hakkımda EN/DE SEO açıklamasındaki eski İstanbul vurgusu, yeni eğitim/vizyon biyografisiyle uyumlu hale getirildi. Diğer sayfa alanları korundu.

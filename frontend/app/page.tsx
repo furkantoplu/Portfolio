@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getPageTools } from "./lib/i18n-server";
 import { formatDate } from "./lib/i18n";
+import { getSiteUrl } from "./lib/site-url";
 import Image from "./components/site-image";
 import { isSectionVisible } from "./lib/section-visibility";
 import { NativeLink } from "./components/native-link";
@@ -49,7 +50,38 @@ const approachSteps = [
 
 const practiceIcons = [Activity, Dumbbell, HeartPulse, PersonStanding];
 
-export async function generateMetadata(): Promise<Metadata> { const page = await getEditablePage("home"); return { title: page.seo_title || "Fzt. Furkan Toplu | Fizyoterapist", description: page.seo_description || undefined }; }
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getEditablePage("home");
+  const { locale, href: localHref } = await getPageTools();
+  const base = getSiteUrl();
+  const title = page.seo_title || "Furkan Toplu";
+  const description = page.seo_description?.trim() || page.content.hero_description;
+  const url = new URL(localHref("/"), base).href;
+  const fallbackImage = new URL("/furkan-toplu-hero-white-coat-v1.png", base);
+  let image = fallbackImage;
+  const imagePath = page.content.hero_image?.trim();
+  if (imagePath?.startsWith("/") && !imagePath.startsWith("//")) {
+    try {
+      const candidate = new URL(imagePath, base);
+      if (candidate.origin === base) image = candidate;
+    } catch { /* Keep the bundled portrait when the CMS path is invalid. */ }
+  }
+  const imageAlt = image === fallbackImage ? "Furkan Toplu" : page.content.hero_image_alt || "Furkan Toplu";
+  return {
+    title,
+    description,
+    openGraph: {
+      type: "website",
+      siteName: "Furkan Toplu",
+      title,
+      description,
+      url,
+      locale: { tr: "tr_TR", en: "en_GB", de: "de_DE" }[locale],
+      images: [{ url: image.href, alt: imageAlt }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [{ url: image.href, alt: imageAlt }] },
+  };
+}
 
 export default async function Home() {
   const { locale, t, href: localHref } = await getPageTools();

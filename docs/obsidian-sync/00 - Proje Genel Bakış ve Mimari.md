@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 20 Ekim 2026 — Ana sayfa paylaşımı, küçük paket 1
+
+Üç dilde ana sayfa mevcut CMS fotoğrafı ve SEO metinlerinden OG/X paylaşım bilgisi üretir. Yeni görsel oluşturulmadı; ayrı paylaşım alanı/blog/çalışma alanı kartları sonraki paketler. Canlı frontend `fizyoterapist-frontend:vps-20261020-share1`; TypeScript, ilgili lint, üretim derlemesi, özel önizleme ve canlı önizleme botu istekleri geçti. Gerçek WhatsApp uygulamasındaki kart görünümü ayrıca kontrol edilmeli. Ayrıntı [[04 - Kalanlar]] ve günlükte.
+
 ## 20 Ekim 2026 — Küçük SEO içerik paketi
 
 [[04 - Kalanlar]] listesindeki yedi boş SEO açıklaması canlı CMS'de mevcut giriş metinlerinden tamamlandı. Üç Türkçe sayfa ve dört EN/DE çeviri alanı değişti. Dokuz public URL'de 200/doğru dil/tek description kontrolü geçti; mevcut EN/DE blog açıklamaları korunur. Docker/kod dağıtımı gerekmedi. Paylaşım fotoğrafı ve alan yeniden boşaltıldığında otomatik fallback ayrı açık işlerdir. Tek seferlik SQL Git'te, VPS içi korumalı veri geri dönüş kopyası `seo-20261020-01` altında durur.

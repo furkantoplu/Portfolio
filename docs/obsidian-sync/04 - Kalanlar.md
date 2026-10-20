@@ -1,11 +1,11 @@
 # Fizyoterapi Sitesi — Kalanlar
 
-Ana envanter: **19 Ekim 2026**. Son güncelleme: **20 Ekim 2026**, Türkiye saati. Güncel iş listesi bu nottur; önceki tarihli günlük ve güvenlik raporları o tarihteki durumu anlatır. İşaretlenmeyen maddeler henüz tamamlanmadı. 20 Ekim'de yalnız yedi eksik SEO açıklaması tamamlandı; paylaşım fotoğrafı sıradaki pakettir.
+Ana envanter: **19 Ekim 2026**. Son güncelleme: **20 Ekim 2026**, Türkiye saati. Güncel iş listesi bu nottur; önceki tarihli günlük ve güvenlik raporları o tarihteki durumu anlatır. İşaretlenmeyen maddeler henüz tamamlanmadı. 20 Ekim'de yedi eksik SEO açıklaması ve ana sayfanın üç dilde mevcut fotoğrafla paylaşım etiketleri tamamlandı. Özel yatay kart görseli, diğer sayfalar ve WhatsApp cihaz kabulü açık.
 
 ## Şu anda doğrulanan durum
 
 - Canlı sitemap'teki **41 URL'nin tamamı HTTP 200** döndü.
-- **41 sayfanın hiçbirinde `og:image` yok.** WhatsApp gibi yerlerde kontrollü fotoğraflı bağlantı önizlemesi henüz hazırlanmadı.
+- **19 Ekim'de 41 sayfanın hiçbirinde `og:image` yoktu.** 20 Ekim'de `/`, `/en`, `/de` için adminin mevcut ana fotoğrafı, dil başlığı/açıklaması ve mutlak HTTPS görsel adresiyle OG/X etiketleri canlıya alındı. Diğer sayfalar ve özel yatay kart açık.
 - 19 Ekim'de **7 sayfada SEO açıklaması (`meta description`) eksikti; 20 Ekim'de tamamlandı.** Yedi hedef ve mevcut EN/DE blog listeleri olmak üzere dokuz sayfanın canlı HTML'inde doğru dilde tek açıklama doğrulandı.
 - Örneklenen tüm sitemap sayfalarında JSON-LD yok; sitemap'te `lastmod` yok.
 - Frontend, Directus ve PostgreSQL sağlıklı; proxy çalışıyor. Son günlük VPS yedeği **19 Ekim 2026 04.15 Türkiye saati** başarılı (`Result=success`, çıkış 0); zamanlayıcı aktif. Yaklaşık 22 GB disk boş.
@@ -14,6 +14,7 @@ Ana envanter: **19 Ekim 2026**. Son güncelleme: **20 Ekim 2026**, Türkiye saat
 
 ## 1. Sıradaki küçük paket: fotoğraflı paylaşım önizlemesi
 
+- [x] **20 Ekim, küçük paket 1:** Üç dilde ana sayfaya mevcut fotoğrafla `og:title/description/url/type/locale/site_name/image/image:alt` ve X kart etiketleri eklendi. Ana fotoğraf/SEO metni admin'den değişince paylaşım alanları aynı kaydı kullanır. Ayrı paylaşım görseli alanı henüz yok. TypeScript, hedef dosya lint, VPS üretim build, özel önizleme ve canlı WhatsApp/Meta/X user-agent kontrolleri geçti. Gerçek WhatsApp uygulaması testi henüz yapılmadı.
 - [ ] **Site bağlantısı WhatsApp'ta paylaşılınca başlık + açıklama + fotoğraf gösterilecek şekilde Open Graph ekle.**
   - Ana sayfa ve genel sayfalar için Furkan'ın fotoğrafını ve site kimliğini içeren ortak bir paylaşım görseli hazırla. İlk tasarım hedefi: 1200 × 630 px JPEG/PNG; mevcut portre ve tema kullanılabilir. Nihai görsel seçimi uygulama sırasında yapılacak.
   - Ortak görsel admin panelinden değiştirilebilsin. Blog/çalışma alanında uygun kapak varsa onu, kapak yoksa ortak görseli kullan; gerekirse içerik bazında ayrı paylaşım görseli seçilebilsin.
