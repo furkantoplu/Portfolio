@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 21 Ekim 2026 — WhatsApp fotoğrafı kullanıcı tarafından doğrulandı
+
+Kullanıcı `https://furkantoplu.com/?paylasim=2` deneme bağlantısında fotoğraf önizlemesinin göründüğünü bildirdi. Küçük JPEG düzeltmesinin ana sayfa WhatsApp cihaz kabulü tamamlandı. Yeni kod/servis değişikliği yapılmadı. Blog/alan paylaşım kartları ve ayrı admin paylaşım görseli ayarı [[04 - Kalanlar]] içinde açık kalır; diğer URL/dillerin cihaz kabulü yapılmış sayılmaz.
+
 ## 20 Ekim 2026 — WhatsApp paylaşım görselinin küçük JPEG kopyası
 
 Kullanıcı gerçek WhatsApp denemesinde yazı gelip fotoğraf gelmediğini bildirdi. Varsayılan portre artık 1,3 MB kaynak PNG yerine 600×600, 17.692 bayt JPEG paylaşım kopyasıyla sunulur; asıl hero görseli aynı kalır. İlk HTML head içinde OG image/type/width/height ve JPEG GET/HEAD erişimi üç dilde doğrulandı. Canlı frontend `fizyoterapist-frontend:vps-20261020-sharefix1`. Kullanıcının yeni deneme bağlantısıyla cihaz kabulü bekleniyor; HTTP başarısı tek başına WhatsApp uygulamasında fotoğraf görüldüğü anlamına gelmez.

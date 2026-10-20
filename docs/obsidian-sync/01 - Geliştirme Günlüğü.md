@@ -1,5 +1,10 @@
 # Fizyoterapist Web Sitesi — Geliştirme Günlüğü
 
+## 21 Ekim 2026 — WhatsApp gerçek cihaz sonucu
+
+- Kullanıcı, `/?paylasim=2` bağlantısında fotoğraf önizlemesinin gelip gelmediği sorusuna “Evet, fotoğraf göründü” yanıtını verdi. Ana sayfa için küçük JPEG düzeltmesinin gerçek WhatsApp kabulü tamamlandı olarak kaydedildi. Sadece bu bağlantı/cihaz denemesi doğrulandı; diğer diller, blog/alan detayları veya eski paylaşımların önbellek yenilenmesi ayrıca test edilmiş sayılmadı.
+- Kalanlar ve proje özeti güncellendi; yeni kod, CMS, Docker veya Cloudflare işlemi yapılmadı. Obsidian mevcut üç notu değişiklik öncesinde mirror ile hash eşleşti. Kullanıcıya ait üç takip edilmeyen fotoğraf korunur; önceki 20 Ekim kayıtları tarihî işlem kanıtı olarak kalır.
+
 ## 20 Ekim 2026 — WhatsApp'ta fotoğraf görünmemesi
 
 - Kullanıcı gerçek paylaşımda fotoğraf çıkmadığını bildirdi; async soruda başlık/açıklamanın geldiğini, yalnız fotoğrafın eksik olduğunu netleştirdi. Canlı WhatsApp/Meta UA 200 ve OG head doğru, challenge işareti yok; normal browser metadata streaming davranışı beklenendi. Mevcut OG fotoğrafı 1086×1448 şeffaf PNG, 1.329.199 bayt. `/_next/image?w=640&q=75` denemesi aynı bayt/boyutu döndürdü; optimizer'a yönlendirmek bu sorunu küçültmedi. Bu ölçüm WhatsApp'ın gerçek ret nedenini tek başına kanıtlamaz; ilk paketin gerçek cihaz kabulünün eksik olduğu doğrulandı. Kullanıcıda yazı çıktığı için link-preview kapalı ayarı veya genel streaming ayarı değiştirilmedi.

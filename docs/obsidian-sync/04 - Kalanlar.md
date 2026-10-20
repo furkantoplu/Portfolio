@@ -1,6 +1,6 @@
 # Fizyoterapi Sitesi — Kalanlar
 
-Ana envanter: **19 Ekim 2026**. Son güncelleme: **20 Ekim 2026**, Türkiye saati. Güncel iş listesi bu nottur; önceki tarihli günlük ve güvenlik raporları o tarihteki durumu anlatır. İşaretlenmeyen maddeler henüz tamamlanmadı. 20 Ekim'de yedi eksik SEO açıklaması ve ana sayfanın üç dilde mevcut fotoğrafla paylaşım etiketleri tamamlandı. Özel yatay kart görseli, diğer sayfalar ve WhatsApp cihaz kabulü açık.
+Ana envanter: **19 Ekim 2026**. Son güncelleme: **21 Ekim 2026**, Türkiye saati. Güncel iş listesi bu nottur; önceki tarihli günlük ve güvenlik raporları o tarihteki durumu anlatır. İşaretlenmeyen maddeler henüz tamamlanmadı. Yedi eksik SEO açıklaması ve ana sayfanın üç dil paylaşım etiketleri tamamlandı. Kullanıcı 21 Ekim'de yeni deneme bağlantısında WhatsApp fotoğrafının göründüğünü doğruladı. Özel yatay kart görseli, diğer sayfalar ve ayrı admin paylaşım ayarları açık.
 
 ## Şu anda doğrulanan durum
 
@@ -14,9 +14,10 @@ Ana envanter: **19 Ekim 2026**. Son güncelleme: **20 Ekim 2026**, Türkiye saat
 
 ## 1. Sıradaki küçük paket: fotoğraflı paylaşım önizlemesi
 
+- [x] **21 Ekim, gerçek WhatsApp kabulü:** Kullanıcı `https://furkantoplu.com/?paylasim=2` bağlantısını WhatsApp mesaj alanına yapıştırınca fotoğrafın göründüğünü doğruladı. Ana sayfa fotoğraf sorunu bu denemede çözüldü. Eski önizlemelerin yeniden yüklenmesi ve diğer sayfa/dil bağlantılarının cihaz testi bu onaydan çıkarılmaz; bu tur ek deploy yapılmadı.
 - [x] **20 Ekim, düzeltme:** Kullanıcı WhatsApp'ta başlık/açıklamanın geldiğini, fotoğrafın gelmediğini bildirdi. İlk paketteki 1.329.199 baytlık 1086×1448 PNG yerine varsayılan portre için 600×600, **17.692 bayt JPEG** paylaşım kopyası kullanıldı; tüm fotoğraf kırpılmadan korunur. Yeni görsel URL'si, OG genişlik/yükseklik/tür bilgileri canlıda doğrulandı. Gerçek WhatsApp sonucu için `https://furkantoplu.com/?paylasim=2` deneme bağlantısı kullanıcıya verildi; cihaz kabulü henüz doğrulanmadı. Özel admin yüklemeleri mevcut görsel yolunu kullanmaya devam eder; onlara da otomatik küçük paylaşım kopyası üretimi ayrı açık iştir.
 - [x] **20 Ekim, küçük paket 1:** Üç dilde ana sayfaya mevcut fotoğrafla `og:title/description/url/type/locale/site_name/image/image:alt` ve X kart etiketleri eklendi. Ana fotoğraf/SEO metni admin'den değişince paylaşım alanları aynı kaydı kullanır. Ayrı paylaşım görseli alanı henüz yok. TypeScript, hedef dosya lint, VPS üretim build, özel önizleme ve canlı WhatsApp/Meta/X user-agent kontrolleri geçti. Gerçek WhatsApp uygulaması testi henüz yapılmadı.
-- [ ] **Site bağlantısı WhatsApp'ta paylaşılınca başlık + açıklama + fotoğraf gösterilecek şekilde Open Graph ekle.**
+- [ ] **Paylaşımı diğer sayfalara genişlet; ayrı admin paylaşım görseli ayarlarını tamamla.** Ana sayfanın gerçek WhatsApp fotoğraf kabulü yukarıda tamamlandı.
   - Ana sayfa ve genel sayfalar için Furkan'ın fotoğrafını ve site kimliğini içeren ortak bir paylaşım görseli hazırla. İlk tasarım hedefi: 1200 × 630 px JPEG/PNG; mevcut portre ve tema kullanılabilir. Nihai görsel seçimi uygulama sırasında yapılacak.
   - Ortak görsel admin panelinden değiştirilebilsin. Blog/çalışma alanında uygun kapak varsa onu, kapak yoksa ortak görseli kullan; gerekirse içerik bazında ayrı paylaşım görseli seçilebilsin.
   - `og:title`, `og:description`, `og:type`, `og:url`, `og:image` ve görsel açıklaması/boyutları gerçek sayfa ve dil ile eşleşsin. TR/EN/DE başlık ve açıklamalar doğru gelsin. Blog detayları article, genel sayfalar website olarak tanımlansın.
