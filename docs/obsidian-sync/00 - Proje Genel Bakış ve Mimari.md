@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 20 Ekim 2026 — Küçük SEO içerik paketi
+
+[[04 - Kalanlar]] listesindeki yedi boş SEO açıklaması canlı CMS'de mevcut giriş metinlerinden tamamlandı. Üç Türkçe sayfa ve dört EN/DE çeviri alanı değişti. Dokuz public URL'de 200/doğru dil/tek description kontrolü geçti; mevcut EN/DE blog açıklamaları korunur. Docker/kod dağıtımı gerekmedi. Paylaşım fotoğrafı ve alan yeniden boşaltıldığında otomatik fallback ayrı açık işlerdir. Tek seferlik SQL Git'te, VPS içi korumalı veri geri dönüş kopyası `seo-20261020-01` altında durur.
+
+## 19 Ekim 2026 — Güncel kalan işler
+
+Güncel takip listesi: [[04 - Kalanlar]]. WhatsApp gibi yerlerde fotoğraflı bağlantı önizlemesi ilk sıraya eklendi. Canlı 41 sitemap URL'si 200; `og:image` 0/41, SEO açıklaması 7 sayfada eksik, JSON-LD ve sitemap lastmod yok. Günlük VPS yedeği 19 Ekim 04.15 Türkiye saati başarılı. Search Console kurulumu ve gerçek admin/fotoğraf yükleme kabulü kullanıcının tamamladığını bildirdiği işlerdir; eski tarihli notlardaki bekleyen kayıtlar güncel durum diye alınmamalı. Bu tur özellik/deploy yapılmadı; kalanlar listesi hazırlandı.
+
 ## 14 Ekim 2026 — Hakkımda ve blog çevirilerinin tamamlanması
 
 Canlı Hakkımda sayfasındaki yeni Türkçe eğitim/mesleki vizyon biyografisinin EN/DE metni güncellendi. Blog sayfasının yabancı dil giriş/SEO metinleri düzeltildi; iki yayımlı yazının EN/DE sürümleri artık ayrı URL ve çevrilmiş içerikle görünür. Üçüncü yazının EN/DE sürümleri hazırlanıp Türkçe aslı gibi taslak tutulur. CMS çevirileri `website_content_translations` tablosundadır ve Git kodundan ayrı canlı veridir. `scripts/content-updates/2026-10-14-about-blog-translations.sql` yalnız bir kez uygulanan, kaynak parmak izi kontrollü kayıt olarak Git'te tutulur; otomatik deploy migrasyonu değildir. Türkçe metinler, görseller, Docker ve yayın durumları korunmuştur. Canlı rota/sitemap ve root-only geri dönüş kopyası günlük ile `deploy/VPS-KURULUM.md` içinde. Yeni biyografide devam eden lisans eğitimi ve sitenin `Fzt.` unvanı arasındaki editoryal tutarlılık site sahibine bırakılmıştır.
