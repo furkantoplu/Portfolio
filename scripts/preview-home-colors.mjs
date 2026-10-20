@@ -7,7 +7,7 @@ const choices = [
   ["F3F0E8", "1. seçenek"],
   ["FBFAF6", "2. seçenek"],
   ["EAE6DB", "Ek öneri"],
-  ["F7F5F0", "Mevcut"],
+  ["F7F5F0", "Önceki zemin"],
 ];
 const response = await fetch(`${origin}/`, { signal: AbortSignal.timeout(20_000) });
 if (!response.ok) throw new Error(`Homepage snapshot failed: ${response.status}`);
@@ -20,7 +20,7 @@ function render(selected, showControls) {
   const styles = `<style id="local-color-preview">
     :root { --preview-paper: #${selected}; }
     body { background: var(--preview-paper) !important; }
-    .site-shell { --public-paper: var(--preview-paper); }
+    .site-shell, .site-shell.home-page { --public-paper: var(--preview-paper); }
     .color-preview { position:fixed; z-index:2147483647; bottom:16px; left:50%; transform:translateX(-50%); width:max-content; max-width:calc(100% - 24px); padding:12px; border:1px solid #c9c6bb; border-radius:12px; background:#fffefa; color:#173e34; box-shadow:0 5px 24px #173e3420; font:13px/1.4 "Segoe UI",Arial,sans-serif; }
     .color-preview[hidden], .color-preview-show[hidden] { display:none; }
     .color-preview__heading { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:8px; }
