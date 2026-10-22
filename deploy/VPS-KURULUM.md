@@ -1,5 +1,13 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Çalışma alanı detayları paylaşım paketi — 22 Ekim 2026
+
+`app/calisma-alanlari/[slug]/page.tsx` + yeni `app/lib/practice-sharing.ts`, yalnız alan detaylarına OG/X `website` kartı ekler. Adminin mevcut SEO/özet/giriş/fotoğraf/görünürlüğü kullanılır; fotoğrafsız/gizli durumda mevcut küçük JPEG fallback gelir. Dil canonical/OG URL gerçek slug'la eşleşir; eski URL yönlendirmeleri korunur. Admin/DB/medya/arayüz tasarımı değişmez.
+
+İmaj `fizyoterapist-frontend:vps-20261022-practiceshare1`, ID `sha256:d89a6de6ce270768fd7f92e5ad83a585161c1109c0b215d15c67b05ce109e3c8`. Root-only geri dönüş `/var/backups/furkantoplu/practiceshare-20261022-01` eski `.env` ve alan kaynağını tutar; eski blogshare1 imajı saklanır. İki dosya SHA256 eşleşti; Linux build, portsuz preview, ortak lock/config kontrolü, yalnız frontend recreate ve health doğrulandı. Hata geri alma trap'i gerekmedi. Node base digest önceki paketle aynı; package/lock değişmedi.
+
+20 yerel test, TypeScript/lint ve build başarılı. `TEST_SITE_URL=https://furkantoplu.com node scripts/tests/practice-sharing-smoke.mjs` 18 yayımlı alan/dil adresini üç crawler UA'sıyla ilk head ve public medya bakımından test eder; üç dilde eksik alan 404 kalır. Güncel katalog fotoğrafsızdır; özel/gizli fotoğraf senaryoları birim testindedir. Önceki blog paylaşım ve public-design smoke da çalıştırıldı. Gerçek WhatsApp cihaz sonucu ayrıca beklenir. Geçici preview/staging temizlenir, rollback saklanır.
+
 ## Blog detayları paylaşım metadata paketi — 22 Ekim 2026
 
 `frontend/app/blog/[slug]/page.tsx` ve yeni `app/lib/blog-sharing.ts` yalnız blog detaylarına OG/X article kartı ekler; CMS'nin mevcut SEO/özet/kapak/görünürlüğünü kullanır. Fotoğrafsız/gizli kapakta mevcut 600×600 küçük JPEG fallback gelir. Diğer sayfalar/tasarım/admin alanları/DB değişmez. Özel kapaklara otomatik sıkıştırma bu pakette yoktur.

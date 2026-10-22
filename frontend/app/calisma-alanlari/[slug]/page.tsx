@@ -8,6 +8,7 @@ import { getPracticeArea, getPracticeAreas } from "../../lib/directus";
 import { contentLanguageLinks } from "../../lib/i18n";
 import { getPageTools } from "../../lib/i18n-server";
 import { getSiteUrl } from "../../lib/site-url";
+import { practiceSharingMetadata } from "../../lib/practice-sharing";
 
 type PageProps = {
   params: { slug: string } | Promise<{ slug: string }>;
@@ -25,10 +26,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Çalışma Alanı Bulunamadı | Fzt. Furkan Toplu" };
   }
 
+  const base = getSiteUrl();
+  const links = contentLanguageLinks("areas", { ...area.language_slugs, [locale]: area.slug });
+  const url = `${base}${links[locale]}`;
   return {
-    title: area.seo_title || `${area.title} | Fzt. Furkan Toplu`,
-    description: area.seo_description || area.summary,
-    alternates: { canonical: `${getSiteUrl()}${contentLanguageLinks("areas", area.language_slugs)[locale]}`, languages: Object.fromEntries(Object.entries(contentLanguageLinks("areas", area.language_slugs)).map(([language, path]) => [language, `${getSiteUrl()}${path}`])) },
+    ...practiceSharingMetadata(area, base, url, locale),
+    alternates: { canonical: url, languages: Object.fromEntries(Object.entries(links).map(([language, path]) => [language, `${base}${path}`])) },
   };
 }
 

@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 22 Ekim 2026 — Çalışma alanı detaylarının paylaşım bilgileri
+
+Küçük paket 3, yalnız alan detaylarına OG/X `website` metadata ekler. `practice-sharing.ts`, adminin mevcut SEO/özet/giriş/fotoğraf ve görünürlük alanlarını okur; gerçek dil slug'ı canonical/og:url olur. Fotoğrafsız/gizli durumda mevcut 600×600 JPEG portre kullanılır; blogdaki `article` türü alanlara taşınmaz. Yeni admin alanı/DB migrasyonu veya görsel üretimi yok. Canlı `vps-20261022-practiceshare1`, geri dönüş `/var/backups/furkantoplu/practiceshare-20261022-01`. 18 alan/dil adresinin crawler/HTTP testleri ve önceki blog/ana sayfa regresyonları geçti; gerçek WhatsApp cihaz kabulü bekler. Genel/liste sayfaları ve ayrı paylaşım ayarı [[04 - Kalanlar]] içinde açık.
+
 ## 22 Ekim 2026 — Blog detayları için üç dil paylaşım bilgileri
 
 Sıradaki küçük paket olarak yalnız blog yazılarına OG/X metadata eklendi. `frontend/app/lib/blog-sharing.ts` saf yardımcı fonksiyonu, mevcut CMS SEO/özet/kapak/görünürlük alanlarından `article` kartını üretir; dil slug'larıyla doğru yazı adresi kullanılır. Kapak yok veya gizliyse mevcut 600×600 ortak JPEG portre yedektir; rastgele dış görsel fetch edilmez. DB/şema/admin alanı, gerçek yazı ve görseller değiştirilmedi. Genel sayfalar/çalışma alanları ve ayrı admin paylaşım ayarı açık. Canlı imaj `vps-20261022-blogshare1`, root-only geri dönüş `/var/backups/furkantoplu/blogshare-20261022-01`. Altı dil rotasında üç crawler'ın ilk HTML head etiketleri ve görsel erişimi doğrulandı; gerçek WhatsApp cihaz kabulü bekler. Ayrıntı [[04 - Kalanlar]].
