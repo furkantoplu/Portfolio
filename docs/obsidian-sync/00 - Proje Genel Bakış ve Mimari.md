@@ -1,5 +1,9 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 22 Ekim 2026 — Blog detayları için üç dil paylaşım bilgileri
+
+Sıradaki küçük paket olarak yalnız blog yazılarına OG/X metadata eklendi. `frontend/app/lib/blog-sharing.ts` saf yardımcı fonksiyonu, mevcut CMS SEO/özet/kapak/görünürlük alanlarından `article` kartını üretir; dil slug'larıyla doğru yazı adresi kullanılır. Kapak yok veya gizliyse mevcut 600×600 ortak JPEG portre yedektir; rastgele dış görsel fetch edilmez. DB/şema/admin alanı, gerçek yazı ve görseller değiştirilmedi. Genel sayfalar/çalışma alanları ve ayrı admin paylaşım ayarı açık. Canlı imaj `vps-20261022-blogshare1`, root-only geri dönüş `/var/backups/furkantoplu/blogshare-20261022-01`. Altı dil rotasında üç crawler'ın ilk HTML head etiketleri ve görsel erişimi doğrulandı; gerçek WhatsApp cihaz kabulü bekler. Ayrıntı [[04 - Kalanlar]].
+
 ## 21 Ekim 2026 — Seçilen ana sayfa tonu canlıda
 
 Kullanıcı ilk seçenek `#F3F0E8` için canlı yayın onayı verdi. Ana sayfanın TR/EN/DE ortak `Home` bileşenine `home-page` sınıfı eklendi; yalnız bu sınıfın `--public-paper` değeri değişir. Zemin ve navbar daha sıcak/koyu olur; diğer sayfalar/admin ve kart/yeşil bölüm renkleri korunur. Canlı imaj `fizyoterapist-frontend:vps-20261021-homepaper1`; geri dönüş `/var/backups/furkantoplu/homepaper-20261021-01`. Kod yerel/VPS eşleşir, CMS/medya/DNS değişmez. Build, 8 tasarım testi, TypeScript/lint, kapalı önizleme ve canlı smoke geçti; tarayıcıda gerçek shell/navbar rengi doğrulandı. Yerel deneme scripti yalnız geliştirme aracıdır. Ayrıntı [[01 - Geliştirme Günlüğü]] ve `deploy/VPS-KURULUM.md`.

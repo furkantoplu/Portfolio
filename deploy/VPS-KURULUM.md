@@ -1,5 +1,13 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Blog detayları paylaşım metadata paketi — 22 Ekim 2026
+
+`frontend/app/blog/[slug]/page.tsx` ve yeni `app/lib/blog-sharing.ts` yalnız blog detaylarına OG/X article kartı ekler; CMS'nin mevcut SEO/özet/kapak/görünürlüğünü kullanır. Fotoğrafsız/gizli kapakta mevcut 600×600 küçük JPEG fallback gelir. Diğer sayfalar/tasarım/admin alanları/DB değişmez. Özel kapaklara otomatik sıkıştırma bu pakette yoktur.
+
+Canlı imaj `fizyoterapist-frontend:vps-20261022-blogshare1`, ID `sha256:c363a01f0c371f029cdc2e5e34ae9b21b7c6df4d7b53b936bb03f6098dd3e613`. Önceki `.env` ve blog kaynağı `/var/backups/furkantoplu/blogshare-20261022-01` root-only kopyadır; eski homepaper1 imajı korunur. İki dosya SHA256 eşleşti; build/portsuz private preview/ortak lock/config/yalnız frontend recreate/healthy yolu uygulandı. Hata halinde env/page restore ve yalnız yeni helper'ın kaldırılması + eski image recreate trap'i hazırdı; gerekmedi. Node 22 base digest'i `de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d` olarak yenilendi, package-lock değiştirilmedi.
+
+13 yerel test, TS/lint ve üretim build geçti. `TEST_SITE_URL=https://furkantoplu.com node scripts/tests/blog-sharing-smoke.mjs` iki yazının altı dil rotasını public CMS'yle karşılaştırır; üç crawler UA'sı ilk head içinde tek doğru set, görsel 200/MIME ve eksik blog 404 doğrular. `public-design-smoke.mjs` mevcut sayfa/portre/renk/404 regresyonlarını kapsar. Gerçek WhatsApp cihaz kabulü bekler. Geçici test alanı temizlenir, rollback saklanır; Directus/Postgres/proxy/DNS değiştirilmez.
+
 ## Onaylanan ana sayfa zemin rengi — 21 Ekim 2026
 
 Kullanıcı yerel denemedeki ilk seçeneği (`#F3F0E8`) seçip canlıya uygulanmasını istedi. `page.tsx` ana sayfa kabuğu `home-page` sınıfını taşır; `public-design.css` yalnız bu sınıfta paper değişkenini değiştirir. TR/EN/DE aynı Home bileşenini kullanır. Diğer sayfaların `#F7F5F0` zemini, admin, kartlar, yeşil alanlar, CMS ve medya korunur.

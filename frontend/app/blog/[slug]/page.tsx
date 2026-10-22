@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowUpRight, Clock3, Quote } from "lucide-react";
 import { SiteFooter } from "../../components/site-footer";
 import { SiteHeader } from "../../components/site-header";
 import { getBlogPost } from "../../lib/directus";
+import { blogSharingMetadata } from "../../lib/blog-sharing";
 
 type PageProps = { params: { slug: string } | Promise<{ slug: string }> };
 async function resolveSlug(params: PageProps["params"]) {
@@ -19,10 +20,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await getPageTools();
   const post = await getBlogPost(await resolveSlug(params));
   if (!post) return { title: "Yazı Bulunamadı | Fzt. Furkan Toplu" };
+  const base = getSiteUrl();
+  const links = contentLanguageLinks("blog", { ...post.language_slugs, [locale]: post.slug });
+  const url = `${base}${links[locale]}`;
   return {
-    title: post.seo_title || `${post.title} | Fzt. Furkan Toplu`,
-    description: post.seo_description || post.summary,
-    alternates: { canonical: `${getSiteUrl()}${contentLanguageLinks("blog", post.language_slugs)[locale]}`, languages: Object.fromEntries(Object.entries(contentLanguageLinks("blog", post.language_slugs)).map(([language, path]) => [language, `${getSiteUrl()}${path}`])) },
+    ...blogSharingMetadata(post, base, url, locale),
+    alternates: { canonical: url, languages: Object.fromEntries(Object.entries(links).map(([language, path]) => [language, `${base}${path}`])) },
   };
 }
 
