@@ -1,14 +1,15 @@
 # Fizyoterapi Sitesi — Kalanlar
 
-Ana envanter: **19 Ekim 2026**. Son güncelleme: **22 Ekim 2026**, Türkiye saati. Güncel iş listesi bu nottur; önceki tarihli günlük ve güvenlik raporları o tarihteki durumu anlatır. İşaretlenmeyen maddeler henüz tamamlanmadı. Yedi eksik SEO açıklaması; ana sayfa, blog detayları ve çalışma alanı detaylarının üç dil paylaşım etiketleri tamamlandı. Kullanıcı 21 Ekim'de ana sayfa deneme bağlantısında WhatsApp fotoğrafının göründüğünü doğruladı; blog ve çalışma alanı cihaz kabulü henüz yok. Özel yatay kart görseli, diğer genel/liste sayfaları ve ayrı admin paylaşım ayarları açık.
+Ana envanter: **19 Ekim 2026**. Son güncelleme: **23 Ekim 2026**, Türkiye saati. Güncel iş listesi bu nottur; önceki tarihli günlük ve güvenlik raporları o tarihteki durumu anlatır. İşaretlenmeyen maddeler henüz tamamlanmadı. Canlı Directus Node güvenlik yaması tamamlandı; yerel geliştirme runtime'ları ayrı açık iş. Yedi eksik SEO açıklaması; ana sayfa, blog detayları ve çalışma alanı detaylarının üç dil paylaşım etiketleri tamamlandı. Kullanıcı 21 Ekim'de ana sayfa deneme bağlantısında WhatsApp fotoğrafının göründüğünü doğruladı; blog ve çalışma alanı cihaz kabulü henüz yok. Özel yatay kart görseli, diğer genel/liste sayfaları ve ayrı admin paylaşım ayarları açık.
 
 ## Şu anda doğrulanan durum
 
+- **23 Ekim — canlı Node yaması tamam:** Frontend ve Directus Node22.23.4; CMS12.4.0 ve hesaplar/veriler korunur. Yalnız Directus recreate edildi; 25 regresyon, izole nativeTOTP/medya ve canlı public testleri geçti. Java runtime bulunmadı. Yerel terminal Node26.4.0 ve yerel Docker backend ayrıca güncellenmeli; ayrıntı günlüğün 23 Ekim uygulama kaydında.
 - Canlı sitemap'teki **41 URL'nin tamamı HTTP 200** döndü.
 - **19 Ekim'de 41 sayfanın hiçbirinde `og:image` yoktu.** 20 Ekim'de `/`, `/en`, `/de`; 22 Ekim'de iki blogun altı dil rotası ve altı çalışma alanının 18 dil rotası için OG/X etiketleri canlıya alındı. Görünür içerik görseli varsa onu, yok/gizliyse mevcut küçük ortak JPEG'i kullanırlar. Diğer genel/liste sayfaları, özel yatay kart ve admin paylaşım ayarı açık.
 - 19 Ekim'de **7 sayfada SEO açıklaması (`meta description`) eksikti; 20 Ekim'de tamamlandı.** Yedi hedef ve mevcut EN/DE blog listeleri olmak üzere dokuz sayfanın canlı HTML'inde doğru dilde tek açıklama doğrulandı.
 - Örneklenen tüm sitemap sayfalarında JSON-LD yok; sitemap'te `lastmod` yok.
-- Frontend, Directus ve PostgreSQL sağlıklı; proxy çalışıyor. Son günlük VPS yedeği **19 Ekim 2026 04.15 Türkiye saati** başarılı (`Result=success`, çıkış 0); zamanlayıcı aktif. Yaklaşık 22 GB disk boş.
+- Frontend, Directus ve PostgreSQL sağlıklı; proxy çalışıyor. Yayın öncesi günlük VPS yedeği **23 Ekim 2026 11.14 Türkiye saati** başarılı (`Result=success`, çıkış0; `20261023T081402Z`). Yaklaşık17GB disk boş. Özel Directus image checksumlu arşivi ayrı root-only rollback klasöründe; günlük yedek yalnız frontend image içerir. Sunucu dışı kopya hâlâ açık iş.
 - Blog: iki yazı yayında, bir yazı taslak. İki yayımlı yazının EN/DE çevirileri yayında, üçüncünün çevirileri taslak. İkinci yayımlı yazıda gövde paragrafı yok; ilkinde iki paragraf var.
 - Kaynak ve canlı sayfa kontrolleri yapıldı. Bu kontrol yeni bir güvenlik taraması, PageSpeed ölçümü veya gerçek cihaz/WhatsApp kabul testi değildir.
 
@@ -17,6 +18,13 @@ Ana envanter: **19 Ekim 2026**. Son güncelleme: **22 Ekim 2026**, Türkiye saat
 - [x] **21 Ekim:** Site sahibi zemini fazla beyaz bulduğu için kullanıcı `#F3F0E8` ve `#FBFAF6` tonlarını yalnız yerel ana sayfada sırayla denemek istedi. `http://localhost:4175/?renk=F3F0E8` renk önizlemesi açıldı; alt panelde ikinci seçenek, ek öneri `#EAE6DB` ve mevcut `#F7F5F0` karşılaştırılabilir. `#FBFAF6` mevcut zeminden daha açık olduğu kullanıcıya belirtildi.
 - [x] **21 Ekim:** Kullanıcı ilk seçeneği `#F3F0E8` seçti ve canlıya yayın onayı verdi. Gerçek TR/EN/DE ana sayfa kaynağına `.site-shell.home-page` değişkeni uygulandı; yalnız ana sayfa zemini ve navbar değişir, diğer sayfa/admin renkleri korunur. Canlı `vps-20261021-homepaper1` healthy; test/build/özel preview/canlı smoke ve tarayıcıda gerçek renk kontrolü geçti. Geri dönüş kopyası saklanır. Renk işi tamamlandı, aşağıdaki diğer işler açık.
 - Önizleme `scripts/preview-home-colors.mjs` ile güncel public ana sayfayı belleğe alır; yalnız zemin/navbar değişkenini yerelde ezer. Site JS'i ve sayfa geçişleri kapalı statik görsel kopyadır; asıl uygulama/DB/VPS değişmez. Başlatma: `node scripts/preview-home-colors.mjs`. Yerel sunucu seçim süresince açık tutulur.
+
+## 0. Öncelikli yeni iş — Node.js güvenlik güncellemesi (23 Ekim)
+
+- [x] **23 Ekim: canlı Directus Node22.23.2 →22.23.4.** Kullanıcı onayıyla mevcut CMS12.4.0/veri/hesap korundu; pinned Alpine/musl binary-only image, yedek/rollback, portsuz fixture, native parola/TOTP/session/medya testleri ve canlı kontroller geçti. Recipe, testler ve `deploy/DIRECTUS-NODE-YAMASI.md` kaynakta; özel image arşivi `/var/backups/furkantoplu/node-runtime-20261023-01`. Gerçek RCE reproduksiyonu değil, resmî yamalı binary ve runtime doğrulamasıdır.
+- [ ] **Yerel Docker Directus runtime'ını da aynı yamalı imaja taşı.** Bu küçük paket yalnız canlı `compose.vps.yaml` içindi; yerel `compose.yaml` upstream imajda kaldı. Yerel imajı build et, mevcut yerel DB/uploads ve hesapları koruyarak kontrollü geç; bilgisayardaki Docker durumunu önce kontrol et.
+- [ ] **Yerel geliştirme Node 26.4.0 sürümünü ayrıca güncelle.** Yamalı 26.x sürümü en az 26.12.1; alternatif olarak proje üretim dalıyla uyumlu yamalı 22.x seçilebilir. Kullanıcının diğer projelerine etkisini değerlendir; bilgisayar genelinde sürümü izinsiz değiştirme.
+- Canlı frontend zaten Node 22.23.4'te. Java bu altyapıda bulunmadı. Directus'un mevcut body-parser 1.20.8 kodu `br` istek gövdesi çözmüyor; bu, tek istekte pre-auth RCE iddiasını doğrulamayan karşı kanıttır, runtime'ı yamalı yapmaz. Başka decoder/fetch yollarının istismar edilebilirliği bu dar kontrolde kanıtlanmadı. Ana kaynak: https://nodejs.org/en/blog/vulnerability/october-2026-security-releases .
 
 ## 1. Sıradaki küçük paket: fotoğraflı paylaşım önizlemesi
 
@@ -87,4 +95,4 @@ Ana envanter: **19 Ekim 2026**. Son güncelleme: **22 Ekim 2026**, Türkiye saat
 - [x] Robots/sitemap/canonical/dil adresleri ve 404 sayfası; 19 Ekim'de 41 sitemap adresi erişilebilir.
 - [x] Search Console mülkiyet/sitemap kurulumu — kullanıcı bildirimi; hesap içindeki indeksleme sonuçlarının takibi ayrı.
 
-Önerilen uygulama sırası: **paylaşım görseli/etiketleri → eksik SEO açıklamaları → blog içerik tamamlaması → yapılandırılmış veri/lastmod → küçük teknik iyileştirme paketleri**. Sunucu dışı yedek sahibin hazır olacağı ayrı adımdır.
+Önerilen uygulama sırası: **Directus Node güvenlik yaması ve yerel Node planı → paylaşım görseli/etiketleri → eksik SEO açıklamaları → blog içerik tamamlaması → yapılandırılmış veri/lastmod → küçük teknik iyileştirme paketleri**. Sunucu dışı yedek sahibin hazır olacağı ayrı adımdır.

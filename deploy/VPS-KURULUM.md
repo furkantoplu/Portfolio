@@ -1,5 +1,11 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Directus Node güvenlik runtime'ı — 23 Ekim 2026
+
+Canlı Directus12.4.0 korunarak içindeki Node22.23.2 → **22.23.4** güncellendi. Üretim Compose `fizyoterapist-directus:12.4.0-node22.23.4` yerel imajını bekler; başka sunucuda önce `docker build -f deploy/directus-node.Dockerfile -t fizyoterapist-directus:12.4.0-node22.23.4 .` gerekir. Bu özel etiket registry'de yoktur. Base ve donor digest-pinned Alpine/musl kaynaklarıdır. Diğer servisler, içerik/görseller ve hesap bilgileri değişmez.
+
+Ön yayın yedeği `/var/backups/furkantoplu/daily/20261023T081402Z` başarılı. Root-only `/var/backups/furkantoplu/node-runtime-20261023-01` eski Compose ile checksum-doğrulanmış **276 MB özel Directus image** arşivini tutar. Günlük yedek bu özel imajı otomatik arşivlemez; tarifle yeniden build veya ayrı `docker image load` gerekir. Aynı VPS'teki kopya sunucu dışı yedek değildir. İmaj ID, sıralı doğrulama, testler, kanıt sınırları ve kurtarma: [DIRECTUS-NODE-YAMASI.md](DIRECTUS-NODE-YAMASI.md). Tek seferlik rollout scripti tekrar çalıştırılmaz.
+
 ## Çalışma alanı detayları paylaşım paketi — 22 Ekim 2026
 
 `app/calisma-alanlari/[slug]/page.tsx` + yeni `app/lib/practice-sharing.ts`, yalnız alan detaylarına OG/X `website` kartı ekler. Adminin mevcut SEO/özet/giriş/fotoğraf/görünürlüğü kullanılır; fotoğrafsız/gizli durumda mevcut küçük JPEG fallback gelir. Dil canonical/OG URL gerçek slug'la eşleşir; eski URL yönlendirmeleri korunur. Admin/DB/medya/arayüz tasarımı değişmez.

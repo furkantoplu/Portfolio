@@ -1,0 +1,50 @@
+# Disposable runtime compatibility test; no production ports, networks or volumes.
+services:
+  database:
+    image: postgres:16-alpine
+    mem_limit: 384m
+    environment:
+      POSTGRES_DB: node_runtime_fixture
+      POSTGRES_USER: node_fixture
+      POSTGRES_PASSWORD: ${TEST_PG_PASSWORD:?required}
+    tmpfs: [/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U node_fixture -d node_runtime_fixture']
+      interval: 2s
+      retries: 30
+  directus:
+    image: fizyoterapist-directus:12.4.0-node22.23.4
+    mem_limit: 768m
+    pids_limit: 150
+    depends_on:
+      database: {condition: service_healthy}
+    environment:
+      SECRET: ${TEST_APP_SECRET:?required}
+      DB_CLIENT: pg
+      DB_HOST: database
+      DB_PORT: '5432'
+      DB_DATABASE: node_runtime_fixture
+      DB_USER: node_fixture
+      DB_PASSWORD: ${TEST_PG_PASSWORD:?required}
+      PROJECT_OWNER_ENABLED: 'false'
+      TELEMETRY: 'false'
+      PUBLIC_URL: http://directus:8055
+      SESSION_COOKIE_NAME: node_fixture_session
+      SESSION_COOKIE_SECURE: 'false'
+      SESSION_COOKIE_SAME_SITE: lax
+      LOGIN_STALL_TIME: '0'
+      CACHE_ENABLED: 'false'
+      WEBSOCKETS_ENABLED: 'false'
+      FILES_MAX_UPLOAD_SIZE: 10mb
+      FILES_MIME_TYPE_ALLOW_LIST: image/jpeg,image/png,image/webp
+      NODE_OPTIONS: --max-old-space-size=512
+    volumes: ['../../directus/extensions:/directus/extensions:ro']
+    tmpfs: ['/directus/uploads:uid=1000,gid=1000,mode=0700']
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:8055/admin/').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 2s
+      retries: 45
+      start_period: 10s
+networks:
+  default:
+    internal: true

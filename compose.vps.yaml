@@ -16,7 +16,7 @@ services:
       timeout: 5s
       retries: 8
   directus:
-    image: directus/directus:12.4.0
+    image: fizyoterapist-directus:12.4.0-node22.23.4
     restart: unless-stopped
     mem_limit: 896m
     depends_on:

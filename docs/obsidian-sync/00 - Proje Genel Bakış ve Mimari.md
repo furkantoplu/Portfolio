@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 23 Ekim 2026 — Canlı Directus Node güvenlik güncellemesi
+
+Kullanıcı onayıyla yalnız canlı yönetim servisinin Node runtime'ı 22.23.2 → **22.23.4** taşındı. Directus12.4.0 uygulaması/ABI127/native addonlar, kullanıcı/entrypoint ve production volume'leri korundu; Alpine3.24/musl uyumlu resmî digest-pinned donor'dan yalnız Node binary kopyalandı. Yeni yerel image `fizyoterapist-directus:12.4.0-node22.23.4`, ID `34e18500287fb46d6390705309adcfa801853ee3519d44983d18acefee9de2f9`. Frontend zaten yamalıydı ve yeniden oluşturulmadı. Hesap/parola/TOTP/token güvenlik alanları önce/sonra aynı; DB/medya/şema migrasyonu yapılmadı.
+
+Portsuz, ayrı internal ağ/tmpfs üzerinde gerçek verinin kimlik bilgileri temizlenmiş test kopyasıyla native giriş/TOTP/refresh/logout, yükleme/doğrulama/kalıcı dosya temizliği geçti. 25 regresyon ve canlı public/medya/üç dil paylaşım testleri başarılı; gerçek çalışan dört Node executable yamalı ikiliyle eşleşiyor. Gerçek RCE payload'u çalıştırılmadı, anonim HTTP'den RCE yolu kanıtlanmadı. Resmî yamalı sürüm/donor binary ve backport sabiti doğrulandı.
+
+Son manuel yayın öncesi günlük yedek 23 Ekim11.14TR (`20261023T081402Z`), `Result=success`. Root-only `/var/backups/furkantoplu/node-runtime-20261023-01` eski Compose ve checksumlu özel image arşivini tutar. Günlük yedek yalnız frontend image içerdiğinden özel backend image ayrıca saklandı; tarif `deploy/directus-node.Dockerfile` ile yeniden build veya `docker image load` gerekir. Bu sunucu dışı yedek değildir. Yerel terminal Node26.4.0 ve yerel Docker backend'i bu paketin dışında kaldı; [[04 - Kalanlar]]. Ayrıntı `deploy/DIRECTUS-NODE-YAMASI.md` ve günlükte.
+
 ## 22 Ekim 2026 — Çalışma alanı detaylarının paylaşım bilgileri
 
 Küçük paket 3, yalnız alan detaylarına OG/X `website` metadata ekler. `practice-sharing.ts`, adminin mevcut SEO/özet/giriş/fotoğraf ve görünürlük alanlarını okur; gerçek dil slug'ı canonical/og:url olur. Fotoğrafsız/gizli durumda mevcut 600×600 JPEG portre kullanılır; blogdaki `article` türü alanlara taşınmaz. Yeni admin alanı/DB migrasyonu veya görsel üretimi yok. Canlı `vps-20261022-practiceshare1`, geri dönüş `/var/backups/furkantoplu/practiceshare-20261022-01`. 18 alan/dil adresinin crawler/HTTP testleri ve önceki blog/ana sayfa regresyonları geçti; gerçek WhatsApp cihaz kabulü bekler. Genel/liste sayfaları ve ayrı paylaşım ayarı [[04 - Kalanlar]] içinde açık.
