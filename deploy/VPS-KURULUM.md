@@ -1,5 +1,11 @@
 # VPS erişimi ve yayın hazırlığı
 
+## Sayfa görünürlüğü paketi — 27 Ekim 2026
+
+Canlı frontend `fizyoterapist-frontend:vps-20261027-pagevisibility1`, ID `8e8240953a75a494ba9e8c26b66efb50e2dfdfdeb8fc745df54475eedc2da278`. Directus image değişmez, yalnız yeni src/dist endpoint için recreate edildi. PostgreSQL/proxy container'ları korundu; aktif Caddyfile.vps dar PATCH allowlist'i validate/hash/reload ile güncellendi. İnaktif deploy/Caddyfile uzakta eski farklı kaynak olduğu için üzerine yazılmadı. Sayfalar başlangıçta açık kalır, yeni ayar satırı ilk gerçek admin tıklamasında oluşturulur; migrasyon/veri seed yok.
+
+147 regresyon/TypeScript/build, iki TOTP'li yönetici ve gerçek Caddy/frontend ile portsuz tmpfs DB kopyasında tüm gizle/aç akışları geçti. Ön yayın yedeği `daily/20261027T121630Z`, root-only rollback `/var/backups/furkantoplu/pagevisibility-20261027-01`; eski env/kaynaklar + manifest ve önceki frontend image saklanır. Sabit `rollout-page-visibility.sh` yalnız bu yayın içindir. İçerik ve kullanıcı güvenlik parmak izleri aynı. Canlı 41 sitemap URL'si ve diğer public/medya/yetki smoke kontrolleri geçti. Kullanım, API, test ve kanıt sınırları: [SAYFA-GORUNURLUGU.md](SAYFA-GORUNURLUGU.md).
+
 ## Directus Node güvenlik runtime'ı — 23 Ekim 2026
 
 Canlı Directus12.4.0 korunarak içindeki Node22.23.2 → **22.23.4** güncellendi. Üretim Compose `fizyoterapist-directus:12.4.0-node22.23.4` yerel imajını bekler; başka sunucuda önce `docker build -f deploy/directus-node.Dockerfile -t fizyoterapist-directus:12.4.0-node22.23.4 .` gerekir. Bu özel etiket registry'de yoktur. Base ve donor digest-pinned Alpine/musl kaynaklarıdır. Diğer servisler, içerik/görseller ve hesap bilgileri değişmez.

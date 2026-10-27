@@ -2,12 +2,14 @@ import type { MetadataRoute } from "next";
 import { getBlogPosts, getPracticeAreas, getSitePage } from "./lib/directus";
 import { locales, routes, contentLanguageLinks, type Locale, type RouteKey } from "./lib/i18n";
 import { getSiteUrl } from "./lib/site-url";
+import { getPageVisibility } from './lib/page-visibility-server';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
+  const visible = await getPageVisibility();
   const entries: MetadataRoute.Sitemap = [];
   const availability: Record<string, Partial<Record<Locale, string>>> = {};
-  for (const [key, paths] of Object.entries(routes)) availability[key] = { ...paths };
+  for (const [key, paths] of Object.entries(routes)) availability[key] = visible[key as RouteKey] ? { ...paths } : {};
   const results = await Promise.all(locales.map(async locale => {
     const [areas, posts, ...pages] = await Promise.allSettled([
       getPracticeAreas({ locale }), getBlogPosts({ locale }), ...(["home", "about", "contact", "areas", "blog"] as const).map(key => getSitePage(key, locale)),
@@ -21,12 +23,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
   for (const { locale, areas, posts } of results) {
     for (const [key, records] of [["areas", areas], ["blog", posts]] as const) {
+      if (!visible[key]) continue;
       for (const item of records) {
         const languages = Object.fromEntries(Object.entries(contentLanguageLinks(key, item.language_slugs)).map(([language, path]) => [language, base + path]));
         entries.push({ url: `${base}${routes[key][locale]}/${encodeURIComponent(item.slug)}`, changeFrequency: "monthly", priority: 0.7, alternates: { languages } });
       }
     }
   }
-  for (const path of ["/gizlilik", "/kvkk-aydinlatma-metni"]) entries.push({ url: base + path, changeFrequency: "yearly", priority: 0.2 });
+  for (const [key, path] of [['privacy', '/gizlilik'], ['kvkk', '/kvkk-aydinlatma-metni']] as const) if (visible[key]) entries.push({ url: base + path, changeFrequency: "yearly", priority: 0.2 });
   return entries;
 }

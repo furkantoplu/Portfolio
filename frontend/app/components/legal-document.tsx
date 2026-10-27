@@ -3,6 +3,7 @@ import { ArrowLeft, ExternalLink } from "lucide-react";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { NativeLink } from "./native-link";
+import type { PageVisibility } from '../lib/page-visibility';
 
 export type LegalSection = {
   title: string;
@@ -15,12 +16,13 @@ type LegalDocumentProps = {
   intro: string;
   updated: string;
   sections: LegalSection[];
+  visibility?: PageVisibility;
 };
 
-export function LegalDocument({ eyebrow, title, intro, updated, sections }: LegalDocumentProps) {
+export function LegalDocument({ eyebrow, title, intro, updated, sections, visibility }: LegalDocumentProps) {
   return (
     <main className="site-shell legal-page">
-      <SiteHeader />
+      <SiteHeader visibility={visibility} />
 
       <section className="legal-hero" aria-labelledby="legal-title">
         <NativeLink href="/" className="legal-back"><ArrowLeft aria-hidden="true" size={17} />Ana sayfaya dön</NativeLink>

@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Clock3, Quote } from "lucide-react";
 import { SiteFooter } from "../../components/site-footer";
 import { SiteHeader } from "../../components/site-header";
+import { isPageVisible } from '../../lib/page-visibility';
 import { getBlogPost } from "../../lib/directus";
 import { blogSharingMetadata } from "../../lib/blog-sharing";
 
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const { locale, t, href: localHref } = await getPageTools();
+  const { locale, t, href: localHref, visibility } = await getPageTools();
   const post = await getBlogPost(await resolveSlug(params));
   if (!post) notFound();
 
@@ -44,7 +45,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <main className="site-shell article-page">
-      <SiteHeader locale={locale} active="blog" languageLinks={contentLanguageLinks("blog", post.language_slugs)} />
+      <SiteHeader locale={locale} active="blog" languageLinks={contentLanguageLinks("blog", post.language_slugs)} visibility={visibility} />
       <article>
         <header className="article-header">
           <a className="detail-back-link" href={localHref("/blog")}><ArrowLeft aria-hidden="true" size={17} />{t("Bilgi Köşesi'ne dön")}</a>
@@ -102,7 +103,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             {show("cta") && (<div className="article-end">
               <a href={localHref("/blog")}><ArrowLeft aria-hidden="true" size={17} />{t("Tüm yazılara dön")}</a>
-              <a href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></a>
+              {isPageVisible(visibility, 'contact') && <a href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></a>}
             </div>) }
           </div>
         </div>

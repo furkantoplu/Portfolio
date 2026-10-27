@@ -1,5 +1,13 @@
 # Fizyoterapist Web Sitesi — Proje Genel Bakış ve Mimari
 
+## 27 Ekim 2026 — Tam sayfa görünürlüğü
+
+Admin → Sayfa içerikleri başına ortak Sayfa görünürlüğü alanı eklendi. Home zorunlu açık; about/areas/blog/contact/privacy/kvkk tek tek açılıp kapatılır. Yeni kolon/migrasyon yok; ilk gerçek admin tıklamasında site_pages içinde visibility anahtarlı JSON ayar kaydı oluşur. Boolean-only, native TFA-doğrulanmış aktif yönetici, transaction/row-lock ve tek anahtar güncellemesi iki yöneticinin tercihlerini korur. Eski bölüm/footer görünürlükleri korunur; çevirilerden bağımsız ortak ayardır.
+
+Kapalı sayfanın TR/EN/DE URL ve alt detayları404; blog/alan public listeleri boş, detayları404. Navbar masaüstü/mobil, randevu CTA'ları, footer, ana sayfa ilgili bölüm/CTA'ları, 404 yardımcı linkleri ve sitemap aynı karara uyar. İletişim kapalıysa bütün site-içi iletişim/randevu yönlendirmeleri kalkar. Yasal sayfalar yalnız mevcut TR rotalarında kontrol edilir. Gizleme yayın kontrolüdür, dosyalar için gizli erişim sistemi değildir; içerikler/çeviriler/yayın durumları silinmez.
+
+Canlı frontend pagevisibility1 (ID8e824095…), backend aynı yamalı Directus image. 147 test, TS/build, portsuz/scrub edilmiş tmpfs DB'de native iki TOTP yöneticili tüm kapat/aç akışları ve canlı41 sitemap200/public/medya/yetki kontrolleri geçti. Production'da deneme sayfası kapatılmadı; ayarlar başlangıçta açık. Yedek 27Ekim15.16TR; rollback /var/backups/furkantoplu/pagevisibility-20261027-01. Aktif Caddyfile.vps değişti, inaktif farklı Caddyfile korunur; kullanıcı/DB/medya içeriği aynı. Kullanım/kanıt/işletim `deploy/SAYFA-GORUNURLUGU.md`, günlük ve [[04 - Kalanlar]].
+
 ## 23 Ekim 2026 — Canlı Directus Node güvenlik güncellemesi
 
 Kullanıcı onayıyla yalnız canlı yönetim servisinin Node runtime'ı 22.23.2 → **22.23.4** taşındı. Directus12.4.0 uygulaması/ABI127/native addonlar, kullanıcı/entrypoint ve production volume'leri korundu; Alpine3.24/musl uyumlu resmî digest-pinned donor'dan yalnız Node binary kopyalandı. Yeni yerel image `fizyoterapist-directus:12.4.0-node22.23.4`, ID `34e18500287fb46d6390705309adcfa801853ee3519d44983d18acefee9de2f9`. Frontend zaten yamalıydı ve yeniden oluşturulmadı. Hesap/parola/TOTP/token güvenlik alanları önce/sonra aynı; DB/medya/şema migrasyonu yapılmadı.

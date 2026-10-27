@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUpRight, Compass, SearchX } from "lucide-react";
 import { NativeLink } from "./components/native-link";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
+import { isPageVisible } from './lib/page-visibility';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { locale } = await getPageTools();
@@ -11,10 +12,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function NotFound() {
-  const { locale, t, href: localHref } = await getPageTools();
+  const { locale, t, href: localHref, visibility } = await getPageTools();
   return (
     <main className="site-shell not-found-page">
-      <SiteHeader locale={locale} />
+      <SiteHeader locale={locale} visibility={visibility} />
 
       <section className="not-found-hero" aria-labelledby="not-found-title">
         <div className="not-found-hero__copy">
@@ -25,15 +26,15 @@ export default async function NotFound() {
           <div className="not-found-hero__actions">
             <NativeLink className="primary-button" href={localHref("/")}>
               <ArrowLeft aria-hidden="true" size={18} />{t("Ana sayfaya dön")}</NativeLink>
-            <NativeLink className="text-link" href={localHref("/calisma-alanlari")}>{t("Çalışma alanlarını incele")}<ArrowUpRight aria-hidden="true" size={18} />
-            </NativeLink>
+            {isPageVisible(visibility, 'areas') && <NativeLink className="text-link" href={localHref("/calisma-alanlari")}>{t("Çalışma alanlarını incele")}<ArrowUpRight aria-hidden="true" size={18} />
+            </NativeLink>}
           </div>
 
           <nav className="not-found-quick-links" aria-label={t("Yardımcı bağlantılar")}>
             <span>{t("Aradığınız içerik için")}</span>
-            <NativeLink href={localHref("/blog")}>{t("Blog")}</NativeLink>
-            <NativeLink href={localHref("/hakkimda")}>{t("Hakkımda")}</NativeLink>
-            <NativeLink href={localHref("/iletisim")}>{t("İletişim")}</NativeLink>
+            {isPageVisible(visibility, 'blog') && <NativeLink href={localHref("/blog")}>{t("Blog")}</NativeLink>}
+            {isPageVisible(visibility, 'about') && <NativeLink href={localHref("/hakkimda")}>{t("Hakkımda")}</NativeLink>}
+            {isPageVisible(visibility, 'contact') && <NativeLink href={localHref("/iletisim")}>{t("İletişim")}</NativeLink>}
           </nav>
         </div>
 

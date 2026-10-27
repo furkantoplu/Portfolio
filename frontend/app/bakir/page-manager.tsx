@@ -10,13 +10,14 @@ import pageConfig from "../lib/page-content-config.json";
 import { ImageField } from "./image-field";
 import { readSectionVisibility } from "../lib/section-visibility";
 import { VisibilityField, VisibilitySwitch, ExtraSectionControls, sectionForField } from "./section-visibility";
+import { PageVisibilityManager } from './page-visibility-manager';
 
 export type PageKey = "home" | "about" | "contact" | "areas" | "blog";
 const pageLabels: Record<PageKey, string> = { home: "Ana sayfa", about: "Hakkımda", contact: "İletişim", areas: "Çalışma alanları", blog: "Blog" };
 
 export type ManagedSitePage = {
   id: number;
-  page_key: PageKey | "footer";
+  page_key: PageKey | "footer" | "visibility";
   content: Record<string, unknown>;
   seo_title: string | null;
   seo_description: string | null;
@@ -115,6 +116,7 @@ export function PageManager({ pages, onChanged }: { pages: ManagedSitePage[]; on
       <div className="admin-content-manager__heading">
         <div><p className="admin-eyebrow"><FileText size={17} /> Sayfa içerikleri</p><h2 id="page-manager-title">Kurumsal sayfaları,<br /><em>kod açmadan güncelleyin.</em></h2></div>
       </div>
+      <PageVisibilityManager value={pages.find(page => page.page_key === 'visibility')?.content} onChanged={onChanged} />
       <div className="admin-page-tabs" role="tablist">
         {(Object.keys(pageLabels) as PageKey[]).map(key => <button key={key} type="button" role="tab" aria-selected={pageKey === key} disabled={busy} className={pageKey === key ? "is-active" : ""} onClick={() => selectPage(key)}>{pageLabels[key]}</button>)}
       </div>

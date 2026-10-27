@@ -12,17 +12,26 @@ const result=await build({stdin:{contents:`
   import {SiteFooter} from './app/components/site-footer';
   import {FooterManager} from './app/bakir/footer-manager';
   export {readFooterSettings,safeFooterUrl} from './app/lib/footer-links';
-  export async function render(config,locale='tr'){globalThis.footerFixture={config,locale};return renderToStaticMarkup(await SiteFooter())}
+  export async function render(config,locale='tr',visibility){globalThis.footerFixture={config,locale,visibility};return renderToStaticMarkup(await SiteFooter())}
   export const editor=renderToStaticMarkup(<FooterManager page={{id:1,page_key:'footer',content:{},seo_title:null,seo_description:null}} onChanged={async()=>{}}/>);
 `,loader:'tsx',resolveDir:root},write:false,bundle:true,format:'cjs',platform:'node',jsx:'automatic',external:['react','react/jsx-runtime','react-dom/server','lucide-react'],plugins:[{name:'fixtures',setup(builder){
   builder.onResolve({filter:/(?:i18n-server|\/directus)$/},args=>({path:args.path,namespace:'footer-fixture'}));
-  builder.onLoad({filter:/.*/,namespace:'footer-fixture'},({path})=>({contents:path.endsWith('i18n-server')?`import {getTranslator,localizeHref} from './app/lib/i18n';export async function getPageTools(){const locale=globalThis.footerFixture.locale;return {t:getTranslator(locale),href:href=>localizeHref(href,locale)}}`:`export async function getFooterSettings(){return globalThis.footerFixture.config}`,loader:'js',resolveDir:root}));
+  builder.onLoad({filter:/.*/,namespace:'footer-fixture'},({path})=>({contents:path.endsWith('i18n-server')?`import {getTranslator,localizeHref} from './app/lib/i18n';export async function getPageTools(){const locale=globalThis.footerFixture.locale;return {t:getTranslator(locale),href:href=>localizeHref(href,locale),visibility:globalThis.footerFixture.visibility}}`:`export async function getFooterSettings(){return globalThis.footerFixture.config}`,loader:'js',resolveDir:root}));
 }}]});
 const module={exports:{}};new Function('require','module','exports',result.outputFiles[0].text)(requireFrontend,module,module.exports);
 const {readFooterSettings,safeFooterUrl,render,editor}=module.exports;
 test('Empty footer omits fake social profiles and keeps default internal/legal links',async()=>{
   const html=await render({});assert.ok(!html.includes('href="#"'));assert.ok(!html.includes('site-footer__social-links'));assert.ok(html.includes('href="/blog"'));assert.ok(html.includes('href="/gizlilik"'));
   assert.ok(!html.includes('Bu web sitesindeki içerikler genel bilgilendirme amaçlıdır.'));
+});
+
+test('Page visibility overrides footer menu preferences without erasing them',async()=>{
+  const visibility={contact:false,blog:false,privacy:false,kvkk:false};
+  for(const locale of ['tr','en','de']){
+    const html=await render({},locale,visibility);
+    for(const path of ['/iletisim','/en/contact','/de/kontakt','/blog','/en/blog','/de/blog','/gizlilik','/kvkk-aydinlatma-metni'])assert.ok(!html.includes(`href="${path}"`),path);
+    assert.ok((await render({},locale,{})).includes('href="/gizlilik"'));
+  }
 });
 test('Only valid HTTPS URLs without credentials become public links; parsers agree',()=>{
   for(const value of ['',null,undefined,'#','javascript:alert(1)','data:text/html,x','http://example.test','//example.test','https://user:pass@example.test', 'https://example.test/'+ 'x'.repeat(2050)]){assert.equal(safeFooterUrl(value),'');assert.equal(backendUrl(value),'')}

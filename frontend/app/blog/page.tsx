@@ -12,7 +12,7 @@ import { archiveIntroText } from "../lib/public-copy";
 export async function generateMetadata(): Promise<Metadata> { const page = await getEditablePage("blog"); return { title: page.seo_title || "Blog sayfası | Fzt. Furkan Toplu", description: page.seo_description || undefined }; }
 
 export default async function BlogPage() {
-  const { locale, t, href: localHref } = await getPageTools();
+  const { locale, t, href: localHref, visibility } = await getPageTools();
   const posts = await getBlogPosts();
   const { content } = await getEditablePage("blog");
   const archiveIntro=archiveIntroText(content.archive_intro);
@@ -23,7 +23,7 @@ export default async function BlogPage() {
 
   return (
     <main className="site-shell editorial-page">
-      <SiteHeader locale={locale} active="blog" />
+      <SiteHeader locale={locale} active="blog" visibility={visibility} />
 
       <section className="editorial-hero" aria-labelledby="editorial-title">
         <div className="editorial-hero__heading">

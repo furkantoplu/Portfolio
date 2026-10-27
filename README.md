@@ -4,6 +4,8 @@ Fizyoterapist portföyü ve blogu için geliştirilen React/TypeScript tabanlı 
 
 ## VPS hazırlığı ve yayın sırası
 
+27 Ekim 2026 — `/bakir` → Sayfa içerikleri → **Sayfa görünürlüğü** eklendi. Ana sayfa kilitli/açık; diğer kurumsal ve yasal sayfalar tüm dillerde kapatılıp açılabilir. Gizli sayfa menüler/sitemap/ana sayfa bağlantılarından kalkar ve URL404 olur; blog/alan detayları da kapanır. İletişim gizlenince randevu CTA'ları kalkar; içerik/çeviri/görseller silinmez. 147 test, native iki yöneticili izole kapat/aç ve canlı kontroller geçti. Kullanım/dağıtım: [deploy/SAYFA-GORUNURLUGU.md](deploy/SAYFA-GORUNURLUGU.md).
+
 23 Ekim 2026 — Canlı Directus12.4.0 korunarak Node22.23.2 → **22.23.4** güvenlik güncellemesi uygulandı. Üretim Compose özel yerel image kullanır; yeni sunucuda önce pinned `deploy/directus-node.Dockerfile` ile build veya özel image arşivinden load gerekir. Hesap/TOTP/DB/medya korunur; izole native iş akışı ve canlı testleri geçti. Yerel Docker backend ve bilgisayarın genel Node sürümü ayrı açık iştir. Yedek, geri dönüş, testler ve kapsam: [deploy/DIRECTUS-NODE-YAMASI.md](deploy/DIRECTUS-NODE-YAMASI.md).
 
 14 Ekim 2026 — Canlı CMS'deki yeni Hakkımda biyografisi İngilizce/Almancaya çevrildi. Blog sayfasının EN/DE giriş metinleri güncellendi; iki yayımlı blog yazısına EN/DE başlık, URL, özet ve varsa tam gövde çevirileri eklendi. Üçüncü blog yazısının iki çevirisi Türkçe aslı gibi taslak bırakıldı. Türkçe kayıtlar ve görseller değiştirilmedi; yeni Docker imajı gerekmedi. Tek seferlik korumalı SQL: [scripts/content-updates/2026-10-14-about-blog-translations.sql](scripts/content-updates/2026-10-14-about-blog-translations.sql). Canlı rota/sitemap ve geri dönüş bilgisi [deploy/VPS-KURULUM.md](deploy/VPS-KURULUM.md) ile Obsidian günlüğünde.

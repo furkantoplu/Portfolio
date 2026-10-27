@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
-  const { locale, t } = await getPageTools();
+  const { locale, t, visibility } = await getPageTools();
   const { content } = await getSitePage<ContactContent>("contact");
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
   const whatsappUrl = whatsAppHref(content.whatsapp_value);
@@ -24,7 +24,7 @@ export default async function ContactPage() {
   ].filter((method): method is typeof method & { href: string } => show(method.key) && Boolean(method.href));
   return (
     <main className="site-shell contact-page">
-      <SiteHeader locale={locale} active="contact" />
+      <SiteHeader locale={locale} active="contact" visibility={visibility} />
 
       <section className="contact-page-hero" aria-labelledby="contact-page-title">
         <div>

@@ -6,6 +6,7 @@ import { ArrowUpRight, Eye, MessageCircleMore, Route, FileText } from "lucide-re
 import { NativeLink } from "../components/native-link";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { isPageVisible } from '../lib/page-visibility';
 import { getSitePage } from "../lib/directus";
 import { professionalNoteText } from "../lib/public-copy";
 
@@ -26,20 +27,20 @@ export async function generateMetadata(): Promise<Metadata> {
 const principleIcons = [MessageCircleMore, Eye, Route];
 
 export default async function AboutPage() {
-  const { locale, t, href: localHref } = await getPageTools();
+  const { locale, t, href: localHref, visibility } = await getPageTools();
   const { content } = await getSitePage<AboutContent>("about");
   const professionalNote=professionalNoteText(content.professional_note);
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
   return (
     <main className="site-shell about-page">
-      <SiteHeader locale={locale} active="about" />
+      <SiteHeader locale={locale} active="about" visibility={visibility} />
 
       <section className={`about-page-hero${show("image") ? "" : " about-page-hero--text-only"}`} aria-labelledby="about-page-title">
         <div className="about-page-hero__copy">
           <p className="eyebrow"><span aria-hidden="true" />{t("Hakkımda")}</p>
           <h1 id="about-page-title">{content.hero_title}<em> {content.hero_accent}</em></h1>
           {show("intro") && (<p>{content.hero_description}</p>) }
-          <NativeLink className="primary-button" href={localHref("/iletisim")}>{t("İletişim bilgilerini görün")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
+          {isPageVisible(visibility, 'contact') && <NativeLink className="primary-button" href={localHref("/iletisim")}>{t("İletişim bilgilerini görün")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></NativeLink>}
         </div>
         {show("image") && (<div className="about-page-hero__portrait">
           <div className="about-page-hero__photo"><Image src={content.image_path || "/furkan-toplu-hero-white-coat-v1.png"} alt={content.image_alt || t("Fizyoterapist Furkan Toplu'nun portresi")} fill priority style={{ objectFit: "contain" }} sizes="(max-width: 860px) 100vw, 48vw" /></div>
@@ -77,7 +78,7 @@ export default async function AboutPage() {
         </div>
       </section>) }
 
-      {show("cta") && (<section className="about-page-cta">
+      {show("cta") && isPageVisible(visibility, 'areas') && (<section className="about-page-cta">
         <p>{t("Çalışma alanlarını ve süreç yaklaşımını daha ayrıntılı inceleyin.")}</p>
         <NativeLink href={localHref("/calisma-alanlari")}>{t("Çalışma alanlarına gidin")}{" "}<ArrowUpRight aria-hidden="true" size={18} /></NativeLink>
       </section>) }

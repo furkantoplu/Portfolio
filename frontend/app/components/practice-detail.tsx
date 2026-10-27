@@ -12,6 +12,7 @@ import {
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 import type { Locale } from "../lib/i18n";
+import { isPageVisible } from '../lib/page-visibility';
 
 type ProcessStep = {
   title: string;
@@ -59,12 +60,12 @@ export async function PracticeDetail({
   relatedAreas: RelatedPracticeArea[];
   languageLinks?: Partial<Record<Locale, string>>;
 }) {
-  const { locale, t, href: localHref } = await getPageTools();
+  const { locale, t, href: localHref, visibility } = await getPageTools();
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
   const hasImage = Boolean(content.image) && show("image");
   return (
     <main className="site-shell detail-page">
-      <SiteHeader locale={locale} active="areas" languageLinks={languageLinks} />
+      <SiteHeader locale={locale} active="areas" languageLinks={languageLinks} visibility={visibility} />
 
       <section className={`detail-hero${hasImage ? "" : " detail-hero--text-only"}`} aria-labelledby="detail-title">
         <div className="detail-hero__content">
@@ -78,8 +79,8 @@ export async function PracticeDetail({
           </h1>
           {show("subtitle") && (content.subtitle || content.titleAccent) && <p className="detail-hero__subtitle">{content.subtitle}<em> {content.titleAccent}</em></p>}
           {show("lead") && (<p className="detail-hero__lead">{content.lead}</p>) }
-          <a className="primary-button" href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}<ArrowUpRight aria-hidden="true" size={18} />
-          </a>
+          {isPageVisible(visibility, 'contact') && <a className="primary-button" href={localHref("/iletisim")}>{t("Görüşme hakkında bilgi alın")}<ArrowUpRight aria-hidden="true" size={18} />
+          </a>}
         </div>
 
         {hasImage && <div className="detail-hero__visual">
@@ -173,7 +174,7 @@ export async function PracticeDetail({
         </div>
       </section>) }
 
-      {show("cta") && (<section className="detail-cta" aria-labelledby="detail-cta-title">
+      {show("cta") && isPageVisible(visibility, 'contact') && (<section className="detail-cta" aria-labelledby="detail-cta-title">
         <div>
           <p className="section-kicker section-kicker--light">{t("İletişim")}</p>
           <h2 id="detail-cta-title">{t("Sürecin sizin için uygunluğunu birlikte konuşalım.")}</h2>

@@ -5,6 +5,7 @@ import pageConfig from "./page-content-config.json";
 import { getTranslator } from "./i18n";
 import type { SectionVisibility } from "./section-visibility";
 import { readFooterSettings, type FooterSettings } from "./footer-links";
+import { getPageVisibility } from './page-visibility-server';
 export type SitePageKey = "home" | "about" | "contact" | "areas" | "blog";
 
 export type PracticeArea = {
@@ -126,6 +127,7 @@ export async function getEditablePage(pageKey: keyof typeof pageConfig) {
 }
 
 export async function getHomeContact<T>() {
+  if (!(await getPageVisibility()).contact) return { page_key: 'contact' as const, content: {} as T, seo_title: null, seo_description: null };
   const locale = await getLocale();
   try { return await getSitePage<T>("contact", locale); }
   catch (error) {

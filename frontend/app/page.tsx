@@ -9,6 +9,7 @@ import { type ContactContent, phoneHref, whatsAppHref } from "./lib/contact";
 import { getBlogPosts, getPracticeAreas, getHomeContact, getEditablePage } from "./lib/directus";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
+import { isPageVisible, type PublicPageKey } from './lib/page-visibility';
 import {
   Activity,
   ArrowUpRight,
@@ -87,7 +88,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const { locale, t, href: localHref } = await getPageTools();
+  const { locale, t, href: localHref, visibility } = await getPageTools();
   const [practiceAreas, blogPosts, contactPage, homePage] = await Promise.all([
     getPracticeAreas({ homepage: true }),
     getBlogPosts({ homepage: true }),
@@ -97,11 +98,12 @@ export default async function Home() {
   const contact = contactPage.content;
   const whatsappUrl = whatsAppHref(contact.whatsapp_value);
   const content = homePage.content;
-  const show = (key: string) => isSectionVisible(content.section_visibility, key);
+  const relatedPages: Record<string, PublicPageKey> = { practices: 'areas', about: 'about', blog: 'blog', contact: 'contact' };
+  const show = (key: string) => isSectionVisible(content.section_visibility, key) && (!relatedPages[key] || isPageVisible(visibility, relatedPages[key]));
   const contactShow = (key: string) => isSectionVisible(contact.section_visibility, key);
   return (
     <main className="site-shell home-page">
-      <SiteHeader locale={locale} active="home" />
+      <SiteHeader locale={locale} active="home" visibility={visibility} />
 
       <section className={`hero${show("image") ? "" : " hero--text-only"}`} aria-labelledby="hero-title">
         <div className="hero__content">
@@ -113,10 +115,10 @@ export default async function Home() {
           {show("intro") && (<p className="hero__description">{content.hero_description}</p>) }
 
           <div className="hero__actions">
-            <a className="primary-button" href={localHref("/iletisim")}>{t("Randevu bilgisi alın")}<ArrowUpRight aria-hidden="true" size={18} />
-            </a>
-            <NativeLink className="text-link" href={show("practices") ? "#calisma-alanlari" : localHref("/calisma-alanlari")}>{t("Çalışma Alanlarını İncele")}<span aria-hidden="true">→</span>
-            </NativeLink>
+            {isPageVisible(visibility, 'contact') && <a className="primary-button" href={localHref("/iletisim")}>{t("Randevu bilgisi alın")}<ArrowUpRight aria-hidden="true" size={18} />
+            </a>}
+            {isPageVisible(visibility, 'areas') && <NativeLink className="text-link" href={show("practices") ? "#calisma-alanlari" : localHref("/calisma-alanlari")}>{t("Çalışma Alanlarını İncele")}<span aria-hidden="true">→</span>
+            </NativeLink>}
           </div>
 
           {show("facts") && (<dl className="hero__facts" aria-label={t("Kısa bilgiler")}>

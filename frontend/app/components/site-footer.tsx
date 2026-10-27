@@ -3,12 +3,14 @@ import { BrandMark } from "./brand-mark";
 import { navItems } from "./navigation";
 import {getFooterSettings} from '../lib/directus';
 import {footerSocialOptions,readFooterSettings} from '../lib/footer-links';
+import { readPageVisibility } from '../lib/page-visibility';
 
 export async function SiteFooter() {
-  const { t, href: localHref } = await getPageTools();
+  const { t, href: localHref, visibility } = await getPageTools();
+  const visible = readPageVisibility(visibility);
   const settings=readFooterSettings(await getFooterSettings());
   const socialLinks=footerSocialOptions.filter(({key})=>settings.socials[key].visible&&settings.socials[key].url);
-  const menuItems=navItems.filter(item=>item.key!=="home"&&settings.menu[item.key]);
+  const menuItems=navItems.filter(item=>item.key!=="home"&&settings.menu[item.key]&&visible[item.key]);
   return (
     <footer className="site-footer">
       <div className="site-footer__top">
@@ -33,9 +35,9 @@ export async function SiteFooter() {
 
       <div className="site-footer__bottom">
         <p>{t("© 2026 Fzt. Furkan Toplu. Tüm hakları saklıdır.")}</p>
-        {(settings.menu.kvkk||settings.menu.privacy)&&<div>
-          {settings.menu.kvkk&&<a href={localHref("/kvkk-aydinlatma-metni")}>{t("KVKK Aydınlatma Metni")}</a>}
-          {settings.menu.privacy&&<a href={localHref("/gizlilik")}>{t("Gizlilik")}</a>}
+        {(settings.menu.kvkk&&visible.kvkk||settings.menu.privacy&&visible.privacy)&&<div>
+          {settings.menu.kvkk&&visible.kvkk&&<a href={localHref("/kvkk-aydinlatma-metni")}>{t("KVKK Aydınlatma Metni")}</a>}
+          {settings.menu.privacy&&visible.privacy&&<a href={localHref("/gizlilik")}>{t("Gizlilik")}</a>}
         </div>}
       </div>
     </footer>

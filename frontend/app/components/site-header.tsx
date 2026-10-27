@@ -6,17 +6,20 @@ import { BrandMark } from "./brand-mark";
 import { NativeLink } from "./native-link";
 import { navItems, type NavigationKey } from "./navigation";
 import { getTranslator, locales, languageNames, localizeHref, routes, type Locale } from "../lib/i18n";
+import { readPageVisibility, type PageVisibility } from '../lib/page-visibility';
 
 type SiteHeaderProps = {
   active?: NavigationKey;
   locale?: Locale;
   languageLinks?: Partial<Record<Locale, string>>;
+  visibility?: PageVisibility;
 };
 
-export function SiteHeader({ active, locale = "tr", languageLinks }: SiteHeaderProps) {
+export function SiteHeader({ active, locale = "tr", languageLinks, visibility }: SiteHeaderProps) {
   const t = getTranslator(locale);
   const languageUrls = languageLinks ?? routes[active || "home"];
-  const navigation = navItems.map(item => ({ ...item, label: t(item.label), href: localizeHref(item.href, locale) }));
+  const visible = readPageVisibility(visibility);
+  const navigation = navItems.filter(item => visible[item.key]).map(item => ({ ...item, label: t(item.label), href: localizeHref(item.href, locale) }));
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const languageRef = useRef<HTMLDivElement>(null);
@@ -69,10 +72,10 @@ export function SiteHeader({ active, locale = "tr", languageLinks }: SiteHeaderP
         </nav>
 
         <div className="header-actions">
-        <NativeLink className="header-cta" href={routes.contact[locale]}>
+        {visible.contact && <NativeLink className="header-cta" href={routes.contact[locale]}>
           <CalendarDays aria-hidden="true" size={18} strokeWidth={1.8} />
           <span>{t("Randevu Bilgisi")}</span>
-        </NativeLink>
+        </NativeLink>}
 
 
         <div className="language-dropdown" ref={languageRef}>
@@ -138,7 +141,7 @@ export function SiteHeader({ active, locale = "tr", languageLinks }: SiteHeaderP
             ))}
           </div>
 
-          <NativeLink
+          {visible.contact && <NativeLink
             className="mobile-nav__cta"
             href={routes.contact[locale]}
             tabIndex={isMenuOpen ? 0 : -1}
@@ -147,7 +150,7 @@ export function SiteHeader({ active, locale = "tr", languageLinks }: SiteHeaderP
             <CalendarDays aria-hidden="true" size={18} strokeWidth={1.8} />
             {t("Randevu bilgisi alın")}
             <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.7} />
-          </NativeLink>
+          </NativeLink>}
 
           <p className="mobile-nav__meta">{t("Uzaktan iletişim")}</p>
         </nav>

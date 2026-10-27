@@ -5,6 +5,7 @@ import { readFooterSettings } from "./footer.js";
 import { resolvePracticeUrl } from "./practice-urls.js";
 import { registerAccountSettings } from "./account-settings.js";
 import { registerImageUpload } from "./image-upload.js";
+import { getPageVisibility, registerPageVisibility } from "./page-visibility.js";
 
 const publicFields = [
   "id",
@@ -109,6 +110,7 @@ export default {
     registerImageUpload(router, context, adminAccount);
     registerTranslations(router, database, adminAccount);
     registerAccountSettings(router, context, adminAccount);
+    registerPageVisibility(router, database, adminAccount);
     router.use((request, response, next) => language(request) ? next() : response.status(400).json({ errors: [{ message: "Geçersiz dil." }] }));
     router.get("/admin-account", async (request, response, next) => {
       try {
@@ -155,6 +157,7 @@ export default {
 
     router.get("/practice-areas", async (request, response, next) => {
       try {
+        if (!(await getPageVisibility(database)).areas) return response.json({ data: [] });
         const query = publishedPracticeAreas(database).orderByRaw("sort ASC NULLS LAST").orderBy("id", "asc");
 
         if (request.query.homepage === "true") {
@@ -169,6 +172,7 @@ export default {
 
     router.get("/practice-areas/:slug", async (request, response, next) => {
       try {
+        if (!(await getPageVisibility(database)).areas) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
         const items = await translateItems(database, "practice_areas", await publishedPracticeAreas(database), language(request));
         const item = await resolvePracticeUrl(database, items, request.params.slug, language(request));
 
@@ -185,6 +189,7 @@ export default {
 
     router.get("/blog-posts", async (request, response, next) => {
       try {
+        if (!(await getPageVisibility(database)).blog) return response.json({ data: [] });
         const query = publishedBlogPosts(database)
           .orderBy("featured", "desc")
           .orderByRaw("published_at DESC NULLS LAST")
@@ -200,6 +205,7 @@ export default {
 
     router.get("/blog-posts/:slug", async (request, response, next) => {
       try {
+        if (!(await getPageVisibility(database)).blog) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
         const items = await translateItems(database, "blog_posts", await publishedBlogPosts(database), language(request));
         const item = items.find(row => row.slug === request.params.slug);
 
@@ -222,6 +228,7 @@ export default {
     router.get("/pages/:pageKey", async (request, response, next) => {
       try {
         if (!new Set(["home", "about", "contact", "areas", "blog"]).has(request.params.pageKey)) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
+        if (!(await getPageVisibility(database))[request.params.pageKey]) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
         const page = await translatePage(database, await sitePage(database, request.params.pageKey), language(request));
         if (!page) return response.status(404).json({ errors: [{ message: "Sayfa bulunamadı." }] });
         response.json({ data: page });

@@ -1,6 +1,11 @@
 # Fizyoterapi Sitesi — Kalanlar
 
-Ana envanter: **19 Ekim 2026**. Son güncelleme: **23 Ekim 2026**, Türkiye saati. Güncel iş listesi bu nottur; önceki tarihli günlük ve güvenlik raporları o tarihteki durumu anlatır. İşaretlenmeyen maddeler henüz tamamlanmadı. Canlı Directus Node güvenlik yaması tamamlandı; yerel geliştirme runtime'ları ayrı açık iş. Yedi eksik SEO açıklaması; ana sayfa, blog detayları ve çalışma alanı detaylarının üç dil paylaşım etiketleri tamamlandı. Kullanıcı 21 Ekim'de ana sayfa deneme bağlantısında WhatsApp fotoğrafının göründüğünü doğruladı; blog ve çalışma alanı cihaz kabulü henüz yok. Özel yatay kart görseli, diğer genel/liste sayfaları ve ayrı admin paylaşım ayarları açık.
+Ana envanter: **19 Ekim 2026**. Son güncelleme: **27 Ekim 2026**, Türkiye saati. Güncel iş listesi bu nottur; önceki tarihli günlük ve güvenlik raporları o tarihteki durumu anlatır. İşaretlenmeyen maddeler henüz tamamlanmadı. Tam sayfa görünürlüğü ve canlı Directus Node güvenlik yaması tamamlandı; yerel geliştirme runtime'ları ayrı açık iş. Yedi eksik SEO açıklaması; ana sayfa, blog detayları ve çalışma alanı detaylarının üç dil paylaşım etiketleri tamamlandı. Kullanıcı 21 Ekim'de ana sayfa deneme bağlantısında WhatsApp fotoğrafının göründüğünü doğruladı; blog ve çalışma alanı cihaz kabulü henüz yok. Özel yatay kart görseli, diğer genel/liste sayfaları ve ayrı admin paylaşım ayarları açık.
+
+## Tamamlanan istek — tam sayfa görünürlüğü (27 Ekim)
+
+- [x] `/bakir` → Sayfa içerikleri → Sayfa görünürlüğü. Ana sayfa daima açık; Hakkımda/alanlar/blog/iletişim/gizlilik/KVKK ortak TR/EN/DE kararıyla gizlenip açılabilir. İletişim kapanınca desktop/mobile navbar randevu ve diğer iç iletişim CTA'ları kalkar. Menüler/footer/ana sayfa/sitemap ve doğrudan URL/alt detay404 aynı ayara uyar; içerik/çeviri/fotoğraf ilişkileri silinmez. İki adminin tercihleri transaction/row-lock ile korunur. Başlangıçta hiçbir mevcut sayfa kapatılmadı.
+- [x] 147 regresyon, TS/build, portsuz tmpfs gerçek native iki TOTP yöneticili tüm kapat/aç akışları ve canlı41 sitemap200/public/medya/yetki kontrolleri geçti. Frontend pagevisibility1 healthy; backup27Ekim15.16TR/rollback pagevisibility-20261027-01. Gerçek kullanıcıyla browser/mobil cihaz yeni kontrol kabulü yapılmadı; /bakir giriş ekranı görüldü. Kullanım/kanıt `deploy/SAYFA-GORUNURLUGU.md` ve günlükte.
 
 ## Şu anda doğrulanan durum
 

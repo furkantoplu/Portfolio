@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalDocument, type LegalSection } from "../components/legal-document";
 import { getSiteUrl } from "../lib/site-url";
+import { requireVisiblePage } from '../lib/page-visibility-server';
 
 export const metadata: Metadata = {
   title: "KVKK Aydınlatma Metni | Fzt. Furkan Toplu",
@@ -31,6 +32,7 @@ const sections: LegalSection[] = [
   },
 ];
 
-export default function KvkkNoticePage() {
-  return <LegalDocument eyebrow="Yasal Bilgilendirme" title="KVKK Aydınlatma Metni" intro="Web sitesi ziyaretiniz ve site üzerinden başlattığınız iletişim için kişisel verilerin nasıl işlendiği." updated="13 Ekim 2026" sections={sections} />;
+export default async function KvkkNoticePage() {
+  const visibility = await requireVisiblePage('kvkk');
+  return <LegalDocument visibility={visibility} eyebrow="Yasal Bilgilendirme" title="KVKK Aydınlatma Metni" intro="Web sitesi ziyaretiniz ve site üzerinden başlattığınız iletişim için kişisel verilerin nasıl işlendiği." updated="13 Ekim 2026" sections={sections} />;
 }

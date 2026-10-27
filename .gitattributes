@@ -1,3 +1,4 @@
 # Linux provisioning assets must stay usable after Windows checkouts.
 deploy/vps/* text eol=lf
 scripts/tests/run-directus-node-fixture.sh text eol=lf
+scripts/tests/run-page-visibility-fixture.sh text eol=lf

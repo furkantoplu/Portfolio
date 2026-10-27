@@ -35,7 +35,7 @@ const result = await build({
   plugins: [{name:'fixtures',setup(builder) {
     builder.onResolve({filter: /(?:i18n-server|\/directus|site-header|site-footer|native-link|^next\/image|^next\/navigation)$/}, args => ({path:args.path,namespace:'fixtures'}));
     builder.onLoad({filter:/.*/,namespace:'fixtures'}, ({path}) => {
-      if (path.endsWith('i18n-server')) return {contents:`export async function getPageTools(){return {locale:'tr',t:v=>v,href:v=>v}}`,loader:'js'};
+      if (path.endsWith('i18n-server')) return {contents:`export async function getPageTools(){return {locale:'tr',t:v=>v,href:v=>v,visibility:globalThis.__sectionFixture.visibility}}`,loader:'js'};
       if (path.endsWith('/directus')) return {contents:`
         export async function getEditablePage(){return {content:globalThis.__sectionFixture.content}}
         export const getSitePage=getEditablePage, getHomeContact=getEditablePage;
@@ -62,6 +62,17 @@ test('Missing flags stay visible; only boolean false hides; input normalization 
   assert.equal(isSectionVisible({faqs:false},'faqs'),false);
   assert.deepEqual(readSectionVisibility({faqs:false,bad:'false'}),{faqs:false});
   assert.deepEqual(readSectionVisibility([]),{});
+});
+
+test('Whole-page flags hide home teasers and all contact CTAs without hiding homepage itself',async()=>{
+  const visibility={contact:false,areas:false,about:false,blog:false};
+  const html=await render('home',{content,visibility});
+  assert.ok(html.includes('<h1'));assert.ok(html.includes('hero__visual'));
+  for(const name of ['practice-section','about-section','blog-section','contact-section'])assert.ok(!html.includes(`class="${name}`),name);
+  assert.ok(!html.includes('href="/iletisim"'));assert.ok(!html.includes('href="/calisma-alanlari"'));
+  for(const page of ['about','post','practice']){
+    const value=await render(page,{content,visibility,post,practice});assert.ok(!value.includes('href="/iletisim"'),page);
+  }
 });
 test('Visibility switch sits beside the field label and preserves editable content',()=>{
   assert.ok(field.includes('role="switch" aria-checked="false"'));

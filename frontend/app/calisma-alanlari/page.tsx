@@ -19,14 +19,14 @@ export async function generateMetadata(): Promise<Metadata> { const page = await
 const icons = [Activity, Dumbbell, HeartPulse, PersonStanding];
 
 export default async function PracticeAreasPage() {
-  const { locale, t, href: localHref } = await getPageTools();
+  const { locale, t, href: localHref, visibility } = await getPageTools();
   const practiceAreas = await getPracticeAreas();
   const { content } = await getEditablePage("areas");
   const show = (key: string) => isSectionVisible(content.section_visibility, key);
 
   return (
     <main className="site-shell practice-directory-page">
-      <SiteHeader locale={locale} active="areas" />
+      <SiteHeader locale={locale} active="areas" visibility={visibility} />
 
       <section className="practice-directory-hero" aria-labelledby="directory-title">
         <div>

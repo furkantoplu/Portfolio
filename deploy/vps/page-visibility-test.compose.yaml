@@ -1,0 +1,25 @@
+# Overlay on node-runtime-test.compose.yaml; internal-only, no host ports.
+services:
+  frontend:
+    image: fizyoterapist-frontend:vps-20261027-pagevisibility1
+    mem_limit: 640m
+    pids_limit: 150
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: '3000'
+      DIRECTUS_URL: http://directus:8055
+      SITE_PUBLIC_URL: https://furkantoplu.com
+      NODE_OPTIONS: --max-old-space-size=448
+    depends_on:
+      directus: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 3s
+      retries: 35
+  proxy:
+    image: caddy:2.10-alpine
+    mem_limit: 96m
+    depends_on:
+      frontend: {condition: service_healthy}
+    volumes: ['../Caddyfile:/etc/caddy/Caddyfile:ro']
